@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init","Initialise the PIT chip."]],"static":[["PIT",""]],"struct":[["PITDescriptor",""]]});
+initSidebarItems({"fn":[["init","Initialise the PIT chip."]],"static":[["PIT","The PIT (Programmable Interval Timer)"]],"struct":[["PITDescriptor",""]]});

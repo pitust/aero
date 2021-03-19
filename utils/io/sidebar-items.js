@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["inb",""],["outb",""],["wait",""]]});
+initSidebarItems({"fn":[["inb","Wrapper function to the `inb` assembly instruction used to do the low level port input."],["outb","Wrapper function to the `outb` assembly instruction used to do the low level port output."],["wait","This function is called after every `outb` instruction as on older machines its necessary to give the PIC some time to react to commands as they might not be processed quickly."]]});
