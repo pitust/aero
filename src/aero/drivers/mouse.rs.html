@@ -181,16 +181,14 @@
 <span id="178">178</span>
 <span id="179">179</span>
 <span id="180">180</span>
-<span id="181">181</span>
-<span id="182">182</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">io</span>;
 
 <span class="kw">const</span> <span class="ident">MOUSE_WAIT_TIMEOUT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100000</span>;
 
-<span class="kw">const</span> <span class="ident">PS2_LEFT_BUTTON</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b00000001</span>;
-<span class="kw">const</span> <span class="ident">PS2_MIDDLE_BUTTON</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b00000100</span>;
-<span class="kw">const</span> <span class="ident">PS2_RIGHT_BUTTON</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b00000010</span>;
+<span class="comment">// const PS2_LEFT_BUTTON: u8 = 0b00000001;</span>
+<span class="comment">// const PS2_MIDDLE_BUTTON: u8 = 0b00000100;</span>
+<span class="comment">// const PS2_RIGHT_BUTTON: u8 = 0b00000010;</span>
 
 <span class="kw">const</span> <span class="ident">PS2_X_SIGN</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b00010000</span>;
 <span class="kw">const</span> <span class="ident">PS2_Y_SIGN</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b00100000</span>;
@@ -327,8 +325,6 @@
         <span class="kw">if</span> <span class="ident">MOUSE_POSITION</span>.<span class="ident">y</span> <span class="op">&lt;</span> <span class="number">0</span> {
             <span class="ident">MOUSE_POSITION</span>.<span class="ident">y</span> <span class="op">=</span> <span class="number">0</span>
         }
-
-        <span class="kw">crate</span>::<span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">MOUSE_POSITION</span>);
     }
 }
 
