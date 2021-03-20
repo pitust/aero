@@ -95,6 +95,7 @@
 <span id="92">92</span>
 <span id="93">93</span>
 <span id="94">94</span>
+<span id="95">95</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -122,7 +123,7 @@
 <span class="kw">use</span> <span class="ident">bootloader</span>::{<span class="ident">entry_point</span>, <span class="ident">BootInfo</span>};
 <span class="kw">use</span> <span class="ident">drivers</span>::<span class="ident">mouse</span>;
 <span class="kw">use</span> <span class="ident">interrupts</span>::{<span class="ident">enable_interrupts</span>, <span class="ident">PIC1_DATA</span>, <span class="ident">PIC2_DATA</span>};
-<span class="kw">use</span> <span class="ident">memory</span>::<span class="ident">alloc</span>::<span class="ident">AeroSystemAllocator</span>;
+<span class="kw">use</span> <span class="ident">memory</span>::{<span class="ident">alloc</span>::<span class="ident">AeroSystemAllocator</span>, <span class="ident">paging</span>};
 <span class="kw">use</span> <span class="ident">utils</span>::<span class="ident">io</span>;
 
 <span class="kw">mod</span> <span class="ident">drivers</span>;
@@ -156,7 +157,7 @@
 
 <span class="macro">entry_point</span><span class="macro">!</span>(<span class="ident">kernel_main</span>);
 
-<span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="kw">unsafe</span> {
         <span class="ident">gdt</span>::<span class="ident">init</span>();
         <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
@@ -175,6 +176,7 @@
 
         <span class="ident">enable_interrupts</span>();
 
+        <span class="ident">paging</span>::<span class="ident">init</span>();
         <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded paging&quot;</span>);
 
         <span class="ident">memory</span>::<span class="ident">alloc</span>::<span class="ident">init_heap</span>();

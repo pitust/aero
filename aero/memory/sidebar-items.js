@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["alloc",""]]});
+initSidebarItems({"mod":[["alloc",""],["paging",""]]});

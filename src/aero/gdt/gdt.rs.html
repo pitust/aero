@@ -120,7 +120,7 @@
 
 <span class="kw">use</span> <span class="ident">lazy_static</span>::<span class="ident">lazy_static</span>;
 
-<span class="macro">global_asm</span><span class="macro">!</span>(<span class="macro">include_str</span><span class="macro">!</span>(<span class="string">&quot;load_gdt.asm&quot;</span>));
+<span class="macro">global_asm</span><span class="macro">!</span>(<span class="macro">include_str</span><span class="macro">!</span>(<span class="string">&quot;load_gdt.s&quot;</span>));
 
 <span class="doccomment">/// The GDT Descriptor containing the size of offset of the table.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
