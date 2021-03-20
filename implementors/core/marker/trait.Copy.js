@@ -1,0 +1,4 @@
+(function() {var implementors = {};
+implementors["aero"] = [{"text":"impl Copy for IDTFlags","synthetic":false,"types":[]},{"text":"impl Copy for IDTEntry","synthetic":false,"types":[]},{"text":"impl Copy for ScreenChar","synthetic":false,"types":[]},{"text":"impl Copy for Color","synthetic":false,"types":[]},{"text":"impl Copy for ColorCode","synthetic":false,"types":[]}];
+implementors["bootloader"] = [{"text":"impl Copy for MemoryRegion","synthetic":false,"types":[]},{"text":"impl Copy for FrameRange","synthetic":false,"types":[]},{"text":"impl Copy for MemoryRegionType","synthetic":false,"types":[]},{"text":"impl Copy for TlsTemplate","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

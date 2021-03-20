@@ -1,0 +1,4 @@
+(function() {var implementors = {};
+implementors["aero"] = [{"text":"impl StructuralEq for IDTFlags","synthetic":false,"types":[]},{"text":"impl StructuralEq for ScreenChar","synthetic":false,"types":[]},{"text":"impl StructuralEq for Color","synthetic":false,"types":[]},{"text":"impl StructuralEq for ColorCode","synthetic":false,"types":[]}];
+implementors["bootloader"] = [{"text":"impl StructuralEq for MemoryRegion","synthetic":false,"types":[]},{"text":"impl StructuralEq for FrameRange","synthetic":false,"types":[]},{"text":"impl StructuralEq for MemoryRegionType","synthetic":false,"types":[]},{"text":"impl StructuralEq for TlsTemplate","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
