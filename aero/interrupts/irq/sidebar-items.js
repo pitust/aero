@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["keyboard",""],["pit",""]]});
+initSidebarItems({"fn":[["keyboard",""],["mouse",""],["pit",""]]});

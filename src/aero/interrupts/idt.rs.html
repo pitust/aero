@@ -194,9 +194,6 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
-<span id="194">194</span>
-<span id="195">195</span>
-<span id="196">196</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
@@ -322,6 +319,7 @@
         <span class="comment">// Set up the IRQs.</span>
         <span class="ident">IDT</span>[<span class="number">32</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">irq</span>::<span class="ident">pit</span>);
         <span class="ident">IDT</span>[<span class="number">33</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">irq</span>::<span class="ident">keyboard</span>);
+        <span class="ident">IDT</span>[<span class="number">44</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">irq</span>::<span class="ident">mouse</span>);
 
         <span class="kw">let</span> <span class="ident">idt_descriptor</span> <span class="op">=</span> <span class="ident">IDTDescriptor</span>::<span class="ident">new</span>(
             ((<span class="ident">IDT</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">IDTEntry</span><span class="op">&gt;</span>()) <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
@@ -330,11 +328,6 @@
 
         <span class="ident">load_idt</span>(<span class="kw-2">&amp;</span><span class="ident">idt_descriptor</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
         <span class="ident">load_pic</span>();
-
-        <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0b11111000</span>);
-        <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0b11111111</span>);
-
-        <span class="ident">enable_interrupts</span>();
     }
 }
 
@@ -351,14 +344,15 @@
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">end_pic1</span>() {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">end_pic1</span>() {
     <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC1_COMMAND</span>, <span class="ident">PIC_EOI</span>);
 }
 
-<span class="comment">// pub(crate) unsafe fn end_pic2() {</span>
-<span class="comment">//     outb(PIC2_COMMAND, PIC_EOI);</span>
-<span class="comment">//     outb(PIC1_COMMAND, PIC_EOI);</span>
-<span class="comment">// }</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">end_pic2</span>() {
+    <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC2_COMMAND</span>, <span class="ident">PIC_EOI</span>);
+    <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC1_COMMAND</span>, <span class="ident">PIC_EOI</span>);
+}
 
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_pic</span>() {
     <span class="kw">let</span> (<span class="ident">a1</span>, <span class="ident">a2</span>);
