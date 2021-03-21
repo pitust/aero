@@ -1,3 +1,4 @@
 (function() {var implementors = {};
 implementors["aero"] = [{"text":"impl Octal for IDTFlags","synthetic":false,"types":[]}];
+implementors["x86_64"] = [{"text":"impl Octal for PhysAddr","synthetic":false,"types":[]},{"text":"impl Octal for Cr0Flags","synthetic":false,"types":[]},{"text":"impl Octal for Cr3Flags","synthetic":false,"types":[]},{"text":"impl Octal for Cr4Flags","synthetic":false,"types":[]},{"text":"impl Octal for EferFlags","synthetic":false,"types":[]},{"text":"impl Octal for RFlags","synthetic":false,"types":[]},{"text":"impl Octal for DescriptorFlags","synthetic":false,"types":[]},{"text":"impl Octal for PageFaultErrorCode","synthetic":false,"types":[]},{"text":"impl Octal for PageTableFlags","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

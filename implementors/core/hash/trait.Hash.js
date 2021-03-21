@@ -1,3 +1,4 @@
 (function() {var implementors = {};
 implementors["aero"] = [{"text":"impl Hash for IDTFlags","synthetic":false,"types":[]}];
+implementors["x86_64"] = [{"text":"impl Hash for Cr0Flags","synthetic":false,"types":[]},{"text":"impl Hash for Cr3Flags","synthetic":false,"types":[]},{"text":"impl Hash for Cr4Flags","synthetic":false,"types":[]},{"text":"impl Hash for EferFlags","synthetic":false,"types":[]},{"text":"impl Hash for RFlags","synthetic":false,"types":[]},{"text":"impl Hash for DescriptorFlags","synthetic":false,"types":[]},{"text":"impl Hash for PageFaultErrorCode","synthetic":false,"types":[]},{"text":"impl Hash for PageTableFlags","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
