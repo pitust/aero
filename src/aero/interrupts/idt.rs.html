@@ -194,6 +194,13 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
@@ -341,6 +348,13 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">enable_interrupts</span>() {
     <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;sti&quot;</span>);
+}
+
+<span class="doccomment">/// Halt the CPU. Will resume when interrupt is recieved if interrupts are</span>
+<span class="doccomment">/// enabled.</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">halt</span>() {
+    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;hlt&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
