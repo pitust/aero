@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["aero"] = [{"text":"impl GlobalAlloc for Locked&lt;AeroSystemAllocator&gt;","synthetic":false,"types":[]}];
+implementors["aero"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/alloc/global/trait.GlobalAlloc.html\" title=\"trait core::alloc::global::GlobalAlloc\">GlobalAlloc</a> for <a class=\"struct\" href=\"aero/utils/memory/struct.Locked.html\" title=\"struct aero::utils::memory::Locked\">Locked</a>&lt;<a class=\"struct\" href=\"aero/memory/alloc/struct.AeroSystemAllocator.html\" title=\"struct aero::memory::alloc::AeroSystemAllocator\">AeroSystemAllocator</a>&gt;","synthetic":false,"types":["aero::utils::memory::Locked"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

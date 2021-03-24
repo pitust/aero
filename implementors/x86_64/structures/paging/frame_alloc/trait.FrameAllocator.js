@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["aero"] = [{"text":"impl FrameAllocator&lt;Size4KiB&gt; for BootInfoFrameAllocator","synthetic":false,"types":[]}];
+implementors["aero"] = [{"text":"impl <a class=\"trait\" href=\"x86_64/structures/paging/frame_alloc/trait.FrameAllocator.html\" title=\"trait x86_64::structures::paging::frame_alloc::FrameAllocator\">FrameAllocator</a>&lt;<a class=\"enum\" href=\"x86_64/structures/paging/page/enum.Size4KiB.html\" title=\"enum x86_64::structures::paging::page::Size4KiB\">Size4KiB</a>&gt; for <a class=\"struct\" href=\"aero/memory/paging/struct.BootInfoFrameAllocator.html\" title=\"struct aero::memory::paging::BootInfoFrameAllocator\">BootInfoFrameAllocator</a>","synthetic":false,"types":["aero::memory::paging::BootInfoFrameAllocator"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
