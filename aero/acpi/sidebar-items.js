@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["init","Initialize ACPI."]],"mod":[["rsdp",""],["sdt",""]]});

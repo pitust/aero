@@ -109,6 +109,10 @@
 <span id="106">106</span>
 <span id="107">107</span>
 <span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -129,9 +133,9 @@
     <span class="ident">const_mut_refs</span>,
     <span class="ident">lang_items</span>
 )]</span>
-<span class="attribute">#![<span class="ident">test_runner</span>(<span class="kw">crate</span>::<span class="ident">tests</span>::<span class="ident">test_runner</span>)]</span> <span class="comment">// Attach our custom tests runner.</span>
-<span class="attribute">#![<span class="ident">no_std</span>]</span> <span class="comment">// Don&#39;t link the Rust standard library.</span>
-<span class="attribute">#![<span class="ident">no_main</span>]</span> <span class="comment">// Disable the rust entry point.</span>
+<span class="attribute">#![<span class="ident">test_runner</span>(<span class="kw">crate</span>::<span class="ident">tests</span>::<span class="ident">test_runner</span>)]</span>
+<span class="attribute">#![<span class="ident">no_std</span>]</span>
+<span class="attribute">#![<span class="ident">no_main</span>]</span>
 
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">alloc</span>;
 
@@ -140,6 +144,7 @@
 <span class="kw">use</span> <span class="ident">memory</span>::{<span class="ident">alloc</span>::<span class="ident">AeroSystemAllocator</span>, <span class="ident">paging</span>};
 <span class="kw">use</span> <span class="ident">utils</span>::{<span class="ident">io</span>, <span class="ident">memory</span>::<span class="ident">Locked</span>};
 
+<span class="kw">mod</span> <span class="ident">acpi</span>;
 <span class="kw">mod</span> <span class="ident">drivers</span>;
 <span class="kw">mod</span> <span class="ident">gdt</span>;
 <span class="kw">mod</span> <span class="ident">interrupts</span>;
@@ -187,6 +192,9 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">gdt</span>::<span class="ident">init</span>();
         <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
 
+        <span class="ident">acpi</span>::<span class="ident">init</span>();
+        <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
+
         <span class="ident">interrupts</span>::<span class="ident">init</span>();
         <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded IDT&quot;</span>);
 
@@ -206,7 +214,7 @@ _______ _______ ______ _______    _______ ______
 
         <span class="ident">memory</span>::<span class="ident">alloc</span>::<span class="ident">init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);
-        <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded Heap&quot;</span>);
+        <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded heap&quot;</span>);
 
         <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Initialized kernel&quot;</span>);
 

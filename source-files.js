@@ -1,5 +1,5 @@
 var N = null;var sourcesIndex = {};
-sourcesIndex["aero"] = {"name":"","dirs":[{"name":"drivers","files":["keyboard.rs","mod.rs","mouse.rs"]},{"name":"gdt","files":["gdt.rs","mod.rs"]},{"name":"interrupts","files":["exceptions.rs","idt.rs","irq.rs","mod.rs"]},{"name":"memory","files":["alloc.rs","mod.rs","paging.rs"]},{"name":"utils","files":["io.rs","memory.rs","mod.rs"]},{"name":"vga","files":["buffer.rs","color.rs","mod.rs","rendy.rs"]}],"files":["main.rs","panic.rs","pit.rs","tests.rs"]};
+sourcesIndex["aero"] = {"name":"","dirs":[{"name":"acpi","files":["mod.rs","rsdp.rs","sdt.rs"]},{"name":"drivers","files":["keyboard.rs","mod.rs","mouse.rs"]},{"name":"gdt","files":["gdt.rs","mod.rs"]},{"name":"interrupts","files":["exceptions.rs","idt.rs","irq.rs","mod.rs"]},{"name":"memory","files":["alloc.rs","mod.rs","paging.rs"]},{"name":"utils","files":["io.rs","memory.rs","mod.rs"]},{"name":"vga","files":["buffer.rs","color.rs","mod.rs","rendy.rs"]}],"files":["main.rs","panic.rs","pit.rs","tests.rs"]};
 sourcesIndex["bit_field"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bitflags"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bootloader"] = {"name":"","dirs":[{"name":"bootinfo","files":["memory_map.rs","mod.rs"]}],"files":["lib.rs"]};
