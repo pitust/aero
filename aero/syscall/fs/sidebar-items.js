@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["close","Close a file."],["open",""]]});
