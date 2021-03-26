@@ -13,8 +13,49 @@
 <span id="10">10</span>
 <span id="11">11</span>
 <span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">packed</span>)]</span>
+<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
+
+<span class="doccomment">/// The RSDP (Root System Description Pointer)&#39;s signature.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// **Note**: The trailing space is required.</span>
+<span class="kw">const</span> <span class="ident">RSDP_SIGNATURE</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;RSD PTR &quot;</span>;
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RSDP</span> {
     <span class="ident">signature</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
     <span class="ident">checksum</span>: <span class="ident">u8</span>,
@@ -25,6 +66,31 @@
     <span class="ident">xsdt_address</span>: <span class="ident">u64</span>,
     <span class="ident">extended_checksum</span>: <span class="ident">u8</span>,
     <span class="ident">reserved</span>: [<span class="ident">u8</span>; <span class="number">3</span>],
+}
+
+<span class="kw">impl</span> <span class="ident">RSDP</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup</span>(<span class="ident">start_addr</span>: <span class="ident">usize</span>, <span class="ident">end_addr</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..(<span class="ident">end_addr</span> <span class="op">+</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">start_addr</span>) <span class="op">/</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">RSDP</span><span class="op">&gt;</span>() {
+            <span class="kw">let</span> <span class="ident">rsdp</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">start_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">RSDP</span>).<span class="ident">offset</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">isize</span>) };
+
+            <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="ident">rsdp</span>.<span class="ident">signature</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RSDP_SIGNATURE</span> {
+                <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">rsdp</span>);
+            }
+        }
+
+        <span class="prelude-val">None</span>
+    }
+
+    <span class="doccomment">/// Get the SDT address.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns the RSDT address if the revision is `0` else it returns the XSDT address.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_sdt_address</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">revision</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="self">self</span>.<span class="ident">rsdt_address</span> <span class="kw">as</span> <span class="ident">usize</span>
+        } <span class="kw">else</span> {
+            <span class="self">self</span>.<span class="ident">xsdt_address</span> <span class="kw">as</span> <span class="ident">usize</span>
+        }
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero" data-search-js="../../../search-index.js"></div>

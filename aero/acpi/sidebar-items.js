@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init","Initialize ACPI."]],"mod":[["rsdp",""],["sdt",""]]});
+initSidebarItems({"constant":[["LOOKUP_END_ADDRESS",""],["LOOKUP_START_ADDRESS",""]],"fn":[["init","Initialize ACPI tables to gather the CPU, interrupt, and timer information."]],"mod":[["mcfg",""],["rsdp",""],["sdt",""]]});

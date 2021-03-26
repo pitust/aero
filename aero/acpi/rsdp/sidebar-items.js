@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["RSDP",""]]});
+initSidebarItems({"constant":[["RSDP_SIGNATURE","The RSDP (Root System Description Pointer)’s signature."]],"struct":[["RSDP",""]]});
