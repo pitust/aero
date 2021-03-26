@@ -80,7 +80,17 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">//! The ACPI (Advanced Configuration and Power Interface) tables help to gather the</span>
+<span class="doccomment">//! CPU, interrupt, and timer informations.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/ACPI&gt;</span>
+
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">structures</span>::<span class="ident">paging</span>::{
         <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size4KiB</span>,
@@ -97,7 +107,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rsdp</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sdt</span>;
 
-<span class="doccomment">/// Initialize ACPI tables to gather the CPU, interrupt, and timer information.</span>
+<span class="doccomment">/// Initialize ACPI tables.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(
     <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
     <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span>,
