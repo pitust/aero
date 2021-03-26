@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["LOOKUP_END_ADDRESS",""],["LOOKUP_START_ADDRESS",""]],"fn":[["init","Initialize ACPI tables."]],"mod":[["mcfg",""],["rsdp",""],["sdt",""]]});
+initSidebarItems({"constant":[["LOOKUP_END_ADDRESS",""],["LOOKUP_START_ADDRESS",""]],"fn":[["init","Initialize ACPI tables."],["look_up_tables",""]],"mod":[["mcfg",""],["rsdp",""],["sdt",""]]});
