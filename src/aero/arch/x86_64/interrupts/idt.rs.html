@@ -204,6 +204,9 @@
 <span id="201">201</span>
 <span id="202">202</span>
 <span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
@@ -330,6 +333,9 @@
         <span class="ident">IDT</span>[<span class="number">32</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">irq</span>::<span class="ident">pit</span>);
         <span class="ident">IDT</span>[<span class="number">33</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">irq</span>::<span class="ident">keyboard</span>);
         <span class="ident">IDT</span>[<span class="number">44</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">irq</span>::<span class="ident">mouse</span>);
+
+        <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_function</span>(<span class="kw">crate</span>::<span class="ident">syscall</span>::<span class="ident">syscall</span>);
+        <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_flags</span>(<span class="ident">IDTFlags</span>::<span class="ident">PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags</span>::<span class="ident">RING_3</span> <span class="op">|</span> <span class="ident">IDTFlags</span>::<span class="ident">INTERRUPT</span>);
 
         <span class="kw">let</span> <span class="ident">idt_descriptor</span> <span class="op">=</span> <span class="ident">IDTDescriptor</span>::<span class="ident">new</span>(
             ((<span class="ident">IDT</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">IDTEntry</span><span class="op">&gt;</span>()) <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,

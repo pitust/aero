@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["SIZEOF_REL",""],["SIZEOF_RELA",""]],"fn":[["r_info",""],["r_sym",""],["r_type",""]],"struct":[["Rel","Relocation without an addend"],["Rela","Relocation with an explicit addend"]]});

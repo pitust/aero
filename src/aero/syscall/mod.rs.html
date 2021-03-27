@@ -17,10 +17,54 @@
 <span id="14">14</span>
 <span id="15">15</span>
 <span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">//! System Calls are used to call a kernel service from user land.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! | %rax   | Name                    |</span>
+<span class="doccomment">//! |--------|-------------------------|</span>
+<span class="doccomment">//! | 0      | read                    |</span>
+<span class="doccomment">//! | 1      | write                   |</span>
+<span class="doccomment">//! | 2      | open                    |</span>
+<span class="doccomment">//! | 3      | close                   |</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/System_Calls&gt;</span>
+
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fs</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">time</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">fs</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">time</span>::<span class="kw-2">*</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">arch</span>::<span class="ident">cpu</span>::<span class="ident">CPUState</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">println</span>;
 
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SyscallError</span> {
     <span class="doccomment">/// Operation not permitted.</span>
@@ -34,6 +78,18 @@
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SyscallResult</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">SyscallError</span><span class="op">&gt;</span>;
+
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">syscall</span>() {
+    <span class="kw">let</span> <span class="ident">cpu_state</span> <span class="op">=</span> <span class="ident">CPUState</span>::<span class="ident">new</span>();
+
+    <span class="kw">match</span> <span class="ident">cpu_state</span>.<span class="ident">ax</span> {
+        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented</span><span class="macro">!</span>(),
+        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented</span><span class="macro">!</span>(),
+        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented</span><span class="macro">!</span>(),
+        <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented</span><span class="macro">!</span>(),
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Invalid syscall&quot;</span>),
+    }
+}
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero" data-search-js="../../../search-index.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
