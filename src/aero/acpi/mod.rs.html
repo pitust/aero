@@ -125,6 +125,28 @@
 <span id="122">122</span>
 <span id="123">123</span>
 <span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The ACPI (Advanced Configuration and Power Interface) tables help to gather the</span>
 <span class="doccomment">//! CPU, interrupt, and timer informations.</span>
@@ -159,6 +181,24 @@
     <span class="kw">pub</span> <span class="ident">bit_offset</span>: <span class="ident">u8</span>,
     <span class="kw">pub</span> <span class="ident">access_size</span>: <span class="ident">u8</span>,
     <span class="kw">pub</span> <span class="ident">address</span>: <span class="ident">u64</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">GenericAddressStructure</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span>,
+        <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
+    ) {
+        <span class="kw">let</span> <span class="ident">page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">address</span>));
+        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">PhysFrame</span>::<span class="ident">containing_address</span>(<span class="ident">PhysAddr</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">address</span>));
+
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
+            <span class="ident">page</span>,
+            <span class="ident">frame</span>,
+            <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span> <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">NO_EXECUTE</span>,
+            <span class="ident">frame_allocator</span>,
+        );
+    }
 }
 
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">look_up_table</span>(
@@ -238,13 +278,17 @@
                 <span class="ident">offset_table</span>,
             ));
 
-            <span class="ident">HPET</span>::<span class="ident">new</span>(<span class="ident">look_up_table</span>(
-                <span class="ident">hpet</span>::<span class="ident">SIGNATURE</span>,
-                <span class="ident">sdt</span>,
-                <span class="ident">is_legacy</span>,
+            <span class="ident">HPET</span>::<span class="ident">new</span>(
+                <span class="ident">look_up_table</span>(
+                    <span class="ident">hpet</span>::<span class="ident">SIGNATURE</span>,
+                    <span class="ident">sdt</span>,
+                    <span class="ident">is_legacy</span>,
+                    <span class="ident">frame_allocator</span>,
+                    <span class="ident">offset_table</span>,
+                ),
                 <span class="ident">frame_allocator</span>,
                 <span class="ident">offset_table</span>,
-            ));
+            );
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unable to find the RSDP&quot;</span>)
         }

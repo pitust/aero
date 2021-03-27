@@ -68,23 +68,6 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
-<span id="80">80</span>
-<span id="81">81</span>
-<span id="82">82</span>
-<span id="83">83</span>
-<span id="84">84</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The FADT ACPI table contains information about fixed register blocks pertaining to power management.</span>
 <span class="doccomment">//!</span>
@@ -92,7 +75,7 @@
 
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ptr</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">sdt</span>::<span class="ident">SDT</span>, <span class="ident">GenericAddressStructure</span>};
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">sdt</span>::<span class="ident">SDT</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIGNATURE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;FACP&quot;</span>;
 
@@ -144,23 +127,6 @@
     <span class="ident">reserved2</span>: <span class="ident">u8</span>,
 
     <span class="kw">pub</span> <span class="ident">flags</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">reset_register</span>: <span class="ident">GenericAddressStructure</span>,
-
-    <span class="kw">pub</span> <span class="ident">reset_value</span>: <span class="ident">u8</span>,
-    <span class="ident">reserved3</span>: [<span class="ident">u8</span>; <span class="number">3</span>],
-
-    <span class="comment">// 64 bit pointers - Available on ACPI 2.0+</span>
-    <span class="kw">pub</span> <span class="ident">x_firmware_control</span>: <span class="ident">u64</span>,
-    <span class="kw">pub</span> <span class="ident">x_dsdt</span>: <span class="ident">u64</span>,
-
-    <span class="kw">pub</span> <span class="ident">x_p_m1a_event_block</span>: <span class="ident">GenericAddressStructure</span>,
-    <span class="kw">pub</span> <span class="ident">x_p_m1b_event_block</span>: <span class="ident">GenericAddressStructure</span>,
-    <span class="kw">pub</span> <span class="ident">x_p_m1a_control_block</span>: <span class="ident">GenericAddressStructure</span>,
-    <span class="kw">pub</span> <span class="ident">x_p_m1b_control_block</span>: <span class="ident">GenericAddressStructure</span>,
-    <span class="kw">pub</span> <span class="ident">x_p_m2_control_block</span>: <span class="ident">GenericAddressStructure</span>,
-    <span class="kw">pub</span> <span class="ident">x_p_m_timer_block</span>: <span class="ident">GenericAddressStructure</span>,
-    <span class="kw">pub</span> <span class="ident">x_g_p_e0_block</span>: <span class="ident">GenericAddressStructure</span>,
-    <span class="kw">pub</span> <span class="ident">x_g_p_e1_block</span>: <span class="ident">GenericAddressStructure</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">FADT</span> {
