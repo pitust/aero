@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["PCI_CONFIG_ADDRESS_PORT",""],["PCI_CONFIG_DATA_PORT",""]],"enum":[["DeviceClass",""]],"fn":[["pci_read",""]],"struct":[["PCI",""],["PCIDevice",""]]});

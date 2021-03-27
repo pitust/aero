@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["keyboard",""],["mouse",""]]});
+initSidebarItems({"mod":[["keyboard",""],["mouse",""],["pci",""]]});
