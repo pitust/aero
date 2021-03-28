@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PCI_CONFIG_ADDRESS_PORT",""],["PCI_CONFIG_DATA_PORT",""]],"enum":[["DeviceClass",""]],"fn":[["pci_read",""]],"struct":[["PCI",""],["PCIDevice",""]]});
+initSidebarItems({"constant":[["PCI_CONFIG_ADDRESS_PORT",""],["PCI_CONFIG_DATA_PORT",""]],"enum":[["DeviceType",""],["Vendor",""]],"fn":[["init","Lookup and initialize all PCI devices."]],"struct":[["PCIHeader",""]]});
