@@ -80,6 +80,8 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">alloc</span>, <span class="ident">alloc</span>::<span class="ident">GlobalAlloc</span>, <span class="ident">ptr</span>::<span class="ident">null_mut</span>};
 
@@ -92,6 +94,8 @@
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">memory</span>::<span class="ident">Locked</span>;
+
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">paging</span>::<span class="ident">GlobalAllocator</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0x444444440000</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEAP_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="number">1024</span>;
@@ -140,7 +144,7 @@
 <span class="doccomment">/// Initialize the heap.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(
     <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
-    <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span>,
+    <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">page_range</span> <span class="op">=</span> <span class="ident">get_page_range</span>();
 

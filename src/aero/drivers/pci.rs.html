@@ -513,12 +513,14 @@
 <span id="510">510</span>
 <span id="511">511</span>
 <span id="512">512</span>
+<span id="513">513</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">drivers</span>::<span class="ident">ahci</span>::<span class="ident">AHCI</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">io</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">arch</span>::<span class="ident">memory</span>::<span class="ident">paging</span>::<span class="ident">GlobalAllocator</span>, <span class="ident">drivers</span>::<span class="ident">ahci</span>::<span class="ident">AHCI</span>};
 
 <span class="kw">use</span> <span class="ident">bit_field</span>::<span class="ident">BitField</span>;
+<span class="kw">use</span> <span class="ident">x86_64</span>::<span class="ident">structures</span>::<span class="ident">paging</span>::<span class="ident">OffsetPageTable</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PCI_CONFIG_ADDRESS_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCF8</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PCI_CONFIG_DATA_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCFC</span>;
@@ -993,7 +995,7 @@
 }
 
 <span class="doccomment">/// Lookup and initialize all PCI devices.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>, <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>) {
     <span class="comment">// Go through each possible bus, device, function ID and check if we have a driver for it.</span>
     <span class="comment">// If a driver for the PCI device is found then initialize it.</span>
 
@@ -1015,7 +1017,7 @@
                                  * AHCI 1.0 Device
                                  */</span>
 
-                                <span class="ident">AHCI</span>::<span class="ident">new</span>(<span class="ident">device</span>);
+                                <span class="ident">AHCI</span>::<span class="ident">new</span>(<span class="ident">offset_table</span>, <span class="ident">frame_allocator</span>, <span class="ident">device</span>);
                             }
                             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
                         },

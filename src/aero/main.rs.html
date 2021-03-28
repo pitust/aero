@@ -203,9 +203,6 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">drivers</span>::<span class="ident">mouse</span>::<span class="ident">init</span>();
         <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded PS/2 driver&quot;</span>);
 
-        <span class="ident">drivers</span>::<span class="ident">pci</span>::<span class="ident">init</span>();
-        <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded PCI driver&quot;</span>);
-
         <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0b11111000</span>);
         <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0b11101111</span>);
 
@@ -216,6 +213,9 @@ _______ _______ ______ _______    _______ ______
 
         <span class="ident">acpi</span>::<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>);
         <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
+
+        <span class="ident">drivers</span>::<span class="ident">pci</span>::<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>);
+        <span class="ident">log</span>::<span class="ident">info</span>(<span class="string">&quot;Loaded PCI driver&quot;</span>);
 
         <span class="ident">arch</span>::<span class="ident">memory</span>::<span class="ident">alloc</span>::<span class="ident">init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);
