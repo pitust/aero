@@ -882,15 +882,15 @@
         <span class="self">Self</span>(<span class="ident">result</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">bus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_bits</span>(<span class="number">8</span>..<span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_bits</span>(<span class="number">3</span>..<span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">function</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">function</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">3</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
