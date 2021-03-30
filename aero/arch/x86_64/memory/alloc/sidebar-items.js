@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["HEAP_SIZE",""],["HEAP_START",""]],"fn":[["alloc_error_handler",""],["get_page_range",""],["init_heap","Initialize the heap."]],"struct":[["AeroSystemAllocator",""]]});
+initSidebarItems({"constant":[["HEAP_SIZE",""],["HEAP_START",""]],"fn":[["alloc_error_handler",""],["get_page_range",""],["init_heap","Initialize the heap."]]});

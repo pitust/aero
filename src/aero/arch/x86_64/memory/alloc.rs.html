@@ -68,22 +68,8 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
-<span id="80">80</span>
-<span id="81">81</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">alloc</span>, <span class="ident">alloc</span>::<span class="ident">GlobalAlloc</span>, <span class="ident">ptr</span>::<span class="ident">null_mut</span>};
+<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">alloc</span>;
 
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">structures</span>::<span class="ident">paging</span>::{
@@ -93,35 +79,12 @@
     <span class="ident">VirtAddr</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">memory</span>::<span class="ident">Locked</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AERO_SYSTEM_ALLOCATOR</span>;
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">paging</span>::<span class="ident">GlobalAllocator</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0x444444440000</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEAP_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="number">1024</span>;
-
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AeroSystemAllocator</span>;
-
-<span class="kw">impl</span> <span class="ident">AeroSystemAllocator</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> {}
-    }
-}
-
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">GlobalAlloc</span> <span class="kw">for</span> <span class="ident">Locked</span><span class="op">&lt;</span><span class="ident">AeroSystemAllocator</span><span class="op">&gt;</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="ident">core</span>::<span class="ident">alloc</span>::<span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
-        <span class="ident">null_mut</span>()
-    }
-
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">alloc</span>::<span class="ident">Layout</span>) {
-        <span class="macro">panic</span><span class="macro">!</span>(
-            <span class="string">&quot;Requested to dealloc *{:?} with size {} and alignment {}&quot;</span>,
-            <span class="ident">ptr</span>,
-            <span class="ident">layout</span>.<span class="ident">size</span>(),
-            <span class="ident">layout</span>.<span class="ident">align</span>()
-        )
-    }
-}
 
 <span class="attribute">#[<span class="ident">alloc_error_handler</span>]</span>
 <span class="kw">fn</span> <span class="ident">alloc_error_handler</span>(<span class="ident">layout</span>: <span class="ident">alloc</span>::<span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
@@ -146,20 +109,29 @@
     <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
     <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">page_range</span> <span class="op">=</span> <span class="ident">get_page_range</span>();
+    <span class="kw">let</span> <span class="ident">page_range</span> <span class="op">=</span> {
+        <span class="kw">let</span> <span class="ident">heap_start</span> <span class="op">=</span> <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">HEAP_START</span> <span class="kw">as</span> <span class="ident">u64</span>);
+        <span class="kw">let</span> <span class="ident">heap_end</span> <span class="op">=</span> <span class="ident">heap_start</span> <span class="op">+</span> <span class="ident">HEAP_SIZE</span> <span class="op">-</span> <span class="number">1u64</span>;
+        <span class="kw">let</span> <span class="ident">heap_start_page</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">heap_start</span>);
+        <span class="kw">let</span> <span class="ident">heap_end_page</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">heap_end</span>);
+        <span class="ident">Page</span>::<span class="ident">range_inclusive</span>(<span class="ident">heap_start_page</span>, <span class="ident">heap_end_page</span>)
+    };
 
     <span class="kw">for</span> <span class="ident">page</span> <span class="kw">in</span> <span class="ident">page_range</span> {
         <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">frame_allocator</span>
             .<span class="ident">allocate_frame</span>()
             .<span class="ident">ok_or</span>(<span class="ident">MapToError</span>::<span class="ident">FrameAllocationFailed</span>)<span class="question-mark">?</span>;
-
         <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span>;
 
         <span class="kw">unsafe</span> {
             <span class="ident">offset_table</span>
                 .<span class="ident">map_to</span>(<span class="ident">page</span>, <span class="ident">frame</span>, <span class="ident">flags</span>, <span class="ident">frame_allocator</span>)<span class="question-mark">?</span>
-                .<span class="ident">flush</span>();
-        }
+                .<span class="ident">flush</span>()
+        };
+    }
+
+    <span class="kw">unsafe</span> {
+        <span class="ident">AERO_SYSTEM_ALLOCATOR</span>.<span class="ident">lock</span>().<span class="ident">init</span>(<span class="ident">HEAP_START</span>, <span class="ident">HEAP_SIZE</span>);
     }
 
     <span class="prelude-val">Ok</span>(())
