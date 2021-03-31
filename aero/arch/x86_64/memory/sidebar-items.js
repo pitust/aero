@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["WORD_SIZE",""]],"fn":[["memset","Memset"]],"mod":[["alloc",""],["paging",""]]});
+initSidebarItems({"mod":[["alloc",""],["paging",""]]});
