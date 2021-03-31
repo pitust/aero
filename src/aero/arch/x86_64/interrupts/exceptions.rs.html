@@ -44,7 +44,25 @@
 <span id="41">41</span>
 <span id="42">42</span>
 <span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">use</span> <span class="ident">x86_64</span>::<span class="ident">structures</span>::<span class="ident">idt</span>::<span class="ident">InterruptStackFrame</span>;
+
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">PageFaultErrorCode</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">arch</span>::<span class="ident">cpu</span>::<span class="ident">CPUState</span>;
+
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">divide_by_zero</span>() {
     <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Division by zero&quot;</span>)
 }
@@ -85,8 +103,16 @@
     <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Invalid TSS&quot;</span>)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">page_fault</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Page Fault&quot;</span>)
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">page_fault</span>(
+    <span class="ident">stack_frame</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStackFrame</span>,
+    <span class="ident">error_code</span>: <span class="ident">PageFaultErrorCode</span>,
+) {
+    <span class="kw">let</span> <span class="ident">cpu</span> <span class="op">=</span> <span class="ident">CPUState</span>::<span class="ident">new</span>();
+
+    <span class="macro">panic</span><span class="macro">!</span>(
+        <span class="string">&quot;Page Fault {:?}\n\n{:#x?}{:#x?}&quot;</span>,
+        <span class="ident">error_code</span>, <span class="ident">cpu</span>, <span class="ident">stack_frame</span>
+    )
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="aero" data-search-js="../../../../../search-index.js"></div>

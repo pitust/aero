@@ -279,6 +279,29 @@
 <span id="276">276</span>
 <span id="277">277</span>
 <span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">bootloader</span>::{
     <span class="ident">bootinfo</span>::{<span class="ident">MemoryMap</span>, <span class="ident">MemoryRegionType</span>},
@@ -545,6 +568,29 @@
     )<span class="question-mark">?</span>;
 
     <span class="ident">flusher</span>.<span class="ident">flush</span>();
+
+    <span class="prelude-val">Ok</span>(<span class="ident">UnmapGuard</span> {
+        <span class="ident">page</span>,
+        <span class="ident">unmap_frame</span>: <span class="op">!</span><span class="ident">frame_allocator</span>.<span class="ident">frame_in_use</span>(<span class="ident">frame</span>),
+    })
+}
+
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">memory_map</span>(
+    <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
+    <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
+    <span class="ident">frame</span>: <span class="ident">PhysFrame</span>,
+    <span class="ident">flags</span>: <span class="ident">PageTableFlags</span>,
+    <span class="ident">offset</span>: <span class="ident">u64</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">UnmapGuard</span>, <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span>
+        <span class="ident">PhysFrame</span>::<span class="ident">from_start_address</span>(<span class="ident">PhysAddr</span>::<span class="ident">new</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>() <span class="op">+</span> <span class="ident">offset</span>))
+            .<span class="ident">ok</span>()
+            .<span class="ident">ok_or</span>(<span class="ident">MapToError</span>::<span class="ident">FrameAllocationFailed</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()));
+
+    <span class="ident">offset_table</span>
+        .<span class="ident">identity_map</span>(<span class="ident">frame</span>, <span class="ident">flags</span>, <span class="ident">frame_allocator</span>)<span class="question-mark">?</span>
+        .<span class="ident">flush</span>();
 
     <span class="prelude-val">Ok</span>(<span class="ident">UnmapGuard</span> {
         <span class="ident">page</span>,
