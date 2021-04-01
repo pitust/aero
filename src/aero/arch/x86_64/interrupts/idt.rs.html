@@ -207,6 +207,8 @@
 <span id="204">204</span>
 <span id="205">205</span>
 <span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
@@ -327,7 +329,9 @@
         <span class="comment">// IDT[9] is reserved.</span>
 
         <span class="ident">IDT</span>[<span class="number">10</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">exceptions</span>::<span class="ident">invalid_tss</span>);
-        <span class="ident">IDT</span>[<span class="number">14</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">exceptions</span>::<span class="ident">page_fault</span>);
+
+        <span class="ident">IDT</span>[<span class="number">14</span>].<span class="ident">set_flags</span>(<span class="ident">IDTFlags</span>::<span class="ident">PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags</span>::<span class="ident">RING_0</span> <span class="op">|</span> <span class="ident">IDTFlags</span>::<span class="ident">INTERRUPT</span>);
+        <span class="ident">IDT</span>[<span class="number">14</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="kw">super</span>::<span class="ident">exceptions</span>::<span class="ident">page_fault</span> <span class="kw">as</span> <span class="ident">usize</span>);
 
         <span class="comment">// Set up the IRQs.</span>
         <span class="ident">IDT</span>[<span class="number">32</span>].<span class="ident">set_function</span>(<span class="kw">super</span>::<span class="ident">irq</span>::<span class="ident">pit</span>);
