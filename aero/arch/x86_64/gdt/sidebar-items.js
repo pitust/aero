@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["LoadGDT","Load the GDT using inline assembly."],["init","Initialize the GDT."]],"struct":[["GDT","The GDT."],["GDTDescriptor","The GDT Descriptor containing the size of offset of the table."],["GDTEntry",""],["GLOBAL_DESCRIPTOR_TABLE","The GDT (Global Descriptor Table)."]]});
+initSidebarItems({"constant":[["GDT_ENTRIES",""]],"fn":[["LoadGDT",""],["init","Initialize the GDT."]],"static":[["GDT",""]],"struct":[["GDTDescriptor",""],["GDTEntry",""]]});
