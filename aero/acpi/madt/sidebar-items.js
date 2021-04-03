@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["SIGNATURE",""],["TRAMPOLINE",""]],"enum":[["MADTEntry",""]],"static":[["MADT",""]],"struct":[["MADT",""],["MADTIterator",""],["MadtIntSrcOverride",""],["MadtIoApic",""],["MadtLocalApic",""]]});

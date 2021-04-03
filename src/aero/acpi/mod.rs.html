@@ -150,6 +150,19 @@
 <span id="147">147</span>
 <span id="148">148</span>
 <span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The ACPI (Advanced Configuration and Power Interface) tables help to gather the</span>
 <span class="doccomment">//! CPU, interrupt, and timer informations.</span>
@@ -170,10 +183,11 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">arch</span>::<span class="ident">memory</span>::<span class="ident">paging</span>::<span class="ident">GlobalAllocator</span>;
 
-<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">fadt</span>::<span class="ident">FADT</span>, <span class="ident">hpet</span>::<span class="ident">HPET</span>, <span class="ident">rsdp</span>::<span class="ident">RSDP</span>, <span class="ident">sdt</span>::<span class="ident">SDT</span>};
+<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">fadt</span>::<span class="ident">FADT</span>, <span class="ident">hpet</span>::<span class="ident">HPET</span>, <span class="ident">madt</span>::<span class="ident">MADT</span>, <span class="ident">rsdp</span>::<span class="ident">RSDP</span>, <span class="ident">sdt</span>::<span class="ident">SDT</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fadt</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">hpet</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">madt</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">mcfg</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rsdp</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sdt</span>;
@@ -287,6 +301,18 @@
             <span class="ident">HPET</span>::<span class="ident">new</span>(
                 <span class="ident">look_up_table</span>(
                     <span class="ident">hpet</span>::<span class="ident">SIGNATURE</span>,
+                    <span class="ident">sdt</span>,
+                    <span class="ident">is_legacy</span>,
+                    <span class="ident">frame_allocator</span>,
+                    <span class="ident">offset_table</span>,
+                ),
+                <span class="ident">frame_allocator</span>,
+                <span class="ident">offset_table</span>,
+            );
+
+            <span class="ident">MADT</span>::<span class="ident">new</span>(
+                <span class="ident">look_up_table</span>(
+                    <span class="ident">madt</span>::<span class="ident">SIGNATURE</span>,
                     <span class="ident">sdt</span>,
                     <span class="ident">is_legacy</span>,
                     <span class="ident">frame_allocator</span>,
