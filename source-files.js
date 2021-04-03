@@ -1,12 +1,14 @@
 var N = null;var sourcesIndex = {};
-sourcesIndex["aero"] = {"name":"","dirs":[{"name":"acpi","files":["fadt.rs","hpet.rs","mcfg.rs","mod.rs","rsdp.rs","sdt.rs"]},{"name":"arch","dirs":[{"name":"x86_64","dirs":[{"name":"interrupts","files":["exceptions.rs","idt.rs","irq.rs","mod.rs"]},{"name":"memory","files":["alloc.rs","mod.rs","paging.rs"]}],"files":["cpu.rs","gdt.rs","mod.rs","tss.rs"]}],"files":["mod.rs"]},{"name":"drivers","files":["ahci.rs","keyboard.rs","mod.rs","mouse.rs","pci.rs"]},{"name":"syscall","files":["fs.rs","mod.rs","time.rs"]},{"name":"userland","files":["elf.rs","mod.rs","process.rs","scheduler.rs"]},{"name":"utils","files":["io.rs","memory.rs","mod.rs"]},{"name":"vga","files":["buffer.rs","color.rs","mod.rs","rendy.rs"]}],"files":["main.rs","panic.rs","pit.rs","tests.rs"]};
+sourcesIndex["aero"] = {"name":"","dirs":[{"name":"acpi","files":["fadt.rs","hpet.rs","mcfg.rs","mod.rs","rsdp.rs","sdt.rs"]},{"name":"arch","dirs":[{"name":"x86_64","dirs":[{"name":"interrupts","files":["exceptions.rs","idt.rs","irq.rs","mod.rs"]},{"name":"memory","files":["alloc.rs","mod.rs","paging.rs"]}],"files":["cpu.rs","gdt.rs","mod.rs","tss.rs"]}],"files":["mod.rs"]},{"name":"drivers","files":["ahci.rs","keyboard.rs","mod.rs","mouse.rs","pci.rs"]},{"name":"syscall","files":["fs.rs","mod.rs","time.rs"]},{"name":"userland","files":["elf.rs","mod.rs","process.rs","scheduler.rs"]},{"name":"utils","files":["io.rs","memory.rs","mod.rs"]},{"name":"vga","files":["buffer.rs","color.rs","mod.rs","rendy.rs"]}],"files":["logger.rs","main.rs","panic.rs","pit.rs","tests.rs"]};
 sourcesIndex["bit_field"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bitflags"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bootloader"] = {"name":"","dirs":[{"name":"bootinfo","files":["memory_map.rs","mod.rs"]}],"files":["lib.rs"]};
+sourcesIndex["cfg_if"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["goblin"] = {"name":"","dirs":[{"name":"elf","files":["compression_header.rs","constants_header.rs","constants_relocation.rs","dynamic.rs","gnu_hash.rs","header.rs","mod.rs","note.rs","program_header.rs","reloc.rs","section_header.rs","sym.rs"]}],"files":["lib.rs","strtab.rs"]};
 sourcesIndex["lazy_static"] = {"name":"","files":["core_lazy.rs","lib.rs"]};
 sourcesIndex["linked_list_allocator"] = {"name":"","files":["hole.rs","lib.rs"]};
 sourcesIndex["lock_api"] = {"name":"","files":["lib.rs","mutex.rs","remutex.rs","rwlock.rs"]};
+sourcesIndex["log"] = {"name":"","files":["lib.rs","macros.rs"]};
 sourcesIndex["plain"] = {"name":"","files":["error.rs","lib.rs","methods.rs","plain.rs"]};
 sourcesIndex["scopeguard"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["scroll"] = {"name":"","files":["ctx.rs","endian.rs","error.rs","greater.rs","leb128.rs","lib.rs","pread.rs","pwrite.rs"]};
