@@ -368,19 +368,19 @@
     <span class="kw">fn</span> <span class="ident">create_and_lock</span>() {
         <span class="kw">let</span> <span class="ident">spinlock</span> <span class="op">=</span> <span class="ident">Spinlock</span>::<span class="ident">new</span>(<span class="number">42</span>);
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">spinlock</span>.<span class="ident">try_lock</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">is_some</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">data</span>.<span class="ident">unwrap</span>(), <span class="number">42</span>);
+        <span class="macro">assert!</span>(<span class="ident">data</span>.<span class="ident">is_some</span>());
+        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">data</span>.<span class="ident">unwrap</span>(), <span class="number">42</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">mutual_exclusion</span>() {
         <span class="kw">let</span> <span class="ident">spinlock</span> <span class="op">=</span> <span class="ident">Spinlock</span>::<span class="ident">new</span>(<span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">spinlock</span>.<span class="ident">try_lock</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">is_some</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>()); <span class="comment">// still None</span>
+        <span class="macro">assert!</span>(<span class="ident">data</span>.<span class="ident">is_some</span>());
+        <span class="macro">assert!</span>(<span class="ident">spinlock</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(<span class="ident">spinlock</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>()); <span class="comment">// still None</span>
         <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">drop</span>(<span class="ident">data</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock</span>.<span class="ident">try_lock</span>().<span class="ident">is_some</span>());
+        <span class="macro">assert!</span>(<span class="ident">spinlock</span>.<span class="ident">try_lock</span>().<span class="ident">is_some</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -391,15 +391,15 @@
         <span class="kw">let</span> <span class="ident">data1</span> <span class="op">=</span> <span class="ident">spinlock1</span>.<span class="ident">try_lock</span>();
         <span class="kw">let</span> <span class="ident">data2</span> <span class="op">=</span> <span class="ident">spinlock2</span>.<span class="ident">try_lock</span>();
         <span class="kw">let</span> <span class="ident">data3</span> <span class="op">=</span> <span class="ident">spinlock3</span>.<span class="ident">try_lock</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data1</span>.<span class="ident">is_some</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data2</span>.<span class="ident">is_some</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data3</span>.<span class="ident">is_some</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock1</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock1</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>()); <span class="comment">// still None</span>
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock2</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock3</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(<span class="ident">data1</span>.<span class="ident">is_some</span>());
+        <span class="macro">assert!</span>(<span class="ident">data2</span>.<span class="ident">is_some</span>());
+        <span class="macro">assert!</span>(<span class="ident">data3</span>.<span class="ident">is_some</span>());
+        <span class="macro">assert!</span>(<span class="ident">spinlock1</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(<span class="ident">spinlock1</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>()); <span class="comment">// still None</span>
+        <span class="macro">assert!</span>(<span class="ident">spinlock2</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(<span class="ident">spinlock3</span>.<span class="ident">try_lock</span>().<span class="ident">is_none</span>());
         <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">drop</span>(<span class="ident">data3</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock3</span>.<span class="ident">try_lock</span>().<span class="ident">is_some</span>());
+        <span class="macro">assert!</span>(<span class="ident">spinlock3</span>.<span class="ident">try_lock</span>().<span class="ident">is_some</span>());
     }
 }
 </pre></div>

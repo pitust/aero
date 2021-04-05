@@ -17,10 +17,10 @@
     <span class="comment">// guard can be used like a `&amp;mut Vec` since it implements `DerefMut`</span>
     <span class="ident">guard</span>.<span class="ident">push</span>(<span class="number">1</span>);
     <span class="ident">guard</span>.<span class="ident">push</span>(<span class="number">2</span>);
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">guard</span>.<span class="ident">len</span>(), <span class="number">2</span>);
+    <span class="macro">assert_eq!</span>(<span class="ident">guard</span>.<span class="ident">len</span>(), <span class="number">2</span>);
 } <span class="comment">// guard is dropped -&gt; frees the spinlock again</span>
 
 <span class="comment">// spinlock is unlocked again</span>
-<span class="macro">assert</span><span class="macro">!</span>(<span class="ident">spinlock</span>.<span class="ident">try_lock</span>().<span class="ident">is_some</span>());</pre></div>
+<span class="macro">assert!</span>(<span class="ident">spinlock</span>.<span class="ident">try_lock</span>().<span class="ident">is_some</span>());</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="spinning_top" data-search-js="../search-index.js"></div>
     <script src="../main.js"></script></body></html>

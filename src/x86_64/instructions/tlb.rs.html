@@ -121,7 +121,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="ident">addr</span>: <span class="ident">VirtAddr</span>) {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;invlpg [{}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">addr</span>.<span class="ident">as_u64</span>(), <span class="ident">options</span>(<span class="ident">nostack</span>))
+        <span class="macro">asm!</span>(<span class="string">&quot;invlpg [{}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">addr</span>.<span class="ident">as_u64</span>(), <span class="ident">options</span>(<span class="ident">nostack</span>))
     };
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
@@ -214,7 +214,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     {
         <span class="kw">let</span> <span class="ident">desc_value</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">desc</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">InvpcidDescriptor</span> <span class="kw">as</span> <span class="ident">u64</span>;
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;invpcid {1}, [{0}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">desc_value</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">kind</span>);
+        <span class="macro">asm!</span>(<span class="string">&quot;invpcid {1}, [{0}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">desc_value</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">kind</span>);
     };
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>

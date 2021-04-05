@@ -385,7 +385,7 @@
     <span class="kw">pub</span> <span class="ident">n_type</span>: <span class="ident">u64</span>,
 }
 
-<span class="macro">if_alloc</span><span class="macro">!</span> {
+<span class="macro">if_alloc!</span> {
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">container</span>;
     <span class="kw">use</span> <span class="ident">scroll</span>::<span class="ident">ctx</span>;
@@ -405,7 +405,7 @@
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">offset</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span> {
                 <span class="prelude-val">None</span>
             } <span class="kw">else</span> {
-                <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;NoteIterator - {:#x}&quot;</span>, <span class="self">self</span>.<span class="ident">offset</span>);
+                <span class="macro">debug!</span>(<span class="string">&quot;NoteIterator - {:#x}&quot;</span>, <span class="self">self</span>.<span class="ident">offset</span>);
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">gread_with</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">offset</span>, <span class="self">self</span>.<span class="ident">ctx</span>) {
                     <span class="prelude-val">Ok</span>(<span class="ident">res</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">res</span>)),
                     <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))
@@ -503,20 +503,20 @@
             <span class="kw">let</span> <span class="ident">header</span>: <span class="ident">NoteHeader</span> <span class="op">=</span> {
                 <span class="kw">match</span> <span class="ident">alignment</span> {
                     <span class="number">4</span><span class="op">|</span><span class="number">8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes</span>.<span class="ident">gread_with</span>::<span class="op">&lt;</span><span class="ident">Nhdr32</span><span class="op">&gt;</span>(<span class="ident">offset</span>, <span class="ident">ctx</span>.<span class="ident">le</span>)<span class="question-mark">?</span>.<span class="ident">into</span>(),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Notes has unimplemented alignment requirement: {:#x}&quot;</span>, <span class="ident">alignment</span>)))
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;Notes has unimplemented alignment requirement: {:#x}&quot;</span>, <span class="ident">alignment</span>)))
                 }
             };
-            <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;{:?} - {:#x}&quot;</span>, <span class="ident">header</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
+            <span class="macro">debug!</span>(<span class="string">&quot;{:?} - {:#x}&quot;</span>, <span class="ident">header</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
             <span class="comment">// -1 because includes \0 terminator</span>
             <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">gread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>(<span class="ident">offset</span>, <span class="ident">ctx</span>::<span class="ident">StrCtx</span>::<span class="ident">Length</span>(<span class="ident">header</span>.<span class="ident">n_namesz</span>.<span class="ident">saturating_sub</span>(<span class="number">1</span>)))<span class="question-mark">?</span>;
             <span class="kw">if</span> <span class="ident">header</span>.<span class="ident">n_namesz</span> <span class="op">&gt;</span> <span class="number">0</span> {
                 <span class="kw-2">*</span><span class="ident">offset</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
             <span class="ident">align</span>(<span class="ident">alignment</span>, <span class="ident">offset</span>);
-            <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;note name {} - {:#x}&quot;</span>, <span class="ident">name</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
+            <span class="macro">debug!</span>(<span class="string">&quot;note name {} - {:#x}&quot;</span>, <span class="ident">name</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
             <span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">gread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>(<span class="ident">offset</span>, <span class="ident">header</span>.<span class="ident">n_descsz</span>)<span class="question-mark">?</span>;
             <span class="ident">align</span>(<span class="ident">alignment</span>, <span class="ident">offset</span>);
-            <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;desc {:?} - {:#x}&quot;</span>, <span class="ident">desc</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
+            <span class="macro">debug!</span>(<span class="string">&quot;desc {:?} - {:#x}&quot;</span>, <span class="ident">desc</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
             <span class="prelude-val">Ok</span>((<span class="ident">Note</span> {
                 <span class="ident">name</span>,
                 <span class="ident">desc</span>,
@@ -556,31 +556,31 @@
         <span class="attribute">#[<span class="ident">test</span>]</span>
         <span class="kw">fn</span> <span class="ident">iter_single_section</span>() {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notes</span> <span class="op">=</span> <span class="ident">NoteIterator</span> {
-                <span class="ident">iters</span>: <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">make_note_iter</span>(<span class="number">0</span>, <span class="number">68</span>)],
+                <span class="ident">iters</span>: <span class="macro">vec!</span>[<span class="ident">make_note_iter</span>(<span class="number">0</span>, <span class="number">68</span>)],
                 <span class="ident">index</span>: <span class="number">0</span>,
             };
 
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_ABI_TAG</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_BUILD_ID</span>);
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
+            <span class="macro">assert_eq!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_ABI_TAG</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_BUILD_ID</span>);
+            <span class="macro">assert!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
         }
 
         <span class="attribute">#[<span class="ident">test</span>]</span>
         <span class="kw">fn</span> <span class="ident">iter_multiple_sections</span>() {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notes</span> <span class="op">=</span> <span class="ident">NoteIterator</span> {
-                <span class="ident">iters</span>: <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">make_note_iter</span>(<span class="number">0</span>, <span class="number">32</span>), <span class="ident">make_note_iter</span>(<span class="number">32</span>, <span class="number">68</span>)],
+                <span class="ident">iters</span>: <span class="macro">vec!</span>[<span class="ident">make_note_iter</span>(<span class="number">0</span>, <span class="number">32</span>), <span class="ident">make_note_iter</span>(<span class="number">32</span>, <span class="number">68</span>)],
                 <span class="ident">index</span>: <span class="number">0</span>,
             };
 
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_ABI_TAG</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_BUILD_ID</span>);
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
+            <span class="macro">assert_eq!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_ABI_TAG</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_BUILD_ID</span>);
+            <span class="macro">assert!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
         }
 
         <span class="attribute">#[<span class="ident">test</span>]</span>
         <span class="kw">fn</span> <span class="ident">skip_empty_sections</span>() {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notes</span> <span class="op">=</span> <span class="ident">NoteIterator</span> {
-                <span class="ident">iters</span>: <span class="macro">vec</span><span class="macro">!</span>[
+                <span class="ident">iters</span>: <span class="macro">vec!</span>[
                     <span class="ident">make_note_iter</span>(<span class="number">0</span>, <span class="number">32</span>),
                     <span class="ident">make_note_iter</span>(<span class="number">0</span>, <span class="number">0</span>),
                     <span class="ident">make_note_iter</span>(<span class="number">32</span>, <span class="number">68</span>),
@@ -588,15 +588,15 @@
                 <span class="ident">index</span>: <span class="number">0</span>,
             };
 
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_ABI_TAG</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_BUILD_ID</span>);
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
+            <span class="macro">assert_eq!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_ABI_TAG</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>().<span class="ident">n_type</span>, <span class="ident">NT_GNU_BUILD_ID</span>);
+            <span class="macro">assert!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
         }
 
         <span class="attribute">#[<span class="ident">test</span>]</span>
         <span class="kw">fn</span> <span class="ident">ignore_no_sections</span>() {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notes</span> <span class="op">=</span> <span class="ident">NoteIterator</span> { <span class="ident">iters</span>: <span class="macro">vec</span><span class="macro">!</span>[], <span class="ident">index</span>: <span class="number">0</span> };
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notes</span> <span class="op">=</span> <span class="ident">NoteIterator</span> { <span class="ident">iters</span>: <span class="macro">vec!</span>[], <span class="ident">index</span>: <span class="number">0</span> };
+            <span class="macro">assert!</span>(<span class="ident">notes</span>.<span class="ident">next</span>().<span class="ident">is_none</span>());
         }
     }
 }

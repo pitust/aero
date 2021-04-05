@@ -69,7 +69,7 @@
 <span class="doccomment">/// low level port output.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">outb</span>(<span class="ident">port</span>: <span class="ident">u16</span>, <span class="ident">value</span>: <span class="ident">u8</span>) {
-    <span class="macro">asm</span><span class="macro">!</span>(
+    <span class="macro">asm!</span>(
        <span class="string">&quot;out dx, al&quot;</span>,
        <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
        <span class="kw">in</span>(<span class="string">&quot;al&quot;</span>) <span class="ident">value</span>,
@@ -82,7 +82,7 @@
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inb</span>(<span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
     <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">u8</span>;
 
-    <span class="macro">asm</span><span class="macro">!</span>(
+    <span class="macro">asm!</span>(
         <span class="string">&quot;in al, dx&quot;</span>,
         <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
         <span class="ident">out</span>(<span class="string">&quot;al&quot;</span>) <span class="ident">ret</span>,
@@ -95,7 +95,7 @@
 <span class="doccomment">/// low level port output.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">outl</span>(<span class="ident">port</span>: <span class="ident">u16</span>, <span class="ident">value</span>: <span class="ident">u32</span>) {
-    <span class="macro">asm</span><span class="macro">!</span>(
+    <span class="macro">asm!</span>(
         <span class="string">&quot;out dx, eax&quot;</span>,
         <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
         <span class="kw">in</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">value</span>,
@@ -108,7 +108,7 @@
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inl</span>(<span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">u32</span>;
 
-    <span class="macro">asm</span><span class="macro">!</span>(
+    <span class="macro">asm!</span>(
         <span class="string">&quot;in eax, dx&quot;</span>,
         <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
         <span class="ident">out</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">ret</span>,

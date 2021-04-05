@@ -25,10 +25,10 @@
 
 <span class="kw">let</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> [<span class="number">0xde</span>, <span class="number">0xad</span>, <span class="number">0</span>, <span class="number">0</span>];
 <span class="kw">let</span> <span class="ident">foo</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="ident">Foo</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">scroll</span>::<span class="ident">LE</span>).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Foo</span>(<span class="number">0xadde</span>), <span class="ident">foo</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">Foo</span>(<span class="number">0xadde</span>), <span class="ident">foo</span>);
 
 <span class="kw">let</span> <span class="ident">foo2</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="ident">Foo</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">scroll</span>::<span class="ident">BE</span>).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Foo</span>(<span class="number">0xdeadu16</span>), <span class="ident">foo2</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">Foo</span>(<span class="number">0xdeadu16</span>), <span class="ident">foo2</span>);</pre></div>
 <h1 id="advanced-using-your-own-error-in-tryfromctx" class="section-header"><a href="#advanced-using-your-own-error-in-tryfromctx">Advanced: Using Your Own Error in <code>TryFromCtx</code></a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
  <span class="kw">use</span> <span class="ident">scroll</span>::{<span class="self">self</span>, <span class="ident">ctx</span>, <span class="ident">Pread</span>};
@@ -40,7 +40,7 @@
 
  <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ExternalError</span> {
      <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">fmt</span>, <span class="string">&quot;ExternalError&quot;</span>)
+         <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;ExternalError&quot;</span>)
      }
  }
 

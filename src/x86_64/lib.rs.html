@@ -120,7 +120,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// This is needed for const functions with bounds on their generic parameters,</span>
 <span class="doccomment">/// such as those in `Page` and `PhysFrame` and many more.</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">const_fn</span> {
+<span class="macro">macro_rules!</span> <span class="ident">const_fn</span> {
     (
         $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span>
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sv</span>:<span class="ident">vis</span> <span class="kw">fn</span> $(<span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">tt</span>)<span class="op">*</span>
@@ -196,7 +196,7 @@
             <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring1</span>,
             <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring2</span>,
             <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring3</span>,
-            <span class="ident">i</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;{} is not a valid privilege level&quot;</span>, <span class="ident">i</span>),
+            <span class="ident">i</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;{} is not a valid privilege level&quot;</span>, <span class="ident">i</span>),
         }
     }
 }

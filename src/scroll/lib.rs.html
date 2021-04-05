@@ -864,7 +864,7 @@
 
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">doc_comment</span> {
+<span class="macro">macro_rules!</span> <span class="ident">doc_comment</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -873,7 +873,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>)]</span>
-<span class="macro">doc_comment</span><span class="macro">!</span>(<span class="macro">include_str</span><span class="macro">!</span>(<span class="string">&quot;../README.md&quot;</span>));
+<span class="macro">doc_comment!</span>(<span class="macro">include_str!</span>(<span class="string">&quot;../README.md&quot;</span>));
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
@@ -884,20 +884,20 @@
     <span class="kw">fn</span> <span class="ident">test_measure_with_bytes</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">ctx</span>::<span class="ident">MeasureWith</span>;
         <span class="kw">let</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> [<span class="number">0xef</span>, <span class="number">0xbe</span>, <span class="number">0xad</span>, <span class="number">0xde</span>];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">bytes</span>.<span class="ident">measure_with</span>(<span class="kw-2">&amp;</span>()), <span class="number">4</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">bytes</span>.<span class="ident">measure_with</span>(<span class="kw-2">&amp;</span>()), <span class="number">4</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_measurable</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">ctx</span>::<span class="ident">SizeWith</span>;
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">8</span>, <span class="ident">u64</span>::<span class="ident">size_with</span>(<span class="kw-2">&amp;</span><span class="ident">LE</span>));
+        <span class="macro">assert_eq!</span>(<span class="number">8</span>, <span class="ident">u64</span>::<span class="ident">size_with</span>(<span class="kw-2">&amp;</span><span class="ident">LE</span>));
     }
 
     <span class="comment">//////////////////////////////////////////////////////////////</span>
     <span class="comment">// begin pread_with</span>
     <span class="comment">//////////////////////////////////////////////////////////////</span>
 
-    <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">pwrite_test</span> {
+    <span class="macro">macro_rules!</span> <span class="ident">pwrite_test</span> {
         (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">write</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="attribute">#[<span class="ident">test</span>]</span>
             <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">write</span>() {
@@ -905,19 +905,19 @@
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">8</span>] <span class="op">=</span> [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>];
                 <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bytes</span>[..];
                 <span class="ident">b</span>.<span class="ident">pwrite_with</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span><span class="op">&gt;</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>, <span class="number">0</span>, <span class="ident">LE</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">b</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">LE</span>).<span class="ident">unwrap</span>(), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">b</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">LE</span>).<span class="ident">unwrap</span>(), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>);
                 <span class="ident">b</span>.<span class="ident">pwrite_with</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span><span class="op">&gt;</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>, <span class="number">0</span>, <span class="ident">BE</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">b</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">BE</span>).<span class="ident">unwrap</span>(), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">b</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">BE</span>).<span class="ident">unwrap</span>(), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>);
             }
         }
     }
 
-    <span class="macro">pwrite_test</span><span class="macro">!</span>(<span class="ident">pwrite_and_pread_roundtrip_u16</span>, <span class="ident">u16</span>, <span class="number">0xbeef</span>);
-    <span class="macro">pwrite_test</span><span class="macro">!</span>(<span class="ident">pwrite_and_pread_roundtrip_i16</span>, <span class="ident">i16</span>, <span class="number">0x7eef</span>);
-    <span class="macro">pwrite_test</span><span class="macro">!</span>(<span class="ident">pwrite_and_pread_roundtrip_u32</span>, <span class="ident">u32</span>, <span class="number">0xbeefbeef</span>);
-    <span class="macro">pwrite_test</span><span class="macro">!</span>(<span class="ident">pwrite_and_pread_roundtrip_i32</span>, <span class="ident">i32</span>, <span class="number">0x7eefbeef</span>);
-    <span class="macro">pwrite_test</span><span class="macro">!</span>(<span class="ident">pwrite_and_pread_roundtrip_u64</span>, <span class="ident">u64</span>, <span class="number">0xbeefbeef7eef7eef</span>);
-    <span class="macro">pwrite_test</span><span class="macro">!</span>(<span class="ident">pwrite_and_pread_roundtrip_i64</span>, <span class="ident">i64</span>, <span class="number">0x7eefbeef7eef7eef</span>);
+    <span class="macro">pwrite_test!</span>(<span class="ident">pwrite_and_pread_roundtrip_u16</span>, <span class="ident">u16</span>, <span class="number">0xbeef</span>);
+    <span class="macro">pwrite_test!</span>(<span class="ident">pwrite_and_pread_roundtrip_i16</span>, <span class="ident">i16</span>, <span class="number">0x7eef</span>);
+    <span class="macro">pwrite_test!</span>(<span class="ident">pwrite_and_pread_roundtrip_u32</span>, <span class="ident">u32</span>, <span class="number">0xbeefbeef</span>);
+    <span class="macro">pwrite_test!</span>(<span class="ident">pwrite_and_pread_roundtrip_i32</span>, <span class="ident">i32</span>, <span class="number">0x7eefbeef</span>);
+    <span class="macro">pwrite_test!</span>(<span class="ident">pwrite_and_pread_roundtrip_u64</span>, <span class="ident">u64</span>, <span class="number">0xbeefbeef7eef7eef</span>);
+    <span class="macro">pwrite_test!</span>(<span class="ident">pwrite_and_pread_roundtrip_i64</span>, <span class="ident">i64</span>, <span class="number">0x7eefbeef7eef7eef</span>);
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">pread_with_be</span>() {
@@ -925,10 +925,10 @@
         <span class="kw">let</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">2</span>] <span class="op">=</span> [<span class="number">0x7e</span>, <span class="number">0xef</span>];
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bytes</span>[..];
         <span class="kw">let</span> <span class="ident">byte</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="kw">super</span>::<span class="ident">BE</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0x7eef</span>, <span class="ident">byte</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">0x7eef</span>, <span class="ident">byte</span>);
         <span class="kw">let</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">2</span>] <span class="op">=</span> [<span class="number">0xde</span>, <span class="number">0xad</span>];
         <span class="kw">let</span> <span class="ident">dead</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="kw">super</span>::<span class="ident">BE</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0xdead</span>, <span class="ident">dead</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">0xdead</span>, <span class="ident">dead</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -938,9 +938,9 @@
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bytes</span>[..];
         <span class="kw">let</span> <span class="ident">byte</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">pread</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;little&quot;</span>)]</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0xef7e</span>, <span class="ident">byte</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">0xef7e</span>, <span class="ident">byte</span>);
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;big&quot;</span>)]</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0x7eef</span>, <span class="ident">byte</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">0x7eef</span>, <span class="ident">byte</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -950,7 +950,7 @@
         <span class="kw">let</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">2</span>] <span class="op">=</span> [<span class="number">0x7e</span>, <span class="number">0xef</span>];
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bytes</span>[..];
         <span class="kw">let</span> <span class="ident">iserr</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw">_</span><span class="op">&gt;</span>  <span class="op">=</span> <span class="ident">b</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="ident">StrCtx</span>::<span class="ident">Length</span>(<span class="number">3</span>));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">iserr</span>.<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">iserr</span>.<span class="ident">is_err</span>());
         <span class="comment">// let bytes2: &amp;[u8]  = b.pread_with(0, 2).unwrap();</span>
         <span class="comment">// assert_eq!(bytes2.len(), bytes[..].len());</span>
         <span class="comment">// for i in 0..bytes2.len() {</span>
@@ -965,20 +965,20 @@
         <span class="kw">let</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">2</span>] <span class="op">=</span> [<span class="number">0x2e</span>, <span class="number">0x0</span>];
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bytes</span>[..];
         <span class="kw">let</span> <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>  <span class="op">=</span> <span class="ident">b</span>.<span class="ident">pread</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;str: {}&quot;</span>, <span class="ident">s</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">s</span>.<span class="ident">len</span>(), <span class="ident">bytes</span>[..].<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;str: {}&quot;</span>, <span class="ident">s</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">s</span>.<span class="ident">len</span>(), <span class="ident">bytes</span>[..].<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;hello, world!\0some_other_things&quot;</span>;
         <span class="kw">let</span> <span class="ident">hello_world</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">NULL</span>)).<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">hello_world</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hello_world</span>.<span class="ident">len</span>(), <span class="number">13</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">hello_world</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hello_world</span>.<span class="ident">len</span>(), <span class="number">13</span>);
         <span class="kw">let</span> <span class="ident">hello</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">SPACE</span>)).<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">hello</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hello</span>.<span class="ident">len</span>(), <span class="number">6</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">hello</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hello</span>.<span class="ident">len</span>(), <span class="number">6</span>);
         <span class="comment">// this could result in underflow so we just try it</span>
         <span class="kw">let</span> <span class="ident">_error</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="number">6</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">SPACE</span>));
         <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="number">7</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">SPACE</span>));
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">error</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">error</span>.<span class="ident">is_ok</span>());
+        <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">error</span>);
+        <span class="macro">assert!</span>(<span class="ident">error</span>.<span class="ident">is_ok</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -987,15 +987,15 @@
         <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">ctx</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;&quot;</span>;
         <span class="kw">let</span> <span class="ident">hello_world</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">NULL</span>));
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;1 {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">hello_world</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hello_world</span>.<span class="ident">is_err</span>(), <span class="bool-val">true</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;1 {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">hello_world</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hello_world</span>.<span class="ident">is_err</span>(), <span class="bool-val">true</span>);
         <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="number">7</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">SPACE</span>));
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;2 {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">error</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">error</span>.<span class="ident">is_err</span>());
+        <span class="macro">println!</span>(<span class="string">&quot;2 {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">error</span>);
+        <span class="macro">assert!</span>(<span class="ident">error</span>.<span class="ident">is_err</span>());
         <span class="kw">let</span> <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;\0&quot;</span>;
         <span class="kw">let</span> <span class="ident">null</span>  <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;3 {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">null</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">null</span>.<span class="ident">len</span>(), <span class="number">0</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;3 {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">null</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">null</span>.<span class="ident">len</span>(), <span class="number">0</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1007,14 +1007,14 @@
         <span class="ident">buffer</span>.<span class="ident">pwrite</span>(<span class="ident">astring</span>, <span class="number">0</span>).<span class="ident">unwrap</span>();
         {
             <span class="kw">let</span> <span class="ident">hello_world</span> <span class="op">=</span> <span class="ident">buffer</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="number">4</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">SPACE</span>)).<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hello_world</span>, <span class="string">&quot;hello_world&quot;</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">hello_world</span>, <span class="string">&quot;hello_world&quot;</span>);
         }
         <span class="kw">let</span> <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;more\0bytes&quot;</span>;
         <span class="ident">buffer</span>.<span class="ident">pwrite</span>(<span class="ident">bytes</span>, <span class="number">0</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">more</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">NULL</span>)).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">more</span>, <span class="string">&quot;more&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">more</span>, <span class="string">&quot;more&quot;</span>);
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="ident">more</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>, <span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">NULL</span>)).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">bytes</span>, <span class="string">&quot;bytes&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">bytes</span>, <span class="string">&quot;bytes&quot;</span>);
     }
 
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>;
@@ -1025,7 +1025,7 @@
 
     <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ExternalError</span> {
         <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-            <span class="macro">write</span><span class="macro">!</span>(<span class="ident">fmt</span>, <span class="string">&quot;ExternalError&quot;</span>)
+            <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;ExternalError&quot;</span>)
         }
     }
 
@@ -1078,7 +1078,7 @@
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">bytes_from</span>.<span class="ident">len</span>() {
             <span class="ident">bytes_to</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">bytes_from</span>.<span class="ident">pread</span>(<span class="ident">i</span>).<span class="ident">unwrap</span>();
         }
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">bytes_to</span>, <span class="ident">bytes_from</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">bytes_to</span>, <span class="ident">bytes_from</span>);
     }
 
     <span class="comment">//////////////////////////////////////////////////////////////</span>
@@ -1088,7 +1088,7 @@
     <span class="comment">//////////////////////////////////////////////////////////////</span>
     <span class="comment">// begin gread_with</span>
     <span class="comment">//////////////////////////////////////////////////////////////</span>
-    <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">g_test</span> {
+    <span class="macro">macro_rules!</span> <span class="ident">g_test</span> {
         (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="attribute">#[<span class="ident">test</span>]</span>
             <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span>() {
@@ -1096,18 +1096,18 @@
                 <span class="kw">let</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">8</span>] <span class="op">=</span> [<span class="number">0xf</span>, <span class="number">0xe</span>, <span class="number">0xe</span>, <span class="number">0xb</span>, <span class="number">0xd</span>, <span class="number">0xa</span>, <span class="number">0xe</span>, <span class="number">0xd</span>];
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset</span> <span class="op">=</span> <span class="number">0</span>;
                 <span class="kw">let</span> <span class="ident">deadbeef</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">gread_with</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset</span>, <span class="ident">LE</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">deadbeef</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>);
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">offset</span>, ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span>());
+                <span class="macro">assert_eq!</span>(<span class="ident">deadbeef</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">offset</span>, ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span>());
             }
         }
     }
 
-    <span class="macro">g_test</span><span class="macro">!</span>(<span class="ident">simple_gread_u16</span>, <span class="number">0xe0f</span>, <span class="ident">u16</span>);
-    <span class="macro">g_test</span><span class="macro">!</span>(<span class="ident">simple_gread_u32</span>, <span class="number">0xb0e0e0f</span>, <span class="ident">u32</span>);
-    <span class="macro">g_test</span><span class="macro">!</span>(<span class="ident">simple_gread_u64</span>, <span class="number">0xd0e0a0d0b0e0e0f</span>, <span class="ident">u64</span>);
-    <span class="macro">g_test</span><span class="macro">!</span>(<span class="ident">simple_gread_i64</span>, <span class="number">940700423303335439</span>, <span class="ident">i64</span>);
+    <span class="macro">g_test!</span>(<span class="ident">simple_gread_u16</span>, <span class="number">0xe0f</span>, <span class="ident">u16</span>);
+    <span class="macro">g_test!</span>(<span class="ident">simple_gread_u32</span>, <span class="number">0xb0e0e0f</span>, <span class="ident">u32</span>);
+    <span class="macro">g_test!</span>(<span class="ident">simple_gread_u64</span>, <span class="number">0xd0e0a0d0b0e0e0f</span>, <span class="ident">u64</span>);
+    <span class="macro">g_test!</span>(<span class="ident">simple_gread_i64</span>, <span class="number">940700423303335439</span>, <span class="ident">i64</span>);
 
-    <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">simple_float_test</span> {
+    <span class="macro">macro_rules!</span> <span class="ident">simple_float_test</span> {
         (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="attribute">#[<span class="ident">test</span>]</span>
             <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span>() {
@@ -1115,16 +1115,16 @@
                 <span class="kw">let</span> <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">8</span>] <span class="op">=</span> [<span class="number">0u8</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">224</span>, <span class="number">63</span>];
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset</span> <span class="op">=</span> <span class="number">0</span>;
                 <span class="kw">let</span> <span class="ident">deadbeef</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">gread_with</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset</span>, <span class="ident">LE</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">deadbeef</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>);
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">offset</span>, ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span>());
+                <span class="macro">assert_eq!</span>(<span class="ident">deadbeef</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">deadbeef</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">offset</span>, ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span>());
             }
         };
     }
 
-    <span class="macro">simple_float_test</span><span class="macro">!</span>(<span class="ident">gread_f32</span>, <span class="number">0.0</span>, <span class="ident">f32</span>);
-    <span class="macro">simple_float_test</span><span class="macro">!</span>(<span class="ident">gread_f64</span>, <span class="number">0.5</span>, <span class="ident">f64</span>);
+    <span class="macro">simple_float_test!</span>(<span class="ident">gread_f32</span>, <span class="number">0.0</span>, <span class="ident">f32</span>);
+    <span class="macro">simple_float_test!</span>(<span class="ident">gread_f64</span>, <span class="number">0.5</span>, <span class="ident">f64</span>);
 
-    <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">g_read_write_test</span> {
+    <span class="macro">macro_rules!</span> <span class="ident">g_read_write_test</span> {
         (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="attribute">#[<span class="ident">test</span>]</span>
             <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">read</span>() {
@@ -1134,32 +1134,32 @@
                 <span class="ident">buffer</span>.<span class="ident">gwrite_with</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>.<span class="ident">clone</span>(), <span class="ident">offset</span>, <span class="ident">LE</span>).<span class="ident">unwrap</span>();
                 <span class="kw">let</span> <span class="ident">o2</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="number">0</span>;
                 <span class="kw">let</span> <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span> <span class="op">=</span> <span class="ident">buffer</span>.<span class="ident">gread_with</span>(<span class="ident">o2</span>, <span class="ident">LE</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">val</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>);
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span>());
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">o2</span>, ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span>());
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">o2</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">val</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>);
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span>());
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">o2</span>, ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span><span class="op">&gt;</span>());
+                <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">o2</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
                 <span class="ident">buffer</span>.<span class="ident">gwrite_with</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>.<span class="ident">clone</span>(), <span class="ident">offset</span>, <span class="ident">BE</span>).<span class="ident">unwrap</span>();
                 <span class="kw">let</span> <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span> <span class="op">=</span> <span class="ident">buffer</span>.<span class="ident">gread_with</span>(<span class="ident">o2</span>, <span class="ident">BE</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">val</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">val</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>);
             }
         };
     }
 
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_f64_1</span>, <span class="number">0.25f64</span>, <span class="ident">f64</span>);
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_f64_2</span>, <span class="number">0.5f64</span>, <span class="ident">f64</span>);
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_f64_3</span>, <span class="number">0.064</span>, <span class="ident">f64</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_f64_1</span>, <span class="number">0.25f64</span>, <span class="ident">f64</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_f64_2</span>, <span class="number">0.5f64</span>, <span class="ident">f64</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_f64_3</span>, <span class="number">0.064</span>, <span class="ident">f64</span>);
 
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_f32_1</span>, <span class="number">0.25f32</span>, <span class="ident">f32</span>);
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_f32_2</span>, <span class="number">0.5f32</span>, <span class="ident">f32</span>);
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_f32_3</span>, <span class="number">0.0f32</span>, <span class="ident">f32</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_f32_1</span>, <span class="number">0.25f32</span>, <span class="ident">f32</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_f32_2</span>, <span class="number">0.5f32</span>, <span class="ident">f32</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_f32_3</span>, <span class="number">0.0f32</span>, <span class="ident">f32</span>);
 
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_i64_1</span>, <span class="number">0i64</span>, <span class="ident">i64</span>);
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_i64_2</span>, <span class="op">-</span><span class="number">1213213211111i64</span>, <span class="ident">i64</span>);
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_i64_3</span>, <span class="op">-</span><span class="number">3000i64</span>, <span class="ident">i64</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_i64_1</span>, <span class="number">0i64</span>, <span class="ident">i64</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_i64_2</span>, <span class="op">-</span><span class="number">1213213211111i64</span>, <span class="ident">i64</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_i64_3</span>, <span class="op">-</span><span class="number">3000i64</span>, <span class="ident">i64</span>);
 
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_i32_1</span>, <span class="number">0i32</span>, <span class="ident">i32</span>);
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_i32_2</span>, <span class="op">-</span><span class="number">1213213232</span>, <span class="ident">i32</span>);
-    <span class="macro">g_read_write_test</span><span class="macro">!</span>(<span class="ident">gread_gwrite_i32_3</span>, <span class="op">-</span><span class="number">3000i32</span>, <span class="ident">i32</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_i32_1</span>, <span class="number">0i32</span>, <span class="ident">i32</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_i32_2</span>, <span class="op">-</span><span class="number">1213213232</span>, <span class="ident">i32</span>);
+    <span class="macro">g_read_write_test!</span>(<span class="ident">gread_gwrite_i32_3</span>, <span class="op">-</span><span class="number">3000i32</span>, <span class="ident">i32</span>);
 
     <span class="comment">// useful for ferreting out problems with impls</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1173,8 +1173,8 @@
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">bytes_from</span>.<span class="ident">len</span>() {
             <span class="ident">bytes_to</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">bytes_from</span>.<span class="ident">gread</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset</span>).<span class="ident">unwrap</span>();
         }
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">bytes_to</span>, <span class="ident">bytes_from</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="ident">bytes_to</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">bytes_to</span>, <span class="ident">bytes_from</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="ident">bytes_to</span>.<span class="ident">len</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1185,8 +1185,8 @@
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bytes_from</span>[..];
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="number">0</span>;
         <span class="ident">bytes</span>.<span class="ident">gread_inout</span>(<span class="ident">offset</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bytes_to</span>[..]).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">bytes_to</span>, <span class="ident">bytes_from</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="ident">bytes_to</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">bytes_to</span>, <span class="ident">bytes_from</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="ident">bytes_to</span>.<span class="ident">len</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1196,8 +1196,8 @@
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bytes</span>[..];
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">byte</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">gread</span>(<span class="ident">offset</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0x7f</span>, <span class="ident">byte</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">0x7f</span>, <span class="ident">byte</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="number">1</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1208,21 +1208,21 @@
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bytes</span>[..];
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">gread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="ident">offset</span>, <span class="ident">StrCtx</span>::<span class="ident">Length</span>(<span class="number">3</span>));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
         <span class="kw-2">*</span><span class="ident">offset</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">astring</span>: [<span class="ident">u8</span>; <span class="number">3</span>] <span class="op">=</span> [<span class="number">0x45</span>, <span class="number">042</span>, <span class="number">0x44</span>];
         <span class="kw">let</span> <span class="ident">string</span> <span class="op">=</span> <span class="ident">astring</span>.<span class="ident">gread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>(<span class="ident">offset</span>, <span class="ident">StrCtx</span>::<span class="ident">Length</span>(<span class="number">2</span>));
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">string</span> {
             <span class="kw-2">&amp;</span><span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {},
-            <span class="kw-2">&amp;</span><span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {<span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">err</span>); <span class="macro">panic</span><span class="macro">!</span>();}
+            <span class="kw-2">&amp;</span><span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {<span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">err</span>); <span class="macro">panic!</span>();}
         }
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">string</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;E*&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">string</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;E*&quot;</span>);
         <span class="kw-2">*</span><span class="ident">offset</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">bytes2</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]  <span class="op">=</span> <span class="ident">b</span>.<span class="ident">gread_with</span>(<span class="ident">offset</span>, <span class="number">2</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="number">2</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">bytes2</span>.<span class="ident">len</span>(), <span class="ident">bytes</span>[..].<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="number">2</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">bytes2</span>.<span class="ident">len</span>(), <span class="ident">bytes</span>[..].<span class="ident">len</span>());
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">bytes2</span>.<span class="ident">len</span>() {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">bytes2</span>[<span class="ident">i</span>], <span class="ident">bytes</span>[<span class="ident">i</span>])
+            <span class="macro">assert_eq!</span>(<span class="ident">bytes2</span>[<span class="ident">i</span>], <span class="ident">bytes</span>[<span class="ident">i</span>])
         }
     }
 

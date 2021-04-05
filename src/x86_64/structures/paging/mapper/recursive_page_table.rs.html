@@ -1675,7 +1675,7 @@
             <span class="kw">return</span> <span class="ident">TranslateResult</span>::<span class="ident">NotMapped</span>;
         }
         <span class="kw">if</span> <span class="ident">p4_entry</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">PageTableFlags</span>::<span class="ident">HUGE_PAGE</span>) {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;level 4 entry has huge page bit set&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">&quot;level 4 entry has huge page bit set&quot;</span>)
         }
 
         <span class="kw">let</span> <span class="ident">p3</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">p3_ptr</span>(<span class="ident">page</span>, <span class="self">self</span>.<span class="ident">recursive_index</span>)) };
@@ -1718,7 +1718,7 @@
             <span class="kw">return</span> <span class="ident">TranslateResult</span>::<span class="ident">NotMapped</span>;
         }
         <span class="kw">if</span> <span class="ident">p1_entry</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">PageTableFlags</span>::<span class="ident">HUGE_PAGE</span>) {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;level 1 entry has huge page bit set&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">&quot;level 1 entry has huge page bit set&quot;</span>)
         }
 
         <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">PhysFrame</span>::<span class="ident">from_start_address</span>(<span class="ident">p1_entry</span>.<span class="ident">addr</span>()) {
@@ -1755,9 +1755,9 @@
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">InvalidPageTable</span>::<span class="ident">NotRecursive</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;given page table address is not recursive&quot;</span>)
+                <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;given page table address is not recursive&quot;</span>)
             }
-            <span class="ident">InvalidPageTable</span>::<span class="ident">NotActive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;given page table is not active on the CPU&quot;</span>),
+            <span class="ident">InvalidPageTable</span>::<span class="ident">NotActive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;given page table is not active on the CPU&quot;</span>),
         }
     }
 }

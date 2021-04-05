@@ -590,9 +590,9 @@
 <span id="587">587</span>
 <span id="588">588</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="macro">include</span><span class="macro">!</span>(<span class="string">&quot;constants_header.rs&quot;</span>);
+<span class="macro">include!</span>(<span class="string">&quot;constants_header.rs&quot;</span>);
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">elf_header</span> {
+<span class="macro">macro_rules!</span> <span class="ident">elf_header</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
 
@@ -644,14 +644,14 @@
         <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Header</span> {
             <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
                 <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Header&quot;</span>)
-                    .<span class="ident">field</span>(<span class="string">&quot;e_ident&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="ident">e_ident</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;e_ident&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="ident">e_ident</span>))
                     .<span class="ident">field</span>(<span class="string">&quot;e_type&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">et_to_str</span>(<span class="self">self</span>.<span class="ident">e_type</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;e_machine&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_machine</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;e_version&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_version</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;e_entry&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_entry</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;e_phoff&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_phoff</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;e_shoff&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_shoff</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;e_flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_flags</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;e_machine&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_machine</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;e_version&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_version</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;e_entry&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_entry</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;e_phoff&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_phoff</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;e_shoff&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_shoff</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;e_flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_flags</span>))
                     .<span class="ident">field</span>(<span class="string">&quot;e_ehsize&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">e_ehsize</span>)
                     .<span class="ident">field</span>(<span class="string">&quot;e_phentsize&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">e_phentsize</span>)
                     .<span class="ident">field</span>(<span class="string">&quot;e_phnum&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">e_phnum</span>)
@@ -743,7 +743,7 @@
     }
 }
 
-<span class="macro">if_alloc</span><span class="macro">!</span> {
+<span class="macro">if_alloc!</span> {
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>;
     <span class="kw">use</span> <span class="ident">scroll</span>::{<span class="ident">ctx</span>, <span class="ident">Endian</span>};
     <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
@@ -782,7 +782,7 @@
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">e_ident</span>[<span class="ident">EI_CLASS</span>] {
                 <span class="ident">ELFCLASS32</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="prelude-val">Ok</span>(<span class="ident">Container</span>::<span class="ident">Little</span>) },
                 <span class="ident">ELFCLASS64</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="prelude-val">Ok</span>(<span class="ident">Container</span>::<span class="ident">Big</span>) },
-                <span class="ident">class</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Invalid class in Header: {}&quot;</span>, <span class="ident">class</span>)))
+                <span class="ident">class</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;Invalid class in Header: {}&quot;</span>, <span class="ident">class</span>)))
             }
         }
         <span class="doccomment">/// Returns the byte order this header specifies</span>
@@ -791,7 +791,7 @@
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">e_ident</span>[<span class="ident">EI_DATA</span>] {
                 <span class="ident">ELFDATA2LSB</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="prelude-val">Ok</span>(<span class="ident">scroll</span>::<span class="ident">LE</span>) },
                 <span class="ident">ELFDATA2MSB</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="prelude-val">Ok</span>(<span class="ident">scroll</span>::<span class="ident">BE</span>) },
-                <span class="ident">class</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Invalid endianness in Header: {}&quot;</span>, <span class="ident">class</span>)))
+                <span class="ident">class</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;Invalid endianness in Header: {}&quot;</span>, <span class="ident">class</span>)))
             }
         }
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ctx</span>: <span class="ident">Ctx</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -849,14 +849,14 @@
     <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Header</span> {
         <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
             <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Header&quot;</span>)
-               .<span class="ident">field</span>(<span class="string">&quot;e_ident&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="ident">e_ident</span>))
+               .<span class="ident">field</span>(<span class="string">&quot;e_ident&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="ident">e_ident</span>))
                .<span class="ident">field</span>(<span class="string">&quot;e_type&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">et_to_str</span>(<span class="self">self</span>.<span class="ident">e_type</span>))
-               .<span class="ident">field</span>(<span class="string">&quot;e_machine&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_machine</span>))
-               .<span class="ident">field</span>(<span class="string">&quot;e_version&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_version</span>))
-               .<span class="ident">field</span>(<span class="string">&quot;e_entry&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_entry</span>))
-               .<span class="ident">field</span>(<span class="string">&quot;e_phoff&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_phoff</span>))
-               .<span class="ident">field</span>(<span class="string">&quot;e_shoff&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_shoff</span>))
-               .<span class="ident">field</span>(<span class="string">&quot;e_flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_flags</span>))
+               .<span class="ident">field</span>(<span class="string">&quot;e_machine&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_machine</span>))
+               .<span class="ident">field</span>(<span class="string">&quot;e_version&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_version</span>))
+               .<span class="ident">field</span>(<span class="string">&quot;e_entry&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_entry</span>))
+               .<span class="ident">field</span>(<span class="string">&quot;e_phoff&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_phoff</span>))
+               .<span class="ident">field</span>(<span class="string">&quot;e_shoff&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_shoff</span>))
+               .<span class="ident">field</span>(<span class="string">&quot;e_flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">e_flags</span>))
                .<span class="ident">field</span>(<span class="string">&quot;e_ehsize&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">e_ehsize</span>)
                .<span class="ident">field</span>(<span class="string">&quot;e_phentsize&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">e_phentsize</span>)
                .<span class="ident">field</span>(<span class="string">&quot;e_phnum&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">e_phnum</span>)
@@ -901,7 +901,7 @@
                     <span class="prelude-val">Ok</span>((<span class="ident">Header</span>::<span class="ident">from</span>(<span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">header64</span>::<span class="ident">Header</span><span class="op">&gt;</span>(<span class="number">0</span>)<span class="question-mark">?</span>), <span class="ident">header64</span>::<span class="ident">SIZEOF_EHDR</span>))
                 },
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="prelude-val">Err</span>(<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;invalid ELF class {:x}&quot;</span>, <span class="ident">class</span>)))
+                    <span class="prelude-val">Err</span>(<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;invalid ELF class {:x}&quot;</span>, <span class="ident">class</span>)))
                 }
             }
         }
@@ -936,10 +936,10 @@
     }
 } <span class="comment">// end if_alloc</span>
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">elf_header_std_impl</span> {
+<span class="macro">macro_rules!</span> <span class="ident">elf_header_std_impl</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">width</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
 
-        <span class="macro">if_alloc</span><span class="macro">!</span> {
+        <span class="macro">if_alloc!</span> {
             <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">header</span>::<span class="ident">Header</span> <span class="kw">as</span> <span class="ident">ElfHeader</span>;
             <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;endian_fd&quot;</span>))]</span>
@@ -949,7 +949,7 @@
 
             <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">result</span>;
 
-            <span class="macro">if_std</span><span class="macro">!</span> {
+            <span class="macro">if_std!</span> {
                 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">File</span>;
                 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="ident">Read</span>};
             }
@@ -1006,7 +1006,7 @@
                         <span class="kw">match</span> <span class="ident">elf_header</span>.<span class="ident">e_ident</span>[<span class="ident">EI_DATA</span>] {
                             <span class="ident">ELFDATA2LSB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scroll</span>::<span class="ident">LE</span>,
                             <span class="ident">ELFDATA2MSB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scroll</span>::<span class="ident">BE</span>,
-                            <span class="ident">d</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;invalid ELF endianness DATA type {:x}&quot;</span>, <span class="ident">d</span>)).<span class="ident">into</span>()),
+                            <span class="ident">d</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;invalid ELF endianness DATA type {:x}&quot;</span>, <span class="ident">d</span>)).<span class="ident">into</span>()),
                         };
                     <span class="ident">elf_header</span>.<span class="ident">e_type</span> <span class="op">=</span>      <span class="ident">bytes</span>.<span class="ident">gread_with</span>(<span class="ident">offset</span>, <span class="ident">endianness</span>)<span class="question-mark">?</span>;
                     <span class="ident">elf_header</span>.<span class="ident">e_machine</span> <span class="op">=</span>   <span class="ident">bytes</span>.<span class="ident">gread_with</span>(<span class="ident">offset</span>, <span class="ident">endianness</span>)<span class="question-mark">?</span>;
@@ -1035,7 +1035,7 @@
                         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">e_ident</span>[<span class="ident">EI_DATA</span>] {
                             <span class="ident">ELFDATA2LSB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scroll</span>::<span class="ident">LE</span>,
                             <span class="ident">ELFDATA2MSB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scroll</span>::<span class="ident">BE</span>,
-                            <span class="ident">d</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;invalid ELF DATA type {:x}&quot;</span>, <span class="ident">d</span>)).<span class="ident">into</span>()),
+                            <span class="ident">d</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;invalid ELF DATA type {:x}&quot;</span>, <span class="ident">d</span>)).<span class="ident">into</span>()),
                         };
                     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">e_ident</span>.<span class="ident">len</span>() {
                         <span class="ident">bytes</span>.<span class="ident">gwrite</span>(<span class="self">self</span>.<span class="ident">e_ident</span>[<span class="ident">i</span>], <span class="ident">offset</span>)<span class="question-mark">?</span>;
@@ -1080,7 +1080,7 @@
                         <span class="kw">match</span> <span class="ident">elf_header</span>.<span class="ident">e_ident</span>[<span class="ident">EI_DATA</span>] {
                             <span class="ident">ELFDATA2LSB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scroll</span>::<span class="ident">LE</span>,
                             <span class="ident">ELFDATA2MSB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">scroll</span>::<span class="ident">BE</span>,
-                            <span class="ident">d</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;invalid ELF DATA type {:x}&quot;</span>, <span class="ident">d</span>)).<span class="ident">into</span>()),
+                            <span class="ident">d</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;invalid ELF DATA type {:x}&quot;</span>, <span class="ident">d</span>)).<span class="ident">into</span>()),
                         };
                     <span class="ident">elf_header</span>.<span class="ident">e_type</span> <span class="op">=</span>      <span class="ident">bytes</span>.<span class="ident">gread_with</span>(<span class="ident">offset</span>, <span class="ident">endianness</span>)<span class="question-mark">?</span>;
                     <span class="ident">elf_header</span>.<span class="ident">e_machine</span> <span class="op">=</span>   <span class="ident">bytes</span>.<span class="ident">gread_with</span>(<span class="ident">offset</span>, <span class="ident">endianness</span>)<span class="question-mark">?</span>;
@@ -1104,7 +1104,7 @@
 
 <span class="comment">// tests</span>
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">elf_header_test</span> {
+<span class="macro">macro_rules!</span> <span class="ident">elf_header_test</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">class</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
         <span class="kw">mod</span> <span class="ident">tests</span> {
@@ -1115,42 +1115,42 @@
             <span class="kw">use</span> <span class="ident">scroll</span>::{<span class="ident">Pread</span>, <span class="ident">Pwrite</span>};
             <span class="attribute">#[<span class="ident">test</span>]</span>
             <span class="kw">fn</span> <span class="ident">size_of</span>() {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span>(), <span class="ident">SIZEOF_EHDR</span>);
+                <span class="macro">assert_eq!</span>(::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span>(), <span class="ident">SIZEOF_EHDR</span>);
             }
             <span class="attribute">#[<span class="ident">test</span>]</span>
             <span class="kw">fn</span> <span class="ident">header_read_write</span>() {
                 <span class="kw">let</span> <span class="ident">crt1</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">class</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ELFCLASS64</span> {
-                    <span class="macro">include</span><span class="macro">!</span>(<span class="string">&quot;../../etc/crt1.rs&quot;</span>)
+                    <span class="macro">include!</span>(<span class="string">&quot;../../etc/crt1.rs&quot;</span>)
                 } <span class="kw">else</span> {
-                    <span class="macro">include</span><span class="macro">!</span>(<span class="string">&quot;../../etc/crt132.rs&quot;</span>)
+                    <span class="macro">include!</span>(<span class="string">&quot;../../etc/crt132.rs&quot;</span>)
                 };
                 <span class="kw">let</span> <span class="ident">header</span>: <span class="ident">Header</span> <span class="op">=</span> <span class="ident">crt1</span>.<span class="ident">pread</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">header</span>.<span class="ident">e_type</span>, <span class="ident">ET_REL</span>);
-                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;header: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">header</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">header</span>.<span class="ident">e_type</span>, <span class="ident">ET_REL</span>);
+                <span class="macro">println!</span>(<span class="string">&quot;header: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">header</span>);
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="ident">SIZEOF_EHDR</span>];
                 <span class="ident">bytes</span>.<span class="ident">pwrite</span>(<span class="ident">header</span>, <span class="number">0</span>).<span class="ident">unwrap</span>();
                 <span class="kw">let</span> <span class="ident">header2</span>: <span class="ident">Header</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">header</span>, <span class="ident">header2</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">header</span>, <span class="ident">header2</span>);
             }
             <span class="attribute">#[<span class="ident">test</span>]</span>
             <span class="kw">fn</span> <span class="ident">elfheader_read_write</span>() {
                 <span class="kw">let</span> (<span class="ident">container</span>, <span class="ident">crt1</span>): (<span class="ident">Container</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">=</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">class</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ELFCLASS64</span> {
-                    (<span class="ident">Container</span>::<span class="ident">Big</span>, <span class="macro">include</span><span class="macro">!</span>(<span class="string">&quot;../../etc/crt1.rs&quot;</span>))
+                    (<span class="ident">Container</span>::<span class="ident">Big</span>, <span class="macro">include!</span>(<span class="string">&quot;../../etc/crt1.rs&quot;</span>))
                 } <span class="kw">else</span> {
-                    (<span class="ident">Container</span>::<span class="ident">Little</span>, <span class="macro">include</span><span class="macro">!</span>(<span class="string">&quot;../../etc/crt132.rs&quot;</span>))
+                    (<span class="ident">Container</span>::<span class="ident">Little</span>, <span class="macro">include!</span>(<span class="string">&quot;../../etc/crt132.rs&quot;</span>))
                 };
                 <span class="kw">let</span> <span class="ident">header</span>: <span class="ident">Header</span> <span class="op">=</span> <span class="ident">crt1</span>.<span class="ident">pread</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">header</span>.<span class="ident">e_type</span>, <span class="ident">ET_REL</span>);
-                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;header: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">header</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">header</span>.<span class="ident">e_type</span>, <span class="ident">ET_REL</span>);
+                <span class="macro">println!</span>(<span class="string">&quot;header: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">header</span>);
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="ident">SIZEOF_EHDR</span>];
                 <span class="kw">let</span> <span class="ident">header_</span> <span class="op">=</span> <span class="ident">Header</span>::<span class="ident">from</span>(<span class="ident">header</span>.<span class="ident">clone</span>());
                 <span class="ident">bytes</span>.<span class="ident">pwrite</span>(<span class="ident">header_</span>, <span class="number">0</span>).<span class="ident">unwrap</span>();
                 <span class="kw">let</span> <span class="ident">header2</span>: <span class="ident">Header</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">header</span>, <span class="ident">header2</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">header</span>, <span class="ident">header2</span>);
                 <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="ident">ElfHeader</span>::<span class="ident">new</span>(<span class="ident">Ctx</span>::<span class="ident">from</span>(<span class="ident">container</span>));
-                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;header: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">header</span>);
+                <span class="macro">println!</span>(<span class="string">&quot;header: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">header</span>);
 
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0</span>; <span class="number">100</span>];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0</span>; <span class="number">100</span>];
                 <span class="ident">bytes</span>.<span class="ident">pwrite</span>(<span class="ident">header</span>, <span class="number">0</span>).<span class="ident">unwrap</span>();
             }
         }
@@ -1163,9 +1163,9 @@
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZEOF_EHDR</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">52</span>;
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ELFCLASS</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="ident">ELFCLASS32</span>;
 
-    <span class="macro">elf_header</span><span class="macro">!</span>(<span class="ident">u32</span>);
-    <span class="macro">elf_header_std_impl</span><span class="macro">!</span>(<span class="ident">SIZEOF_EHDR</span>, <span class="ident">u32</span>);
-    <span class="macro">elf_header_test</span><span class="macro">!</span>(<span class="ident">ELFCLASS</span>);
+    <span class="macro">elf_header!</span>(<span class="ident">u32</span>);
+    <span class="macro">elf_header_std_impl!</span>(<span class="ident">SIZEOF_EHDR</span>, <span class="ident">u32</span>);
+    <span class="macro">elf_header_test!</span>(<span class="ident">ELFCLASS</span>);
 }
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">header64</span> {
@@ -1174,9 +1174,9 @@
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZEOF_EHDR</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ELFCLASS</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="ident">ELFCLASS64</span>;
 
-    <span class="macro">elf_header</span><span class="macro">!</span>(<span class="ident">u64</span>);
-    <span class="macro">elf_header_std_impl</span><span class="macro">!</span>(<span class="ident">SIZEOF_EHDR</span>, <span class="ident">u64</span>);
-    <span class="macro">elf_header_test</span><span class="macro">!</span>(<span class="ident">ELFCLASS</span>);
+    <span class="macro">elf_header!</span>(<span class="ident">u64</span>);
+    <span class="macro">elf_header_std_impl!</span>(<span class="ident">SIZEOF_EHDR</span>, <span class="ident">u64</span>);
+    <span class="macro">elf_header_test!</span>(<span class="ident">ELFCLASS</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="goblin" data-search-js="../../../search-index.js"></div>

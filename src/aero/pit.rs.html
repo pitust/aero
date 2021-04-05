@@ -79,7 +79,7 @@
 
         <span class="kw">unsafe</span> {
             <span class="kw">while</span> <span class="self">self</span>.<span class="ident">ticks_since_epoch</span> <span class="op">&lt;</span> <span class="ident">start_time</span> <span class="op">+</span> <span class="ident">seconds</span> {
-                <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;hlt&quot;</span>);
+                <span class="macro">asm!</span>(<span class="string">&quot;hlt&quot;</span>);
             }
         }
     }

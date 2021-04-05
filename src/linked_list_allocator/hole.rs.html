@@ -419,7 +419,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The pointer to `hole_addr` is automatically aligned.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">hole_addr</span>: <span class="ident">usize</span>, <span class="ident">hole_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HoleList</span> {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>(), <span class="self">Self</span>::<span class="ident">min_size</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>(), <span class="self">Self</span>::<span class="ident">min_size</span>());
 
         <span class="kw">let</span> <span class="ident">aligned_hole_addr</span> <span class="op">=</span> <span class="ident">align_up</span>(<span class="ident">hole_addr</span>, <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>());
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">aligned_hole_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Hole</span>;
@@ -652,7 +652,7 @@
 <span class="doccomment">/// find the correct place (the list is sorted by address).</span>
 <span class="kw">fn</span> <span class="ident">deallocate</span>(<span class="kw-2">mut</span> <span class="ident">hole</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Hole</span>, <span class="ident">addr</span>: <span class="ident">usize</span>, <span class="kw-2">mut</span> <span class="ident">size</span>: <span class="ident">usize</span>) {
     <span class="kw">loop</span> {
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">size</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">HoleList</span>::<span class="ident">min_size</span>());
+        <span class="macro">assert!</span>(<span class="ident">size</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">HoleList</span>::<span class="ident">min_size</span>());
 
         <span class="kw">let</span> <span class="ident">hole_addr</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">hole</span>.<span class="ident">size</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
             <span class="comment">// It&#39;s the dummy hole, which is the head of the HoleList. It&#39;s somewhere on the stack,</span>
@@ -666,7 +666,7 @@
 
         <span class="comment">// Each freed block must be handled by the previous hole in memory. Thus the freed</span>
         <span class="comment">// address must be always behind the current hole.</span>
-        <span class="macro">assert</span><span class="macro">!</span>(
+        <span class="macro">assert!</span>(
             <span class="ident">hole_addr</span> <span class="op">+</span> <span class="ident">hole</span>.<span class="ident">size</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">addr</span>,
             <span class="string">&quot;invalid deallocation (probably a double free)&quot;</span>
         );
@@ -725,7 +725,7 @@
                     <span class="ident">next</span>: <span class="ident">hole</span>.<span class="ident">next</span>.<span class="ident">take</span>(), <span class="comment">// the reference to the Y block (if it exists)</span>
                 };
                 <span class="comment">// write the new hole to the freed memory</span>
-                <span class="macro">debug_assert_eq</span><span class="macro">!</span>(<span class="ident">addr</span> <span class="op">%</span> <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>(), <span class="number">0</span>);
+                <span class="macro">debug_assert_eq!</span>(<span class="ident">addr</span> <span class="op">%</span> <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>(), <span class="number">0</span>);
                 <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Hole</span>;
                 <span class="kw">unsafe</span> { <span class="ident">ptr</span>.<span class="ident">write</span>(<span class="ident">new_hole</span>) };
                 <span class="comment">// add the F block as the next block of the X block</span>

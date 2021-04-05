@@ -77,7 +77,7 @@
 
 <span class="attribute">#[<span class="ident">alloc_error_handler</span>]</span>
 <span class="kw">fn</span> <span class="ident">alloc_error_handler</span>(<span class="ident">layout</span>: <span class="ident">alloc</span>::<span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="macro">panic</span><span class="macro">!</span>(
+    <span class="macro">panic!</span>(
         <span class="string">&quot;Allocation error with size {} and layout {}&quot;</span>,
         <span class="ident">layout</span>.<span class="ident">size</span>(),
         <span class="ident">layout</span>.<span class="ident">align</span>()

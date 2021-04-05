@@ -23,7 +23,7 @@ guarantees. To also get atomicity, consider looking at the <code>Atomic</code> w
 
 <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">Volatile</span>::<span class="ident">new</span>(<span class="number">42u32</span>);
 
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">value</span>.<span class="ident">read</span>(), <span class="number">42u32</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">read</span>(), <span class="number">42u32</span>);</pre></div>
 <h1 id="panics-1" class="section-header"><a href="#panics-1">Panics</a></h1>
 <p>This method never panics.</p>
 </div><h4 id="method.write" class="method"><code>pub fn <a href="#method.write" class="fnname">write</a>(&amp;mut self, value: T)</code><a class="srclink" href="../src/volatile/lib.rs.html#113-116" title="goto source code">[src]</a></h4><div class="docblock"><p>Performs a volatile write, setting the contained value to the given value <code>value</code>. Volatile
@@ -38,7 +38,7 @@ wrapper type.</p>
 
 <span class="ident">value</span>.<span class="ident">write</span>(<span class="number">42u32</span>);
 
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">value</span>.<span class="ident">read</span>(), <span class="number">42u32</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">read</span>(), <span class="number">42u32</span>);</pre></div>
 <h1 id="panics-2" class="section-header"><a href="#panics-2">Panics</a></h1>
 <p>This method never panics.</p>
 </div><h4 id="method.update" class="method"><code>pub fn <a href="#method.update" class="fnname">update</a>&lt;F&gt;(&amp;mut self, f: F) <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(&amp;mut T),&nbsp;</span></code><a class="srclink" href="../src/volatile/lib.rs.html#135-142" title="goto source code">[src]</a></h4><div class="docblock"><p>Performs a volatile read of the contained value, passes a mutable reference to it to the
@@ -52,7 +52,7 @@ the contained value.</p>
 
 <span class="ident">value</span>.<span class="ident">update</span>(<span class="op">|</span><span class="ident">val_ref</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">val_ref</span> <span class="kw-2">*</span><span class="op">=</span> <span class="number">2</span>);
 
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">value</span>.<span class="ident">read</span>(), <span class="number">42u32</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">read</span>(), <span class="number">42u32</span>);</pre></div>
 <h1 id="panics-3" class="section-header"><a href="#panics-3">Panics</a></h1>
 <p>Ths method never panics.</p>
 </div></div><h2 id="trait-implementations" class="small-section-header">Trait Implementations<a href="#trait-implementations" class="anchor"></a></h2><div id="trait-implementations-list"><h3 id="impl-Clone" class="impl"><code class="in-band">impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../volatile/struct.Volatile.html" title="struct volatile::Volatile">Volatile</a>&lt;T&gt;</code><a href="#impl-Clone" class="anchor"></a><a class="srclink" href="../src/volatile/lib.rs.html#145-149" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.clone" class="method hidden"><code>fn <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone" class="fnname">clone</a>(&amp;self) -&gt; Self</code><a class="srclink" href="../src/volatile/lib.rs.html#146-148" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>

@@ -287,7 +287,7 @@
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">sdt</span>.<span class="ident">get_signature</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;RSDT&quot;</span> {
                 <span class="ident">is_legacy</span> <span class="op">=</span> <span class="bool-val">true</span>;
             } <span class="kw">else</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Invalid RSDP signature.&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">&quot;Invalid RSDP signature.&quot;</span>)
             }
 
             <span class="ident">FADT</span>::<span class="ident">new</span>(<span class="ident">look_up_table</span>(
@@ -322,7 +322,7 @@
                 <span class="ident">offset_table</span>,
             );
         } <span class="kw">else</span> {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unable to find the RSDP&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">&quot;Unable to find the RSDP&quot;</span>)
         }
     }
 }

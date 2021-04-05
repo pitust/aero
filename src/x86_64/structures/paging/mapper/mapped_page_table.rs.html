@@ -1313,7 +1313,7 @@
             <span class="prelude-val">Ok</span>(<span class="ident">page_table</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">page_table</span>,
             <span class="prelude-val">Err</span>(<span class="ident">PageTableWalkError</span>::<span class="ident">NotMapped</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">TranslateResult</span>::<span class="ident">NotMapped</span>,
             <span class="prelude-val">Err</span>(<span class="ident">PageTableWalkError</span>::<span class="ident">MappedToHugePage</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;level 4 entry has huge page bit set&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">&quot;level 4 entry has huge page bit set&quot;</span>)
             }
         };
         <span class="kw">let</span> <span class="ident">p2</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">page_table_walker</span>.<span class="ident">next_table</span>(<span class="kw-2">&amp;</span><span class="ident">p3</span>[<span class="ident">addr</span>.<span class="ident">p3_index</span>()]) {
@@ -1454,7 +1454,7 @@
             <span class="prelude-val">Err</span>(<span class="ident">PageTableWalkError</span>::<span class="ident">MappedToHugePage</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">PageTableCreateError</span>::<span class="ident">MappedToHugePage</span>);
             }
-            <span class="prelude-val">Err</span>(<span class="ident">PageTableWalkError</span>::<span class="ident">NotMapped</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;entry should be mapped at this point&quot;</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">PageTableWalkError</span>::<span class="ident">NotMapped</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;entry should be mapped at this point&quot;</span>),
             <span class="prelude-val">Ok</span>(<span class="ident">page_table</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">page_table</span>,
         };
 

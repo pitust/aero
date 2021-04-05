@@ -267,7 +267,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="ident">sel</span>: <span class="ident">SegmentSelector</span>) {
-        <span class="macro">asm</span><span class="macro">!</span>(
+        <span class="macro">asm!</span>(
             <span class="string">&quot;push {sel}&quot;</span>,
             <span class="string">&quot;lea {tmp}, [1f + rip]&quot;</span>,
             <span class="string">&quot;push {tmp}&quot;</span>,
@@ -296,7 +296,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_ss</span>(<span class="ident">sel</span>: <span class="ident">SegmentSelector</span>) {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov ss, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+    <span class="macro">asm!</span>(<span class="string">&quot;mov ss, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_ss</span>(<span class="ident">sel</span>.<span class="number">0</span>);
@@ -311,7 +311,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_ds</span>(<span class="ident">sel</span>: <span class="ident">SegmentSelector</span>) {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov ds, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+    <span class="macro">asm!</span>(<span class="string">&quot;mov ds, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_ds</span>(<span class="ident">sel</span>.<span class="number">0</span>);
@@ -326,7 +326,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_es</span>(<span class="ident">sel</span>: <span class="ident">SegmentSelector</span>) {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov es, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+    <span class="macro">asm!</span>(<span class="string">&quot;mov es, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_es</span>(<span class="ident">sel</span>.<span class="number">0</span>);
@@ -341,7 +341,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_fs</span>(<span class="ident">sel</span>: <span class="ident">SegmentSelector</span>) {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov fs, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+    <span class="macro">asm!</span>(<span class="string">&quot;mov fs, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_fs</span>(<span class="ident">sel</span>.<span class="number">0</span>);
@@ -356,7 +356,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_gs</span>(<span class="ident">sel</span>: <span class="ident">SegmentSelector</span>) {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov gs, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+    <span class="macro">asm!</span>(<span class="string">&quot;mov gs, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_gs</span>(<span class="ident">sel</span>.<span class="number">0</span>);
@@ -371,7 +371,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">swap_gs</span>() {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;swapgs&quot;</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+    <span class="macro">asm!</span>(<span class="string">&quot;swapgs&quot;</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_swapgs</span>();
@@ -383,7 +383,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     {
         <span class="kw">let</span> <span class="ident">segment</span>: <span class="ident">u16</span>;
-        <span class="kw">unsafe</span> { <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov {0:x}, cs&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">segment</span>, <span class="ident">options</span>(<span class="ident">nostack</span>, <span class="ident">nomem</span>)) };
+        <span class="kw">unsafe</span> { <span class="macro">asm!</span>(<span class="string">&quot;mov {0:x}, cs&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">segment</span>, <span class="ident">options</span>(<span class="ident">nostack</span>, <span class="ident">nomem</span>)) };
         <span class="ident">SegmentSelector</span>(<span class="ident">segment</span>)
     }
 
@@ -408,7 +408,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="ident">val</span>: <span class="ident">u64</span>) {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;wrfsbase {}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">val</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;wrfsbase {}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">val</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
@@ -431,7 +431,7 @@
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
         <span class="kw">let</span> <span class="ident">val</span>: <span class="ident">u64</span>;
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;rdfsbase {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">val</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;rdfsbase {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">val</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
         <span class="ident">val</span>
     }
 
@@ -457,7 +457,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="ident">val</span>: <span class="ident">u64</span>) {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;wrgsbase {}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">val</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        <span class="macro">asm!</span>(<span class="string">&quot;wrgsbase {}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">val</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
@@ -480,7 +480,7 @@
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
         <span class="kw">let</span> <span class="ident">val</span>: <span class="ident">u64</span>;
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;rdgsbase {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">val</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;rdgsbase {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">val</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
         <span class="ident">val</span>
     }
 

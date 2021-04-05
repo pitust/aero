@@ -15,9 +15,9 @@
     <span class="comment">// The same messages will be printed together.</span>
     <span class="comment">// You will NOT see any interleaving.</span>
     <span class="ident">handles</span>.<span class="ident">push</span>(<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span><span class="op">|</span><span class="op">|</span> {
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;before wait&quot;</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;before wait&quot;</span>);
         <span class="ident">c</span>.<span class="ident">wait</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;after wait&quot;</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;after wait&quot;</span>);
     }));
 }
 <span class="comment">// Wait for other threads to finish.</span>
@@ -44,9 +44,9 @@ all other threads will receive a result that will return <code>false</code> from
     <span class="comment">// The same messages will be printed together.</span>
     <span class="comment">// You will NOT see any interleaving.</span>
     <span class="ident">handles</span>.<span class="ident">push</span>(<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span><span class="op">|</span><span class="op">|</span> {
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;before wait&quot;</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;before wait&quot;</span>);
         <span class="ident">c</span>.<span class="ident">wait</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;after wait&quot;</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;after wait&quot;</span>);
     }));
 }
 <span class="comment">// Wait for other threads to finish.</span>

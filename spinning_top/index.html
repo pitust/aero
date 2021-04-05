@@ -14,11 +14,11 @@
     <span class="comment">// Lock the spinlock to get a mutex guard for the data</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">locked_data</span> <span class="op">=</span> <span class="ident">spinlock</span>.<span class="ident">lock</span>();
     <span class="comment">// The guard implements the `Deref` trait, so we can use it like a `&amp;String`</span>
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">locked_data</span>.<span class="ident">as_str</span>(), <span class="string">&quot;Hello&quot;</span>);
+    <span class="macro">assert_eq!</span>(<span class="ident">locked_data</span>.<span class="ident">as_str</span>(), <span class="string">&quot;Hello&quot;</span>);
     <span class="comment">// It also implements `DerefMut` so mutation is possible too. This is safe</span>
     <span class="comment">// because the spinlock ensures mutual exclusion</span>
     <span class="ident">locked_data</span>.<span class="ident">make_ascii_uppercase</span>();
-    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">locked_data</span>.<span class="ident">as_str</span>(), <span class="string">&quot;HELLO&quot;</span>);
+    <span class="macro">assert_eq!</span>(<span class="ident">locked_data</span>.<span class="ident">as_str</span>(), <span class="string">&quot;HELLO&quot;</span>);
      
     <span class="comment">// the guard automatically frees the lock at the end of the scope</span>
 }</pre></div>

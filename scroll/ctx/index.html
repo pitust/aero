@@ -133,11 +133,11 @@ the <code>*read</code>-methods instead of the <code>*read_with</code> ones you m
 };
 <span class="kw">let</span> <span class="ident">data</span>: <span class="ident">Data</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="ident">contextA</span>).<span class="ident">unwrap</span>();
 
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">field_a</span>, <span class="number">0x00020304</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">field_b</span>, <span class="number">0x01020304</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">field_c</span>, <span class="number">0xdeadbeef</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">name</span>, <span class="string">&quot;UserName&quot;</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">value</span>, [<span class="number">0xCA</span>, <span class="number">0xFE</span>]);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">field_a</span>, <span class="number">0x00020304</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">field_b</span>, <span class="number">0x01020304</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">field_c</span>, <span class="number">0xdeadbeef</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">name</span>, <span class="string">&quot;UserName&quot;</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">value</span>, [<span class="number">0xCA</span>, <span class="number">0xFE</span>]);
 
 <span class="comment">// Here we have a context with a different FieldSize, changing parsing information at runtime.</span>
 <span class="kw">let</span> <span class="ident">contextB</span> <span class="op">=</span> <span class="ident">Context</span> {
@@ -147,7 +147,7 @@ the <code>*read</code>-methods instead of the <code>*read_with</code> ones you m
 
 <span class="comment">// Which will of course error with a malformed input for the context</span>
 <span class="kw">let</span> <span class="ident">err</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Data</span>, <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="ident">contextB</span>);
-<span class="macro">assert</span><span class="macro">!</span>(<span class="ident">err</span>.<span class="ident">is_err</span>());
+<span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">is_err</span>());
 
 <span class="kw">let</span> <span class="ident">bytes_long</span> <span class="op">=</span> [<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x02</span>,<span class="number">0x03</span>,<span class="number">0x04</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x01</span>,<span class="number">0x02</span>,<span class="number">0x03</span>,
                   <span class="number">0x04</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0x00</span>,<span class="number">0xde</span>,<span class="number">0xad</span>,<span class="number">0xbe</span>,<span class="number">0xef</span>,<span class="number">0x00</span>,<span class="number">0x08</span>,<span class="number">0x55</span>,<span class="number">0x73</span>,<span class="number">0x65</span>,<span class="number">0x72</span>,
@@ -155,11 +155,11 @@ the <code>*read</code>-methods instead of the <code>*read_with</code> ones you m
 
 <span class="kw">let</span> <span class="ident">data</span>: <span class="ident">Data</span> <span class="op">=</span> <span class="ident">bytes_long</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="ident">contextB</span>).<span class="ident">unwrap</span>();
 
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">field_a</span>, <span class="number">0x00020304</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">field_b</span>, <span class="number">0x01020304</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">field_c</span>, <span class="number">0xdeadbeef</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">name</span>, <span class="string">&quot;UserName&quot;</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">value</span>, [<span class="number">0xCA</span>, <span class="number">0xFE</span>]);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">field_a</span>, <span class="number">0x00020304</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">field_b</span>, <span class="number">0x01020304</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">field_c</span>, <span class="number">0xdeadbeef</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">name</span>, <span class="string">&quot;UserName&quot;</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">value</span>, [<span class="number">0xCA</span>, <span class="number">0xFE</span>]);
 
 <span class="comment">// Ergonomic conversion, not relevant really.</span>
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">From</span>;

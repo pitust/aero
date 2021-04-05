@@ -265,7 +265,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_region</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">region</span>: <span class="ident">MemoryRegion</span>) {
-        <span class="macro">assert</span><span class="macro">!</span>(
+        <span class="macro">assert!</span>(
             <span class="self">self</span>.<span class="ident">next_entry_index</span>() <span class="op">&lt;</span> <span class="ident">MAX_MEMORY_MAP_SIZE</span>,
             <span class="string">&quot;too many memory regions in memory map&quot;</span>
         );
@@ -395,7 +395,7 @@
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">FrameRange</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="macro">write</span><span class="macro">!</span>(
+        <span class="macro">write!</span>(
             <span class="ident">f</span>,
             <span class="string">&quot;FrameRange({:#x}..{:#x})&quot;</span>,
             <span class="self">self</span>.<span class="ident">start_addr</span>(),
@@ -462,7 +462,7 @@
             <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType</span>::<span class="ident">AcpiReclaimable</span>,
             <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType</span>::<span class="ident">AcpiNvs</span>,
             <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType</span>::<span class="ident">BadMemory</span>,
-            <span class="ident">t</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;invalid region type {}&quot;</span>, <span class="ident">t</span>),
+            <span class="ident">t</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;invalid region type {}&quot;</span>, <span class="ident">t</span>),
         };
         <span class="ident">MemoryRegion</span> {
             <span class="ident">range</span>: <span class="ident">FrameRange</span>::<span class="ident">new</span>(<span class="ident">region</span>.<span class="ident">start_addr</span>, <span class="ident">region</span>.<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">region</span>.<span class="ident">len</span>),

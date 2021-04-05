@@ -89,7 +89,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hlt</span>() {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;hlt&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;hlt&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
@@ -108,7 +108,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nop</span>() {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;nop&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>, <span class="ident">preserves_flags</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;nop&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>, <span class="ident">preserves_flags</span>));
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
@@ -123,7 +123,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bochs_breakpoint</span>() {
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;xchg bx, bx&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;xchg bx, bx&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
     }
 }
 
@@ -134,7 +134,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_rip</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {
     <span class="kw">let</span> <span class="ident">rip</span>: <span class="ident">u64</span>;
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(
+        <span class="macro">asm!</span>(
             <span class="string">&quot;lea {}, [rip]&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">rip</span>, <span class="ident">options</span>(<span class="ident">nostack</span>, <span class="ident">nomem</span>)
         );
     }

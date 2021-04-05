@@ -590,21 +590,21 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_read</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Volatile</span>(<span class="number">42</span>).<span class="ident">read</span>(), <span class="number">42</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Volatile</span>(<span class="number">42</span>).<span class="ident">read</span>(), <span class="number">42</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_write</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">volatile</span> <span class="op">=</span> <span class="ident">Volatile</span>(<span class="number">42</span>);
         <span class="ident">volatile</span>.<span class="ident">write</span>(<span class="number">50</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">volatile</span>.<span class="number">0</span>, <span class="number">50</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">volatile</span>.<span class="number">0</span>, <span class="number">50</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_update</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">volatile</span> <span class="op">=</span> <span class="ident">Volatile</span>(<span class="number">42</span>);
         <span class="ident">volatile</span>.<span class="ident">update</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">v</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">volatile</span>.<span class="number">0</span>, <span class="number">43</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">volatile</span>.<span class="number">0</span>, <span class="number">43</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -619,7 +619,7 @@
             (<span class="kw-2">*</span><span class="ident">volatile_ptr</span>).<span class="ident">write</span>(<span class="number">42u32</span>);
         }
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">target_value</span>, <span class="number">42u32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">target_value</span>, <span class="number">42u32</span>);
     }
 }
 </pre></div>

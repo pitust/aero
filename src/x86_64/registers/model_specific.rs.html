@@ -486,7 +486,7 @@
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MSR</span>: <span class="ident">Msr</span> <span class="op">=</span> <span class="ident">Msr</span>(<span class="number">0xC000_0084</span>);
 }
 
-<span class="macro">bitflags</span><span class="macro">!</span> {
+<span class="macro">bitflags!</span> {
     <span class="doccomment">/// Flags of the Extended Feature Enable Register.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EferFlags</span>: <span class="ident">u64</span> {
         <span class="doccomment">/// Enables the `syscall` and `sysret` instructions.</span>
@@ -530,7 +530,7 @@
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
             {
                 <span class="kw">let</span> (<span class="ident">high</span>, <span class="ident">low</span>): (<span class="ident">u32</span>, <span class="ident">u32</span>);
-                <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;rdmsr&quot;</span>, <span class="ident">out</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">low</span>, <span class="ident">out</span>(<span class="string">&quot;edx&quot;</span>) <span class="ident">high</span>, <span class="kw">in</span>(<span class="string">&quot;ecx&quot;</span>) <span class="self">self</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+                <span class="macro">asm!</span>(<span class="string">&quot;rdmsr&quot;</span>, <span class="ident">out</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">low</span>, <span class="ident">out</span>(<span class="string">&quot;edx&quot;</span>) <span class="ident">high</span>, <span class="kw">in</span>(<span class="string">&quot;ecx&quot;</span>) <span class="self">self</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
                 ((<span class="ident">high</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>) <span class="op">|</span> (<span class="ident">low</span> <span class="kw">as</span> <span class="ident">u64</span>)
             }
 
@@ -550,7 +550,7 @@
             {
                 <span class="kw">let</span> <span class="ident">low</span> <span class="op">=</span> <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>;
                 <span class="kw">let</span> <span class="ident">high</span> <span class="op">=</span> (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-                <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;wrmsr&quot;</span>, <span class="kw">in</span>(<span class="string">&quot;ecx&quot;</span>) <span class="self">self</span>.<span class="number">0</span>, <span class="kw">in</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">low</span>, <span class="kw">in</span>(<span class="string">&quot;edx&quot;</span>) <span class="ident">high</span>, <span class="ident">options</span>(<span class="ident">nostack</span>))
+                <span class="macro">asm!</span>(<span class="string">&quot;wrmsr&quot;</span>, <span class="kw">in</span>(<span class="string">&quot;ecx&quot;</span>) <span class="self">self</span>.<span class="number">0</span>, <span class="kw">in</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">low</span>, <span class="kw">in</span>(<span class="string">&quot;edx&quot;</span>) <span class="ident">high</span>, <span class="ident">options</span>(<span class="ident">nostack</span>))
             }
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>

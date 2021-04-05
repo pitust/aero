@@ -40,18 +40,18 @@
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">fs</span>::<span class="ident">read</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
             <span class="kw">match</span> <span class="ident">Object</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="ident">buffer</span>)<span class="question-mark">?</span> {
                 <span class="ident">Object</span>::<span class="ident">Elf</span>(<span class="ident">elf</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;elf: {:#?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">elf</span>);
+                    <span class="macro">println!</span>(<span class="string">&quot;elf: {:#?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">elf</span>);
                 },
                 <span class="ident">Object</span>::<span class="ident">PE</span>(<span class="ident">pe</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;pe: {:#?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">pe</span>);
+                    <span class="macro">println!</span>(<span class="string">&quot;pe: {:#?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">pe</span>);
                 },
                 <span class="ident">Object</span>::<span class="ident">Mach</span>(<span class="ident">mach</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;mach: {:#?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">mach</span>);
+                    <span class="macro">println!</span>(<span class="string">&quot;mach: {:#?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">mach</span>);
                 },
                 <span class="ident">Object</span>::<span class="ident">Archive</span>(<span class="ident">archive</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;archive: {:#?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">archive</span>);
+                    <span class="macro">println!</span>(<span class="string">&quot;archive: {:#?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">archive</span>);
                 },
-                <span class="ident">Object</span>::<span class="ident">Unknown</span>(<span class="ident">magic</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;unknown magic: {:#x}&quot;</span>, <span class="ident">magic</span>) }
+                <span class="ident">Object</span>::<span class="ident">Unknown</span>(<span class="ident">magic</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">println!</span>(<span class="string">&quot;unknown magic: {:#x}&quot;</span>, <span class="ident">magic</span>) }
             }
         }
     }

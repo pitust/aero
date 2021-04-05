@@ -588,9 +588,9 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Read more https://docs.oracle.com/cd/E23824_01/html/819-0690/chapter6-54839.html</span>
 
-<span class="macro">include</span><span class="macro">!</span>(<span class="string">&quot;constants_relocation.rs&quot;</span>);
+<span class="macro">include!</span>(<span class="string">&quot;constants_relocation.rs&quot;</span>);
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">elf_reloc</span> {
+<span class="macro">macro_rules!</span> <span class="ident">elf_reloc</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">isize</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
@@ -626,9 +626,9 @@
                 <span class="kw">let</span> <span class="ident">sym</span> <span class="op">=</span> <span class="ident">r_sym</span>(<span class="self">self</span>.<span class="ident">r_info</span>);
                 <span class="kw">let</span> <span class="ident">typ</span> <span class="op">=</span> <span class="ident">r_type</span>(<span class="self">self</span>.<span class="ident">r_info</span>);
                 <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Rela&quot;</span>)
-                    .<span class="ident">field</span>(<span class="string">&quot;r_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_offset</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;r_info&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_info</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;r_addend&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_addend</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;r_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_offset</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;r_info&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_info</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;r_addend&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_addend</span>))
                     .<span class="ident">field</span>(<span class="string">&quot;r_typ&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">typ</span>)
                     .<span class="ident">field</span>(<span class="string">&quot;r_sym&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">sym</span>)
                     .<span class="ident">finish</span>()
@@ -639,8 +639,8 @@
                 <span class="kw">let</span> <span class="ident">sym</span> <span class="op">=</span> <span class="ident">r_sym</span>(<span class="self">self</span>.<span class="ident">r_info</span>);
                 <span class="kw">let</span> <span class="ident">typ</span> <span class="op">=</span> <span class="ident">r_type</span>(<span class="self">self</span>.<span class="ident">r_info</span>);
                 <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Rel&quot;</span>)
-                    .<span class="ident">field</span>(<span class="string">&quot;r_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_offset</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;r_info&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_info</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;r_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_offset</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;r_info&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_info</span>))
                     .<span class="ident">field</span>(<span class="string">&quot;r_typ&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">typ</span>)
                     .<span class="ident">field</span>(<span class="string">&quot;r_sym&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">sym</span>)
                     .<span class="ident">finish</span>()
@@ -649,14 +649,14 @@
     };
 }
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">elf_rela_std_impl</span> {
+<span class="macro">macro_rules!</span> <span class="ident">elf_rela_std_impl</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">isize</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">if_alloc</span><span class="macro">!</span> {
+        <span class="macro">if_alloc!</span> {
             <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">reloc</span>::<span class="ident">Reloc</span>;
 
             <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>;
 
-            <span class="macro">if_std</span><span class="macro">!</span> {
+            <span class="macro">if_std!</span> {
                 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="prelude-ty">Result</span>;
 
                 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">File</span>;
@@ -730,7 +730,7 @@
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_fd</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">File</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Rela</span><span class="op">&gt;</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">size</span> <span class="op">/</span> <span class="ident">SIZEOF_RELA</span>;
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">relocs</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Rela</span>::<span class="ident">default</span>(); <span class="ident">count</span>];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">relocs</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">Rela</span>::<span class="ident">default</span>(); <span class="ident">count</span>];
                 <span class="ident">fd</span>.<span class="ident">seek</span>(<span class="ident">Start</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">u64</span>))<span class="question-mark">?</span>;
                 <span class="kw">unsafe</span> {
                     <span class="ident">fd</span>.<span class="ident">read_exact</span>(<span class="ident">plain</span>::<span class="ident">as_mut_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">relocs</span>))<span class="question-mark">?</span>;
@@ -745,7 +745,7 @@
 
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">reloc</span>::<span class="kw-2">*</span>;
 
-    <span class="macro">elf_reloc</span><span class="macro">!</span>(<span class="ident">u32</span>, <span class="ident">i32</span>);
+    <span class="macro">elf_reloc!</span>(<span class="ident">u32</span>, <span class="ident">i32</span>);
 
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZEOF_RELA</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span> <span class="op">+</span> <span class="number">4</span> <span class="op">+</span> <span class="number">4</span>;
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZEOF_REL</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span> <span class="op">+</span> <span class="number">4</span>;
@@ -765,13 +765,13 @@
         (<span class="ident">sym</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">+</span> (<span class="ident">typ</span> <span class="op">&amp;</span> <span class="number">0xff</span>)
     }
 
-    <span class="macro">elf_rela_std_impl</span><span class="macro">!</span>(<span class="ident">u32</span>, <span class="ident">i32</span>);
+    <span class="macro">elf_rela_std_impl!</span>(<span class="ident">u32</span>, <span class="ident">i32</span>);
 }
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">reloc64</span> {
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">reloc</span>::<span class="kw-2">*</span>;
 
-    <span class="macro">elf_reloc</span><span class="macro">!</span>(<span class="ident">u64</span>, <span class="ident">i64</span>);
+    <span class="macro">elf_reloc!</span>(<span class="ident">u64</span>, <span class="ident">i64</span>);
 
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZEOF_RELA</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">8</span> <span class="op">+</span> <span class="number">8</span> <span class="op">+</span> <span class="number">8</span>;
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZEOF_REL</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">8</span> <span class="op">+</span> <span class="number">8</span>;
@@ -791,13 +791,13 @@
         (<span class="ident">sym</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>) <span class="op">+</span> <span class="ident">typ</span>
     }
 
-    <span class="macro">elf_rela_std_impl</span><span class="macro">!</span>(<span class="ident">u64</span>, <span class="ident">i64</span>);
+    <span class="macro">elf_rela_std_impl!</span>(<span class="ident">u64</span>, <span class="ident">i64</span>);
 }
 
 <span class="comment">//////////////////////////////</span>
 <span class="comment">// Generic Reloc</span>
 <span class="comment">/////////////////////////////</span>
-<span class="macro">if_alloc</span><span class="macro">!</span> {
+<span class="macro">if_alloc!</span> {
     <span class="kw">use</span> <span class="ident">scroll</span>::{<span class="ident">ctx</span>, <span class="ident">Pread</span>};
     <span class="kw">use</span> <span class="ident">scroll</span>::<span class="ident">ctx</span>::<span class="ident">SizeWith</span>;
     <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
@@ -904,8 +904,8 @@
     <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Reloc</span> {
         <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
             <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Reloc&quot;</span>)
-                .<span class="ident">field</span>(<span class="string">&quot;r_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_offset</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;r_addend&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_addend</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>)))
+                .<span class="ident">field</span>(<span class="string">&quot;r_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_offset</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;r_addend&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">r_addend</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>)))
                 .<span class="ident">field</span>(<span class="string">&quot;r_sym&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">r_sym</span>)
                 .<span class="ident">field</span>(<span class="string">&quot;r_type&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">r_type</span>)
                 .<span class="ident">finish</span>()
@@ -927,7 +927,7 @@
             <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bytes</span>.<span class="ident">len</span>();
             <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RelocSection&quot;</span>)
                 .<span class="ident">field</span>(<span class="string">&quot;bytes&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">len</span>)
-                .<span class="ident">field</span>(<span class="string">&quot;range&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:#x}..{:#x}&quot;</span>, <span class="self">self</span>.<span class="ident">start</span>, <span class="self">self</span>.<span class="ident">end</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;range&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:#x}..{:#x}&quot;</span>, <span class="self">self</span>.<span class="ident">start</span>, <span class="self">self</span>.<span class="ident">end</span>))
                 .<span class="ident">field</span>(<span class="string">&quot;count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">count</span>)
                 .<span class="ident">field</span>(<span class="string">&quot;Relocations&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">to_vec</span>())
                 .<span class="ident">finish</span>()

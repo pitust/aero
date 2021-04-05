@@ -149,7 +149,7 @@
 <span class="doccomment">/// [`c_float`]: https://doc.rust-lang.org/std/os/raw/type.c_float.html</span>
 <span class="doccomment">/// [`Deref`]: https://doc.rust-lang.org/std/ops/trait.Deref.html</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">assert_type_eq_all</span> {
+<span class="macro">macro_rules!</span> <span class="ident">assert_type_eq_all</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">ty</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">xs</span>:<span class="ident">ty</span>),<span class="op">+</span> $(,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">const</span> <span class="kw">_</span>: <span class="kw">fn</span>() <span class="op">=</span> <span class="op">|</span><span class="op">|</span> { $({
             <span class="kw">trait</span> <span class="ident">TypeEq</span> {
@@ -195,7 +195,7 @@
 <span class="doccomment">/// [`c_uchar`]: https://doc.rust-lang.org/std/os/raw/type.c_uchar.html</span>
 <span class="doccomment">/// [`u8`]: https://doc.rust-lang.org/std/primitive.u8.html</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">assert_type_ne_all</span> {
+<span class="macro">macro_rules!</span> <span class="ident">assert_type_ne_all</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">ty</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">y</span>:<span class="ident">ty</span>),<span class="op">+</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">const</span> <span class="kw">_</span>: <span class="kw">fn</span>() <span class="op">=</span> <span class="op">|</span><span class="op">|</span> {
             <span class="kw">trait</span> <span class="ident">MutuallyExclusive</span> {}

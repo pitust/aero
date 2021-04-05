@@ -102,58 +102,58 @@
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">InterruptStack</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">core</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">core</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Instruction Pointer -&gt; {:?}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">instruction_pointer</span>)<span class="question-mark">?</span>;
-        <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Code Segment -&gt; {:#X}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">code_segment</span>)<span class="question-mark">?</span>;
-        <span class="macro">writeln</span><span class="macro">!</span>(
+        <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;Instruction Pointer -&gt; {:?}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">instruction_pointer</span>)<span class="question-mark">?</span>;
+        <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;Code Segment -&gt; {:#X}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">code_segment</span>)<span class="question-mark">?</span>;
+        <span class="macro">writeln!</span>(
             <span class="ident">f</span>,
             <span class="string">&quot;CPU Flags -&gt; {:?}&quot;</span>,
             <span class="ident">RFlags</span>::<span class="ident">from_bits_truncate</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">cpu_flags</span>)
         )<span class="question-mark">?</span>;
-        <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Stack Pointer -&gt; {:?}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">stack_pointer</span>)<span class="question-mark">?</span>;
-        <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Stack Segment -&gt; {:#X}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">stack_segment</span>)<span class="question-mark">?</span>;
+        <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;Stack Pointer -&gt; {:?}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">stack_pointer</span>)<span class="question-mark">?</span>;
+        <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;Stack Segment -&gt; {:#X}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">stack_segment</span>)<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">divide_by_zero</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Division by zero&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Division by zero&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">debug</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Debug&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Debug&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">non_maskable</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Non Maskable&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Non Maskable&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">breakpoint</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Breakpoint&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Breakpoint&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">overflow</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Stack Overflow&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Stack Overflow&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">bound_range</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Out of Bounds&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Out of Bounds&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">invalid_opcode</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Invalid Opcode&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Invalid Opcode&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">device_not_available</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Device not Avaliable&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Device not Avaliable&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">double_fault</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Double Fault&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Double Fault&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">invalid_tss</span>() {
-    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Invalid TSS&quot;</span>)
+    <span class="macro">panic!</span>(<span class="string">&quot;Invalid TSS&quot;</span>)
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">page_fault</span>(
@@ -163,7 +163,7 @@
     <span class="kw">let</span> <span class="ident">stack_frame</span> <span class="op">=</span> <span class="ident">InterruptStack</span>::<span class="ident">from</span>(<span class="ident">stack_frame</span>);
     <span class="kw">let</span> <span class="ident">accessed_address</span> <span class="op">=</span> <span class="ident">Cr2</span>::<span class="ident">read</span>();
 
-    <span class="macro">panic</span><span class="macro">!</span>(
+    <span class="macro">panic!</span>(
         <span class="string">&quot;EXCEPTION: Page Fault\n\nAccessed Address: {:?}\nError Code: {:?}\n\n{}&quot;</span>,
         <span class="ident">accessed_address</span>, <span class="ident">error_code</span>, <span class="ident">stack_frame</span>
     )

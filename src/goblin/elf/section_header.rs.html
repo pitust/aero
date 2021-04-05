@@ -577,7 +577,7 @@
 <span id="574">574</span>
 <span id="575">575</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">elf_section_header</span> {
+<span class="macro">macro_rules!</span> <span class="ident">elf_section_header</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="comment">// XXX: Do not import scroll traits here.</span>
         <span class="comment">// See: https://github.com/rust-lang/rust/issues/65090#issuecomment-538668155</span>
@@ -623,14 +623,14 @@
                 <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SectionHeader&quot;</span>)
                     .<span class="ident">field</span>(<span class="string">&quot;sh_name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sh_name</span>)
                     .<span class="ident">field</span>(<span class="string">&quot;sh_type&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">sht_to_str</span>(<span class="self">self</span>.<span class="ident">sh_type</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;sh_flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_flags</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;sh_addr&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_addr</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;sh_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_offset</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;sh_size&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_size</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;sh_link&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_link</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;sh_info&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_info</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;sh_addralign&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_addralign</span>))
-                    .<span class="ident">field</span>(<span class="string">&quot;sh_entsize&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_entsize</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;sh_flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_flags</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;sh_addr&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_addr</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;sh_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_offset</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;sh_size&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_size</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;sh_link&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_link</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;sh_info&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_info</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;sh_addralign&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_addralign</span>))
+                    .<span class="ident">field</span>(<span class="string">&quot;sh_entsize&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_entsize</span>))
                     .<span class="ident">finish</span>()
             }
         }
@@ -843,24 +843,24 @@
     }
 }
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">elf_section_header_std_impl</span> { (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
+<span class="macro">macro_rules!</span> <span class="ident">elf_section_header_std_impl</span> { (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
     <span class="kw">mod</span> <span class="ident">tests</span> {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
         <span class="attribute">#[<span class="ident">test</span>]</span>
         <span class="kw">fn</span> <span class="ident">size_of</span>() {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">SectionHeader</span><span class="op">&gt;</span>(), <span class="ident">SIZEOF_SHDR</span>);
+            <span class="macro">assert_eq!</span>(::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">SectionHeader</span><span class="op">&gt;</span>(), <span class="ident">SIZEOF_SHDR</span>);
         }
     }
 
-    <span class="macro">if_alloc</span><span class="macro">!</span> {
+    <span class="macro">if_alloc!</span> {
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">section_header</span>::<span class="ident">SectionHeader</span> <span class="kw">as</span> <span class="ident">ElfSectionHeader</span>;
 
         <span class="kw">use</span> <span class="ident">plain</span>::<span class="ident">Plain</span>;
         <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
 
-        <span class="macro">if_std</span><span class="macro">!</span> {
+        <span class="macro">if_std!</span> {
             <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="prelude-ty">Result</span>;
 
             <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">File</span>;
@@ -904,7 +904,7 @@
         <span class="kw">impl</span> <span class="ident">SectionHeader</span> {
             <span class="comment">// FIXME: &gt; 65535 sections</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bytes</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">shnum</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SectionHeader</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shdrs</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">SectionHeader</span>::<span class="ident">default</span>(); <span class="ident">shnum</span>];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shdrs</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">SectionHeader</span>::<span class="ident">default</span>(); <span class="ident">shnum</span>];
                 <span class="ident">shdrs</span>.<span class="ident">copy_from_bytes</span>(<span class="ident">bytes</span>).<span class="ident">expect</span>(<span class="string">&quot;buffer is too short for given number of entries&quot;</span>);
                 <span class="ident">shdrs</span>
             }
@@ -912,7 +912,7 @@
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
             <span class="comment">// FIXME: &gt; 65535 sections</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_fd</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">File</span>, <span class="ident">offset</span>: <span class="ident">u64</span>, <span class="ident">shnum</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SectionHeader</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shdrs</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">SectionHeader</span>::<span class="ident">default</span>(); <span class="ident">shnum</span>];
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shdrs</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">SectionHeader</span>::<span class="ident">default</span>(); <span class="ident">shnum</span>];
                 <span class="ident">fd</span>.<span class="ident">seek</span>(<span class="ident">Start</span>(<span class="ident">offset</span>))<span class="question-mark">?</span>;
                 <span class="kw">unsafe</span> {
                     <span class="ident">fd</span>.<span class="ident">read_exact</span>(<span class="ident">plain</span>::<span class="ident">as_mut_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">shdrs</span>))<span class="question-mark">?</span>;
@@ -926,29 +926,29 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">section_header32</span> {
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">section_header</span>::<span class="kw-2">*</span>;
 
-    <span class="macro">elf_section_header</span><span class="macro">!</span>(<span class="ident">u32</span>);
+    <span class="macro">elf_section_header!</span>(<span class="ident">u32</span>);
 
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZEOF_SHDR</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">40</span>;
 
-    <span class="macro">elf_section_header_std_impl</span><span class="macro">!</span>(<span class="ident">u32</span>);
+    <span class="macro">elf_section_header_std_impl!</span>(<span class="ident">u32</span>);
 }
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">section_header64</span> {
 
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">section_header</span>::<span class="kw-2">*</span>;
 
-    <span class="macro">elf_section_header</span><span class="macro">!</span>(<span class="ident">u64</span>);
+    <span class="macro">elf_section_header!</span>(<span class="ident">u64</span>);
 
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZEOF_SHDR</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">64</span>;
 
-    <span class="macro">elf_section_header_std_impl</span><span class="macro">!</span>(<span class="ident">u64</span>);
+    <span class="macro">elf_section_header_std_impl!</span>(<span class="ident">u64</span>);
 }
 
 <span class="comment">///////////////////////////////</span>
 <span class="comment">// Std/analysis/Unified Structs</span>
 <span class="comment">///////////////////////////////</span>
 
-<span class="macro">if_alloc</span><span class="macro">!</span> {
+<span class="macro">if_alloc!</span> {
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>;
     <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
     <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">result</span>;
@@ -1031,7 +1031,7 @@
 
             <span class="comment">// Sanity check to avoid OOM</span>
             <span class="kw">if</span> <span class="ident">count</span> <span class="op">&gt;</span> <span class="ident">bytes</span>.<span class="ident">len</span>() <span class="op">/</span> <span class="self">Self</span>::<span class="ident">size</span>(<span class="ident">ctx</span>) {
-                <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Buffer is too short for {} section headers&quot;</span>, <span class="ident">count</span>);
+                <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;Buffer is too short for {} section headers&quot;</span>, <span class="ident">count</span>);
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="ident">message</span>));
             }
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">section_headers</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">count</span>);
@@ -1048,13 +1048,13 @@
             }
             <span class="kw">let</span> (<span class="ident">end</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">sh_offset</span>.<span class="ident">overflowing_add</span>(<span class="self">self</span>.<span class="ident">sh_size</span>);
             <span class="kw">if</span> <span class="ident">overflow</span> <span class="op">|</span><span class="op">|</span> <span class="ident">end</span> <span class="op">&gt;</span> <span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span> {
-                <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Section {} size ({}) + offset ({}) is out of bounds. Overflowed: {}&quot;</span>,
+                <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;Section {} size ({}) + offset ({}) is out of bounds. Overflowed: {}&quot;</span>,
                     <span class="self">self</span>.<span class="ident">sh_name</span>, <span class="self">self</span>.<span class="ident">sh_offset</span>, <span class="self">self</span>.<span class="ident">sh_size</span>, <span class="ident">overflow</span>);
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="ident">message</span>));
             }
             <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">sh_addr</span>.<span class="ident">overflowing_add</span>(<span class="self">self</span>.<span class="ident">sh_size</span>);
             <span class="kw">if</span> <span class="ident">overflow</span> {
-                <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Section {} size ({}) + addr ({}) is out of bounds. Overflowed: {}&quot;</span>,
+                <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;Section {} size ({}) + addr ({}) is out of bounds. Overflowed: {}&quot;</span>,
                     <span class="self">self</span>.<span class="ident">sh_name</span>, <span class="self">self</span>.<span class="ident">sh_addr</span>, <span class="self">self</span>.<span class="ident">sh_size</span>, <span class="ident">overflow</span>);
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="ident">message</span>));
             }
@@ -1079,14 +1079,14 @@
             <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SectionHeader&quot;</span>)
                 .<span class="ident">field</span>(<span class="string">&quot;sh_name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sh_name</span>)
                 .<span class="ident">field</span>(<span class="string">&quot;sh_type&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">sht_to_str</span>(<span class="self">self</span>.<span class="ident">sh_type</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;sh_flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_flags</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;sh_addr&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_addr</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;sh_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_offset</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;sh_size&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_size</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;sh_link&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_link</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;sh_info&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_info</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;sh_addralign&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_addralign</span>))
-                .<span class="ident">field</span>(<span class="string">&quot;sh_entsize&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_entsize</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;sh_flags&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_flags</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;sh_addr&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_addr</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;sh_offset&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_offset</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;sh_size&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_size</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;sh_link&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_link</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;sh_info&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_info</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;sh_addralign&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_addralign</span>))
+                .<span class="ident">field</span>(<span class="string">&quot;sh_entsize&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;0x{:x}&quot;</span>, <span class="self">self</span>.<span class="ident">sh_entsize</span>))
                 .<span class="ident">finish</span>()
         }
     }

@@ -41,10 +41,10 @@
         <span class="kw">let</span> <span class="ident">dx</span>;
 
         <span class="kw">unsafe</span> {
-            <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov {}, rax&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ax</span>);
-            <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov {}, rbx&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">bx</span>);
-            <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov {}, rcx&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">cx</span>);
-            <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;mov {}, rdx&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">dx</span>);
+            <span class="macro">asm!</span>(<span class="string">&quot;mov {}, rax&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ax</span>);
+            <span class="macro">asm!</span>(<span class="string">&quot;mov {}, rbx&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">bx</span>);
+            <span class="macro">asm!</span>(<span class="string">&quot;mov {}, rcx&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">cx</span>);
+            <span class="macro">asm!</span>(<span class="string">&quot;mov {}, rdx&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">dx</span>);
         }
 
         <span class="self">Self</span> { <span class="ident">ax</span>, <span class="ident">bx</span>, <span class="ident">cx</span>, <span class="ident">dx</span> }

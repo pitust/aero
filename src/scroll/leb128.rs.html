@@ -393,23 +393,23 @@
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">2u8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">Uleb128</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;num: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">num</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">130u64</span>, <span class="ident">num</span>.<span class="ident">into</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">num</span>.<span class="ident">size</span>(), <span class="number">2</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;num: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">num</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">130u64</span>, <span class="ident">num</span>.<span class="ident">into</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">num</span>.<span class="ident">size</span>(), <span class="number">2</span>);
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0x00</span>,<span class="number">0x01</span>];
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">Uleb128</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;num: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">num</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0u64</span>, <span class="ident">num</span>.<span class="ident">into</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">num</span>.<span class="ident">size</span>(), <span class="number">1</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;num: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">num</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">0u64</span>, <span class="ident">num</span>.<span class="ident">into</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">num</span>.<span class="ident">size</span>(), <span class="number">1</span>);
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0x21</span>];
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">Uleb128</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;num: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">num</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0x21u64</span>, <span class="ident">num</span>.<span class="ident">into</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">num</span>.<span class="ident">size</span>(), <span class="number">1</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;num: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">num</span>);
+        <span class="macro">assert_eq!</span>(<span class="number">0x21u64</span>, <span class="ident">num</span>.<span class="ident">into</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">num</span>.<span class="ident">size</span>(), <span class="number">1</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -418,8 +418,8 @@
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">2u8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">Uleb128</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read Uleb128&quot;</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">130u64</span>, <span class="ident">num</span>.<span class="ident">into</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">386</span>, <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">LE</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="number">130u64</span>, <span class="ident">num</span>.<span class="ident">into</span>());
+        <span class="macro">assert_eq!</span>(<span class="number">386</span>, <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>(<span class="number">0</span>, <span class="ident">LE</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -437,7 +437,7 @@
                    <span class="number">2</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>,
                    <span class="number">1</span>];
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">Uleb128</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">Uleb128</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">is_err</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -445,7 +445,7 @@
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">Pread</span>;
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> [<span class="number">0x7fu8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">0x7e</span>];
         <span class="kw">let</span> <span class="ident">num</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">Sleb128</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read Sleb128&quot;</span>).<span class="ident">into</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="op">-</span><span class="number">129</span>, <span class="ident">num</span>);
+        <span class="macro">assert_eq!</span>(<span class="op">-</span><span class="number">129</span>, <span class="ident">num</span>);
     }
 }
 </pre></div>

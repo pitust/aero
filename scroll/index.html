@@ -53,28 +53,28 @@ parallelization.</p>
 <span class="comment">// This will use a default context for the type being parsed;</span>
 <span class="comment">// in the case of u32 this defines to use the host&#39;s endianess.</span>
 <span class="kw">let</span> <span class="ident">number</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">number</span>, <span class="number">0xefbeadde</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">number</span>, <span class="number">0xefbeadde</span>);
 
 
 <span class="comment">// Similarly we can also read a single byte at offset 2</span>
 <span class="comment">// This time using type ascription instead of the turbofish (::&lt;&gt;) operator.</span>
 <span class="kw">let</span> <span class="ident">byte</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>(<span class="number">2</span>).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">byte</span>, <span class="number">0xbe</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">byte</span>, <span class="number">0xbe</span>);
 
 
 <span class="comment">// If required we can also provide a specific parsing context; e.g. if we want to explicitly</span>
 <span class="comment">// define the endianess to use:</span>
 <span class="kw">let</span> <span class="ident">be_number</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="ident">scroll</span>::<span class="ident">BE</span>).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">be_number</span>, <span class="number">0xdeadbeef</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">be_number</span>, <span class="number">0xdeadbeef</span>);
 
 <span class="kw">let</span> <span class="ident">be_number16</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>(<span class="number">1</span>, <span class="ident">scroll</span>::<span class="ident">BE</span>).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">be_number16</span>, <span class="number">0xadbe</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">be_number16</span>, <span class="number">0xadbe</span>);
 
 
 <span class="comment">// Reads may fail; in this example due to a too large read for the given container.</span>
 <span class="comment">// Scroll&#39;s error type does not by default allocate to work in environments like no_std.</span>
 <span class="kw">let</span> <span class="ident">byte_err</span>: <span class="ident">scroll</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread</span>(<span class="number">0</span>);
-<span class="macro">assert</span><span class="macro">!</span>(<span class="ident">byte_err</span>.<span class="ident">is_err</span>());
+<span class="macro">assert!</span>(<span class="ident">byte_err</span>.<span class="ident">is_err</span>());
 
 
 <span class="comment">// We can parse out custom datatypes, or types with lifetimes, as long as they implement</span>
@@ -82,14 +82,14 @@ parallelization.</p>
 <span class="comment">// Here we use the default context for &amp;str which parses are C-style &#39;\0&#39;-delimited string.</span>
 <span class="kw">let</span> <span class="ident">hello</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;hello world\0more words&quot;</span>;
 <span class="kw">let</span> <span class="ident">hello_world</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="ident">hello</span>.<span class="ident">pread</span>(<span class="number">0</span>).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;hello world&quot;</span>, <span class="ident">hello_world</span>);
+<span class="macro">assert_eq!</span>(<span class="string">&quot;hello world&quot;</span>, <span class="ident">hello_world</span>);
 
 <span class="comment">// We can again provide a custom context; for example to parse Space-delimited strings.</span>
 <span class="comment">// As you can see while we still call `pread` changing the context can influence the output —</span>
 <span class="comment">// instead of splitting at &#39;\0&#39; we split at spaces</span>
 <span class="kw">let</span> <span class="ident">hello2</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;hello world\0more words&quot;</span>;
 <span class="kw">let</span> <span class="ident">world</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="ident">hello2</span>.<span class="ident">pread_with</span>(<span class="number">6</span>, <span class="ident">ctx</span>::<span class="ident">StrCtx</span>::<span class="ident">Delimiter</span>(<span class="ident">ctx</span>::<span class="ident">SPACE</span>)).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;world\0more&quot;</span>, <span class="ident">world</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="string">&quot;world\0more&quot;</span>, <span class="ident">world</span>);</pre></div>
 <h2 id="stdio-api" class="section-header"><a href="#stdio-api"><code>std::io</code> API</a></h2>
 <p>Scroll also allows reading from <code>std::io</code>. For this the types to read need to implement
 <a href="ctx/trait.FromCtx.html">FromCtx</a> and <a href="ctx/trait.SizeWith.html">SizeWith</a>.</p>
@@ -107,14 +107,14 @@ parallelization.</p>
 
 <span class="kw">let</span> <span class="ident">after</span> <span class="op">=</span> <span class="ident">cursor</span>.<span class="ident">position</span>();
 
-<span class="macro">assert</span><span class="macro">!</span>(<span class="ident">prev</span> <span class="op">&lt;</span> <span class="ident">after</span>);
+<span class="macro">assert!</span>(<span class="ident">prev</span> <span class="op">&lt;</span> <span class="ident">after</span>);
 
 <span class="comment">// SizeWith allows us to define a context-sensitive size of a read type:</span>
 <span class="comment">// Contexts can have different instantiations; e.g. the `Endian` context can be either Little or</span>
 <span class="comment">// Big. This is useful if for example the context contains the word-size of fields to be</span>
 <span class="comment">// read/written, e.g. switching between ELF32 or ELF64 at runtime.</span>
 <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">u64</span> <span class="kw">as</span> <span class="ident">ctx</span>::<span class="ident">SizeWith</span><span class="op">&lt;</span><span class="ident">Endian</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">size_with</span>(<span class="kw-2">&amp;</span><span class="ident">Endian</span>::<span class="ident">Little</span>) <span class="kw">as</span> <span class="ident">u64</span>;
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">prev</span> <span class="op">+</span> <span class="ident">size</span>, <span class="ident">after</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">prev</span> <span class="op">+</span> <span class="ident">size</span>, <span class="ident">after</span>);</pre></div>
 <p>In the same vein as IOread we can use IOwrite to write a type to anything implementing
 <code>std::io::Write</code>:</p>
 
@@ -128,7 +128,7 @@ parallelization.</p>
 <span class="comment">// This of course once again increments the cursor position</span>
 <span class="ident">cursor</span>.<span class="ident">iowrite_with</span>(<span class="number">0xdeadbeef</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="ident">scroll</span>::<span class="ident">BE</span>).<span class="ident">unwrap</span>();
 
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">cursor</span>.<span class="ident">into_inner</span>(), [<span class="number">0xde</span>, <span class="number">0xad</span>, <span class="number">0xbe</span>, <span class="number">0xef</span>, <span class="number">0x0</span>]);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">cursor</span>.<span class="ident">into_inner</span>(), [<span class="number">0xde</span>, <span class="number">0xad</span>, <span class="number">0xbe</span>, <span class="number">0xef</span>, <span class="number">0x0</span>]);</pre></div>
 <h2 id="complex-use-cases" class="section-header"><a href="#complex-use-cases">Complex use cases</a></h2>
 <p>Scoll is designed to be highly adaptable while providing a strong abstraction between the types
 being read/written and the data container containing them.</p>
@@ -182,8 +182,8 @@ buffer.</p>
 <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="string">b&quot;\x01\x02\x03\x04\x00\x08UserName&quot;</span>;
 <span class="kw">let</span> <span class="ident">data</span>: <span class="ident">Data</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">pread_with</span>(<span class="number">0</span>, <span class="ident">Context</span>(<span class="ident">Endian</span>::<span class="ident">Big</span>)).<span class="ident">unwrap</span>();
 
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">id</span>, <span class="number">0x01020304</span>);
-<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="string">&quot;UserName&quot;</span>.<span class="ident">to_string</span>());</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">id</span>, <span class="number">0x01020304</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="string">&quot;UserName&quot;</span>.<span class="ident">to_string</span>());</pre></div>
 <p>For further explanation of the traits and how to implement them manually refer to
 <a href="trait.Pread.html">Pread</a> and <a href="ctx/trait.TryFromCtx.html">TryFromCtx</a>.</p>
 </div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>

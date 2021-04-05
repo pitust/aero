@@ -165,7 +165,7 @@ _______ _______ ______ _______    _______ ______
 |_|   |_|_______)_|   |_\_____/    \_____(______/ 
 &quot;</span>;
 
-<span class="macro">entry_point</span><span class="macro">!</span>(<span class="ident">kernel_main</span>);
+<span class="macro">entry_point!</span>(<span class="ident">kernel_main</span>);
 
 <span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="kw">unsafe</span> {
@@ -174,16 +174,16 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">arch</span>::<span class="ident">interrupts</span>::<span class="ident">disable_interrupts</span>();
 
         <span class="ident">arch</span>::<span class="ident">gdt</span>::<span class="ident">init</span>();
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
 
         <span class="ident">arch</span>::<span class="ident">interrupts</span>::<span class="ident">init</span>();
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Loaded IDT&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded IDT&quot;</span>);
 
         <span class="ident">pit</span>::<span class="ident">init</span>();
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Loaded PIT&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded PIT&quot;</span>);
 
         <span class="ident">drivers</span>::<span class="ident">mouse</span>::<span class="ident">init</span>();
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Loaded PS/2 driver&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded PS/2 driver&quot;</span>);
 
         <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0b11111000</span>);
         <span class="ident">io</span>::<span class="ident">outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0b11101111</span>);
@@ -191,25 +191,25 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">arch</span>::<span class="ident">interrupts</span>::<span class="ident">enable_interrupts</span>();
 
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">mut</span> <span class="ident">frame_allocator</span>) <span class="op">=</span> <span class="ident">paging</span>::<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="ident">boot_info</span>);
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Loaded paging&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded paging&quot;</span>);
 
         <span class="ident">arch</span>::<span class="ident">memory</span>::<span class="ident">alloc</span>::<span class="ident">init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Loaded heap&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded heap&quot;</span>);
 
         <span class="ident">acpi</span>::<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>);
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
 
         <span class="ident">drivers</span>::<span class="ident">pci</span>::<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>);
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Loaded PCI driver&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded PCI driver&quot;</span>);
 
-        <span class="ident">log</span>::<span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Initialized kernel&quot;</span>);
+        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Initialized kernel&quot;</span>);
 
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ASCII_INTRO</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ASCII_INTRO</span>);
 
         <span class="ident">userland</span>::<span class="ident">init</span>();
 
-        <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;$ &quot;</span>);
+        <span class="macro">print!</span>(<span class="string">&quot;$ &quot;</span>);
 
         <span class="kw">loop</span> {
             <span class="ident">arch</span>::<span class="ident">interrupts</span>::<span class="ident">halt</span>();

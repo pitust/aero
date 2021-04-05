@@ -195,7 +195,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable</span>() {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;sti&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;sti&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
@@ -210,7 +210,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disable</span>() {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;cli&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;cli&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
@@ -311,7 +311,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_and_hlt</span>() {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;sti; hlt&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;sti; hlt&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
@@ -324,7 +324,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">int3</span>() {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
     <span class="kw">unsafe</span> {
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;int3&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;int3&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
@@ -340,18 +340,18 @@
 <span class="doccomment">/// const generics is implemented in Rust.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">software_interrupt</span> {
+<span class="macro">macro_rules!</span> <span class="ident">software_interrupt</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-        <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;int {id}&quot;</span>, <span class="ident">id</span> <span class="op">=</span> <span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+        <span class="macro">asm!</span>(<span class="string">&quot;int {id}&quot;</span>, <span class="ident">id</span> <span class="op">=</span> <span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
     }};
 }
 
 <span class="doccomment">/// Not implemented</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">software_interrupt</span> {
+<span class="macro">macro_rules!</span> <span class="ident">software_interrupt</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-        <span class="macro">compile_error</span><span class="macro">!</span>(<span class="string">&quot;software_interrupt not implemented for non-nightly&quot;</span>);
+        <span class="macro">compile_error!</span>(<span class="string">&quot;software_interrupt not implemented for non-nightly&quot;</span>);
     }};
 }
 </pre></div>

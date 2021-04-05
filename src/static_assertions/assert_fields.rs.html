@@ -126,7 +126,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`Range`]: https://doc.rust-lang.org/std/ops/struct.Range.html</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">assert_fields</span> {
+<span class="macro">macro_rules!</span> <span class="ident">assert_fields</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">ident</span>: $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">ident</span>),<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unknown_lints</span>, <span class="ident">unneeded_field_pattern</span>)]</span>
         <span class="kw">const</span> <span class="kw">_</span>: <span class="kw">fn</span>() <span class="op">=</span> <span class="op">|</span><span class="op">|</span> {

@@ -484,7 +484,7 @@
         <span class="prelude-val">Ok</span>(<span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">address</span>))
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the page that starts at the given virtual address.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// ## Safety</span>
@@ -508,7 +508,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the start address of the page.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_address</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {
@@ -516,7 +516,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the size the page (4KB, 2MB or 1GB).</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
@@ -524,7 +524,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the level 4 page table index of this page.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">p4_index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageTableIndex</span> {
@@ -532,7 +532,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the level 3 page table index of this page.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">p3_index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageTableIndex</span> {
@@ -540,7 +540,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns a range of pages, exclusive `end`.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">range</span>(<span class="ident">start</span>: <span class="self">Self</span>, <span class="ident">end</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageRange</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
@@ -548,7 +548,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns a range of pages, inclusive `end`.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">range_inclusive</span>(<span class="ident">start</span>: <span class="self">Self</span>, <span class="ident">end</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageRangeInclusive</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
@@ -558,7 +558,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">NotGiantPageSize</span><span class="op">&gt;</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the level 2 page table index of this page.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">p2_index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageTableIndex</span> {
@@ -620,7 +620,7 @@
         <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">addr</span>))
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the level 1 page table index of this page.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">p1_index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageTableIndex</span> {
@@ -631,7 +631,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_fmt</span>(<span class="macro">format_args</span><span class="macro">!</span>(
+        <span class="ident">f</span>.<span class="ident">write_fmt</span>(<span class="macro">format_args!</span>(
             <span class="string">&quot;Page[{}]({:#x})&quot;</span>,
             <span class="ident">S</span>::<span class="ident">SIZE_AS_DEBUG_STR</span>,
             <span class="self">self</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()
@@ -778,7 +778,7 @@
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">AddressNotAligned</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;the given address was not sufficiently aligned&quot;</span>)
+        <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;the given address was not sufficiently aligned&quot;</span>)
     }
 }
 
@@ -797,21 +797,21 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">range</span>(<span class="ident">start</span>, <span class="ident">end</span>);
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">number</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="macro">assert_eq!</span>(
                 <span class="ident">range</span>.<span class="ident">next</span>(),
                 <span class="prelude-val">Some</span>(<span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">page_size</span> <span class="op">*</span> <span class="ident">i</span>))
             );
         }
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">range</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">range</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range_inclusive</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">range_inclusive</span>(<span class="ident">start</span>, <span class="ident">end</span>);
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="op">=</span><span class="ident">number</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="macro">assert_eq!</span>(
                 <span class="ident">range_inclusive</span>.<span class="ident">next</span>(),
                 <span class="prelude-val">Some</span>(<span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">page_size</span> <span class="op">*</span> <span class="ident">i</span>))
             );
         }
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">range_inclusive</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">range_inclusive</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
     }
 }
 </pre></div>

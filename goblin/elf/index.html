@@ -14,7 +14,7 @@
       <span class="kw">for</span> <span class="ident">ph</span> <span class="kw">in</span> <span class="ident">binary</span>.<span class="ident">program_headers</span> {
         <span class="kw">if</span> <span class="ident">ph</span>.<span class="ident">p_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">goblin</span>::<span class="ident">elf</span>::<span class="ident">program_header</span>::<span class="ident">PT_LOAD</span> {
           <span class="comment">// TODO: you should validate p_filesz before allocating.</span>
-          <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">_buf</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0u8</span>; <span class="ident">ph</span>.<span class="ident">p_filesz</span> <span class="kw">as</span> <span class="ident">usize</span>];
+          <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">_buf</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0u8</span>; <span class="ident">ph</span>.<span class="ident">p_filesz</span> <span class="kw">as</span> <span class="ident">usize</span>];
           <span class="comment">// read responsibly</span>
          }
       }

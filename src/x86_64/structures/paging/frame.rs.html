@@ -248,7 +248,7 @@
         <span class="prelude-val">Ok</span>(<span class="ident">PhysFrame</span>::<span class="ident">containing_address</span>(<span class="ident">address</span>))
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the frame that starts at the given virtual address.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// ## Safety</span>
@@ -272,7 +272,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the start address of the frame.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_address</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PhysAddr</span> {
@@ -280,7 +280,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns the size the frame (4KB, 2MB or 1GB).</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
@@ -288,7 +288,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns a range of frames, exclusive `end`.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">range</span>(<span class="ident">start</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>, <span class="ident">end</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PhysFrameRange</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
@@ -296,7 +296,7 @@
         }
     }
 
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Returns a range of frames, inclusive `end`.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">range_inclusive</span>(<span class="ident">start</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>, <span class="ident">end</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PhysFrameRangeInclusive</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
@@ -307,7 +307,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_fmt</span>(<span class="macro">format_args</span><span class="macro">!</span>(
+        <span class="ident">f</span>.<span class="ident">write_fmt</span>(<span class="macro">format_args!</span>(
             <span class="string">&quot;PhysFrame[{}]({:#x})&quot;</span>,
             <span class="ident">S</span>::<span class="ident">SIZE_AS_DEBUG_STR</span>,
             <span class="self">self</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()

@@ -240,7 +240,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">io</span>;
 
-<span class="macro">bitflags</span><span class="macro">!</span> {
+<span class="macro">bitflags!</span> {
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IDTFlags</span>: <span class="ident">u8</span> {
         <span class="kw">const</span> <span class="ident">PRESENT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
         <span class="kw">const</span> <span class="ident">RING_0</span> <span class="op">=</span> <span class="number">0</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>;
@@ -353,24 +353,24 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_idt</span>(<span class="ident">idt_descriptor</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">IDTDescriptor</span>) {
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;lidt [{}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">idt_descriptor</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+    <span class="macro">asm!</span>(<span class="string">&quot;lidt [{}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">idt_descriptor</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">disable_interrupts</span>() {
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;cli&quot;</span>);
+    <span class="macro">asm!</span>(<span class="string">&quot;cli&quot;</span>);
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">enable_interrupts</span>() {
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;sti&quot;</span>);
+    <span class="macro">asm!</span>(<span class="string">&quot;sti&quot;</span>);
 }
 
 <span class="doccomment">/// Halt the CPU. Will resume when interrupt is recieved if interrupts are</span>
 <span class="doccomment">/// enabled.</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">halt</span>() {
-    <span class="macro">asm</span><span class="macro">!</span>(<span class="string">&quot;hlt&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+    <span class="macro">asm!</span>(<span class="string">&quot;hlt&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>

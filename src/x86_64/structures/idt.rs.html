@@ -1204,7 +1204,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">InterruptDescriptorTable</span> {
-    <span class="macro">const_fn</span><span class="macro">!</span> {
+    <span class="macro">const_fn!</span> {
         <span class="doccomment">/// Creates a new IDT filled with non-present entries.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">InterruptDescriptorTable</span> {
@@ -1296,10 +1296,10 @@
         };
 
         <span class="kw">if</span> <span class="ident">lower_idx</span> <span class="op">&gt;</span> <span class="number">256</span> <span class="op">|</span><span class="op">|</span> <span class="ident">upper_idx</span> <span class="op">&gt;</span> <span class="number">256</span> {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Index out of range [{}..{}]&quot;</span>, <span class="ident">lower_idx</span>, <span class="ident">upper_idx</span>);
+            <span class="macro">panic!</span>(<span class="string">&quot;Index out of range [{}..{}]&quot;</span>, <span class="ident">lower_idx</span>, <span class="ident">upper_idx</span>);
         }
         <span class="kw">if</span> <span class="ident">lower_idx</span> <span class="op">&lt;</span> <span class="number">32</span> {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Cannot return slice from traps, faults, and exception handlers&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">&quot;Cannot return slice from traps, faults, and exception handlers&quot;</span>);
         }
         (<span class="ident">lower_idx</span>, <span class="ident">upper_idx</span>)
     }
@@ -1348,12 +1348,12 @@
             <span class="number">19</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">simd_floating_point</span>,
             <span class="number">20</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">virtualization</span>,
             <span class="ident">i</span> @ <span class="number">32</span>..<span class="op">=</span><span class="number">255</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">interrupts</span>[<span class="ident">i</span> <span class="op">-</span> <span class="number">32</span>],
-            <span class="ident">i</span> @ <span class="number">15</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">31</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">21</span>..<span class="op">=</span><span class="number">29</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;entry {} is reserved&quot;</span>, <span class="ident">i</span>),
+            <span class="ident">i</span> @ <span class="number">15</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">31</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">21</span>..<span class="op">=</span><span class="number">29</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;entry {} is reserved&quot;</span>, <span class="ident">i</span>),
             <span class="ident">i</span> @ <span class="number">8</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">10</span>..<span class="op">=</span><span class="number">14</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">17</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">30</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;entry {} is an exception with error code&quot;</span>, <span class="ident">i</span>)
+                <span class="macro">panic!</span>(<span class="string">&quot;entry {} is an exception with error code&quot;</span>, <span class="ident">i</span>)
             }
-            <span class="ident">i</span> @ <span class="number">18</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;entry {} is an diverging exception (must not return)&quot;</span>, <span class="ident">i</span>),
-            <span class="ident">i</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;no entry with index {}&quot;</span>, <span class="ident">i</span>),
+            <span class="ident">i</span> @ <span class="number">18</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;entry {} is an diverging exception (must not return)&quot;</span>, <span class="ident">i</span>),
+            <span class="ident">i</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;no entry with index {}&quot;</span>, <span class="ident">i</span>),
         }
     }
 }
@@ -1379,12 +1379,12 @@
             <span class="number">19</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">simd_floating_point</span>,
             <span class="number">20</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">virtualization</span>,
             <span class="ident">i</span> @ <span class="number">32</span>..<span class="op">=</span><span class="number">255</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">interrupts</span>[<span class="ident">i</span> <span class="op">-</span> <span class="number">32</span>],
-            <span class="ident">i</span> @ <span class="number">15</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">31</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">21</span>..<span class="op">=</span><span class="number">29</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;entry {} is reserved&quot;</span>, <span class="ident">i</span>),
+            <span class="ident">i</span> @ <span class="number">15</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">31</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">21</span>..<span class="op">=</span><span class="number">29</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;entry {} is reserved&quot;</span>, <span class="ident">i</span>),
             <span class="ident">i</span> @ <span class="number">8</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">10</span>..<span class="op">=</span><span class="number">14</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">17</span> <span class="op">|</span> <span class="ident">i</span> @ <span class="number">30</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;entry {} is an exception with error code&quot;</span>, <span class="ident">i</span>)
+                <span class="macro">panic!</span>(<span class="string">&quot;entry {} is an exception with error code&quot;</span>, <span class="ident">i</span>)
             }
-            <span class="ident">i</span> @ <span class="number">18</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;entry {} is an diverging exception (must not return)&quot;</span>, <span class="ident">i</span>),
-            <span class="ident">i</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;no entry with index {}&quot;</span>, <span class="ident">i</span>),
+            <span class="ident">i</span> @ <span class="number">18</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;entry {} is an diverging exception (must not return)&quot;</span>, <span class="ident">i</span>),
+            <span class="ident">i</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;no entry with index {}&quot;</span>, <span class="ident">i</span>),
         }
     }
 }
@@ -1457,7 +1457,7 @@
     }
 }
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_set_handler_fn</span> {
+<span class="macro">macro_rules!</span> <span class="ident">impl_set_handler_fn</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">h</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;instructions&quot;</span>)]</span>
         <span class="kw">impl</span> <span class="ident">Entry</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">h</span><span class="op">&gt;</span> {
@@ -1476,11 +1476,11 @@
     };
 }
 
-<span class="macro">impl_set_handler_fn</span><span class="macro">!</span>(<span class="ident">HandlerFunc</span>);
-<span class="macro">impl_set_handler_fn</span><span class="macro">!</span>(<span class="ident">HandlerFuncWithErrCode</span>);
-<span class="macro">impl_set_handler_fn</span><span class="macro">!</span>(<span class="ident">PageFaultHandlerFunc</span>);
-<span class="macro">impl_set_handler_fn</span><span class="macro">!</span>(<span class="ident">DivergingHandlerFunc</span>);
-<span class="macro">impl_set_handler_fn</span><span class="macro">!</span>(<span class="ident">DivergingHandlerFuncWithErrCode</span>);
+<span class="macro">impl_set_handler_fn!</span>(<span class="ident">HandlerFunc</span>);
+<span class="macro">impl_set_handler_fn!</span>(<span class="ident">HandlerFuncWithErrCode</span>);
+<span class="macro">impl_set_handler_fn!</span>(<span class="ident">PageFaultHandlerFunc</span>);
+<span class="macro">impl_set_handler_fn!</span>(<span class="ident">DivergingHandlerFunc</span>);
+<span class="macro">impl_set_handler_fn!</span>(<span class="ident">DivergingHandlerFuncWithErrCode</span>);
 
 <span class="doccomment">/// Represents the options field of an IDT entry.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
@@ -1609,7 +1609,7 @@
         <span class="kw">struct</span> <span class="ident">Hex</span>(<span class="ident">u64</span>);
         <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Hex</span> {
             <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-                <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{:#x}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+                <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{:#x}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
             }
         }
 
@@ -1623,7 +1623,7 @@
     }
 }
 
-<span class="macro">bitflags</span><span class="macro">!</span> {
+<span class="macro">bitflags!</span> {
     <span class="doccomment">/// Describes an page fault error code.</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PageFaultErrorCode</span>: <span class="ident">u64</span> {
@@ -1658,8 +1658,8 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">size_test</span>() {
         <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Entry</span><span class="op">&lt;</span><span class="ident">HandlerFunc</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">16</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">InterruptDescriptorTable</span><span class="op">&gt;</span>(), <span class="number">256</span> <span class="op">*</span> <span class="number">16</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Entry</span><span class="op">&lt;</span><span class="ident">HandlerFunc</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">16</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">InterruptDescriptorTable</span><span class="op">&gt;</span>(), <span class="number">256</span> <span class="op">*</span> <span class="number">16</span>);
     }
 }
 </pre></div>

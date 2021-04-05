@@ -259,15 +259,15 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">hash</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_hash</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hash</span>(<span class="string">&quot;&quot;</span>), <span class="number">0x0000_1505</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hash</span>(<span class="string">&quot;printf&quot;</span>), <span class="number">0x156b_2bb8</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hash</span>(<span class="string">&quot;exit&quot;</span>), <span class="number">0x7c96_7e3f</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hash</span>(<span class="string">&quot;syscall&quot;</span>), <span class="number">0xbac2_12a0</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">hash</span>(<span class="string">&quot;flapenguin.me&quot;</span>), <span class="number">0x8ae9_f18e</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hash</span>(<span class="string">&quot;&quot;</span>), <span class="number">0x0000_1505</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hash</span>(<span class="string">&quot;printf&quot;</span>), <span class="number">0x156b_2bb8</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hash</span>(<span class="string">&quot;exit&quot;</span>), <span class="number">0x7c96_7e3f</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hash</span>(<span class="string">&quot;syscall&quot;</span>), <span class="number">0xbac2_12a0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">hash</span>(<span class="string">&quot;flapenguin.me&quot;</span>), <span class="number">0x8ae9_f18e</span>);
     }
 }
 
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">elf_gnu_hash_impl</span> {
+<span class="macro">macro_rules!</span> <span class="ident">elf_gnu_hash_impl</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">IntTy</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">sym</span>::<span class="ident">Sym</span>;
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">strtab</span>::<span class="ident">Strtab</span>;
