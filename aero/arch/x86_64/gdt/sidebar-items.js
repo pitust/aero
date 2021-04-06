@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["GDT_ENTRIES",""]],"fn":[["LoadGDT",""],["init","Initialize the GDT."]],"static":[["GDT",""]],"struct":[["GDTDescriptor",""],["GDTEntry",""]]});
+initSidebarItems({"constant":[["GDT_ENTRIES",""]],"fn":[["init","Initialize the GDT."],["load_gdt",""]],"static":[["GDT",""]],"struct":[["GDTDescriptor",""],["GDTEntry",""]]});
