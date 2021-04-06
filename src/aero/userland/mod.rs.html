@@ -11,7 +11,6 @@
 <span id="8"> 8</span>
 <span id="9"> 9</span>
 <span id="10">10</span>
-<span id="11">11</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">elf</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">process</span>;
@@ -20,9 +19,8 @@
 <span class="doccomment">/// Initialize userland.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {}
 
-<span class="doccomment">/// Jump to userland.</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">jump_to_userland</span>(<span class="ident">address</span>: <span class="ident">u64</span>) {
-    <span class="macro">asm!</span>(<span class="macro">include_str!</span>(<span class="string">&quot;userland.s&quot;</span>), <span class="kw">in</span>(<span class="string">&quot;rdi&quot;</span>) <span class="ident">address</span>, <span class="kw">in</span>(<span class="string">&quot;ax&quot;</span>) <span class="number">0x1b</span>, <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="number">0x23</span>, <span class="kw">in</span>(<span class="string">&quot;rsi&quot;</span>) <span class="number">0x00</span>);
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+    <span class="kw">fn</span> <span class="ident">jump_userland</span>(<span class="ident">address</span>: <span class="ident">u64</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero" data-search-js="../../../search-index.js"></div>
