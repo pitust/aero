@@ -169,7 +169,7 @@ _______ _______ ______ _______    _______ ______
 
 <span class="macro">entry_point!</span>(<span class="ident">kernel_main</span>);
 
-<span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="ident">logger</span>::<span class="ident">init</span>();
 
     <span class="kw">unsafe</span> {
@@ -192,7 +192,7 @@ _______ _______ ______ _______    _______ ______
 
         <span class="ident">arch</span>::<span class="ident">interrupts</span>::<span class="ident">enable_interrupts</span>();
 
-        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">mut</span> <span class="ident">frame_allocator</span>) <span class="op">=</span> <span class="ident">paging</span>::<span class="ident">init</span>(<span class="ident">boot_info</span>);
+        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">mut</span> <span class="ident">frame_allocator</span>) <span class="op">=</span> <span class="ident">paging</span>::<span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="ident">boot_info</span>);
         <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded paging&quot;</span>);
 
         <span class="ident">arch</span>::<span class="ident">memory</span>::<span class="ident">alloc</span>::<span class="ident">init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)
