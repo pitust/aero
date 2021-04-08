@@ -68,13 +68,13 @@
 <span class="macro">interrupt!</span>(<span class="ident">security</span>, { <span class="macro">panic!</span>(<span class="string">&quot;Security exception&quot;</span>) });
 
 <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="ident">page_fault</span>(
-    <span class="ident">stack_frame</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">InterruptStackFrame</span>,
+    <span class="ident">stack_frame</span>: <span class="ident">InterruptStackFrame</span>,
     <span class="ident">error_code</span>: <span class="ident">PageFaultErrorCode</span>,
 ) {
     <span class="kw">let</span> <span class="ident">accessed_address</span> <span class="op">=</span> <span class="ident">Cr2</span>::<span class="ident">read</span>();
 
     <span class="macro">panic!</span>(
-        <span class="string">&quot;EXCEPTION: Page Fault\n\nAccessed Address: {:?}\nError Code: {:?}\n\n{:?}&quot;</span>,
+        <span class="string">&quot;EXCEPTION: Page Fault\n\nAccessed Address: {:?}\nError Code: {:?}\n\n{:#?}&quot;</span>,
         <span class="ident">accessed_address</span>, <span class="ident">error_code</span>, <span class="ident">stack_frame</span>
     )
 }

@@ -240,7 +240,6 @@
 <span id="237">237</span>
 <span id="238">238</span>
 <span id="239">239</span>
-<span id="240">240</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
@@ -263,8 +262,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">ICW1_ICW4</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">ICW4_8086</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">IDTInterruptHandlerFn</span> <span class="op">=</span>
-    <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">InterruptStackFrame</span>);
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">IDTInterruptHandlerFn</span> <span class="op">=</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span>(<span class="ident">InterruptStackFrame</span>);
 
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">IDT</span>: [<span class="ident">IDTEntry</span>; <span class="ident">IDT_ENTRIES</span>] <span class="op">=</span> [<span class="ident">IDTEntry</span>::<span class="ident">null</span>(); <span class="ident">IDT_ENTRIES</span>];
 
@@ -470,14 +468,14 @@
 <span class="macro">macro_rules!</span> <span class="ident">interrupt</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">stack_frame</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">InterruptStackFrame</span>) {
+        <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">stack_frame</span>: <span class="ident">InterruptStackFrame</span>) {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
         }
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="kw">unsafe</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">stack_frame</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">InterruptStackFrame</span>) {
+        <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">stack_frame</span>: <span class="ident">InterruptStackFrame</span>) {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
         }
     };
