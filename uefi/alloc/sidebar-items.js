@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["exit_boot_services","Notify the allocator library that boot services are not safe to call anymore"],["init","Initializes the allocator."]],"struct":[["Allocator","Allocator which uses the UEFI pool allocation functions."]]});

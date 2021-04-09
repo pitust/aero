@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["aero","bit_field","bitflags","bootloader","cfg_if","goblin","lazy_static","linked_list_allocator","lock_api","log","plain","scopeguard","scroll","spin","spinning_top","static_assertions","volatile","x86_64"];
+window.ALL_CRATES = ["aero","aero_boot","bit_field","bitflags","bootloader","cfg_if","goblin","lazy_static","linked_list_allocator","lock_api","log","plain","rlibc","scopeguard","scroll","spin","spinning_top","static_assertions","ucs2","uefi","uefi_services","volatile","x86_64","xmas_elf","zero"];

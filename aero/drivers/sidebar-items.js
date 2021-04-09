@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["ahci",""],["keyboard",""],["mouse",""],["pci",""]]});

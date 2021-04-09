@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["cpu",""],["elf",""],["gdt","The GDT contains entries telling the CPU about memory segments."],["interrupts",""],["memory",""]]});

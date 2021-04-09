@@ -43,26 +43,26 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::panic::PanicInfo</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::println</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::vga</span>::{
-    <span class="ident">color</span>::{<span class="ident">Color</span>, <span class="ident">ColorCode</span>},
-    <span class="ident">rendy::RENDERER</span>,
-};
+<span class="comment">// use crate::arch::interrupts;</span>
+<span class="comment">// use crate::println;</span>
+<span class="comment">// use crate::vga::{</span>
+<span class="comment">//     color::{Color, ColorCode},</span>
+<span class="comment">//     rendy::RENDERER,</span>
+<span class="comment">// };</span>
 
 <span class="attribute">#[<span class="ident">panic_handler</span>]</span>
 <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_begin_unwind</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">PanicInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="ident">RENDERER</span>.<span class="ident">lock</span>().<span class="ident">color_code</span> <span class="op">=</span> <span class="ident">ColorCode::new</span>(<span class="ident">Color::White</span>, <span class="ident">Color::Blue</span>);
+    <span class="comment">// RENDERER.lock().color_code = ColorCode::new(Color::White, Color::Blue);</span>
     <span class="comment">// RENDERER.lock().clear_screen();</span>
 
-    <span class="kw">let</span> <span class="ident">deafult_panic</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;&quot;</span>);
-    <span class="kw">let</span> <span class="ident">panic_message</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">message</span>().<span class="ident">unwrap_or</span>(<span class="ident">deafult_panic</span>);
+    <span class="comment">// let deafult_panic = &amp;format_args!(&quot;&quot;);</span>
+    <span class="comment">// let panic_message = info.message().unwrap_or(deafult_panic);</span>
 
-    <span class="macro">println!</span>(
-        <span class="string">&quot;Kernel Panicked -&gt; {}\n\n{}&quot;</span>,
-        <span class="ident">info</span>.<span class="ident">location</span>().<span class="ident">unwrap</span>(),
-        <span class="ident">panic_message</span>,
-    );
+    <span class="comment">// println!(</span>
+    <span class="comment">//     &quot;Kernel Panicked -&gt; {}\n\n{}&quot;,</span>
+    <span class="comment">//     info.location().unwrap(),</span>
+    <span class="comment">//     panic_message,</span>
+    <span class="comment">// );</span>
 
     <span class="kw">loop</span> {}
 }
@@ -75,9 +75,9 @@
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">_Unwind_Resume</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="kw">loop</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">interrupts::halt</span>();
-        }
+        <span class="comment">// unsafe {</span>
+        <span class="comment">// interrupts::halt();</span>
+        <span class="comment">// }</span>
     }
 }
 </pre></div>

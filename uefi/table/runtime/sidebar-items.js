@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ResetType","The type of system reset."]],"struct":[["Daylight","Flags describing the capabilities of a memory range."],["RuntimeServices","Contains pointers to all of the runtime services."],["Time","The current time information"],["TimeCapabilities","Real time clock capabilities"]]});

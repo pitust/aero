@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Pointer","Provides information about a pointer device."],["PointerMode","Information about this pointer device."],["PointerState","The relative change in the pointer’s state."]]});

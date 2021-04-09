@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Logger","Logging implementation which writes to a UEFI output stream."]]});
