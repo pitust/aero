@@ -2328,7 +2328,7 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_to_str</span>(<span class="ident">typ</span>: <span class="ident">u32</span>, <span class="ident">machine</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">header</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::elf::header</span>::<span class="kw-2">*</span>;
     <span class="kw">match</span> <span class="ident">machine</span> {
         <span class="comment">// x86</span>
         <span class="ident">EM_386</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="kw">match</span> <span class="ident">typ</span> {

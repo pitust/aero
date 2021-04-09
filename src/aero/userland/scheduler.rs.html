@@ -39,13 +39,13 @@
 <span id="36">36</span>
 <span id="37">37</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">collections</span>::<span class="ident">VecDeque</span>;
-<span class="kw">use</span> <span class="ident">lazy_static</span>::<span class="ident">lazy_static</span>;
+<span class="kw">use</span> <span class="ident">alloc::collections::VecDeque</span>;
+<span class="kw">use</span> <span class="ident">lazy_static::lazy_static</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">process</span>::<span class="ident">Process</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::process::Process</span>;
 
 <span class="macro">lazy_static!</span> {
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SCHEDULER</span>: <span class="ident">Scheduler</span> <span class="op">=</span> <span class="ident">Scheduler</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SCHEDULER</span>: <span class="ident">Scheduler</span> <span class="op">=</span> <span class="ident">Scheduler::new</span>();
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -57,7 +57,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">processes</span>: <span class="ident">VecDeque</span>::<span class="ident">new</span>(),
+            <span class="ident">processes</span>: <span class="ident">VecDeque::new</span>(),
         }
     }
 

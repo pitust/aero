@@ -6,18 +6,18 @@
 </div><h2 id="implementations" class="small-section-header">Implementations<a href="#implementations" class="anchor"></a></h2><h3 id="impl" class="impl"><code class="in-band">impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>&gt; <a class="struct" href="../volatile/struct.WriteOnly.html" title="struct volatile::WriteOnly">WriteOnly</a>&lt;T&gt;</code><a href="#impl" class="anchor"></a><a class="srclink" href="../src/volatile/lib.rs.html#214-264" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.new" class="method"><code>pub fn <a href="#method.new" class="fnname">new</a>(value: T) -&gt; <a class="struct" href="../volatile/struct.WriteOnly.html" title="struct volatile::WriteOnly">WriteOnly</a>&lt;T&gt;</code><a class="srclink" href="../src/volatile/lib.rs.html#243-245" title="goto source code">[src]</a></h4><div class="docblock"><p>Constructs a new write only volatile wrapper around the given value.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">volatile</span>::<span class="ident">WriteOnly</span>;
+<span class="kw">use</span> <span class="ident">volatile::WriteOnly</span>;
 
-<span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">WriteOnly</span>::<span class="ident">new</span>(<span class="number">0u32</span>);</pre></div>
+<span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">WriteOnly::new</span>(<span class="number">0u32</span>);</pre></div>
 <h1 id="panics" class="section-header"><a href="#panics">Panics</a></h1>
 <p>This function never panics.</p>
 </div><h4 id="method.write" class="method"><code>pub fn <a href="#method.write" class="fnname">write</a>(&amp;mut self, value: T)</code><a class="srclink" href="../src/volatile/lib.rs.html#261-263" title="goto source code">[src]</a></h4><div class="docblock"><p>Performs a volatile write of value <code>value</code> into the contained value. Functionally identical
 to <code>Volatile::write</code>.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">volatile</span>::<span class="ident">WriteOnly</span>;
+<span class="kw">use</span> <span class="ident">volatile::WriteOnly</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">WriteOnly</span>::<span class="ident">new</span>(<span class="number">0u32</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">WriteOnly::new</span>(<span class="number">0u32</span>);
 
 <span class="ident">value</span>.<span class="ident">write</span>(<span class="number">42u32</span>);</pre></div>
 <h1 id="panics-1" class="section-header"><a href="#panics-1">Panics</a></h1>

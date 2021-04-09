@@ -114,7 +114,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Functions to flush the translation lookaside buffer (TLB).</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">VirtAddr</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::VirtAddr</span>;
 
 <span class="doccomment">/// Invalidate the given address in the TLB using the `invlpg` instruction.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -126,16 +126,16 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_invlpg</span>(<span class="ident">addr</span>.<span class="ident">as_u64</span>())
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_invlpg</span>(<span class="ident">addr</span>.<span class="ident">as_u64</span>())
     };
 }
 
 <span class="doccomment">/// Invalidate the TLB completely by reloading the CR3 register.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_all</span>() {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registers</span>::<span class="ident">control</span>::<span class="ident">Cr3</span>;
-    <span class="kw">let</span> (<span class="ident">frame</span>, <span class="ident">flags</span>) <span class="op">=</span> <span class="ident">Cr3</span>::<span class="ident">read</span>();
-    <span class="kw">unsafe</span> { <span class="ident">Cr3</span>::<span class="ident">write</span>(<span class="ident">frame</span>, <span class="ident">flags</span>) }
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registers::control::Cr3</span>;
+    <span class="kw">let</span> (<span class="ident">frame</span>, <span class="ident">flags</span>) <span class="op">=</span> <span class="ident">Cr3::read</span>();
+    <span class="kw">unsafe</span> { <span class="ident">Cr3::write</span>(<span class="ident">frame</span>, <span class="ident">flags</span>) }
 }
 
 <span class="doccomment">/// The Invalidate PCID Command to execute.</span>
@@ -198,17 +198,17 @@
 
     <span class="kw">let</span> <span class="ident">kind</span>: <span class="ident">u64</span>;
     <span class="kw">match</span> <span class="ident">command</span> {
-        <span class="ident">InvPicdCommand</span>::<span class="ident">Address</span>(<span class="ident">addr</span>, <span class="ident">pcid</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">InvPicdCommand::Address</span>(<span class="ident">addr</span>, <span class="ident">pcid</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">kind</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="ident">desc</span>.<span class="ident">pcid</span> <span class="op">=</span> <span class="ident">pcid</span>.<span class="ident">value</span>().<span class="ident">into</span>();
             <span class="ident">desc</span>.<span class="ident">address</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">as_u64</span>()
         }
-        <span class="ident">InvPicdCommand</span>::<span class="ident">Single</span>(<span class="ident">pcid</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">InvPicdCommand::Single</span>(<span class="ident">pcid</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">kind</span> <span class="op">=</span> <span class="number">1</span>;
             <span class="ident">desc</span>.<span class="ident">pcid</span> <span class="op">=</span> <span class="ident">pcid</span>.<span class="number">0</span>.<span class="ident">into</span>()
         }
-        <span class="ident">InvPicdCommand</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">kind</span> <span class="op">=</span> <span class="number">2</span>,
-        <span class="ident">InvPicdCommand</span>::<span class="ident">AllExceptGlobal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">kind</span> <span class="op">=</span> <span class="number">3</span>,
+        <span class="ident">InvPicdCommand::All</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">kind</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="ident">InvPicdCommand::AllExceptGlobal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">kind</span> <span class="op">=</span> <span class="number">3</span>,
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>)]</span>
@@ -219,7 +219,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_invpcid</span>(<span class="ident">kind</span>, <span class="kw-2">&amp;</span><span class="ident">desc</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">InvpcidDescriptor</span> <span class="kw">as</span> <span class="ident">u64</span>)
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_invpcid</span>(<span class="ident">kind</span>, <span class="kw-2">&amp;</span><span class="ident">desc</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">InvpcidDescriptor</span> <span class="kw">as</span> <span class="ident">u64</span>)
     };
 }
 </pre></div>

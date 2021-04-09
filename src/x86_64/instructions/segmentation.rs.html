@@ -249,7 +249,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Provides functions to read and write segment registers.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">structures</span>::<span class="ident">gdt</span>::<span class="ident">SegmentSelector</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::structures::gdt::SegmentSelector</span>;
 
 <span class="doccomment">/// Reload code segment register.</span>
 <span class="doccomment">///</span>
@@ -273,7 +273,7 @@
             <span class="string">&quot;push {tmp}&quot;</span>,
             <span class="string">&quot;retfq&quot;</span>,
             <span class="string">&quot;1:&quot;</span>,
-            <span class="ident">sel</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">sel</span>.<span class="number">0</span>),
+            <span class="ident">sel</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">u64::from</span>(<span class="ident">sel</span>.<span class="number">0</span>),
             <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">lateout</span>(<span class="ident">reg</span>) <span class="kw">_</span>,
         );
     }
@@ -281,7 +281,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="ident">sel</span>: <span class="ident">SegmentSelector</span>) {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_set_cs</span>(<span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">sel</span>.<span class="number">0</span>))
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_set_cs</span>(<span class="ident">u64::from</span>(<span class="ident">sel</span>.<span class="number">0</span>))
     }
 
     <span class="ident">inner</span>(<span class="ident">sel</span>)
@@ -299,7 +299,7 @@
     <span class="macro">asm!</span>(<span class="string">&quot;mov ss, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
-    <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_ss</span>(<span class="ident">sel</span>.<span class="number">0</span>);
+    <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_load_ss</span>(<span class="ident">sel</span>.<span class="number">0</span>);
 }
 
 <span class="doccomment">/// Reload data segment register.</span>
@@ -314,7 +314,7 @@
     <span class="macro">asm!</span>(<span class="string">&quot;mov ds, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
-    <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_ds</span>(<span class="ident">sel</span>.<span class="number">0</span>);
+    <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_load_ds</span>(<span class="ident">sel</span>.<span class="number">0</span>);
 }
 
 <span class="doccomment">/// Reload es segment register.</span>
@@ -329,7 +329,7 @@
     <span class="macro">asm!</span>(<span class="string">&quot;mov es, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
-    <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_es</span>(<span class="ident">sel</span>.<span class="number">0</span>);
+    <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_load_es</span>(<span class="ident">sel</span>.<span class="number">0</span>);
 }
 
 <span class="doccomment">/// Reload fs segment register.</span>
@@ -344,7 +344,7 @@
     <span class="macro">asm!</span>(<span class="string">&quot;mov fs, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
-    <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_fs</span>(<span class="ident">sel</span>.<span class="number">0</span>);
+    <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_load_fs</span>(<span class="ident">sel</span>.<span class="number">0</span>);
 }
 
 <span class="doccomment">/// Reload gs segment register.</span>
@@ -359,7 +359,7 @@
     <span class="macro">asm!</span>(<span class="string">&quot;mov gs, {0:x}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">sel</span>.<span class="number">0</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
-    <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_load_gs</span>(<span class="ident">sel</span>.<span class="number">0</span>);
+    <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_load_gs</span>(<span class="ident">sel</span>.<span class="number">0</span>);
 }
 
 <span class="doccomment">/// Swap `KernelGsBase` MSR and `GsBase` MSR.</span>
@@ -374,7 +374,7 @@
     <span class="macro">asm!</span>(<span class="string">&quot;swapgs&quot;</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
-    <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_swapgs</span>();
+    <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_swapgs</span>();
 }
 
 <span class="doccomment">/// Returns the current value of the code segment register.</span>
@@ -389,7 +389,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     {
-        <span class="kw">let</span> <span class="ident">segment</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_get_cs</span>() };
+        <span class="kw">let</span> <span class="ident">segment</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_get_cs</span>() };
         <span class="ident">SegmentSelector</span>(<span class="ident">segment</span>)
     }
 }
@@ -414,7 +414,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="ident">val</span>: <span class="ident">u64</span>) {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_wrfsbase</span>(<span class="ident">val</span>)
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_wrfsbase</span>(<span class="ident">val</span>)
     }
 
     <span class="ident">inner</span>(<span class="ident">val</span>)
@@ -438,7 +438,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_rdfsbase</span>()
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_rdfsbase</span>()
     }
 
     <span class="ident">inner</span>()
@@ -463,7 +463,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="ident">val</span>: <span class="ident">u64</span>) {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_wrgsbase</span>(<span class="ident">val</span>)
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_wrgsbase</span>(<span class="ident">val</span>)
     }
 
     <span class="ident">inner</span>(<span class="ident">val</span>)
@@ -487,7 +487,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_rdgsbase</span>()
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_rdgsbase</span>()
     }
 
     <span class="ident">inner</span>()

@@ -80,7 +80,7 @@
 <span id="77">77</span>
 <span id="78">78</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">print</span>, <span class="ident">println</span>, <span class="ident">vga</span>::<span class="ident">rendy</span>::<span class="ident">RENDERER</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">print</span>, <span class="ident">println</span>, <span class="ident">vga::rendy::RENDERER</span>};
 
 <span class="kw">const</span> <span class="ident">LEFT_SHIFT_PRESSED</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x2A</span>;
 <span class="kw">const</span> <span class="ident">LEFT_SHIFT_RELEASED</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="ident">LEFT_SHIFT_PRESSED</span> <span class="op">+</span> <span class="number">0x80</span>;
@@ -108,7 +108,7 @@
     <span class="kw">if</span> <span class="ident">scancode</span> <span class="op">&gt;</span> <span class="ident">ASCII_TABLE</span>.<span class="ident">len</span>() {
         <span class="string">&#39;\0&#39;</span>
     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">uppercase</span> {
-        <span class="ident">core</span>::<span class="ident">char</span>::<span class="ident">from_u32</span>(<span class="ident">ASCII_TABLE</span>[<span class="ident">scancode</span>] <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> <span class="number">32</span>).<span class="ident">unwrap</span>()
+        <span class="ident">core::char::from_u32</span>(<span class="ident">ASCII_TABLE</span>[<span class="ident">scancode</span>] <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> <span class="number">32</span>).<span class="ident">unwrap</span>()
     } <span class="kw">else</span> {
         <span class="ident">ASCII_TABLE</span>[<span class="ident">scancode</span>]
     }

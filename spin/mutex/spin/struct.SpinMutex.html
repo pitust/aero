@@ -6,7 +6,7 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">spin</span>;
 
-<span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin</span>::<span class="ident">mutex</span>::<span class="ident">SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">0</span>);
+<span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin::mutex::SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">0</span>);
 
 <span class="comment">// Modify the data</span>
 <span class="kw-2">*</span><span class="ident">lock</span>.<span class="ident">lock</span>() <span class="op">=</span> <span class="number">2</span>;
@@ -17,18 +17,18 @@
 <h1 id="thread-safety-example" class="section-header"><a href="#thread-safety-example">Thread safety example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">spin</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Barrier</span>};
+<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">Arc</span>, <span class="ident">Barrier</span>};
 
 <span class="kw">let</span> <span class="ident">thread_count</span> <span class="op">=</span> <span class="number">1000</span>;
-<span class="kw">let</span> <span class="ident">spin_mutex</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">spin</span>::<span class="ident">mutex</span>::<span class="ident">SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">0</span>));
+<span class="kw">let</span> <span class="ident">spin_mutex</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">spin::mutex::SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">0</span>));
 
 <span class="comment">// We use a barrier to ensure the readout happens after all writing</span>
-<span class="kw">let</span> <span class="ident">barrier</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Barrier</span>::<span class="ident">new</span>(<span class="ident">thread_count</span> <span class="op">+</span> <span class="number">1</span>));
+<span class="kw">let</span> <span class="ident">barrier</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">Barrier::new</span>(<span class="ident">thread_count</span> <span class="op">+</span> <span class="number">1</span>));
 
 <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> (<span class="number">0</span>..<span class="ident">thread_count</span>) {
     <span class="kw">let</span> <span class="ident">my_barrier</span> <span class="op">=</span> <span class="ident">barrier</span>.<span class="ident">clone</span>();
     <span class="kw">let</span> <span class="ident">my_lock</span> <span class="op">=</span> <span class="ident">spin_mutex</span>.<span class="ident">clone</span>();
-    <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+    <span class="ident">std::thread::spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">my_lock</span>.<span class="ident">lock</span>();
         <span class="kw-2">*</span><span class="ident">guard</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
@@ -45,9 +45,9 @@
 </div><h2 id="implementations" class="small-section-header">Implementations<a href="#implementations" class="anchor"></a></h2><h3 id="impl" class="impl"><code class="in-band">impl&lt;T, R&gt; <a class="struct" href="../../../spin/mutex/spin/struct.SpinMutex.html" title="struct spin::mutex::spin::SpinMutex">SpinMutex</a>&lt;T, R&gt;</code><a href="#impl" class="anchor"></a><a class="srclink" href="../../../src/spin/mutex/spin.rs.html#80-120" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.new" class="method"><code>pub const fn <a href="#method.new" class="fnname">new</a>(data: T) -&gt; Self</code><a class="srclink" href="../../../src/spin/mutex/spin.rs.html#97-103" title="goto source code">[src]</a></h4><div class="docblock"><p>Creates a new <a href="../../../spin/mutex/spin/struct.SpinMutex.html" title="SpinMutex"><code>SpinMutex</code></a> wrapping the supplied data.</p>
 <h1 id="example-1" class="section-header"><a href="#example-1">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">spin</span>::<span class="ident">mutex</span>::<span class="ident">SpinMutex</span>;
+<span class="kw">use</span> <span class="ident">spin::mutex::SpinMutex</span>;
 
-<span class="kw">static</span> <span class="ident">MUTEX</span>: <span class="ident">SpinMutex</span><span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">=</span> <span class="ident">SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>::<span class="ident">new</span>(());
+<span class="kw">static</span> <span class="ident">MUTEX</span>: <span class="ident">SpinMutex</span><span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">=</span> <span class="ident">SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::new</span>(());
 
 <span class="kw">fn</span> <span class="ident">demo</span>() {
     <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">MUTEX</span>.<span class="ident">lock</span>();
@@ -57,14 +57,14 @@
 </div><h4 id="method.into_inner" class="method"><code>pub fn <a href="#method.into_inner" class="fnname">into_inner</a>(self) -&gt; T</code><a class="srclink" href="../../../src/spin/mutex/spin.rs.html#114-119" title="goto source code">[src]</a></h4><div class="docblock"><p>Consumes this <a href="../../../spin/mutex/spin/struct.SpinMutex.html" title="SpinMutex"><code>SpinMutex</code></a> and unwraps the underlying data.</p>
 <h1 id="example-2" class="section-header"><a href="#example-2">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin</span>::<span class="ident">mutex</span>::<span class="ident">SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">42</span>);
+<span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin::mutex::SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">42</span>);
 <span class="macro">assert_eq!</span>(<span class="number">42</span>, <span class="ident">lock</span>.<span class="ident">into_inner</span>());</pre></div>
 </div></div><h3 id="impl-1" class="impl"><code class="in-band">impl&lt;T:&nbsp;?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>, R:&nbsp;<a class="trait" href="../../../spin/relax/trait.RelaxStrategy.html" title="trait spin::relax::RelaxStrategy">RelaxStrategy</a>&gt; <a class="struct" href="../../../spin/mutex/spin/struct.SpinMutex.html" title="struct spin::mutex::spin::SpinMutex">SpinMutex</a>&lt;T, R&gt;</code><a href="#impl-1" class="anchor"></a><a class="srclink" href="../../../src/spin/mutex/spin.rs.html#122-153" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.lock" class="method"><code>pub fn <a href="#method.lock" class="fnname">lock</a>(&amp;self) -&gt; <a class="struct" href="../../../spin/mutex/spin/struct.SpinMutexGuard.html" title="struct spin::mutex::spin::SpinMutexGuard">SpinMutexGuard</a>&lt;'_, T&gt;</code><a class="srclink" href="../../../src/spin/mutex/spin.rs.html#138-152" title="goto source code">[src]</a></h4><div class="docblock"><p>Locks the <a href="../../../spin/mutex/spin/struct.SpinMutex.html" title="SpinMutex"><code>SpinMutex</code></a> and returns a guard that permits access to the inner data.</p>
 <p>The returned value may be dereferenced for data access
 and the lock will be dropped when the guard falls out of scope.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin</span>::<span class="ident">mutex</span>::<span class="ident">SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">0</span>);
+<span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin::mutex::SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">0</span>);
 {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">lock</span>.<span class="ident">lock</span>();
     <span class="comment">// The lock is now locked and the data can be accessed</span>
@@ -83,7 +83,7 @@ lock to FFI that doesn’t know how to deal with RAII.</p>
 </div><h4 id="method.try_lock" class="method"><code>pub fn <a href="#method.try_lock" class="fnname">try_lock</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../../spin/mutex/spin/struct.SpinMutexGuard.html" title="struct spin::mutex::spin::SpinMutexGuard">SpinMutexGuard</a>&lt;'_, T&gt;&gt;</code><a class="srclink" href="../../../src/spin/mutex/spin.rs.html#194-205" title="goto source code">[src]</a></h4><div class="docblock"><p>Try to lock this <a href="../../../spin/mutex/spin/struct.SpinMutex.html" title="SpinMutex"><code>SpinMutex</code></a>, returning a lock guard if successful.</p>
 <h1 id="example-3" class="section-header"><a href="#example-3">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin</span>::<span class="ident">mutex</span>::<span class="ident">SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">42</span>);
+<span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin::mutex::SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">42</span>);
 
 <span class="kw">let</span> <span class="ident">maybe_guard</span> <span class="op">=</span> <span class="ident">lock</span>.<span class="ident">try_lock</span>();
 <span class="macro">assert!</span>(<span class="ident">maybe_guard</span>.<span class="ident">is_some</span>());
@@ -97,7 +97,7 @@ Rust, no actual locking needs to take place – the mutable borrow statically gu
 such, this is a ‘zero-cost’ operation.</p>
 <h1 id="example-4" class="section-header"><a href="#example-4">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin</span>::<span class="ident">mutex</span>::<span class="ident">SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="number">0</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin::mutex::SpinMutex</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">0</span>);
 <span class="kw-2">*</span><span class="ident">lock</span>.<span class="ident">get_mut</span>() <span class="op">=</span> <span class="number">10</span>;
 <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">lock</span>.<span class="ident">lock</span>(), <span class="number">10</span>);</pre></div>
 </div></div><h2 id="trait-implementations" class="small-section-header">Trait Implementations<a href="#trait-implementations" class="anchor"></a></h2><div id="trait-implementations-list"><h3 id="impl-Debug" class="impl"><code class="in-band">impl&lt;T:&nbsp;?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a>, R&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../../../spin/mutex/spin/struct.SpinMutex.html" title="struct spin::mutex::spin::SpinMutex">SpinMutex</a>&lt;T, R&gt;</code><a href="#impl-Debug" class="anchor"></a><a class="srclink" href="../../../src/spin/mutex/spin.rs.html#228-237" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.fmt" class="method hidden"><code>fn <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>&lt;'_&gt;) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code><a class="srclink" href="../../../src/spin/mutex/spin.rs.html#229-236" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>

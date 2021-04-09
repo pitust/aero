@@ -410,11 +410,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Abstractions for default-sized and huge virtual memory pages.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">structures</span>::<span class="ident">paging</span>::<span class="ident">PageTableIndex</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">VirtAddr</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">AddAssign</span>, <span class="ident">Sub</span>, <span class="ident">SubAssign</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::structures::paging::PageTableIndex</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::VirtAddr</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="ident">Add</span>, <span class="ident">AddAssign</span>, <span class="ident">Sub</span>, <span class="ident">SubAssign</span>};
 
 <span class="doccomment">/// Trait for abstracting over the three possible page sizes on x86_64, 4KiB, 2MiB, 1GiB.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PageSize</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">PartialOrd</span> <span class="op">+</span> <span class="ident">Ord</span> {
@@ -450,14 +450,14 @@
 <span class="kw">impl</span> <span class="ident">NotGiantPageSize</span> <span class="kw">for</span> <span class="ident">Size4KiB</span> {}
 
 <span class="kw">impl</span> <span class="ident">PageSize</span> <span class="kw">for</span> <span class="ident">Size2MiB</span> {
-    <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">Size4KiB</span>::<span class="ident">SIZE</span> <span class="op">*</span> <span class="number">512</span>;
+    <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">Size4KiB::SIZE</span> <span class="op">*</span> <span class="number">512</span>;
     <span class="kw">const</span> <span class="ident">SIZE_AS_DEBUG_STR</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;2MiB&quot;</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">NotGiantPageSize</span> <span class="kw">for</span> <span class="ident">Size2MiB</span> {}
 
 <span class="kw">impl</span> <span class="ident">PageSize</span> <span class="kw">for</span> <span class="ident">Size1GiB</span> {
-    <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">Size2MiB</span>::<span class="ident">SIZE</span> <span class="op">*</span> <span class="number">512</span>;
+    <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">Size2MiB::SIZE</span> <span class="op">*</span> <span class="number">512</span>;
     <span class="kw">const</span> <span class="ident">SIZE_AS_DEBUG_STR</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;1GiB&quot;</span>;
 }
 
@@ -471,17 +471,17 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="doccomment">/// The page size in bytes.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">S</span>::<span class="ident">SIZE</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">S::SIZE</span>;
 
     <span class="doccomment">/// Returns the page that starts at the given virtual address.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns an error if the address is not correctly aligned (i.e. is not a valid page start).</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_start_address</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">AddressNotAligned</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">address</span>.<span class="ident">is_aligned</span>(<span class="ident">S</span>::<span class="ident">SIZE</span>) {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">address</span>.<span class="ident">is_aligned</span>(<span class="ident">S::SIZE</span>) {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AddressNotAligned</span>);
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">address</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">Page::containing_address</span>(<span class="ident">address</span>))
     }
 
     <span class="macro">const_fn!</span> {
@@ -503,7 +503,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">containing_address</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Page</span> {
-            <span class="ident">start_address</span>: <span class="ident">address</span>.<span class="ident">align_down</span>(<span class="ident">S</span>::<span class="ident">SIZE</span>),
+            <span class="ident">start_address</span>: <span class="ident">address</span>.<span class="ident">align_down</span>(<span class="ident">S::SIZE</span>),
             <span class="ident">size</span>: <span class="ident">PhantomData</span>,
         }
     }
@@ -520,7 +520,7 @@
         <span class="doccomment">/// Returns the size the page (4KB, 2MB or 1GB).</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-            <span class="ident">S</span>::<span class="ident">SIZE</span>
+            <span class="ident">S::SIZE</span>
         }
     }
 
@@ -574,12 +574,12 @@
         <span class="ident">p4_index</span>: <span class="ident">PageTableIndex</span>,
         <span class="ident">p3_index</span>: <span class="ident">PageTableIndex</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">bit_field</span>::<span class="ident">BitField</span>;
+        <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addr</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">39</span>..<span class="number">48</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p4_index</span>));
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">30</span>..<span class="number">39</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p3_index</span>));
-        <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">addr</span>))
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">39</span>..<span class="number">48</span>, <span class="ident">u64::from</span>(<span class="ident">p4_index</span>));
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">30</span>..<span class="number">39</span>, <span class="ident">u64::from</span>(<span class="ident">p3_index</span>));
+        <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">addr</span>))
     }
 }
 
@@ -591,13 +591,13 @@
         <span class="ident">p3_index</span>: <span class="ident">PageTableIndex</span>,
         <span class="ident">p2_index</span>: <span class="ident">PageTableIndex</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">bit_field</span>::<span class="ident">BitField</span>;
+        <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addr</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">39</span>..<span class="number">48</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p4_index</span>));
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">30</span>..<span class="number">39</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p3_index</span>));
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">21</span>..<span class="number">30</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p2_index</span>));
-        <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">addr</span>))
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">39</span>..<span class="number">48</span>, <span class="ident">u64::from</span>(<span class="ident">p4_index</span>));
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">30</span>..<span class="number">39</span>, <span class="ident">u64::from</span>(<span class="ident">p3_index</span>));
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">21</span>..<span class="number">30</span>, <span class="ident">u64::from</span>(<span class="ident">p2_index</span>));
+        <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">addr</span>))
     }
 }
 
@@ -610,14 +610,14 @@
         <span class="ident">p2_index</span>: <span class="ident">PageTableIndex</span>,
         <span class="ident">p1_index</span>: <span class="ident">PageTableIndex</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">bit_field</span>::<span class="ident">BitField</span>;
+        <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addr</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">39</span>..<span class="number">48</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p4_index</span>));
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">30</span>..<span class="number">39</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p3_index</span>));
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">21</span>..<span class="number">30</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p2_index</span>));
-        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">12</span>..<span class="number">21</span>, <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">p1_index</span>));
-        <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">addr</span>))
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">39</span>..<span class="number">48</span>, <span class="ident">u64::from</span>(<span class="ident">p4_index</span>));
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">30</span>..<span class="number">39</span>, <span class="ident">u64::from</span>(<span class="ident">p3_index</span>));
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">21</span>..<span class="number">30</span>, <span class="ident">u64::from</span>(<span class="ident">p2_index</span>));
+        <span class="ident">addr</span>.<span class="ident">set_bits</span>(<span class="number">12</span>..<span class="number">21</span>, <span class="ident">u64::from</span>(<span class="ident">p1_index</span>));
+        <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">addr</span>))
     }
 
     <span class="macro">const_fn!</span> {
@@ -629,11 +629,11 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">write_fmt</span>(<span class="macro">format_args!</span>(
             <span class="string">&quot;Page[{}]({:#x})&quot;</span>,
-            <span class="ident">S</span>::<span class="ident">SIZE_AS_DEBUG_STR</span>,
+            <span class="ident">S::SIZE_AS_DEBUG_STR</span>,
             <span class="self">self</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()
         ))
     }
@@ -642,8 +642,8 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="self">self</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="ident">rhs</span> <span class="op">*</span> <span class="ident">S</span>::<span class="ident">SIZE</span>)
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+        <span class="ident">Page::containing_address</span>(<span class="self">self</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="ident">rhs</span> <span class="op">*</span> <span class="ident">S::SIZE</span>)
     }
 }
 
@@ -657,8 +657,8 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="self">self</span>.<span class="ident">start_address</span>() <span class="op">-</span> <span class="ident">rhs</span> <span class="op">*</span> <span class="ident">S</span>::<span class="ident">SIZE</span>)
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+        <span class="ident">Page::containing_address</span>(<span class="self">self</span>.<span class="ident">start_address</span>() <span class="op">-</span> <span class="ident">rhs</span> <span class="op">*</span> <span class="ident">S::SIZE</span>)
     }
 }
 
@@ -672,8 +672,8 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">u64</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        (<span class="self">self</span>.<span class="ident">start_address</span> <span class="op">-</span> <span class="ident">rhs</span>.<span class="ident">start_address</span>) <span class="op">/</span> <span class="ident">S</span>::<span class="ident">SIZE</span>
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+        (<span class="self">self</span>.<span class="ident">start_address</span> <span class="op">-</span> <span class="ident">rhs</span>.<span class="ident">start_address</span>) <span class="op">/</span> <span class="ident">S::SIZE</span>
     }
 }
 
@@ -699,7 +699,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">end</span> {
             <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">start</span>;
             <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
@@ -715,14 +715,14 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_4kib_page_range</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageRange</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> {
         <span class="ident">PageRange</span> {
-            <span class="ident">start</span>: <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">start_address</span>()),
-            <span class="ident">end</span>: <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="self">self</span>.<span class="ident">end</span>.<span class="ident">start_address</span>()),
+            <span class="ident">start</span>: <span class="ident">Page::containing_address</span>(<span class="self">self</span>.<span class="ident">start</span>.<span class="ident">start_address</span>()),
+            <span class="ident">end</span>: <span class="ident">Page::containing_address</span>(<span class="self">self</span>.<span class="ident">end</span>.<span class="ident">start_address</span>()),
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">PageRange</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">PageRange</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PageRange&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;start&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">start</span>)
             .<span class="ident">field</span>(<span class="string">&quot;end&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">end</span>)
@@ -752,7 +752,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">end</span> {
             <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">start</span>;
             <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
@@ -763,8 +763,8 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">PageRangeInclusive</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">PageRangeInclusive</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PageRangeInclusive&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;start&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">start</span>)
             .<span class="ident">field</span>(<span class="string">&quot;end&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">end</span>)
@@ -776,8 +776,8 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AddressNotAligned</span>;
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">AddressNotAligned</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">AddressNotAligned</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;the given address was not sufficiently aligned&quot;</span>)
     }
 }
@@ -788,27 +788,27 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_page_ranges</span>() {
-        <span class="kw">let</span> <span class="ident">page_size</span> <span class="op">=</span> <span class="ident">Size4KiB</span>::<span class="ident">SIZE</span>;
+        <span class="kw">let</span> <span class="ident">page_size</span> <span class="op">=</span> <span class="ident">Size4KiB::SIZE</span>;
         <span class="kw">let</span> <span class="ident">number</span> <span class="op">=</span> <span class="number">1000</span>;
 
-        <span class="kw">let</span> <span class="ident">start_addr</span> <span class="op">=</span> <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="number">0xdead_beaf</span>);
-        <span class="kw">let</span> <span class="ident">start</span>: <span class="ident">Page</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">start_addr</span>);
+        <span class="kw">let</span> <span class="ident">start_addr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0xdead_beaf</span>);
+        <span class="kw">let</span> <span class="ident">start</span>: <span class="ident">Page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">start_addr</span>);
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="ident">number</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">range</span>(<span class="ident">start</span>, <span class="ident">end</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">Page::range</span>(<span class="ident">start</span>, <span class="ident">end</span>);
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">number</span> {
             <span class="macro">assert_eq!</span>(
                 <span class="ident">range</span>.<span class="ident">next</span>(),
-                <span class="prelude-val">Some</span>(<span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">page_size</span> <span class="op">*</span> <span class="ident">i</span>))
+                <span class="prelude-val">Some</span>(<span class="ident">Page::containing_address</span>(<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">page_size</span> <span class="op">*</span> <span class="ident">i</span>))
             );
         }
         <span class="macro">assert_eq!</span>(<span class="ident">range</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range_inclusive</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">range_inclusive</span>(<span class="ident">start</span>, <span class="ident">end</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range_inclusive</span> <span class="op">=</span> <span class="ident">Page::range_inclusive</span>(<span class="ident">start</span>, <span class="ident">end</span>);
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="op">=</span><span class="ident">number</span> {
             <span class="macro">assert_eq!</span>(
                 <span class="ident">range_inclusive</span>.<span class="ident">next</span>(),
-                <span class="prelude-val">Some</span>(<span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">page_size</span> <span class="op">*</span> <span class="ident">i</span>))
+                <span class="prelude-val">Some</span>(<span class="ident">Page::containing_address</span>(<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">page_size</span> <span class="op">*</span> <span class="ident">i</span>))
             );
         }
         <span class="macro">assert_eq!</span>(<span class="ident">range_inclusive</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);

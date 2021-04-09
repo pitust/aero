@@ -843,13 +843,13 @@
 
 <span class="doccomment">//! Provides types for the Interrupt Descriptor Table and its entries.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">structures</span>::<span class="ident">DescriptorTablePointer</span>, <span class="ident">PrivilegeLevel</span>, <span class="ident">VirtAddr</span>};
-<span class="kw">use</span> <span class="ident">bit_field</span>::<span class="ident">BitField</span>;
-<span class="kw">use</span> <span class="ident">bitflags</span>::<span class="ident">bitflags</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::<span class="ident">Bound</span>::{<span class="ident">Excluded</span>, <span class="ident">Included</span>, <span class="ident">Unbounded</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>, <span class="ident">RangeBounds</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">structures::DescriptorTablePointer</span>, <span class="ident">PrivilegeLevel</span>, <span class="ident">VirtAddr</span>};
+<span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
+<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident">core::ops::Bound</span>::{<span class="ident">Excluded</span>, <span class="ident">Included</span>, <span class="ident">Unbounded</span>};
+<span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="ident">Deref</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>, <span class="ident">RangeBounds</span>};
 
 <span class="doccomment">/// An Interrupt Descriptor Table with 256 entries.</span>
 <span class="doccomment">///</span>
@@ -1209,31 +1209,31 @@
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">InterruptDescriptorTable</span> {
             <span class="ident">InterruptDescriptorTable</span> {
-                <span class="ident">divide_error</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">debug</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">non_maskable_interrupt</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">breakpoint</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">overflow</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">bound_range_exceeded</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">invalid_opcode</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">device_not_available</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">double_fault</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">coprocessor_segment_overrun</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">invalid_tss</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">segment_not_present</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">stack_segment_fault</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">general_protection_fault</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">page_fault</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">reserved_1</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">x87_floating_point</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">alignment_check</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">machine_check</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">simd_floating_point</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">virtualization</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">reserved_2</span>: [<span class="ident">Entry</span>::<span class="ident">missing</span>(); <span class="number">9</span>],
-                <span class="ident">security_exception</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">reserved_3</span>: <span class="ident">Entry</span>::<span class="ident">missing</span>(),
-                <span class="ident">interrupts</span>: [<span class="ident">Entry</span>::<span class="ident">missing</span>(); <span class="number">256</span> <span class="op">-</span> <span class="number">32</span>],
+                <span class="ident">divide_error</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">debug</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">non_maskable_interrupt</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">breakpoint</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">overflow</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">bound_range_exceeded</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">invalid_opcode</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">device_not_available</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">double_fault</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">coprocessor_segment_overrun</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">invalid_tss</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">segment_not_present</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">stack_segment_fault</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">general_protection_fault</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">page_fault</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">reserved_1</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">x87_floating_point</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">alignment_check</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">machine_check</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">simd_floating_point</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">virtualization</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">reserved_2</span>: [<span class="ident">Entry::missing</span>(); <span class="number">9</span>],
+                <span class="ident">security_exception</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">reserved_3</span>: <span class="ident">Entry::missing</span>(),
+                <span class="ident">interrupts</span>: [<span class="ident">Entry::missing</span>(); <span class="number">256</span> <span class="op">-</span> <span class="number">32</span>],
             }
         }
     }
@@ -1241,7 +1241,7 @@
     <span class="doccomment">/// Resets all entries of this IDT in place.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::new</span>();
     }
 
     <span class="doccomment">/// Loads the IDT in the CPU using the `lidt` command.</span>
@@ -1264,7 +1264,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;instructions&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_unsafe</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">instructions</span>::<span class="ident">tables</span>::<span class="ident">lidt</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::instructions::tables::lidt</span>;
         <span class="ident">lidt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pointer</span>());
     }
 
@@ -1272,9 +1272,9 @@
     <span class="doccomment">/// safely used if the table is never modified or destroyed while in use.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;instructions&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">pointer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DescriptorTablePointer</span> {
-        <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+        <span class="kw">use</span> <span class="ident">core::mem::size_of</span>;
         <span class="ident">DescriptorTablePointer</span> {
-            <span class="ident">base</span>: <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="ident">u64</span>),
+            <span class="ident">base</span>: <span class="ident">VirtAddr::new</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="ident">u64</span>),
             <span class="ident">limit</span>: (<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>() <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
         }
     }
@@ -1333,7 +1333,7 @@
     <span class="doccomment">/// Panics if index is outside the IDT (i.e. greater than 255) or if the entry is an</span>
     <span class="doccomment">/// exception that pushes an error code (use the struct fields for accessing these entries).</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Output</span> {
         <span class="kw">match</span> <span class="ident">index</span> {
             <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">divide_error</span>,
             <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">debug</span>,
@@ -1364,7 +1364,7 @@
     <span class="doccomment">/// Panics if index is outside the IDT (i.e. greater than 255) or if the entry is an</span>
     <span class="doccomment">/// exception that pushes an error code (use the struct fields for accessing these entries).</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="kw">match</span> <span class="ident">index</span> {
             <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">divide_error</span>,
             <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">debug</span>,
@@ -1428,7 +1428,7 @@
             <span class="ident">pointer_low</span>: <span class="number">0</span>,
             <span class="ident">pointer_middle</span>: <span class="number">0</span>,
             <span class="ident">pointer_high</span>: <span class="number">0</span>,
-            <span class="ident">options</span>: <span class="ident">EntryOptions</span>::<span class="ident">minimal</span>(),
+            <span class="ident">options</span>: <span class="ident">EntryOptions::minimal</span>(),
             <span class="ident">reserved</span>: <span class="number">0</span>,
             <span class="ident">phantom</span>: <span class="ident">PhantomData</span>,
         }
@@ -1444,13 +1444,13 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;instructions&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">set_handler_addr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EntryOptions</span> {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">instructions</span>::<span class="ident">segmentation</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::instructions::segmentation</span>;
 
         <span class="self">self</span>.<span class="ident">pointer_low</span> <span class="op">=</span> <span class="ident">addr</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="self">self</span>.<span class="ident">pointer_middle</span> <span class="op">=</span> (<span class="ident">addr</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="self">self</span>.<span class="ident">pointer_high</span> <span class="op">=</span> (<span class="ident">addr</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
 
-        <span class="self">self</span>.<span class="ident">gdt_selector</span> <span class="op">=</span> <span class="ident">segmentation</span>::<span class="ident">cs</span>().<span class="number">0</span>;
+        <span class="self">self</span>.<span class="ident">gdt_selector</span> <span class="op">=</span> <span class="ident">segmentation::cs</span>().<span class="number">0</span>;
 
         <span class="self">self</span>.<span class="ident">options</span>.<span class="ident">set_present</span>(<span class="bool-val">true</span>);
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">options</span>
@@ -1561,7 +1561,7 @@
     <span class="doccomment">/// can easily lead to undefined behavior. For example, by writing an invalid value to</span>
     <span class="doccomment">/// the instruction pointer field, the CPU can jump to arbitrary code at the end of the</span>
     <span class="doccomment">/// interrupt.</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">should_implement_trait</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStackFrameValue</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">value</span>
@@ -1572,14 +1572,14 @@
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">InterruptStackFrameValue</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">value</span>
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">InterruptStackFrame</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">InterruptStackFrame</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -1604,11 +1604,11 @@
     <span class="kw">pub</span> <span class="ident">stack_segment</span>: <span class="ident">u64</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">InterruptStackFrameValue</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">InterruptStackFrameValue</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">struct</span> <span class="ident">Hex</span>(<span class="ident">u64</span>);
-        <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Hex</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Hex</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{:#x}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
             }
         }
@@ -1657,7 +1657,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">size_test</span>() {
-        <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+        <span class="kw">use</span> <span class="ident">core::mem::size_of</span>;
         <span class="macro">assert_eq!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Entry</span><span class="op">&lt;</span><span class="ident">HandlerFunc</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">16</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">InterruptDescriptorTable</span><span class="op">&gt;</span>(), <span class="number">256</span> <span class="op">*</span> <span class="number">16</span>);
     }

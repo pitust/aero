@@ -341,7 +341,7 @@
 <span class="doccomment">//! of the volatile wrapper types are the same size as their contained values.</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ptr</span>;
+<span class="kw">use</span> <span class="ident">core::ptr</span>;
 
 <span class="doccomment">/// A wrapper type around a volatile variable, which allows for volatile reads and writes</span>
 <span class="doccomment">/// to the contained value. The stored type needs to be `Copy`, as volatile reads and writes</span>
@@ -403,7 +403,7 @@
     <span class="doccomment">/// This method never panics.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
         <span class="comment">// UNSAFE: Safe, as we know that our internal value exists.</span>
-        <span class="kw">unsafe</span> { <span class="ident">ptr</span>::<span class="ident">read_volatile</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">ptr::read_volatile</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Performs a volatile write, setting the contained value to the given value `value`. Volatile</span>
@@ -426,7 +426,7 @@
     <span class="doccomment">/// This method never panics.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>) {
         <span class="comment">// UNSAFE: Safe, as we know that our internal value exists.</span>
-        <span class="kw">unsafe</span> { <span class="ident">ptr</span>::<span class="ident">write_volatile</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>, <span class="ident">value</span>) };
+        <span class="kw">unsafe</span> { <span class="ident">ptr::write_volatile</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>, <span class="ident">value</span>) };
     }
 
     <span class="doccomment">/// Performs a volatile read of the contained value, passes a mutable reference to it to the</span>
@@ -482,7 +482,7 @@
     <span class="doccomment">/// This function never panics.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_fn&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ReadOnly</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">ReadOnly</span>(<span class="ident">Volatile</span>::<span class="ident">new</span>(<span class="ident">value</span>))
+        <span class="ident">ReadOnly</span>(<span class="ident">Volatile::new</span>(<span class="ident">value</span>))
     }
 
     <span class="doccomment">/// Construct a new read-only volatile wrapper wrapping the given value.</span>
@@ -498,7 +498,7 @@
     <span class="doccomment">/// This function never panics.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_fn&quot;</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ReadOnly</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">ReadOnly</span>(<span class="ident">Volatile</span>::<span class="ident">new</span>(<span class="ident">value</span>))
+        <span class="ident">ReadOnly</span>(<span class="ident">Volatile::new</span>(<span class="ident">value</span>))
     }
 
     <span class="doccomment">/// Perform a volatile read of the contained value, returning a copy of the read value.</span>
@@ -539,7 +539,7 @@
     <span class="doccomment">/// This function never panics.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_fn&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WriteOnly</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">WriteOnly</span>(<span class="ident">Volatile</span>::<span class="ident">new</span>(<span class="ident">value</span>))
+        <span class="ident">WriteOnly</span>(<span class="ident">Volatile::new</span>(<span class="ident">value</span>))
     }
 
     <span class="doccomment">/// Constructs a new write only volatile wrapper around the given value.</span>
@@ -555,7 +555,7 @@
     <span class="doccomment">/// This function never panics.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_fn&quot;</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WriteOnly</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">WriteOnly</span>(<span class="ident">Volatile</span>::<span class="ident">new</span>(<span class="ident">value</span>))
+        <span class="ident">WriteOnly</span>(<span class="ident">Volatile::new</span>(<span class="ident">value</span>))
     }
 
     <span class="doccomment">/// Performs a volatile write of value `value` into the contained value. Functionally identical</span>
@@ -586,7 +586,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">Volatile</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::Volatile</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_read</span>() {

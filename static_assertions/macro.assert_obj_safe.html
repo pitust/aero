@@ -21,7 +21,7 @@ use dynamic dispatch can still do so in future compatible crate versions.</p>
     <span class="kw">fn</span> <span class="ident">foo</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span>;
 }
 
-<span class="macro">assert_obj_safe!</span>(<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Write</span>, <span class="ident">MySafeTrait</span>);</pre></div>
+<span class="macro">assert_obj_safe!</span>(<span class="ident">std::fmt::Write</span>, <span class="ident">MySafeTrait</span>);</pre></div>
 <p>Works with traits that are not in the calling module:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -32,7 +32,7 @@ use dynamic dispatch can still do so in future compatible crate versions.</p>
     <span class="macro">assert_obj_safe!</span>(<span class="ident">BasicTrait</span>);
 }
 
-<span class="macro">assert_obj_safe!</span>(<span class="ident">inner</span>::<span class="ident">BasicTrait</span>);</pre></div>
+<span class="macro">assert_obj_safe!</span>(<span class="ident">inner::BasicTrait</span>);</pre></div>
 <p>The following example fails to compile because raw pointers cannot be sent
 between threads safely:</p>
 

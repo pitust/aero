@@ -250,13 +250,13 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hash</span>(<span class="ident">symbol</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
     <span class="kw">const</span> <span class="ident">HASH_SEED</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">5381</span>;
     <span class="ident">symbol</span>.<span class="ident">bytes</span>().<span class="ident">fold</span>(<span class="ident">HASH_SEED</span>, <span class="op">|</span><span class="ident">hash</span>, <span class="ident">b</span><span class="op">|</span> {
-        <span class="ident">hash</span>.<span class="ident">wrapping_mul</span>(<span class="number">33</span>).<span class="ident">wrapping_add</span>(<span class="ident">u32</span>::<span class="ident">from</span>(<span class="ident">b</span>))
+        <span class="ident">hash</span>.<span class="ident">wrapping_mul</span>(<span class="number">33</span>).<span class="ident">wrapping_add</span>(<span class="ident">u32::from</span>(<span class="ident">b</span>))
     })
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">hash</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::hash</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_hash</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">hash</span>(<span class="string">&quot;&quot;</span>), <span class="number">0x0000_1505</span>);
@@ -269,14 +269,14 @@
 
 <span class="macro">macro_rules!</span> <span class="ident">elf_gnu_hash_impl</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">IntTy</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">elf</span>::<span class="ident">sym</span>::<span class="ident">Sym</span>;
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">strtab</span>::<span class="ident">Strtab</span>;
-        <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-        <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
-        <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::elf::sym::Sym</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::strtab::Strtab</span>;
+        <span class="kw">use</span> <span class="ident">core::fmt</span>;
+        <span class="kw">use</span> <span class="ident">core::mem</span>;
+        <span class="kw">use</span> <span class="ident">core::slice</span>;
 
-        <span class="kw">const</span> <span class="ident">INT_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">IntTy</span><span class="op">&gt;</span>();
-        <span class="kw">const</span> <span class="ident">U32_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>();
+        <span class="kw">const</span> <span class="ident">INT_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">IntTy</span><span class="op">&gt;</span>();
+        <span class="kw">const</span> <span class="ident">U32_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>();
         <span class="doccomment">/// Size of a bits mask in bloom filter</span>
         <span class="kw">const</span> <span class="ident">ELFCLASS_BITS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">INT_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">*</span> <span class="number">8</span>;
 
@@ -298,8 +298,8 @@
             <span class="ident">dynsyms</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Sym</span>],
         }
 
-        <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">GnuHash</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">GnuHash</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
                 <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;GnuHash&quot;</span>)
                     .<span class="ident">field</span>(<span class="string">&quot;nbuckets&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">buckets</span>.<span class="ident">len</span>())
                     .<span class="ident">field</span>(<span class="string">&quot;symindex&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">symindex</span>)
@@ -364,9 +364,9 @@
                 <span class="kw">let</span> <span class="ident">bloom_filter_ptr</span> <span class="op">=</span> <span class="ident">hashtab</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">IntTy</span>;
                 <span class="kw">let</span> <span class="ident">buckets_ptr</span> <span class="op">=</span> <span class="ident">bloom_filter_ptr</span>.<span class="ident">add</span>(<span class="ident">maskwords</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>;
                 <span class="kw">let</span> <span class="ident">chains_ptr</span> <span class="op">=</span> <span class="ident">buckets_ptr</span>.<span class="ident">add</span>(<span class="ident">nbuckets</span> <span class="kw">as</span> <span class="ident">usize</span>);
-                <span class="kw">let</span> <span class="ident">bloom_filter</span> <span class="op">=</span> <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">bloom_filter_ptr</span>, <span class="ident">maskwords</span> <span class="kw">as</span> <span class="ident">usize</span>);
-                <span class="kw">let</span> <span class="ident">buckets</span> <span class="op">=</span> <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">buckets_ptr</span>, <span class="ident">nbuckets</span> <span class="kw">as</span> <span class="ident">usize</span>);
-                <span class="kw">let</span> <span class="ident">chains</span> <span class="op">=</span> <span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">chains_ptr</span>, <span class="ident">dynsyms</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">symindex</span> <span class="kw">as</span> <span class="ident">usize</span>);
+                <span class="kw">let</span> <span class="ident">bloom_filter</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts</span>(<span class="ident">bloom_filter_ptr</span>, <span class="ident">maskwords</span> <span class="kw">as</span> <span class="ident">usize</span>);
+                <span class="kw">let</span> <span class="ident">buckets</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts</span>(<span class="ident">buckets_ptr</span>, <span class="ident">nbuckets</span> <span class="kw">as</span> <span class="ident">usize</span>);
+                <span class="kw">let</span> <span class="ident">chains</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts</span>(<span class="ident">chains_ptr</span>, <span class="ident">dynsyms</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">symindex</span> <span class="kw">as</span> <span class="ident">usize</span>);
                 <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
                     <span class="ident">symindex</span>,
                     <span class="ident">shift2</span>,
@@ -421,7 +421,7 @@
             <span class="doccomment">/// Given a symbol, a hash of that symbol, a dynamic string table and</span>
             <span class="doccomment">/// a `dynstrtab` to cross-reference names, maybe returns a Sym.</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">symbol</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">dynstrtab</span>: <span class="kw-2">&amp;</span><span class="ident">Strtab</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Sym</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">hash</span> <span class="op">=</span> <span class="self">self</span>::<span class="ident">hash</span>(<span class="ident">symbol</span>);
+                <span class="kw">let</span> <span class="ident">hash</span> <span class="op">=</span> <span class="self">self</span><span class="ident">::hash</span>(<span class="ident">symbol</span>);
                 <span class="self">self</span>.<span class="ident">find_with_hash</span>(<span class="ident">symbol</span>, <span class="ident">hash</span>, <span class="ident">dynstrtab</span>)
             }
 

@@ -57,11 +57,11 @@
 }
 
 <span class="doccomment">/// Little Endian byte order context</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LE</span>: <span class="ident">Endian</span> <span class="op">=</span> <span class="ident">Endian</span>::<span class="ident">Little</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LE</span>: <span class="ident">Endian</span> <span class="op">=</span> <span class="ident">Endian::Little</span>;
 <span class="doccomment">/// Big Endian byte order context</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BE</span>: <span class="ident">Endian</span> <span class="op">=</span> <span class="ident">Endian</span>::<span class="ident">Big</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BE</span>: <span class="ident">Endian</span> <span class="op">=</span> <span class="ident">Endian::Big</span>;
 <span class="doccomment">/// Network byte order context</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NETWORK</span>: <span class="ident">Endian</span> <span class="op">=</span> <span class="ident">Endian</span>::<span class="ident">Big</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NETWORK</span>: <span class="ident">Endian</span> <span class="op">=</span> <span class="ident">Endian::Big</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;little&quot;</span>)]</span>
 <span class="doccomment">/// The machine&#39;s native byte order</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NATIVE</span>: <span class="ident">Endian</span> <span class="op">=</span> <span class="ident">LE</span>;

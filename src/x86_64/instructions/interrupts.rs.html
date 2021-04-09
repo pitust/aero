@@ -183,9 +183,9 @@
 <span class="doccomment">/// Returns whether interrupts are enabled.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">are_enabled</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registers</span>::<span class="ident">rflags</span>::{<span class="self">self</span>, <span class="ident">RFlags</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registers::rflags</span>::{<span class="self">self</span>, <span class="ident">RFlags</span>};
 
-    <span class="ident">rflags</span>::<span class="ident">read</span>().<span class="ident">contains</span>(<span class="ident">RFlags</span>::<span class="ident">INTERRUPT_FLAG</span>)
+    <span class="ident">rflags::read</span>().<span class="ident">contains</span>(<span class="ident">RFlags::INTERRUPT_FLAG</span>)
 }
 
 <span class="doccomment">/// Enable interrupts.</span>
@@ -199,7 +199,7 @@
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_interrupt_enable</span>();
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_interrupt_enable</span>();
     }
 }
 
@@ -215,7 +215,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_interrupt_disable</span>();
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_interrupt_disable</span>();
     }
 }
 
@@ -315,7 +315,7 @@
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_interrupt_enable_and_hlt</span>();
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_interrupt_enable_and_hlt</span>();
     }
 }
 
@@ -329,7 +329,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_int3</span>();
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_int3</span>();
     }
 }
 

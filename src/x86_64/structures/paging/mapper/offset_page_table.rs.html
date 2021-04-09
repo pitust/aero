@@ -270,8 +270,8 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">structures</span>::<span class="ident">paging</span>::{
-    <span class="ident">frame</span>::<span class="ident">PhysFrame</span>, <span class="ident">mapper</span>::<span class="kw-2">*</span>, <span class="ident">page_table</span>::<span class="ident">PageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>,
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::structures::paging</span>::{
+    <span class="ident">frame::PhysFrame</span>, <span class="ident">mapper</span>::<span class="kw-2">*</span>, <span class="ident">page_table::PageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>,
 };
 
 <span class="doccomment">/// A Mapper implementation that requires that the complete physically memory is mapped at some</span>
@@ -303,7 +303,7 @@
             <span class="ident">offset</span>: <span class="ident">phys_offset</span>,
         };
         <span class="self">Self</span> {
-            <span class="ident">inner</span>: <span class="ident">MappedPageTable</span>::<span class="ident">new</span>(<span class="ident">level_4_table</span>, <span class="ident">phys_offset</span>),
+            <span class="ident">inner</span>: <span class="ident">MappedPageTable::new</span>(<span class="ident">level_4_table</span>, <span class="ident">phys_offset</span>),
         }
     }
 

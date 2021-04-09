@@ -114,7 +114,7 @@
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_debug_implementations</span>)]</span>
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">addr</span>::{<span class="ident">align_down</span>, <span class="ident">align_up</span>, <span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::addr</span>::{<span class="ident">align_down</span>, <span class="ident">align_up</span>, <span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
 
 <span class="doccomment">/// Makes a function const only when `feature = &quot;const_fn&quot;` is enabled.</span>
 <span class="doccomment">///</span>
@@ -192,10 +192,10 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_u16</span>(<span class="ident">value</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel</span> {
         <span class="kw">match</span> <span class="ident">value</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring0</span>,
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring1</span>,
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring2</span>,
-            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring3</span>,
+            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel::Ring0</span>,
+            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel::Ring1</span>,
+            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel::Ring2</span>,
+            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PrivilegeLevel::Ring3</span>,
             <span class="ident">i</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;{} is not a valid privilege level&quot;</span>, <span class="ident">i</span>),
         }
     }

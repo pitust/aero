@@ -24,7 +24,7 @@ implemented you should invoke <a href="macro.assert_not_impl_any.html"><code>ass
 <p>The following compiles because <a href="https://doc.rust-lang.org/std/cell/struct.Cell.html"><code>Cell</code></a> is not both <a href="https://doc.rust-lang.org/std/marker/trait.Sync.html"><code>Sync</code></a> <em>and</em> <a href="https://doc.rust-lang.org/std/marker/trait.Send.html"><code>Send</code></a>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::<span class="ident">Cell</span>;
+<span class="kw">use</span> <span class="ident">std::cell::Cell</span>;
 
 <span class="macro">assert_not_impl_all!</span>(<span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>: <span class="ident">Sync</span>, <span class="ident">Send</span>);</pre></div>
 <p>But it is <a href="https://doc.rust-lang.org/std/marker/trait.Send.html"><code>Send</code></a>, so this fails to compile:</p>

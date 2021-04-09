@@ -484,14 +484,14 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Abstractions for reading and modifying the mapping of pages.</span>
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">mapped_page_table</span>::{<span class="ident">MappedPageTable</span>, <span class="ident">PageTableFrameMapping</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::mapped_page_table</span>::{<span class="ident">MappedPageTable</span>, <span class="ident">PageTableFrameMapping</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">offset_page_table</span>::<span class="ident">OffsetPageTable</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::offset_page_table::OffsetPageTable</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;instructions&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">recursive_page_table</span>::{<span class="ident">InvalidPageTable</span>, <span class="ident">RecursivePageTable</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::recursive_page_table</span>::{<span class="ident">InvalidPageTable</span>, <span class="ident">RecursivePageTable</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">structures</span>::<span class="ident">paging</span>::{
-    <span class="ident">frame_alloc</span>::<span class="ident">FrameAllocator</span>, <span class="ident">page_table</span>::<span class="ident">PageTableFlags</span>, <span class="ident">Page</span>, <span class="ident">PageSize</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size1GiB</span>,
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::structures::paging</span>::{
+    <span class="ident">frame_alloc::FrameAllocator</span>, <span class="ident">page_table::PageTableFlags</span>, <span class="ident">Page</span>, <span class="ident">PageSize</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size1GiB</span>,
     <span class="ident">Size2MiB</span>, <span class="ident">Size4KiB</span>,
 };
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
@@ -526,8 +526,8 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">translate_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PhysAddr</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">translate</span>(<span class="ident">addr</span>) {
-            <span class="ident">TranslateResult</span>::<span class="ident">NotMapped</span> <span class="op">|</span> <span class="ident">TranslateResult</span>::<span class="ident">InvalidFrameAddress</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">TranslateResult</span>::<span class="ident">Mapped</span> { <span class="ident">frame</span>, <span class="ident">offset</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="ident">offset</span>),
+            <span class="ident">TranslateResult::NotMapped</span> <span class="op">|</span> <span class="ident">TranslateResult::InvalidFrameAddress</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">TranslateResult::Mapped</span> { <span class="ident">frame</span>, <span class="ident">offset</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="ident">offset</span>),
         }
     }
 }
@@ -573,9 +573,9 @@
         <span class="doccomment">/// Returns the start address of the frame.</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_address</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PhysAddr</span> {
             <span class="kw">match</span> <span class="self">self</span> {
-                <span class="ident">MappedFrame</span>::<span class="ident">Size4KiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">start_address</span>(),
-                <span class="ident">MappedFrame</span>::<span class="ident">Size2MiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">start_address</span>(),
-                <span class="ident">MappedFrame</span>::<span class="ident">Size1GiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">start_address</span>(),
+                <span class="ident">MappedFrame::Size4KiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">start_address</span>(),
+                <span class="ident">MappedFrame::Size2MiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">start_address</span>(),
+                <span class="ident">MappedFrame::Size1GiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">start_address</span>(),
             }
         }
     }
@@ -584,9 +584,9 @@
         <span class="doccomment">/// Returns the size the frame (4KB, 2MB or 1GB).</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
             <span class="kw">match</span> <span class="self">self</span> {
-                <span class="ident">MappedFrame</span>::<span class="ident">Size4KiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">size</span>(),
-                <span class="ident">MappedFrame</span>::<span class="ident">Size2MiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">size</span>(),
-                <span class="ident">MappedFrame</span>::<span class="ident">Size1GiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">size</span>(),
+                <span class="ident">MappedFrame::Size4KiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">size</span>(),
+                <span class="ident">MappedFrame::Size2MiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">size</span>(),
+                <span class="ident">MappedFrame::Size1GiB</span>(<span class="ident">frame</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">frame</span>.<span class="ident">size</span>(),
             }
         }
     }
@@ -674,9 +674,9 @@
         <span class="ident">A</span>: <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
     {
         <span class="kw">let</span> <span class="ident">parent_table_flags</span> <span class="op">=</span> <span class="ident">flags</span>
-            <span class="op">&amp;</span> (<span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span>
-                <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span>
-                <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">USER_ACCESSIBLE</span>);
+            <span class="op">&amp;</span> (<span class="ident">PageTableFlags::PRESENT</span>
+                <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>
+                <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>);
 
         <span class="self">self</span>.<span class="ident">map_to_with_table_flags</span>(<span class="ident">page</span>, <span class="ident">frame</span>, <span class="ident">flags</span>, <span class="ident">parent_table_flags</span>, <span class="ident">frame_allocator</span>)
     }
@@ -853,7 +853,7 @@
         <span class="ident">S</span>: <span class="ident">PageSize</span>,
         <span class="self">Self</span>: <span class="ident">Mapper</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()));
+        <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()));
         <span class="self">self</span>.<span class="ident">map_to</span>(<span class="ident">page</span>, <span class="ident">frame</span>, <span class="ident">flags</span>, <span class="ident">frame_allocator</span>)
     }
 }
@@ -878,7 +878,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;instructions&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="self">self</span>) {
-        <span class="kw">crate</span>::<span class="ident">instructions</span>::<span class="ident">tlb</span>::<span class="ident">flush</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">start_address</span>());
+        <span class="kw">crate</span><span class="ident">::instructions::tlb::flush</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">start_address</span>());
     }
 
     <span class="doccomment">/// Don&#39;t flush the TLB and silence the “must be used” warning.</span>
@@ -906,7 +906,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;instructions&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_all</span>(<span class="self">self</span>) {
-        <span class="kw">crate</span>::<span class="ident">instructions</span>::<span class="ident">tlb</span>::<span class="ident">flush_all</span>()
+        <span class="kw">crate</span><span class="ident">::instructions::tlb::flush_all</span>()
     }
 
     <span class="doccomment">/// Don&#39;t flush the TLB and silence the “must be used” warning.</span>

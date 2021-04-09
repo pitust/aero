@@ -238,8 +238,8 @@
 <span id="235">235</span>
 <span id="236">236</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
 
 <span class="kw">const</span> <span class="ident">PAGE_SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">4096</span>;
 
@@ -255,11 +255,11 @@
 }
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::new_without_default</span>)]</span>
 <span class="kw">impl</span> <span class="ident">MemoryMap</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">MemoryMap</span> {
-            <span class="ident">entries</span>: [<span class="ident">MemoryRegion</span>::<span class="ident">empty</span>(); <span class="ident">MAX_MEMORY_MAP_SIZE</span>],
+            <span class="ident">entries</span>: [<span class="ident">MemoryRegion::empty</span>(); <span class="ident">MAX_MEMORY_MAP_SIZE</span>],
             <span class="ident">next_entry_index</span>: <span class="number">0</span>,
         }
     }
@@ -275,20 +275,20 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">cmp</span>::<span class="ident">Ordering</span>;
+        <span class="kw">use</span> <span class="ident">core::cmp::Ordering</span>;
 
         <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">sort_unstable_by</span>(<span class="op">|</span><span class="ident">r1</span>, <span class="ident">r2</span><span class="op">|</span> {
             <span class="kw">if</span> <span class="ident">r1</span>.<span class="ident">range</span>.<span class="ident">is_empty</span>() {
-                <span class="ident">Ordering</span>::<span class="ident">Greater</span>
+                <span class="ident">Ordering::Greater</span>
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">r2</span>.<span class="ident">range</span>.<span class="ident">is_empty</span>() {
-                <span class="ident">Ordering</span>::<span class="ident">Less</span>
+                <span class="ident">Ordering::Less</span>
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">ordering</span> <span class="op">=</span> <span class="ident">r1</span>
                     .<span class="ident">range</span>
                     .<span class="ident">start_frame_number</span>
                     .<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">r2</span>.<span class="ident">range</span>.<span class="ident">start_frame_number</span>);
 
-                <span class="kw">if</span> <span class="ident">ordering</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Ordering</span>::<span class="ident">Equal</span> {
+                <span class="kw">if</span> <span class="ident">ordering</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Ordering::Equal</span> {
                     <span class="ident">r1</span>.<span class="ident">range</span>.<span class="ident">end_frame_number</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">r2</span>.<span class="ident">range</span>.<span class="ident">end_frame_number</span>)
                 } <span class="kw">else</span> {
                     <span class="ident">ordering</span>
@@ -308,20 +308,20 @@
 <span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">MemoryMap</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> [<span class="ident">MemoryRegion</span>];
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">entries</span>[<span class="number">0</span>..<span class="self">self</span>.<span class="ident">next_entry_index</span>()]
     }
 }
 
 <span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">MemoryMap</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">let</span> <span class="ident">next_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">next_entry_index</span>();
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">entries</span>[<span class="number">0</span>..<span class="ident">next_index</span>]
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">MemoryMap</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MemoryMap</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_list</span>().<span class="ident">entries</span>(<span class="self">self</span>.<span class="ident">iter</span>()).<span class="ident">finish</span>()
     }
 }
@@ -344,7 +344,7 @@
                 <span class="ident">start_frame_number</span>: <span class="number">0</span>,
                 <span class="ident">end_frame_number</span>: <span class="number">0</span>,
             },
-            <span class="ident">region_type</span>: <span class="ident">MemoryRegionType</span>::<span class="ident">Empty</span>,
+            <span class="ident">region_type</span>: <span class="ident">MemoryRegionType::Empty</span>,
         }
     }
 }
@@ -393,8 +393,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">FrameRange</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">FrameRange</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(
             <span class="ident">f</span>,
             <span class="string">&quot;FrameRange({:#x}..{:#x})&quot;</span>,
@@ -457,15 +457,15 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E820MemoryRegion</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MemoryRegion</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">region</span>: <span class="ident">E820MemoryRegion</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MemoryRegion</span> {
         <span class="kw">let</span> <span class="ident">region_type</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">region</span>.<span class="ident">region_type</span> {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType</span>::<span class="ident">Usable</span>,
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType</span>::<span class="ident">Reserved</span>,
-            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType</span>::<span class="ident">AcpiReclaimable</span>,
-            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType</span>::<span class="ident">AcpiNvs</span>,
-            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType</span>::<span class="ident">BadMemory</span>,
+            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType::Usable</span>,
+            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType::Reserved</span>,
+            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType::AcpiReclaimable</span>,
+            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType::AcpiNvs</span>,
+            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MemoryRegionType::BadMemory</span>,
             <span class="ident">t</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;invalid region type {}&quot;</span>, <span class="ident">t</span>),
         };
         <span class="ident">MemoryRegion</span> {
-            <span class="ident">range</span>: <span class="ident">FrameRange</span>::<span class="ident">new</span>(<span class="ident">region</span>.<span class="ident">start_addr</span>, <span class="ident">region</span>.<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">region</span>.<span class="ident">len</span>),
+            <span class="ident">range</span>: <span class="ident">FrameRange::new</span>(<span class="ident">region</span>.<span class="ident">start_addr</span>, <span class="ident">region</span>.<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">region</span>.<span class="ident">len</span>),
             <span class="ident">region_type</span>,
         }
     }

@@ -8,9 +8,9 @@ uses either a ticket lock or a normal spin mutex.</p>
 <p>Note that this function will permanently lock the original <a href="../../spin/mutex/struct.Mutex.html" title="Mutex"><code>Mutex</code></a>.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">mylock</span> <span class="op">=</span> <span class="ident">spin</span>::<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="number">0</span>);
+<span class="kw">let</span> <span class="ident">mylock</span> <span class="op">=</span> <span class="ident">spin::Mutex::new</span>(<span class="number">0</span>);
 
-<span class="kw">let</span> <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">i32</span> <span class="op">=</span> <span class="ident">spin</span>::<span class="ident">MutexGuard</span>::<span class="ident">leak</span>(<span class="ident">mylock</span>.<span class="ident">lock</span>());
+<span class="kw">let</span> <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">i32</span> <span class="op">=</span> <span class="ident">spin::MutexGuard::leak</span>(<span class="ident">mylock</span>.<span class="ident">lock</span>());
 
 <span class="kw-2">*</span><span class="ident">data</span> <span class="op">=</span> <span class="number">1</span>;
 <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">data</span>, <span class="number">1</span>);</pre></div>

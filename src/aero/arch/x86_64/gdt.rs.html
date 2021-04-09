@@ -187,11 +187,11 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/Global_Descriptor_Table&gt;</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
 
 <span class="kw">const</span> <span class="ident">GDT_ENTRIES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">6</span>;
 
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GDT</span>: [<span class="ident">GDTEntry</span>; <span class="ident">GDT_ENTRIES</span>] <span class="op">=</span> [<span class="ident">GDTEntry</span>::<span class="ident">null</span>(); <span class="ident">GDT_ENTRIES</span>];
+<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GDT</span>: [<span class="ident">GDTEntry</span>; <span class="ident">GDT_ENTRIES</span>] <span class="op">=</span> [<span class="ident">GDTEntry::null</span>(); <span class="ident">GDT_ENTRIES</span>];
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">struct</span> <span class="ident">GDTDescriptor</span> {
@@ -249,7 +249,7 @@
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">null</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>(<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>)
+        <span class="self">Self</span><span class="ident">::new</span>(<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>)
     }
 }
 
@@ -321,34 +321,34 @@
             <span class="ident">gs</span>: <span class="number">0</span>,
             <span class="ident">ldt</span>: <span class="number">0</span>,
             <span class="ident">trap</span>: <span class="number">0</span>,
-            <span class="ident">iomap_base</span>: <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u16</span>,
+            <span class="ident">iomap_base</span>: <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u16</span>,
         }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GDTEntry</span> {
-        <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">null</span>();
+        <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::null</span>();
 
         <span class="kw">let</span> <span class="ident">base</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="ident">this</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>) <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="kw">let</span> <span class="ident">limit</span> <span class="op">=</span> <span class="ident">base</span> <span class="op">+</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>();
+        <span class="kw">let</span> <span class="ident">limit</span> <span class="op">=</span> <span class="ident">base</span> <span class="op">+</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>();
 
-        <span class="ident">GDTEntry</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="ident">base</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">limit</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="number">0xE9</span>, <span class="number">0x00</span>)
+        <span class="ident">GDTEntry::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="ident">base</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">limit</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="number">0xE9</span>, <span class="number">0x00</span>)
     }
 }
 
 <span class="doccomment">/// Initialize the GDT.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
     <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="ident">tss</span> <span class="op">=</span> <span class="ident">TSSEntry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">tss</span> <span class="op">=</span> <span class="ident">TSSEntry::new</span>();
 
-        <span class="ident">GDT</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">GDTEntry</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0</span>);
-        <span class="ident">GDT</span>[<span class="number">1</span>] <span class="op">=</span> <span class="ident">GDTEntry</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0x9A</span>, <span class="number">0xA0</span>, <span class="number">0</span>);
-        <span class="ident">GDT</span>[<span class="number">2</span>] <span class="op">=</span> <span class="ident">GDTEntry</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0x92</span>, <span class="number">0xA0</span>, <span class="number">0</span>);
-        <span class="ident">GDT</span>[<span class="number">3</span>] <span class="op">=</span> <span class="ident">GDTEntry</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0xFA</span>, <span class="number">0xA0</span>, <span class="number">0</span>);
-        <span class="ident">GDT</span>[<span class="number">4</span>] <span class="op">=</span> <span class="ident">GDTEntry</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0xF2</span>, <span class="number">0xA0</span>, <span class="number">0</span>);
+        <span class="ident">GDT</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">GDTEntry::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0</span>);
+        <span class="ident">GDT</span>[<span class="number">1</span>] <span class="op">=</span> <span class="ident">GDTEntry::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0x9A</span>, <span class="number">0xA0</span>, <span class="number">0</span>);
+        <span class="ident">GDT</span>[<span class="number">2</span>] <span class="op">=</span> <span class="ident">GDTEntry::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0x92</span>, <span class="number">0xA0</span>, <span class="number">0</span>);
+        <span class="ident">GDT</span>[<span class="number">3</span>] <span class="op">=</span> <span class="ident">GDTEntry::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0xFA</span>, <span class="number">0xA0</span>, <span class="number">0</span>);
+        <span class="ident">GDT</span>[<span class="number">4</span>] <span class="op">=</span> <span class="ident">GDTEntry::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0xF2</span>, <span class="number">0xA0</span>, <span class="number">0</span>);
         <span class="ident">GDT</span>[<span class="number">5</span>] <span class="op">=</span> <span class="ident">tss</span>;
 
-        <span class="kw">let</span> <span class="ident">gdt_descriptor</span> <span class="op">=</span> <span class="ident">GDTDescriptor</span>::<span class="ident">new</span>(
-            (<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span>[<span class="ident">GDTEntry</span>; <span class="ident">GDT_ENTRIES</span>]<span class="op">&gt;</span>() <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
+        <span class="kw">let</span> <span class="ident">gdt_descriptor</span> <span class="op">=</span> <span class="ident">GDTDescriptor::new</span>(
+            (<span class="ident">mem::size_of</span>::<span class="op">&lt;</span>[<span class="ident">GDTEntry</span>; <span class="ident">GDT_ENTRIES</span>]<span class="op">&gt;</span>() <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
             (<span class="kw-2">&amp;</span><span class="ident">GDT</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>) <span class="kw">as</span> <span class="ident">u64</span>,
         );
 

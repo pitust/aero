@@ -85,7 +85,7 @@
 <span class="kw">impl</span> <span class="ident">RelaxStrategy</span> <span class="kw">for</span> <span class="ident">Spin</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">fn</span> <span class="ident">relax</span>() {
-        <span class="ident">core</span>::<span class="ident">hint</span>::<span class="ident">spin_loop</span>();
+        <span class="ident">core::hint::spin_loop</span>();
     }
 }
 
@@ -103,7 +103,7 @@
 <span class="kw">impl</span> <span class="ident">RelaxStrategy</span> <span class="kw">for</span> <span class="ident">Yield</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">fn</span> <span class="ident">relax</span>() {
-        <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">yield_now</span>();
+        <span class="ident">std::thread::yield_now</span>();
     }
 }
 

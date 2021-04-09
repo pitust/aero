@@ -43,7 +43,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Provides a type for the task state segment structure.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">VirtAddr</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::VirtAddr</span>;
 
 <span class="doccomment">/// In 64-bit mode the TSS holds information that is not</span>
 <span class="doccomment">/// directly related to the task-switch mechanism,</span>
@@ -70,8 +70,8 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TaskStateSegment</span> {
         <span class="ident">TaskStateSegment</span> {
-            <span class="ident">privilege_stack_table</span>: [<span class="ident">VirtAddr</span>::<span class="ident">zero</span>(); <span class="number">3</span>],
-            <span class="ident">interrupt_stack_table</span>: [<span class="ident">VirtAddr</span>::<span class="ident">zero</span>(); <span class="number">7</span>],
+            <span class="ident">privilege_stack_table</span>: [<span class="ident">VirtAddr::zero</span>(); <span class="number">3</span>],
+            <span class="ident">interrupt_stack_table</span>: [<span class="ident">VirtAddr::zero</span>(); <span class="number">7</span>],
             <span class="ident">iomap_base</span>: <span class="number">0</span>,
             <span class="ident">reserved_1</span>: <span class="number">0</span>,
             <span class="ident">reserved_2</span>: <span class="number">0</span>,

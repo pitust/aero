@@ -6,18 +6,18 @@
 </div><h2 id="implementations" class="small-section-header">Implementations<a href="#implementations" class="anchor"></a></h2><h3 id="impl" class="impl"><code class="in-band">impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>&gt; <a class="struct" href="../volatile/struct.ReadOnly.html" title="struct volatile::ReadOnly">ReadOnly</a>&lt;T&gt;</code><a href="#impl" class="anchor"></a><a class="srclink" href="../src/volatile/lib.rs.html#157-206" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.new" class="method"><code>pub fn <a href="#method.new" class="fnname">new</a>(value: T) -&gt; <a class="struct" href="../volatile/struct.ReadOnly.html" title="struct volatile::ReadOnly">ReadOnly</a>&lt;T&gt;</code><a class="srclink" href="../src/volatile/lib.rs.html#186-188" title="goto source code">[src]</a></h4><div class="docblock"><p>Construct a new read-only volatile wrapper wrapping the given value.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">volatile</span>::<span class="ident">ReadOnly</span>;
+<span class="kw">use</span> <span class="ident">volatile::ReadOnly</span>;
 
-<span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">ReadOnly</span>::<span class="ident">new</span>(<span class="number">42u32</span>);</pre></div>
+<span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">ReadOnly::new</span>(<span class="number">42u32</span>);</pre></div>
 <h1 id="panics" class="section-header"><a href="#panics">Panics</a></h1>
 <p>This function never panics.</p>
 </div><h4 id="method.read" class="method"><code>pub fn <a href="#method.read" class="fnname">read</a>(&amp;self) -&gt; T</code><a class="srclink" href="../src/volatile/lib.rs.html#203-205" title="goto source code">[src]</a></h4><div class="docblock"><p>Perform a volatile read of the contained value, returning a copy of the read value.
 Functionally equivalent to <code>Volatile::read</code>.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">volatile</span>::<span class="ident">ReadOnly</span>;
+<span class="kw">use</span> <span class="ident">volatile::ReadOnly</span>;
 
-<span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">ReadOnly</span>::<span class="ident">new</span>(<span class="number">42u32</span>);
+<span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">ReadOnly::new</span>(<span class="number">42u32</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">read</span>(), <span class="number">42u32</span>);</pre></div>
 <h1 id="panics-1" class="section-header"><a href="#panics-1">Panics</a></h1>
 <p>This function never panics.</p>

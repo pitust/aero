@@ -304,7 +304,7 @@
 <span class="comment">// Defined note types for GNU systems.</span>
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;log&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
+<span class="kw">use</span> <span class="ident">log::debug</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">scroll</span>::{<span class="ident">IOread</span>, <span class="ident">IOwrite</span>, <span class="ident">Pread</span>, <span class="ident">Pwrite</span>, <span class="ident">SizeWith</span>};
 
@@ -386,22 +386,22 @@
 }
 
 <span class="macro">if_alloc!</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">container</span>;
-    <span class="kw">use</span> <span class="ident">scroll</span>::<span class="ident">ctx</span>;
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::container</span>;
+    <span class="kw">use</span> <span class="ident">scroll::ctx</span>;
+    <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
     <span class="doccomment">/// An iterator over ELF binary notes in a note section or segment</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteDataIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="kw">pub</span> <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>],
         <span class="kw">pub</span> <span class="ident">size</span>: <span class="ident">usize</span>,
         <span class="kw">pub</span> <span class="ident">offset</span>: <span class="ident">usize</span>,
-        <span class="kw">pub</span> <span class="ident">ctx</span>: (<span class="ident">usize</span>, <span class="ident">container</span>::<span class="ident">Ctx</span>), <span class="comment">// (alignment, ctx)</span>
+        <span class="kw">pub</span> <span class="ident">ctx</span>: (<span class="ident">usize</span>, <span class="ident">container::Ctx</span>), <span class="comment">// (alignment, ctx)</span>
     }
 
     <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">NoteDataIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">error</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Note</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-        <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+        <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">error::Result</span><span class="op">&lt;</span><span class="ident">Note</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+        <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">offset</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span> {
                 <span class="prelude-val">None</span>
             } <span class="kw">else</span> {
@@ -421,8 +421,8 @@
     }
 
     <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">NoteIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">error</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Note</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-        <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+        <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">error::Result</span><span class="op">&lt;</span><span class="ident">Note</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+        <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
             <span class="kw">while</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">iters</span>.<span class="ident">len</span>() {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">note_result</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">iters</span>[<span class="self">self</span>.<span class="ident">index</span>].<span class="ident">next</span>() {
                     <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">note_result</span>);
@@ -492,9 +492,9 @@
         }
     }
 
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ctx</span>::<span class="ident">TryFromCtx</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, (<span class="ident">usize</span>, <span class="ident">container</span>::<span class="ident">Ctx</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Note</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">error</span>::<span class="ident">Error</span>;
-        <span class="kw">fn</span> <span class="ident">try_from_ctx</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], (<span class="ident">alignment</span>, <span class="ident">ctx</span>): (<span class="ident">usize</span>, <span class="ident">container</span>::<span class="ident">Ctx</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">usize</span>), <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ctx::TryFromCtx</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, (<span class="ident">usize</span>, <span class="ident">container::Ctx</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Note</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">error::Error</span>;
+        <span class="kw">fn</span> <span class="ident">try_from_ctx</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], (<span class="ident">alignment</span>, <span class="ident">ctx</span>): (<span class="ident">usize</span>, <span class="ident">container::Ctx</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">usize</span>), <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="number">0</span>;
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">alignment</span> <span class="op">=</span> <span class="ident">alignment</span>;
             <span class="kw">if</span> <span class="ident">alignment</span> <span class="op">&lt;</span> <span class="number">4</span> {
@@ -503,12 +503,12 @@
             <span class="kw">let</span> <span class="ident">header</span>: <span class="ident">NoteHeader</span> <span class="op">=</span> {
                 <span class="kw">match</span> <span class="ident">alignment</span> {
                     <span class="number">4</span><span class="op">|</span><span class="number">8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes</span>.<span class="ident">gread_with</span>::<span class="op">&lt;</span><span class="ident">Nhdr32</span><span class="op">&gt;</span>(<span class="ident">offset</span>, <span class="ident">ctx</span>.<span class="ident">le</span>)<span class="question-mark">?</span>.<span class="ident">into</span>(),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;Notes has unimplemented alignment requirement: {:#x}&quot;</span>, <span class="ident">alignment</span>)))
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error::Error::Malformed</span>(<span class="macro">format!</span>(<span class="string">&quot;Notes has unimplemented alignment requirement: {:#x}&quot;</span>, <span class="ident">alignment</span>)))
                 }
             };
             <span class="macro">debug!</span>(<span class="string">&quot;{:?} - {:#x}&quot;</span>, <span class="ident">header</span>, <span class="kw-2">*</span><span class="ident">offset</span>);
             <span class="comment">// -1 because includes \0 terminator</span>
-            <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">gread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>(<span class="ident">offset</span>, <span class="ident">ctx</span>::<span class="ident">StrCtx</span>::<span class="ident">Length</span>(<span class="ident">header</span>.<span class="ident">n_namesz</span>.<span class="ident">saturating_sub</span>(<span class="number">1</span>)))<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">gread_with</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>(<span class="ident">offset</span>, <span class="ident">ctx::StrCtx::Length</span>(<span class="ident">header</span>.<span class="ident">n_namesz</span>.<span class="ident">saturating_sub</span>(<span class="number">1</span>)))<span class="question-mark">?</span>;
             <span class="kw">if</span> <span class="ident">header</span>.<span class="ident">n_namesz</span> <span class="op">&gt;</span> <span class="number">0</span> {
                 <span class="kw-2">*</span><span class="ident">offset</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
@@ -539,9 +539,9 @@
                                      <span class="number">0x53</span>, <span class="number">0xb1</span>, <span class="number">0x10</span>, <span class="number">0x11</span>, <span class="number">0x94</span>, <span class="number">0x86</span>, <span class="number">0x8e</span>, <span class="number">0xf9</span>,
                                      <span class="number">0x4f</span>, <span class="number">0xe8</span>, <span class="number">0xdd</span>, <span class="number">0xdb</span>];
 
-        <span class="kw">static</span> <span class="ident">CONTEXT</span>: (<span class="ident">usize</span>, <span class="ident">container</span>::<span class="ident">Ctx</span>) <span class="op">=</span> (<span class="number">4</span>, <span class="ident">container</span>::<span class="ident">Ctx</span> {
-            <span class="ident">container</span>: <span class="ident">container</span>::<span class="ident">Container</span>::<span class="ident">Big</span>,
-            <span class="ident">le</span>: ::<span class="ident">scroll</span>::<span class="ident">Endian</span>::<span class="ident">Little</span>,
+        <span class="kw">static</span> <span class="ident">CONTEXT</span>: (<span class="ident">usize</span>, <span class="ident">container::Ctx</span>) <span class="op">=</span> (<span class="number">4</span>, <span class="ident">container::Ctx</span> {
+            <span class="ident">container</span>: <span class="ident">container::Container::Big</span>,
+            <span class="ident">le</span>: <span class="ident">::scroll::Endian::Little</span>,
         });
 
         <span class="kw">fn</span> <span class="ident">make_note_iter</span>(<span class="ident">start</span>: <span class="ident">usize</span>, <span class="ident">end</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NoteDataIterator</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {

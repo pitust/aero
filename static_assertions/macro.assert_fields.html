@@ -38,11 +38,11 @@ result of <code>#[cfg]</code>. This can be an issue when exposing a public API.<
     <span class="ident">Ptr</span>(<span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>),
 }
 
-<span class="macro">assert_fields!</span>(<span class="ident">Data</span>::<span class="ident">Val</span>: <span class="ident">id</span>, <span class="ident">bytes</span>);</pre></div>
+<span class="macro">assert_fields!</span>(<span class="ident">Data::Val</span>: <span class="ident">id</span>, <span class="ident">bytes</span>);</pre></div>
 <p>The following example fails to compile because <a href="https://doc.rust-lang.org/std/ops/struct.Range.html"><code>Range</code></a> does not have a field named <code>middle</code>:</p>
 
 <div class='information'><div class='tooltip compile_fail'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered compile_fail">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Range</span>;
+<span class="kw">use</span> <span class="ident">std::ops::Range</span>;
 
 <span class="macro">assert_fields!</span>(<span class="ident">Range</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>: <span class="ident">middle</span>);</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="static_assertions" data-search-js="../search-index.js"></div>

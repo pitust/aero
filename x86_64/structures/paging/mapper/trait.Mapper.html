@@ -63,12 +63,12 @@ the top hierarchy only with USER_ACCESSIBLE:</p>
           .<span class="ident">map_to_with_table_flags</span>(
               <span class="ident">page</span>,
               <span class="ident">frame</span>,
-             <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span>
-                  <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span>
-                  <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">USER_ACCESSIBLE</span>
-                  <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">NO_EXECUTE</span>
-                  <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">NO_CACHE</span>,
-             <span class="ident">PageTableFlags</span>::<span class="ident">USER_ACCESSIBLE</span>,
+             <span class="ident">PageTableFlags::PRESENT</span>
+                  <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>
+                  <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>
+                  <span class="op">|</span> <span class="ident">PageTableFlags::NO_EXECUTE</span>
+                  <span class="op">|</span> <span class="ident">PageTableFlags::NO_CACHE</span>,
+             <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>,
               <span class="ident">frame_allocator</span>,
           )
           .<span class="ident">unwrap</span>()
@@ -154,9 +154,9 @@ also apply to shared mappings, including the aliasing requirements.</p>
           .<span class="ident">map_to</span>(
               <span class="ident">page</span>,
               <span class="ident">frame</span>,
-             <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span>
-                  <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span>
-                  <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">USER_ACCESSIBLE</span>,
+             <span class="ident">PageTableFlags::PRESENT</span>
+                  <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>
+                  <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>,
               <span class="ident">frame_allocator</span>,
           )
           .<span class="ident">unwrap</span>()

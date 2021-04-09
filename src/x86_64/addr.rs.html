@@ -543,11 +543,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Physical and virtual addresses manipulation</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">AddAssign</span>, <span class="ident">Sub</span>, <span class="ident">SubAssign</span>};
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="ident">Add</span>, <span class="ident">AddAssign</span>, <span class="ident">Sub</span>, <span class="ident">SubAssign</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">structures</span>::<span class="ident">paging</span>::{<span class="ident">PageOffset</span>, <span class="ident">PageTableIndex</span>};
-<span class="kw">use</span> <span class="ident">bit_field</span>::<span class="ident">BitField</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::structures::paging</span>::{<span class="ident">PageOffset</span>, <span class="ident">PageTableIndex</span>};
+<span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 
 <span class="doccomment">/// A canonical 64-bit virtual memory address.</span>
 <span class="doccomment">///</span>
@@ -595,7 +595,7 @@
     <span class="doccomment">/// This function panics if the bits in the range 48 to 64 contain data (i.e. are not null and no sign extension).</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">addr</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {
-        <span class="self">Self</span>::<span class="ident">try_new</span>(<span class="ident">addr</span>).<span class="ident">expect</span>(
+        <span class="self">Self</span><span class="ident">::try_new</span>(<span class="ident">addr</span>).<span class="ident">expect</span>(
             <span class="string">&quot;address passed to VirtAddr::new must not contain any data \
              in bits 48 to 64&quot;</span>,
         )
@@ -611,7 +611,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>(<span class="ident">addr</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">VirtAddr</span>, <span class="ident">VirtAddrNotValid</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">addr</span>.<span class="ident">get_bits</span>(<span class="number">47</span>..<span class="number">64</span>) {
             <span class="number">0</span> <span class="op">|</span> <span class="number">0x1ffff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">VirtAddr</span>(<span class="ident">addr</span>)),     <span class="comment">// address is canonical</span>
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">VirtAddr</span>::<span class="ident">new_truncate</span>(<span class="ident">addr</span>)), <span class="comment">// address needs sign extension</span>
+            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">VirtAddr::new_truncate</span>(<span class="ident">addr</span>)), <span class="comment">// address needs sign extension</span>
             <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">VirtAddrNotValid</span>(<span class="ident">other</span>)),
         }
     }
@@ -658,7 +658,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>, <span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_ptr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="ident">u64</span>)
+        <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="ident">u64</span>)
     }
 
     <span class="doccomment">/// Converts the address to a raw pointer.</span>
@@ -715,36 +715,36 @@
     <span class="doccomment">/// Returns the 12-bit page offset of this virtual address.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">page_offset</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageOffset</span> {
-        <span class="ident">PageOffset</span>::<span class="ident">new_truncate</span>(<span class="self">self</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">u16</span>)
+        <span class="ident">PageOffset::new_truncate</span>(<span class="self">self</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">u16</span>)
     }
 
     <span class="doccomment">/// Returns the 9-bit level 1 page table index.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">p1_index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageTableIndex</span> {
-        <span class="ident">PageTableIndex</span>::<span class="ident">new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span>) <span class="kw">as</span> <span class="ident">u16</span>)
+        <span class="ident">PageTableIndex::new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span>) <span class="kw">as</span> <span class="ident">u16</span>)
     }
 
     <span class="doccomment">/// Returns the 9-bit level 2 page table index.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">p2_index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageTableIndex</span> {
-        <span class="ident">PageTableIndex</span>::<span class="ident">new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span>) <span class="kw">as</span> <span class="ident">u16</span>)
+        <span class="ident">PageTableIndex::new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span>) <span class="kw">as</span> <span class="ident">u16</span>)
     }
 
     <span class="doccomment">/// Returns the 9-bit level 3 page table index.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">p3_index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageTableIndex</span> {
-        <span class="ident">PageTableIndex</span>::<span class="ident">new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span>) <span class="kw">as</span> <span class="ident">u16</span>)
+        <span class="ident">PageTableIndex::new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span>) <span class="kw">as</span> <span class="ident">u16</span>)
     }
 
     <span class="doccomment">/// Returns the 9-bit level 4 page table index.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">p4_index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PageTableIndex</span> {
-        <span class="ident">PageTableIndex</span>::<span class="ident">new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span>) <span class="kw">as</span> <span class="ident">u16</span>)
+        <span class="ident">PageTableIndex::new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span>) <span class="kw">as</span> <span class="ident">u16</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;VirtAddr({:#x})&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
@@ -752,8 +752,8 @@
 <span class="kw">impl</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">rhs</span>)
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+        <span class="ident">VirtAddr::new</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">rhs</span>)
     }
 }
 
@@ -768,7 +768,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="self">self</span> <span class="op">+</span> <span class="ident">rhs</span> <span class="kw">as</span> <span class="ident">u64</span>
     }
 }
@@ -784,8 +784,8 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">checked_sub</span>(<span class="ident">rhs</span>).<span class="ident">unwrap</span>())
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+        <span class="ident">VirtAddr::new</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">checked_sub</span>(<span class="ident">rhs</span>).<span class="ident">unwrap</span>())
     }
 }
 
@@ -800,7 +800,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="self">self</span> <span class="op">-</span> <span class="ident">rhs</span> <span class="kw">as</span> <span class="ident">u64</span>
     }
 }
@@ -816,7 +816,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">VirtAddr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">u64</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="self">self</span>.<span class="ident">as_u64</span>().<span class="ident">checked_sub</span>(<span class="ident">rhs</span>.<span class="ident">as_u64</span>()).<span class="ident">unwrap</span>()
     }
 }
@@ -920,36 +920,36 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;PhysAddr({:#x})&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Binary</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Binary</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">LowerHex</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
+<span class="kw">impl</span> <span class="ident">fmt::LowerHex</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Octal</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Octal</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">UpperHex</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
+<span class="kw">impl</span> <span class="ident">fmt::UpperHex</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -957,8 +957,8 @@
 <span class="kw">impl</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="ident">PhysAddr</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">rhs</span>)
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+        <span class="ident">PhysAddr::new</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">rhs</span>)
     }
 }
 
@@ -973,7 +973,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="self">self</span> <span class="op">+</span> <span class="ident">rhs</span> <span class="kw">as</span> <span class="ident">u64</span>
     }
 }
@@ -989,8 +989,8 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
-        <span class="ident">PhysAddr</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">checked_sub</span>(<span class="ident">rhs</span>).<span class="ident">unwrap</span>())
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+        <span class="ident">PhysAddr::new</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">checked_sub</span>(<span class="ident">rhs</span>).<span class="ident">unwrap</span>())
     }
 }
 
@@ -1005,7 +1005,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="self">self</span> <span class="op">-</span> <span class="ident">rhs</span> <span class="kw">as</span> <span class="ident">u64</span>
     }
 }
@@ -1021,7 +1021,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">PhysAddr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">u64</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PhysAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PhysAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="self">self</span>.<span class="ident">as_u64</span>().<span class="ident">checked_sub</span>(<span class="ident">rhs</span>.<span class="ident">as_u64</span>()).<span class="ident">unwrap</span>()
     }
 }
@@ -1057,10 +1057,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">virtaddr_new_truncate</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">VirtAddr</span>::<span class="ident">new_truncate</span>(<span class="number">0</span>), <span class="ident">VirtAddr</span>(<span class="number">0</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">VirtAddr</span>::<span class="ident">new_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">47</span>), <span class="ident">VirtAddr</span>(<span class="number">0xfffff</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">47</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">VirtAddr</span>::<span class="ident">new_truncate</span>(<span class="number">123</span>), <span class="ident">VirtAddr</span>(<span class="number">123</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">VirtAddr</span>::<span class="ident">new_truncate</span>(<span class="number">123</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">47</span>), <span class="ident">VirtAddr</span>(<span class="number">0xfffff</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">47</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">VirtAddr::new_truncate</span>(<span class="number">0</span>), <span class="ident">VirtAddr</span>(<span class="number">0</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">VirtAddr::new_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">47</span>), <span class="ident">VirtAddr</span>(<span class="number">0xfffff</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">47</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">VirtAddr::new_truncate</span>(<span class="number">123</span>), <span class="ident">VirtAddr</span>(<span class="number">123</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">VirtAddr::new_truncate</span>(<span class="number">123</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">47</span>), <span class="ident">VirtAddr</span>(<span class="number">0xfffff</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">47</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>

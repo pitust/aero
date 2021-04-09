@@ -409,7 +409,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Functions to read and write model specific registers.</span>
 
-<span class="kw">use</span> <span class="ident">bitflags</span>::<span class="ident">bitflags</span>;
+<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
 
 <span class="doccomment">/// A model specific register.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -511,12 +511,12 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;instructions&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">x86_64</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">addr</span>::<span class="ident">VirtAddr</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registers</span>::<span class="ident">rflags</span>::<span class="ident">RFlags</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">structures</span>::<span class="ident">gdt</span>::<span class="ident">SegmentSelector</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">PrivilegeLevel</span>;
-    <span class="kw">use</span> <span class="ident">bit_field</span>::<span class="ident">BitField</span>;
-    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::addr::VirtAddr</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registers::rflags::RFlags</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::structures::gdt::SegmentSelector</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::PrivilegeLevel</span>;
+    <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
+    <span class="kw">use</span> <span class="ident">core::convert::TryInto</span>;
 
     <span class="kw">impl</span> <span class="ident">Msr</span> {
         <span class="doccomment">/// Read 64 bits msr register.</span>
@@ -535,7 +535,7 @@
             }
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
-            <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_rdmsr</span>(<span class="self">self</span>.<span class="number">0</span>)
+            <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_rdmsr</span>(<span class="self">self</span>.<span class="number">0</span>)
         }
 
         <span class="doccomment">/// Write 64 bits to msr register.</span>
@@ -554,7 +554,7 @@
             }
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
-            <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_wrmsr</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">value</span>);
+            <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_wrmsr</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">value</span>);
         }
     }
 
@@ -562,13 +562,13 @@
         <span class="doccomment">/// Read the current EFER flags.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EferFlags</span> {
-            <span class="ident">EferFlags</span>::<span class="ident">from_bits_truncate</span>(<span class="self">Self</span>::<span class="ident">read_raw</span>())
+            <span class="ident">EferFlags::from_bits_truncate</span>(<span class="self">Self</span><span class="ident">::read_raw</span>())
         }
 
         <span class="doccomment">/// Read the current raw EFER flags.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_raw</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-            <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">MSR</span>.<span class="ident">read</span>() }
+            <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::MSR</span>.<span class="ident">read</span>() }
         }
 
         <span class="doccomment">/// Write the EFER flags, preserving reserved values.</span>
@@ -581,11 +581,11 @@
         <span class="doccomment">/// safety with wrong flags, e.g. by disabling long mode.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">flags</span>: <span class="ident">EferFlags</span>) {
-            <span class="kw">let</span> <span class="ident">old_value</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">read_raw</span>();
-            <span class="kw">let</span> <span class="ident">reserved</span> <span class="op">=</span> <span class="ident">old_value</span> <span class="op">&amp;</span> <span class="op">!</span>(<span class="ident">EferFlags</span>::<span class="ident">all</span>().<span class="ident">bits</span>());
+            <span class="kw">let</span> <span class="ident">old_value</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::read_raw</span>();
+            <span class="kw">let</span> <span class="ident">reserved</span> <span class="op">=</span> <span class="ident">old_value</span> <span class="op">&amp;</span> <span class="op">!</span>(<span class="ident">EferFlags::all</span>().<span class="ident">bits</span>());
             <span class="kw">let</span> <span class="ident">new_value</span> <span class="op">=</span> <span class="ident">reserved</span> <span class="op">|</span> <span class="ident">flags</span>.<span class="ident">bits</span>();
 
-            <span class="self">Self</span>::<span class="ident">write_raw</span>(<span class="ident">new_value</span>);
+            <span class="self">Self</span><span class="ident">::write_raw</span>(<span class="ident">new_value</span>);
         }
 
         <span class="doccomment">/// Write the EFER flags.</span>
@@ -598,7 +598,7 @@
         <span class="doccomment">/// break memory safety with wrong flags, e.g. by disabling long mode.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_raw</span>(<span class="ident">flags</span>: <span class="ident">u64</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">MSR</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::MSR</span>;
             <span class="ident">msr</span>.<span class="ident">write</span>(<span class="ident">flags</span>);
         }
 
@@ -615,9 +615,9 @@
         <span class="kw">where</span>
             <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EferFlags</span>),
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">read</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::read</span>();
             <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">flags</span>);
-            <span class="self">Self</span>::<span class="ident">write</span>(<span class="ident">flags</span>);
+            <span class="self">Self</span><span class="ident">::write</span>(<span class="ident">flags</span>);
         }
     }
 
@@ -625,13 +625,13 @@
         <span class="doccomment">/// Read the current FsBase register.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {
-            <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">MSR</span>.<span class="ident">read</span>() })
+            <span class="ident">VirtAddr::new</span>(<span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::MSR</span>.<span class="ident">read</span>() })
         }
 
         <span class="doccomment">/// Write a given virtual address to the FS.Base register.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">MSR</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::MSR</span>;
             <span class="kw">unsafe</span> { <span class="ident">msr</span>.<span class="ident">write</span>(<span class="ident">address</span>.<span class="ident">as_u64</span>()) };
         }
     }
@@ -640,13 +640,13 @@
         <span class="doccomment">/// Read the current GsBase register.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {
-            <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">MSR</span>.<span class="ident">read</span>() })
+            <span class="ident">VirtAddr::new</span>(<span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::MSR</span>.<span class="ident">read</span>() })
         }
 
         <span class="doccomment">/// Write a given virtual address to the GS.Base register.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">MSR</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::MSR</span>;
             <span class="kw">unsafe</span> { <span class="ident">msr</span>.<span class="ident">write</span>(<span class="ident">address</span>.<span class="ident">as_u64</span>()) };
         }
     }
@@ -655,13 +655,13 @@
         <span class="doccomment">/// Read the current KernelGsBase register.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {
-            <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">MSR</span>.<span class="ident">read</span>() })
+            <span class="ident">VirtAddr::new</span>(<span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::MSR</span>.<span class="ident">read</span>() })
         }
 
         <span class="doccomment">/// Write a given virtual address to the KernelGsBase register.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">MSR</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::MSR</span>;
             <span class="kw">unsafe</span> { <span class="ident">msr</span>.<span class="ident">write</span>(<span class="ident">address</span>.<span class="ident">as_u64</span>()) };
         }
     }
@@ -680,7 +680,7 @@
         <span class="doccomment">/// 33:32 should be initialized to 00b.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_raw</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">u16</span>, <span class="ident">u16</span>) {
-            <span class="kw">let</span> <span class="ident">msr_value</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">MSR</span>.<span class="ident">read</span>() };
+            <span class="kw">let</span> <span class="ident">msr_value</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::MSR</span>.<span class="ident">read</span>() };
             <span class="kw">let</span> <span class="ident">sysret</span> <span class="op">=</span> <span class="ident">msr_value</span>.<span class="ident">get_bits</span>(<span class="number">48</span>..<span class="number">64</span>);
             <span class="kw">let</span> <span class="ident">syscall</span> <span class="op">=</span> <span class="ident">msr_value</span>.<span class="ident">get_bits</span>(<span class="number">32</span>..<span class="number">48</span>);
             (<span class="ident">sysret</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>(), <span class="ident">syscall</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>())
@@ -699,7 +699,7 @@
             <span class="ident">SegmentSelector</span>,
             <span class="ident">SegmentSelector</span>,
         ) {
-            <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">read_raw</span>();
+            <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::read_raw</span>();
             (
                 <span class="ident">SegmentSelector</span>(<span class="ident">raw</span>.<span class="number">0</span> <span class="op">+</span> <span class="number">16</span>),
                 <span class="ident">SegmentSelector</span>(<span class="ident">raw</span>.<span class="number">0</span> <span class="op">+</span> <span class="number">8</span>),
@@ -729,7 +729,7 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr_value</span> <span class="op">=</span> <span class="number">0u64</span>;
             <span class="ident">msr_value</span>.<span class="ident">set_bits</span>(<span class="number">48</span>..<span class="number">64</span>, <span class="ident">sysret</span>.<span class="ident">into</span>());
             <span class="ident">msr_value</span>.<span class="ident">set_bits</span>(<span class="number">32</span>..<span class="number">48</span>, <span class="ident">syscall</span>.<span class="ident">into</span>());
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">MSR</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::MSR</span>;
             <span class="ident">msr</span>.<span class="ident">write</span>(<span class="ident">msr_value</span>);
         }
 
@@ -754,15 +754,15 @@
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Syscall CS and SS is not offset by 8.&quot;</span>);
             }
 
-            <span class="kw">if</span> <span class="ident">ss_sysret</span>.<span class="ident">rpl</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring3</span> {
+            <span class="kw">if</span> <span class="ident">ss_sysret</span>.<span class="ident">rpl</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">PrivilegeLevel::Ring3</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Sysret&#39;s segment must be a Ring3 segment.&quot;</span>);
             }
 
-            <span class="kw">if</span> <span class="ident">ss_syscall</span>.<span class="ident">rpl</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">PrivilegeLevel</span>::<span class="ident">Ring0</span> {
+            <span class="kw">if</span> <span class="ident">ss_syscall</span>.<span class="ident">rpl</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">PrivilegeLevel::Ring0</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Syscall&#39;s segment must be a Ring0 segment.&quot;</span>);
             }
 
-            <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">write_raw</span>(<span class="ident">ss_sysret</span>.<span class="number">0</span> <span class="op">-</span> <span class="number">8</span>, <span class="ident">cs_syscall</span>.<span class="number">0</span>) };
+            <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::write_raw</span>(<span class="ident">ss_sysret</span>.<span class="number">0</span> <span class="op">-</span> <span class="number">8</span>, <span class="ident">cs_syscall</span>.<span class="number">0</span>) };
 
             <span class="prelude-val">Ok</span>(())
         }
@@ -773,14 +773,14 @@
         <span class="doccomment">/// This holds the target RIP of a syscall.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {
-            <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">MSR</span>.<span class="ident">read</span>() })
+            <span class="ident">VirtAddr::new</span>(<span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::MSR</span>.<span class="ident">read</span>() })
         }
 
         <span class="doccomment">/// Write a given virtual address to the LStar register.</span>
         <span class="doccomment">/// This holds the target RIP of a syscall.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">MSR</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::MSR</span>;
             <span class="kw">unsafe</span> { <span class="ident">msr</span>.<span class="ident">write</span>(<span class="ident">address</span>.<span class="ident">as_u64</span>()) };
         }
     }
@@ -795,7 +795,7 @@
         <span class="doccomment">/// to 0, the corresponding rFLAGS bit is not modified.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RFlags</span> {
-            <span class="ident">RFlags</span>::<span class="ident">from_bits</span>(<span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">MSR</span>.<span class="ident">read</span>() }).<span class="ident">unwrap</span>()
+            <span class="ident">RFlags::from_bits</span>(<span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::MSR</span>.<span class="ident">read</span>() }).<span class="ident">unwrap</span>()
         }
 
         <span class="doccomment">/// Write to the SFMask register.</span>
@@ -807,7 +807,7 @@
         <span class="doccomment">/// to 0, the corresponding rFLAGS bit is not modified.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">value</span>: <span class="ident">RFlags</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">MSR</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msr</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::MSR</span>;
             <span class="kw">unsafe</span> { <span class="ident">msr</span>.<span class="ident">write</span>(<span class="ident">value</span>.<span class="ident">bits</span>()) };
         }
     }

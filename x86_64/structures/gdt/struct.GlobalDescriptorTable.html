@@ -20,12 +20,12 @@ respectively.</p>
 <a href="https://www.amd.com/system/files/TechDocs/24593.pdf">AMD Manual</a></p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">x86_64</span>::<span class="ident">structures</span>::<span class="ident">gdt</span>::{<span class="ident">GlobalDescriptorTable</span>, <span class="ident">Descriptor</span>};
+<span class="kw">use</span> <span class="ident">x86_64::structures::gdt</span>::{<span class="ident">GlobalDescriptorTable</span>, <span class="ident">Descriptor</span>};
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gdt</span> <span class="op">=</span> <span class="ident">GlobalDescriptorTable</span>::<span class="ident">new</span>();
-<span class="ident">gdt</span>.<span class="ident">add_entry</span>(<span class="ident">Descriptor</span>::<span class="ident">kernel_code_segment</span>());
-<span class="ident">gdt</span>.<span class="ident">add_entry</span>(<span class="ident">Descriptor</span>::<span class="ident">user_code_segment</span>());
-<span class="ident">gdt</span>.<span class="ident">add_entry</span>(<span class="ident">Descriptor</span>::<span class="ident">user_data_segment</span>());
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gdt</span> <span class="op">=</span> <span class="ident">GlobalDescriptorTable::new</span>();
+<span class="ident">gdt</span>.<span class="ident">add_entry</span>(<span class="ident">Descriptor::kernel_code_segment</span>());
+<span class="ident">gdt</span>.<span class="ident">add_entry</span>(<span class="ident">Descriptor::user_code_segment</span>());
+<span class="ident">gdt</span>.<span class="ident">add_entry</span>(<span class="ident">Descriptor::user_data_segment</span>());
 
 <span class="comment">// Add entry for TSS, call gdt.load() then update segment registers</span></pre></div>
 </div><h2 id="implementations" class="small-section-header">Implementations<a href="#implementations" class="anchor"></a></h2><h3 id="impl" class="impl"><code class="in-band">impl <a class="struct" href="../../../x86_64/structures/gdt/struct.GlobalDescriptorTable.html" title="struct x86_64::structures::gdt::GlobalDescriptorTable">GlobalDescriptorTable</a></code><a href="#impl" class="anchor"></a><a class="srclink" href="../../../src/x86_64/structures/gdt.rs.html#101-231" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.new" class="method"><code>pub const fn <a href="#method.new" class="fnname">new</a>() -&gt; <a class="struct" href="../../../x86_64/structures/gdt/struct.GlobalDescriptorTable.html" title="struct x86_64::structures::gdt::GlobalDescriptorTable">GlobalDescriptorTable</a></code><a class="srclink" href="../../../src/x86_64/structures/gdt.rs.html#104-109" title="goto source code">[src]</a></h4><div class="docblock"><p>Creates an empty GDT.</p>

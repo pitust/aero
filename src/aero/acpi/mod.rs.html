@@ -169,10 +169,10 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/ACPI&gt;</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
 
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
-    <span class="ident">structures</span>::<span class="ident">paging</span>::{
+    <span class="ident">structures::paging</span>::{
         <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size4KiB</span>,
     },
     <span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>,
@@ -181,9 +181,9 @@
 <span class="kw">const</span> <span class="ident">LOOKUP_START_ADDRESS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xE0000</span>;
 <span class="kw">const</span> <span class="ident">LOOKUP_END_ADDRESS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xFFFFF</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">arch</span>::<span class="ident">memory</span>::<span class="ident">paging</span>::<span class="ident">GlobalAllocator</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::memory::paging::GlobalAllocator</span>;
 
-<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">fadt</span>::<span class="ident">FADT</span>, <span class="ident">hpet</span>::<span class="ident">HPET</span>, <span class="ident">madt</span>::<span class="ident">MADT</span>, <span class="ident">rsdp</span>::<span class="ident">RSDP</span>, <span class="ident">sdt</span>::<span class="ident">SDT</span>};
+<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">fadt::FADT</span>, <span class="ident">hpet::HPET</span>, <span class="ident">madt::MADT</span>, <span class="ident">rsdp::RSDP</span>, <span class="ident">sdt::SDT</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fadt</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">hpet</span>;
@@ -208,14 +208,14 @@
         <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span>,
         <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
     ) {
-        <span class="kw">let</span> <span class="ident">page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">address</span>));
-        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">PhysFrame</span>::<span class="ident">containing_address</span>(<span class="ident">PhysAddr</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">address</span>));
+        <span class="kw">let</span> <span class="ident">page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="self">self</span>.<span class="ident">address</span>));
+        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>(<span class="self">self</span>.<span class="ident">address</span>));
 
         <span class="ident">offset_table</span>
             .<span class="ident">map_to</span>(
                 <span class="ident">page</span>,
                 <span class="ident">frame</span>,
-                <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span> <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">NO_EXECUTE</span>,
+                <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span> <span class="op">|</span> <span class="ident">PageTableFlags::NO_EXECUTE</span>,
                 <span class="ident">frame_allocator</span>,
             )
             .<span class="ident">unwrap</span>()
@@ -233,14 +233,14 @@
     <span class="kw">let</span> <span class="ident">entries</span>;
 
     <span class="kw">if</span> <span class="ident">is_legacy</span> {
-        <span class="ident">entries</span> <span class="op">=</span> <span class="ident">sdt</span>.<span class="ident">data_len</span>() <span class="op">/</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()
+        <span class="ident">entries</span> <span class="op">=</span> <span class="ident">sdt</span>.<span class="ident">data_len</span>() <span class="op">/</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()
     } <span class="kw">else</span> {
-        <span class="ident">entries</span> <span class="op">=</span> <span class="ident">sdt</span>.<span class="ident">data_len</span>() <span class="op">/</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>()
+        <span class="ident">entries</span> <span class="op">=</span> <span class="ident">sdt</span>.<span class="ident">data_len</span>() <span class="op">/</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>()
     }
 
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">entries</span> {
         <span class="kw">let</span> <span class="ident">item_address</span> <span class="op">=</span> <span class="kw-2">*</span>((<span class="ident">sdt</span>.<span class="ident">data_address</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>).<span class="ident">add</span>(<span class="ident">i</span>));
-        <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="ident">SDT</span>::<span class="ident">from_address</span>(<span class="ident">item_address</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">frame_allocator</span>, <span class="ident">offset_table</span>);
+        <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="ident">SDT::from_address</span>(<span class="ident">item_address</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">frame_allocator</span>, <span class="ident">offset_table</span>);
 
         <span class="kw">if</span> <span class="ident">item</span>.<span class="ident">get_signature</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">signature</span> {
             <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">item</span>);
@@ -254,19 +254,19 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>, <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>) {
     <span class="kw">unsafe</span> {
         <span class="kw">let</span> <span class="ident">start_frame</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">PhysFrame</span>::<span class="ident">containing_address</span>(<span class="ident">PhysAddr</span>::<span class="ident">new</span>(<span class="ident">LOOKUP_START_ADDRESS</span> <span class="kw">as</span> <span class="ident">u64</span>));
-        <span class="kw">let</span> <span class="ident">end_frame</span> <span class="op">=</span> <span class="ident">PhysFrame</span>::<span class="ident">containing_address</span>(<span class="ident">PhysAddr</span>::<span class="ident">new</span>(<span class="ident">LOOKUP_END_ADDRESS</span> <span class="kw">as</span> <span class="ident">u64</span>));
+            <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>(<span class="ident">LOOKUP_START_ADDRESS</span> <span class="kw">as</span> <span class="ident">u64</span>));
+        <span class="kw">let</span> <span class="ident">end_frame</span> <span class="op">=</span> <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>(<span class="ident">LOOKUP_END_ADDRESS</span> <span class="kw">as</span> <span class="ident">u64</span>));
 
         <span class="comment">// Map all of the ACPI table space.</span>
-        <span class="kw">for</span> <span class="ident">frame</span> <span class="kw">in</span> <span class="ident">PhysFrame</span>::<span class="ident">range_inclusive</span>(<span class="ident">start_frame</span>, <span class="ident">end_frame</span>) {
+        <span class="kw">for</span> <span class="ident">frame</span> <span class="kw">in</span> <span class="ident">PhysFrame::range_inclusive</span>(<span class="ident">start_frame</span>, <span class="ident">end_frame</span>) {
             <span class="kw">let</span> <span class="ident">page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()));
+                <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()));
 
             <span class="kw">if</span> <span class="ident">offset_table</span>.<span class="ident">translate_page</span>(<span class="ident">page</span>).<span class="ident">is_err</span>() {
                 <span class="ident">offset_table</span>
                     .<span class="ident">identity_map</span>(
                         <span class="ident">frame</span>,
-                        <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">NO_EXECUTE</span>,
+                        <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::NO_EXECUTE</span>,
                         <span class="ident">frame_allocator</span>,
                     )
                     .<span class="ident">unwrap</span>()
@@ -274,11 +274,11 @@
             }
         }
 
-        <span class="kw">let</span> <span class="ident">rsdp</span> <span class="op">=</span> <span class="ident">RSDP</span>::<span class="ident">lookup</span>(<span class="ident">LOOKUP_START_ADDRESS</span>, <span class="ident">LOOKUP_END_ADDRESS</span>);
+        <span class="kw">let</span> <span class="ident">rsdp</span> <span class="op">=</span> <span class="ident">RSDP::lookup</span>(<span class="ident">LOOKUP_START_ADDRESS</span>, <span class="ident">LOOKUP_END_ADDRESS</span>);
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rsdp</span>) <span class="op">=</span> <span class="ident">rsdp</span> {
             <span class="kw">let</span> <span class="ident">sdt_address</span> <span class="op">=</span> <span class="ident">rsdp</span>.<span class="ident">get_sdt_address</span>() <span class="kw">as</span> <span class="ident">u64</span>;
-            <span class="kw">let</span> <span class="ident">sdt</span> <span class="op">=</span> <span class="ident">SDT</span>::<span class="ident">from_address</span>(<span class="ident">sdt_address</span>, <span class="ident">frame_allocator</span>, <span class="ident">offset_table</span>);
+            <span class="kw">let</span> <span class="ident">sdt</span> <span class="op">=</span> <span class="ident">SDT::from_address</span>(<span class="ident">sdt_address</span>, <span class="ident">frame_allocator</span>, <span class="ident">offset_table</span>);
 
             <span class="kw">let</span> <span class="ident">is_legacy</span>;
 
@@ -290,17 +290,17 @@
                 <span class="macro">panic!</span>(<span class="string">&quot;Invalid RSDP signature.&quot;</span>)
             }
 
-            <span class="ident">FADT</span>::<span class="ident">new</span>(<span class="ident">look_up_table</span>(
-                <span class="ident">fadt</span>::<span class="ident">SIGNATURE</span>,
+            <span class="ident">FADT::new</span>(<span class="ident">look_up_table</span>(
+                <span class="ident">fadt::SIGNATURE</span>,
                 <span class="ident">sdt</span>,
                 <span class="ident">is_legacy</span>,
                 <span class="ident">frame_allocator</span>,
                 <span class="ident">offset_table</span>,
             ));
 
-            <span class="ident">HPET</span>::<span class="ident">new</span>(
+            <span class="ident">HPET::new</span>(
                 <span class="ident">look_up_table</span>(
-                    <span class="ident">hpet</span>::<span class="ident">SIGNATURE</span>,
+                    <span class="ident">hpet::SIGNATURE</span>,
                     <span class="ident">sdt</span>,
                     <span class="ident">is_legacy</span>,
                     <span class="ident">frame_allocator</span>,
@@ -310,9 +310,9 @@
                 <span class="ident">offset_table</span>,
             );
 
-            <span class="ident">MADT</span>::<span class="ident">new</span>(
+            <span class="ident">MADT::new</span>(
                 <span class="ident">look_up_table</span>(
-                    <span class="ident">madt</span>::<span class="ident">SIGNATURE</span>,
+                    <span class="ident">madt::SIGNATURE</span>,
                     <span class="ident">sdt</span>,
                     <span class="ident">is_legacy</span>,
                     <span class="ident">frame_allocator</span>,

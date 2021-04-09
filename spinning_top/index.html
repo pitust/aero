@@ -4,12 +4,12 @@
                 <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Crate <a class="mod" href="">spinning_top</a><button id="copy-path" onclick="copy_path(this)">⎘</button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/spinning_top/lib.rs.html#1-37" title="goto source code">[src]</a></span></h1><div class="docblock"><p>Provides a simple spinlock based on the abstractions provided by the <a href="https://docs.rs/lock_api/"><code>lock_api</code></a> crate.</p>
 <h2 id="usage-example" class="section-header"><a href="#usage-example">Usage Example</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">spinning_top</span>::<span class="ident">Spinlock</span>;
+<span class="kw">use</span> <span class="ident">spinning_top::Spinlock</span>;
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Hello&quot;</span>);
+    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;Hello&quot;</span>);
     <span class="comment">// Wrap some data in a spinlock</span>
-    <span class="kw">let</span> <span class="ident">spinlock</span> <span class="op">=</span> <span class="ident">Spinlock</span>::<span class="ident">new</span>(<span class="ident">data</span>);
+    <span class="kw">let</span> <span class="ident">spinlock</span> <span class="op">=</span> <span class="ident">Spinlock::new</span>(<span class="ident">data</span>);
 
     <span class="comment">// Lock the spinlock to get a mutex guard for the data</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">locked_data</span> <span class="op">=</span> <span class="ident">spinlock</span>.<span class="ident">lock</span>();

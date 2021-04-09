@@ -75,7 +75,7 @@
 
 <span class="doccomment">//! Special x86_64 instructions.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">VirtAddr</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::VirtAddr</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">interrupts</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">port</span>;
@@ -94,7 +94,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_hlt</span>();
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_hlt</span>();
     }
 }
 
@@ -113,7 +113,7 @@
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inline_asm&quot;</span>))]</span>
     <span class="kw">unsafe</span> {
-        <span class="kw">crate</span>::<span class="ident">asm</span>::<span class="ident">x86_64_asm_nop</span>();
+        <span class="kw">crate</span><span class="ident">::asm::x86_64_asm_nop</span>();
     }
 }
 
@@ -138,7 +138,7 @@
             <span class="string">&quot;lea {}, [rip]&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">rip</span>, <span class="ident">options</span>(<span class="ident">nostack</span>, <span class="ident">nomem</span>)
         );
     }
-    <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">rip</span>)
+    <span class="ident">VirtAddr::new</span>(<span class="ident">rip</span>)
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="x86_64" data-search-js="../../../search-index.js"></div>

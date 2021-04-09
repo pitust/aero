@@ -360,19 +360,19 @@
 <span id="357">357</span>
 <span id="358">358</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">MaybeUninit</span>;
+<span class="kw">use</span> <span class="ident">core::mem::MaybeUninit</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">arch</span>::<span class="ident">memory</span>::<span class="ident">paging</span>::<span class="ident">GlobalAllocator</span>, <span class="ident">paging</span>::<span class="ident">memory_map_device</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">arch::memory::paging::GlobalAllocator</span>, <span class="ident">paging::memory_map_device</span>};
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
-    <span class="ident">structures</span>::<span class="ident">paging</span>::{
+    <span class="ident">structures::paging</span>::{
         <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size4KiB</span>,
     },
     <span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>,
 };
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">pci</span>::{<span class="ident">Bar</span>, <span class="ident">PCIHeader</span>};
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::pci</span>::{<span class="ident">Bar</span>, <span class="ident">PCIHeader</span>};
 
-<span class="kw">use</span> <span class="ident">bitflags</span>::<span class="ident">bitflags</span>;
+<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
 
 <span class="macro">bitflags!</span> {
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
@@ -493,18 +493,18 @@
         <span class="kw">let</span> <span class="ident">device_detection</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sata_status</span> <span class="op">&amp;</span> <span class="number">0x0F</span>;
 
         <span class="kw">if</span> <span class="ident">device_detection</span> <span class="op">!</span><span class="op">=</span> <span class="ident">HBA_PORT_DEV_PRESENT</span> {
-            <span class="kw">return</span> <span class="ident">AHCIPortType</span>::<span class="prelude-val">None</span>;
+            <span class="kw">return</span> <span class="ident">AHCIPortType::None</span>;
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">ipm</span> <span class="op">!</span><span class="op">=</span> <span class="ident">HBA_PORT_IPM_ACTIVE</span> {
-            <span class="kw">return</span> <span class="ident">AHCIPortType</span>::<span class="prelude-val">None</span>;
+            <span class="kw">return</span> <span class="ident">AHCIPortType::None</span>;
         }
 
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">signature</span> {
-            <span class="ident">SATA_SIG_ATAPI</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType</span>::<span class="ident">SATAPI</span>,
-            <span class="ident">SATA_SIG_ATA</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType</span>::<span class="ident">SATA</span>,
-            <span class="ident">SATA_SIG_PM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType</span>::<span class="ident">PM</span>,
-            <span class="ident">SATA_SIG_SEMB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType</span>::<span class="ident">SEMB</span>,
+            <span class="ident">SATA_SIG_ATAPI</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::SATAPI</span>,
+            <span class="ident">SATA_SIG_ATA</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::SATA</span>,
+            <span class="ident">SATA_SIG_PM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::PM</span>,
+            <span class="ident">SATA_SIG_SEMB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::SEMB</span>,
 
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType</span>::<span class="prelude-val">None</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::None</span>,
         }
     }
 }
@@ -563,12 +563,12 @@
 
         <span class="ident">offset_table</span>
             .<span class="ident">map_to</span>(
-                <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
+                <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
                 <span class="ident">mapped_clb</span>,
-                <span class="ident">PageTableFlags</span>::<span class="ident">NO_CACHE</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITE_THROUGH</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span>,
+                <span class="ident">PageTableFlags::NO_CACHE</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
                 <span class="ident">frame_allocator</span>,
             )
             .<span class="ident">unwrap</span>()
@@ -581,12 +581,12 @@
 
         <span class="ident">offset_table</span>
             .<span class="ident">map_to</span>(
-                <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">mapped_fis</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
+                <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">mapped_fis</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
                 <span class="ident">mapped_fis</span>,
-                <span class="ident">PageTableFlags</span>::<span class="ident">NO_CACHE</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITE_THROUGH</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span>,
+                <span class="ident">PageTableFlags::NO_CACHE</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
                 <span class="ident">frame_allocator</span>,
             )
             .<span class="ident">unwrap</span>()
@@ -609,12 +609,12 @@
 
             <span class="ident">offset_table</span>
                 .<span class="ident">map_to</span>(
-                    <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">command_table</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
+                    <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">command_table</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
                     <span class="ident">command_table</span>,
-                    <span class="ident">PageTableFlags</span>::<span class="ident">NO_CACHE</span>
-                        <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITE_THROUGH</span>
-                        <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span>
-                        <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span>,
+                    <span class="ident">PageTableFlags::NO_CACHE</span>
+                        <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
+                        <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
+                        <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
                     <span class="ident">frame_allocator</span>,
                 )
                 .<span class="ident">unwrap</span>()
@@ -670,22 +670,22 @@
         <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
         <span class="ident">header</span>: <span class="ident">PCIHeader</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">log</span>::<span class="macro">info!</span>(<span class="string">&quot;Loaded AHCI driver&quot;</span>);
+        <span class="macro">log::info!</span>(<span class="string">&quot;Loaded AHCI driver&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">abar</span> <span class="op">=</span> <span class="ident">header</span>.<span class="ident">get_bar</span>(<span class="number">5</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> (<span class="ident">abar_address</span>, <span class="ident">abar_size</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">abar</span> {
-            <span class="ident">Bar</span>::<span class="ident">Memory32</span> { <span class="ident">address</span>, <span class="ident">size</span>, .. } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">address</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>),
-            <span class="ident">Bar</span>::<span class="ident">Memory64</span> { <span class="ident">address</span>, <span class="ident">size</span>, .. } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">address</span>, <span class="ident">size</span>),
-            <span class="ident">Bar</span>::<span class="ident">IO</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;ABAR is in port space o_O&quot;</span>),
+            <span class="ident">Bar::Memory32</span> { <span class="ident">address</span>, <span class="ident">size</span>, .. } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">address</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>),
+            <span class="ident">Bar::Memory64</span> { <span class="ident">address</span>, <span class="ident">size</span>, .. } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">address</span>, <span class="ident">size</span>),
+            <span class="ident">Bar::IO</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;ABAR is in port space o_O&quot;</span>),
         };
 
         <span class="kw">let</span> <span class="ident">start</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">PhysFrame</span>::<span class="ident">containing_address</span>(<span class="ident">PhysAddr</span>::<span class="ident">new</span>(<span class="ident">abar_address</span> <span class="kw">as</span> <span class="ident">u64</span>));
+            <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>(<span class="ident">abar_address</span> <span class="kw">as</span> <span class="ident">u64</span>));
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span>
-            <span class="ident">PhysFrame</span>::<span class="ident">containing_address</span>(<span class="ident">PhysAddr</span>::<span class="ident">new</span>((<span class="ident">abar_address</span> <span class="op">+</span> <span class="ident">abar_size</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u64</span>));
+            <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>((<span class="ident">abar_address</span> <span class="op">+</span> <span class="ident">abar_size</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u64</span>));
 
-        <span class="kw">for</span> <span class="ident">frame</span> <span class="kw">in</span> <span class="ident">PhysFrame</span>::<span class="ident">range_inclusive</span>(<span class="ident">start</span>, <span class="ident">end</span>) {
+        <span class="kw">for</span> <span class="ident">frame</span> <span class="kw">in</span> <span class="ident">PhysFrame::range_inclusive</span>(<span class="ident">start</span>, <span class="ident">end</span>) {
             <span class="ident">memory_map_device</span>(<span class="ident">offset_table</span>, <span class="ident">frame_allocator</span>, <span class="ident">frame</span>)
                 .<span class="ident">expect</span>(<span class="string">&quot;Failed to memory map the SATA device&quot;</span>);
         }
@@ -709,8 +709,8 @@
                 <span class="kw">let</span> <span class="ident">hba_port</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">memory</span>.<span class="ident">get_port</span>(<span class="ident">i</span>);
                 <span class="kw">let</span> <span class="ident">hba_port_type</span> <span class="op">=</span> <span class="ident">hba_port</span>.<span class="ident">get_port_type</span>();
 
-                <span class="kw">if</span> <span class="ident">hba_port_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AHCIPortType</span>::<span class="ident">SATA</span> <span class="op">|</span><span class="op">|</span> <span class="ident">hba_port_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AHCIPortType</span>::<span class="ident">SATAPI</span> {
-                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">Port</span>::<span class="ident">new</span>(<span class="ident">hba_port</span>, <span class="ident">hba_port_type</span>, <span class="ident">i</span>);
+                <span class="kw">if</span> <span class="ident">hba_port_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AHCIPortType::SATA</span> <span class="op">|</span><span class="op">|</span> <span class="ident">hba_port_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AHCIPortType::SATAPI</span> {
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">Port::new</span>(<span class="ident">hba_port</span>, <span class="ident">hba_port_type</span>, <span class="ident">i</span>);
 
                     <span class="ident">port</span>.<span class="ident">configure</span>(<span class="ident">offset_table</span>, <span class="ident">frame_allocator</span>);
                 }

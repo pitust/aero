@@ -15,15 +15,15 @@ that occur immediately before the <code>hlt</code> instruction:</p>
 
 <span class="kw">if</span> <span class="ident">nothing_to_do</span>() {
     <span class="comment">// &lt;- race when the interrupt occurs here</span>
-    <span class="ident">x86_64</span>::<span class="ident">instructions</span>::<span class="ident">hlt</span>(); <span class="comment">// wait for the next interrupt</span>
+    <span class="ident">x86_64::instructions::hlt</span>(); <span class="comment">// wait for the next interrupt</span>
 }
 
 <span class="comment">// avoid this race by using `enable_and_hlt`:</span>
 
-<span class="ident">x86_64</span>::<span class="ident">instructions</span>::<span class="ident">interrupts</span>::<span class="ident">disable</span>();
+<span class="ident">x86_64::instructions::interrupts::disable</span>();
 <span class="kw">if</span> <span class="ident">nothing_to_do</span>() {
     <span class="comment">// &lt;- no interrupts can occur here (interrupts are disabled)</span>
-    <span class="ident">x86_64</span>::<span class="ident">instructions</span>::<span class="ident">interrupts</span>::<span class="ident">enable_and_hlt</span>();
+    <span class="ident">x86_64::instructions::interrupts::enable_and_hlt</span>();
 }
 </pre></div>
 <h2 id="non-maskable-interrupts" class="section-header"><a href="#non-maskable-interrupts">Non-maskable Interrupts</a></h2>

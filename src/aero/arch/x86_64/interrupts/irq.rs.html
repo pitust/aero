@@ -30,32 +30,32 @@
 <span id="27">27</span>
 <span id="28">28</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">drivers</span>::{<span class="ident">keyboard</span>, <span class="ident">mouse</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">interrupt</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">io</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::drivers</span>::{<span class="ident">keyboard</span>, <span class="ident">mouse</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::interrupt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">arch</span>::<span class="ident">interrupts</span>::{<span class="ident">end_pic1</span>, <span class="ident">end_pic2</span>},
+    <span class="ident">arch::interrupts</span>::{<span class="ident">end_pic1</span>, <span class="ident">end_pic2</span>},
     <span class="ident">time</span>,
 };
-<span class="kw">use</span> <span class="ident">x86_64</span>::<span class="ident">structures</span>::<span class="ident">idt</span>::<span class="ident">InterruptStackFrame</span>;
+<span class="kw">use</span> <span class="ident">x86_64::structures::idt::InterruptStackFrame</span>;
 
 <span class="macro">interrupt!</span>(<span class="ident">pit</span>, <span class="kw">unsafe</span> {
-    <span class="ident">time</span>::<span class="ident">PIT</span>.<span class="ident">tick</span>();
+    <span class="ident">time::PIT</span>.<span class="ident">tick</span>();
 
     <span class="ident">end_pic1</span>();
 });
 
 <span class="macro">interrupt!</span>(<span class="ident">keyboard</span>, <span class="kw">unsafe</span> {
-    <span class="kw">let</span> <span class="ident">scancode</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">inb</span>(<span class="number">0x60</span>);
+    <span class="kw">let</span> <span class="ident">scancode</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="number">0x60</span>);
 
-    <span class="ident">keyboard</span>::<span class="ident">handle</span>(<span class="ident">scancode</span>);
+    <span class="ident">keyboard::handle</span>(<span class="ident">scancode</span>);
     <span class="ident">end_pic1</span>();
 });
 
 <span class="macro">interrupt!</span>(<span class="ident">mouse</span>, <span class="kw">unsafe</span> {
-    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">inb</span>(<span class="number">0x60</span>);
+    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="number">0x60</span>);
 
-    <span class="ident">mouse</span>::<span class="ident">handle</span>(<span class="ident">data</span>);
+    <span class="ident">mouse::handle</span>(<span class="ident">data</span>);
     <span class="ident">end_pic2</span>();
 });
 </pre></div>

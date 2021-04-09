@@ -59,24 +59,24 @@
 <span id="56">56</span>
 <span id="57">57</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">alloc</span>;
+<span class="kw">use</span> <span class="ident">core::alloc</span>;
 
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
-    <span class="ident">structures</span>::<span class="ident">paging</span>::{
-        <span class="ident">mapper</span>::<span class="ident">MapToError</span>, <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>, <span class="ident">Size4KiB</span>,
+    <span class="ident">structures::paging</span>::{
+        <span class="ident">mapper::MapToError</span>, <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>, <span class="ident">Size4KiB</span>,
     },
     <span class="ident">VirtAddr</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AERO_SYSTEM_ALLOCATOR</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::AERO_SYSTEM_ALLOCATOR</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">paging</span>::<span class="ident">GlobalAllocator</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::paging::GlobalAllocator</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0x444444440000</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEAP_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="number">1024</span>;
 
 <span class="attribute">#[<span class="ident">alloc_error_handler</span>]</span>
-<span class="kw">fn</span> <span class="ident">alloc_error_handler</span>(<span class="ident">layout</span>: <span class="ident">alloc</span>::<span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">fn</span> <span class="ident">alloc_error_handler</span>(<span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="macro">panic!</span>(
         <span class="string">&quot;Allocation error with size {} and layout {}&quot;</span>,
         <span class="ident">layout</span>.<span class="ident">size</span>(),
@@ -90,18 +90,18 @@
     <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">page_range</span> <span class="op">=</span> {
-        <span class="kw">let</span> <span class="ident">heap_start</span> <span class="op">=</span> <span class="ident">VirtAddr</span>::<span class="ident">new</span>(<span class="ident">HEAP_START</span> <span class="kw">as</span> <span class="ident">u64</span>);
+        <span class="kw">let</span> <span class="ident">heap_start</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">HEAP_START</span> <span class="kw">as</span> <span class="ident">u64</span>);
         <span class="kw">let</span> <span class="ident">heap_end</span> <span class="op">=</span> <span class="ident">heap_start</span> <span class="op">+</span> <span class="ident">HEAP_SIZE</span> <span class="op">-</span> <span class="number">1u64</span>;
-        <span class="kw">let</span> <span class="ident">heap_start_page</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">heap_start</span>);
-        <span class="kw">let</span> <span class="ident">heap_end_page</span> <span class="op">=</span> <span class="ident">Page</span>::<span class="ident">containing_address</span>(<span class="ident">heap_end</span>);
-        <span class="ident">Page</span>::<span class="ident">range_inclusive</span>(<span class="ident">heap_start_page</span>, <span class="ident">heap_end_page</span>)
+        <span class="kw">let</span> <span class="ident">heap_start_page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">heap_start</span>);
+        <span class="kw">let</span> <span class="ident">heap_end_page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">heap_end</span>);
+        <span class="ident">Page::range_inclusive</span>(<span class="ident">heap_start_page</span>, <span class="ident">heap_end_page</span>)
     };
 
     <span class="kw">for</span> <span class="ident">page</span> <span class="kw">in</span> <span class="ident">page_range</span> {
         <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">frame_allocator</span>
             .<span class="ident">allocate_frame</span>()
-            .<span class="ident">ok_or</span>(<span class="ident">MapToError</span>::<span class="ident">FrameAllocationFailed</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags</span>::<span class="ident">PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags</span>::<span class="ident">WRITABLE</span>;
+            .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>;
 
         <span class="kw">unsafe</span> {
             <span class="ident">offset_table</span>

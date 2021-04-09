@@ -87,7 +87,7 @@
         <span class="kw">const</span> <span class="kw">_</span>: <span class="kw">fn</span>() <span class="op">=</span> <span class="op">|</span><span class="op">|</span> {
             <span class="comment">// Assigned instance must match the annotated type or else it will</span>
             <span class="comment">// fail to compile</span>
-            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">_core</span>::<span class="ident">mem</span>::<span class="ident">align_of</span>;
+            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::_core::mem::align_of</span>;
             $(<span class="kw">let</span> <span class="kw">_</span>: [(); <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span><span class="op">&gt;</span>()] <span class="op">=</span> [(); <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">xs</span><span class="op">&gt;</span>()];)<span class="op">+</span>
         };
     };
