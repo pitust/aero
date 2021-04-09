@@ -46,7 +46,6 @@
 <span id="43">43</span>
 <span id="44">44</span>
 <span id="45">45</span>
-<span id="46">46</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! System Calls are used to call a kernel service from user land.</span>
 <span class="doccomment">//!</span>
@@ -65,9 +64,8 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">fs</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">time</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="ident">x86_64::structures::idt::InterruptStackFrame</span>;
-
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::cpu::CPUState</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts::InterruptStackFrame</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">interrupt</span>, <span class="ident">println</span>};
 
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SyscallError</span> {

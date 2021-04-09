@@ -240,14 +240,20 @@
 <span id="237">237</span>
 <span id="238">238</span>
 <span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/Interrupt_Descriptor_Table&gt;</span>
 
-<span class="doccomment">/// Declare an IDT of 256 entries.</span>
-<span class="doccomment">/// Although not all entries are used, the rest exists as if any undefined IDT entry is hit,</span>
-<span class="doccomment">/// it will cause an &quot;Unhandled Interrupt&quot; exception.</span>
+<span class="doccomment">/// The count of the IDT entries.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">IDT_ENTRIES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">256</span>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">PIC1_COMMAND</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x20</span>;
@@ -268,7 +274,7 @@
 
 <span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
 <span class="kw">use</span> <span class="ident">core::mem::size_of</span>;
-<span class="kw">use</span> <span class="ident">x86_64::structures::idt::InterruptStackFrame</span>;
+<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 
@@ -283,6 +289,16 @@
         <span class="kw">const</span> <span class="ident">INTERRUPT</span> <span class="op">=</span> <span class="number">0xE</span>;
         <span class="kw">const</span> <span class="ident">TRAP</span> <span class="op">=</span> <span class="number">0xF</span>;
     }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InterruptStackFrame</span> {
+    <span class="kw">pub</span> <span class="ident">instruction_pointer</span>: <span class="ident">VirtAddr</span>,
+    <span class="kw">pub</span> <span class="ident">code_segment</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">cpu_flags</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">stack_pointer</span>: <span class="ident">VirtAddr</span>,
+    <span class="kw">pub</span> <span class="ident">stack_segment</span>: <span class="ident">u64</span>,
 }
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>

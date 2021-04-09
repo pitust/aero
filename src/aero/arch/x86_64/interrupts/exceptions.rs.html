@@ -43,14 +43,10 @@
 <span id="40">40</span>
 <span id="41">41</span>
 <span id="42">42</span>
-<span id="43">43</span>
-<span id="44">44</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">x86_64</span>::{
-    <span class="ident">registers::control::Cr2</span>,
-    <span class="ident">structures::idt</span>::{<span class="ident">InterruptStackFrame</span>, <span class="ident">PageFaultErrorCode</span>},
-};
+<span class="kw">use</span> <span class="ident">x86_64</span>::{<span class="ident">registers::control::Cr2</span>, <span class="ident">structures::idt::PageFaultErrorCode</span>};
 
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::InterruptStackFrame</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::interrupt</span>;
 
 <span class="macro">macro_rules!</span> <span class="ident">interrupt_exception</span> {
