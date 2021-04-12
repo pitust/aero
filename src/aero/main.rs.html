@@ -117,6 +117,10 @@
 <span id="114">114</span>
 <span id="115">115</span>
 <span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -154,33 +158,37 @@
 <span class="comment">// mod acpi;</span>
 <span class="comment">// mod arch;</span>
 <span class="comment">// mod drivers;</span>
-<span class="comment">// mod logger;</span>
+<span class="kw">mod</span> <span class="ident">logger</span>;
 <span class="kw">mod</span> <span class="ident">panic</span>;
 <span class="comment">// mod syscall;</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
-<span class="comment">// mod time;</span>
+<span class="kw">mod</span> <span class="ident">time</span>;
 <span class="comment">// mod userland;</span>
-<span class="comment">// mod utils;</span>
-<span class="comment">// mod vga;</span>
+<span class="kw">mod</span> <span class="ident">utils</span>;
+<span class="kw">mod</span> <span class="ident">vga</span>;
 
 <span class="comment">// use linked_list_allocator::LockedHeap;</span>
 
 <span class="comment">// #[global_allocator]</span>
 <span class="comment">// static AERO_SYSTEM_ALLOCATOR: LockedHeap = LockedHeap::empty();</span>
 
-<span class="comment">// const ASCII_INTRO: &amp;&#39;static str = r&quot;</span>
-<span class="comment">// _______ _______ ______ _______    _______ ______</span>
-<span class="comment">// (_______|_______|_____ (_______)  (_______) _____)</span>
-<span class="comment">//  _______ _____   _____) )     _    _     ( (____</span>
-<span class="comment">// |  ___  |  ___) |  __  / |   | |  | |   | \____ \</span>
-<span class="comment">// | |   | | |_____| |  \ \ |___| |  | |___| |____) )</span>
-<span class="comment">// |_|   |_|_______)_|   |_\_____/    \_____(______/</span>
-<span class="comment">// &quot;;</span>
-
-<span class="comment">// entry_point!(kernel_main);</span>
+<span class="kw">const</span> <span class="ident">ASCII_INTRO</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">r&quot;
+_______ _______ ______ _______    _______ ______
+(_______|_______|_____ (_______)  (_______) _____)
+ _______ _____   _____) )     _    _     ( (____
+|  ___  |  ___) |  __  / |   | |  | |   | \____ \
+| |   | | |_____| |  \ \ |___| |  | |___| |____) )
+|_|   |_|_______)_|   |_\_____/    \_____(______/
+&quot;</span>;
 
 <span class="attribute">#[<span class="ident">export_name</span> <span class="op">=</span> <span class="string">&quot;_start&quot;</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="ident">vga::rendy::init</span>(<span class="ident">boot_info</span>);
+
+    <span class="ident">logger::init</span>();
+
+    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ASCII_INTRO</span>);
+
     <span class="kw">loop</span> {}
 }
 

@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["BUFFER_HEIGHT",""],["BUFFER_WIDTH",""]],"struct":[["Buffer",""],["ScreenChar",""]]});

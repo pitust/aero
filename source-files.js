@@ -1,5 +1,5 @@
 var N = null;var sourcesIndex = {};
-sourcesIndex["aero"] = {"name":"","files":["main.rs","panic.rs","tests.rs"]};
+sourcesIndex["aero"] = {"name":"","dirs":[{"name":"utils","files":["io.rs","memory.rs","mod.rs"]},{"name":"vga","files":["buffer.rs","color.rs","mod.rs","rendy.rs"]}],"files":["logger.rs","main.rs","panic.rs","tests.rs","time.rs"]};
 sourcesIndex["aero_boot"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bit_field"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bitflags"] = {"name":"","files":["lib.rs"]};
