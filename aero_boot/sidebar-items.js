@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["test_runner",""]],"struct":[["BootInfo",""],["FrameBufferInfo",""]]});
+initSidebarItems({"enum":[["MemoryRegionType",""]],"fn":[["test_runner",""]],"struct":[["BootInfo",""],["FrameBufferInfo",""],["MemoryRegion",""]]});
