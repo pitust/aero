@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init",""]],"static":[["RENDY",""]],"struct":[["Rendy",""]]});
+initSidebarItems({"fn":[["clear_screen",""],["init",""]],"static":[["RENDY",""]],"struct":[["Rendy",""]]});
