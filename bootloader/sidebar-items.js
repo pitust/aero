@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["entry_point","Defines the entry point function."]],"mod":[["bootinfo","Provides boot information to the kernel."]]});

@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["memcmp",""],["memcpy",""],["memmove",""],["memset",""]]});

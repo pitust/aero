@@ -1,4 +1,0 @@
-(function() {var implementors = {};
-implementors["goblin"] = [{"text":"impl <a class=\"trait\" href=\"scroll/ctx/trait.SizeWith.html\" title=\"trait scroll::ctx::SizeWith\">SizeWith</a>&lt;<a class=\"struct\" href=\"goblin/container/struct.Ctx.html\" title=\"struct goblin::container::Ctx\">Ctx</a>&gt; for <a class=\"struct\" href=\"goblin/elf/sym/struct.Sym.html\" title=\"struct goblin::elf::sym::Sym\">Sym</a>","synthetic":false,"types":["goblin::elf::sym::Sym"]}];
-implementors["scroll"] = [];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

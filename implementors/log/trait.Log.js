@@ -1,4 +1,0 @@
-(function() {var implementors = {};
-implementors["aero"] = [{"text":"impl <a class=\"trait\" href=\"log/trait.Log.html\" title=\"trait log::Log\">Log</a> for <a class=\"struct\" href=\"aero/logger/struct.AeroLogger.html\" title=\"struct aero::logger::AeroLogger\">AeroLogger</a>","synthetic":false,"types":["aero::logger::AeroLogger"]}];
-implementors["uefi"] = [{"text":"impl&lt;'boot&gt; <a class=\"trait\" href=\"log/trait.Log.html\" title=\"trait log::Log\">Log</a> for <a class=\"struct\" href=\"uefi/logger/struct.Logger.html\" title=\"struct uefi::logger::Logger\">Logger</a>","synthetic":false,"types":["uefi::logger::Logger"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

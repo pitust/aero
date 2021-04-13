@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["NUL_16","UCS-2 version of the NUL character"],["NUL_8","Latin-1 version of the NUL character"]],"struct":[["Char16","An UCS-2 code point"],["Char8","A Latin-1 character"],["CharConversionError","Character conversion error"]]});
