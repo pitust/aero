@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Parity","The parity of the device."],["StopBits","Number of stop bits per character."]],"struct":[["ControlBits","The control bits of a device. These are defined in the RS-232 standard."],["IoMode","Structure representing the device’s current parameters."],["Serial","Provides access to a serial I/O device."]]});
