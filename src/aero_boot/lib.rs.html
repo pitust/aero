@@ -35,6 +35,30 @@
 <span id="32">32</span>
 <span id="33">33</span>
 <span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">custom_test_frameworks</span>)]</span>
@@ -57,12 +81,36 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FrameBufferInfo</span> {
+    <span class="doccomment">/// The total size in bytes.</span>
     <span class="kw">pub</span> <span class="ident">byte_len</span>: <span class="ident">usize</span>,
+    <span class="doccomment">/// The width in pixels.</span>
     <span class="kw">pub</span> <span class="ident">horizontal_resolution</span>: <span class="ident">usize</span>,
+    <span class="doccomment">/// The height in pixels.</span>
     <span class="kw">pub</span> <span class="ident">vertical_resolution</span>: <span class="ident">usize</span>,
+    <span class="doccomment">/// The color format of each pixel.</span>
     <span class="kw">pub</span> <span class="ident">pixel_format</span>: <span class="ident">PixelFormat</span>,
+    <span class="doccomment">/// The number of bytes per pixel.</span>
     <span class="kw">pub</span> <span class="ident">bytes_per_pixel</span>: <span class="ident">usize</span>,
+    <span class="doccomment">/// Number of pixels between the start of a line and the start of the next.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Some framebuffers use additional padding at the end of a line, so this</span>
+    <span class="doccomment">/// value might be larger than `horizontal_resolution`. It is</span>
+    <span class="doccomment">/// therefore recommended to use this field for calculating the start address of a line.</span>
     <span class="kw">pub</span> <span class="ident">stride</span>: <span class="ident">usize</span>,
+}
+<span class="doccomment">/// Represents the different types of memory.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MemoryRegionType</span> {
+    <span class="doccomment">/// Unused conventional memory, can be used by the kernel.</span>
+    <span class="ident">Usable</span>,
+    <span class="doccomment">/// Memory mappings created by the bootloader, including the kernel and boot info mappings.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This memory should **not** be used by the kernel.</span>
+    <span class="ident">Bootloader</span>,
+    <span class="ident">UnknownUefi</span>(<span class="ident">u32</span>),
+    <span class="ident">UnknownBios</span>(<span class="ident">u32</span>),
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_runner</span>(<span class="ident">tests</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">Fn</span>()]) {
