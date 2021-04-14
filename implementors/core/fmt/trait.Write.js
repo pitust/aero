@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["aero_kernel"] = [{"text":"impl&lt;'buffer&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/fmt/trait.Write.html\" title=\"trait core::fmt::Write\">Write</a> for <a class=\"struct\" href=\"aero_kernel/vga/rendy/struct.Rendy.html\" title=\"struct aero_kernel::vga::rendy::Rendy\">Rendy</a>&lt;'buffer&gt;","synthetic":false,"types":["aero_kernel::vga::rendy::Rendy"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

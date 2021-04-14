@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["ASCII_TABLE",""],["BACKSPACE_PRESSED",""],["ENTER_PRESSED",""],["LEFT_SHIFT_PRESSED",""],["LEFT_SHIFT_RELEASED",""],["RIGHT_SHIFT_PRESSED",""],["RIGHT_SHIFT_RELEASED",""],["SPACEBAR_PRESSED",""]],"fn":[["handle",""],["translate_keystroke",""]],"static":[["IS_LEFT_SHIFT_PRESSED",""],["IS_RIGHT_SHIFT_PRESSED",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["SIZEOF_DYN",""]],"struct":[["Dyn","An entry in the dynamic array"],["DynamicInfo","Important dynamic linking info generated via a single pass through the `_DYNAMIC` array"]]});

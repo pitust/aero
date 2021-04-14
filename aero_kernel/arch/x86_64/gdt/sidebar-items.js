@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["GDT_ENTRIES",""]],"fn":[["init","Initialize the GDT."],["load_gdt",""],["load_tss",""]],"static":[["GDT",""]],"struct":[["GDTDescriptor",""],["GDTEntry",""],["TSSEntry","The Task State Segment (TSS) is a special data structure for x86 processors which holds information about a task."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["LOOKUP_END_ADDRESS",""],["LOOKUP_START_ADDRESS",""]],"fn":[["init","Initialize ACPI tables."],["look_up_table",""]],"mod":[["fadt","The FADT ACPI table contains information about fixed register blocks pertaining to power management."],["hpet",""],["madt",""],["mcfg",""],["rsdp",""],["sdt",""]],"struct":[["GenericAddressStructure",""]]});

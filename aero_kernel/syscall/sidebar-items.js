@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SyscallError",""]],"fn":[["syscall",""]],"mod":[["fs",""],["time",""]],"type":[["SyscallResult",""]]});
