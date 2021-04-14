@@ -12,6 +12,7 @@ sourcesIndex["linked_list_allocator"] = {"name":"","files":["hole.rs","lib.rs"]}
 sourcesIndex["lock_api"] = {"name":"","files":["lib.rs","mutex.rs","remutex.rs","rwlock.rs"]};
 sourcesIndex["log"] = {"name":"","files":["lib.rs","macros.rs"]};
 sourcesIndex["plain"] = {"name":"","files":["error.rs","lib.rs","methods.rs","plain.rs"]};
+sourcesIndex["rlibc"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["scopeguard"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["scroll"] = {"name":"","files":["ctx.rs","endian.rs","error.rs","greater.rs","leb128.rs","lib.rs","pread.rs","pwrite.rs"]};
 sourcesIndex["spin"] = {"name":"","dirs":[{"name":"mutex","files":["spin.rs"]}],"files":["barrier.rs","lazy.rs","lib.rs","mutex.rs","once.rs","relax.rs","rwlock.rs"]};
