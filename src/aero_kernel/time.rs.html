@@ -73,7 +73,6 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
-<span id="73">73</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The PIT (Programmable Interval Timer) chip basically consists of an oscillator, a prescaler and 3 independent frequency dividers</span>
 <span class="doccomment">//! and it is used to create time intervals and calculate *estimate* time since epoch.</span>
@@ -113,17 +112,16 @@
     }
 
     <span class="doccomment">/// Increments ticks since epoch. This function is called on the PIT chip interrupt.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tick</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">ticks_since_epoch</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">get_frequency</span>();
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_frequency</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
         <span class="ident">PIT_BASE_FREQUENCY</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">divisor</span>
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_divisor</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">divisor</span>: <span class="ident">u64</span>) {
         <span class="ident">io::outb</span>(<span class="number">0x40</span>, (<span class="ident">divisor</span> <span class="op">&amp;</span> <span class="number">0x00ff</span>) <span class="kw">as</span> <span class="ident">u8</span>);
         <span class="ident">io::wait</span>();

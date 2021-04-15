@@ -93,12 +93,16 @@
 <span id="90">90</span>
 <span id="91">91</span>
 <span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::mem</span>;
 
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">structures::paging</span>::{
-        <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size4KiB</span>,
+        <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageSize</span>, <span class="ident">PageTableFlags</span>, <span class="ident">PhysFrame</span>,
+        <span class="ident">Size4KiB</span>,
     },
     <span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>,
 };
@@ -118,7 +122,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">SDT</span> {
-    <span class="doccomment">/// Get SDT from address.</span>
+    <span class="doccomment">/// Get SDT from its address.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_address</span>(
         <span class="ident">address</span>: <span class="ident">u64</span>,
         <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span>,
@@ -142,7 +146,9 @@
 
         <span class="kw">let</span> <span class="ident">sdt</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">address</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>);
 
-        <span class="kw">let</span> <span class="ident">start_page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">address</span> <span class="op">+</span> <span class="number">4096</span>));
+        <span class="comment">// Map additional frames for the SDT is needed.</span>
+        <span class="kw">let</span> <span class="ident">start_page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span>
+            <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">address</span> <span class="op">+</span> <span class="ident">Size4KiB::SIZE</span>));
         <span class="kw">let</span> <span class="ident">end_page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">address</span> <span class="op">+</span> <span class="ident">sdt</span>.<span class="ident">length</span> <span class="kw">as</span> <span class="ident">u64</span>));
 
         <span class="kw">for</span> <span class="ident">page</span> <span class="kw">in</span> <span class="ident">Page::range_inclusive</span>(<span class="ident">start_page</span>, <span class="ident">end_page</span>) {

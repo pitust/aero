@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["clear_screen",""],["init",""],["set_color_code",""]],"static":[["RENDY",""]],"struct":[["Rendy",""]]});
+initSidebarItems({"fn":[["init",""],["set_color_code",""]],"static":[["RENDY",""]],"struct":[["Rendy",""]]});
