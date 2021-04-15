@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Color",""]],"struct":[["ColorCode",""]]});
+initSidebarItems({"struct":[["ColorCode",""]]});

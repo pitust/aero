@@ -37,6 +37,7 @@
 <span id="34">34</span>
 <span id="35">35</span>
 <span id="36">36</span>
+<span id="37">37</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::vga::color</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::vga::rendy</span>;
@@ -55,12 +56,13 @@
 
     <span class="kw">fn</span> <span class="ident">log</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">record</span>: <span class="kw-2">&amp;</span><span class="ident">Record</span>) {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">enabled</span>(<span class="ident">record</span>.<span class="ident">metadata</span>()) {
-            <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::White</span>, <span class="ident">Color::Black</span>));
+            <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="number">0xFFFFFF</span>, <span class="number">0x00</span>));
             <span class="macro">print!</span>(<span class="string">&quot;[ &quot;</span>);
 
-            <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::LightGreen</span>, <span class="ident">Color::Black</span>));
-            <span class="macro">print!</span>(<span class="string">&quot;OK&quot;</span>);
-            <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::White</span>, <span class="ident">Color::Black</span>));
+            <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="number">0x50C878</span>, <span class="number">0x00</span>));
+            <span class="macro">print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">record</span>.<span class="ident">level</span>());
+
+            <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="number">0xFFFFFF</span>, <span class="number">0x00</span>));
             <span class="macro">println!</span>(<span class="string">&quot; ]        - {}&quot;</span>, <span class="ident">record</span>.<span class="ident">args</span>());
         }
     }
