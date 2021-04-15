@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MemoryRegionType","Represents the different types of memory."],["PixelFormat","Color format of pixels in the framebuffer."]],"fn":[["test_runner",""]],"struct":[["FrameBufferInfo","Describes the layout and pixel format of a framebuffer."]]});
+initSidebarItems({"enum":[["MemoryRegionType","Represents the different types of memory."],["PixelFormat","Color format of pixels in the framebuffer."]],"fn":[["test_runner",""]],"struct":[["BootInfo",""],["FrameBufferInfo","Describes the layout and pixel format of a framebuffer."]]});
