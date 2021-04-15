@@ -136,7 +136,7 @@
 <span id="133">133</span>
 <span id="134">134</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">bootloader</span>::{<span class="ident">boot_info</span>::<span class="kw-2">*</span>, <span class="ident">BootInfo</span>};
+<span class="kw">use</span> <span class="ident">aero_boot</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">registers::control::Cr3</span>,
     <span class="ident">structures::paging</span>::{
@@ -171,8 +171,8 @@
         }
     }
 
-    <span class="doccomment">/// Get the [MemoryRegionKind] of a frame</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_frame_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">frame</span>: <span class="ident">PhysFrame</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MemoryRegionKind</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Get the [MemoryRegionType] of a frame</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_frame_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">frame</span>: <span class="ident">PhysFrame</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MemoryRegionType</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">memory_map</span>
             .<span class="ident">into_iter</span>()
             .<span class="ident">find</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> {
@@ -186,7 +186,7 @@
     <span class="doccomment">/// Returns an iterator over the usable frames specified in the memory map.</span>
     <span class="kw">fn</span> <span class="ident">usable_frames</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">PhysFrame</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">regions</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">memory_map</span>.<span class="ident">iter</span>();
-        <span class="kw">let</span> <span class="ident">usable_regions</span> <span class="op">=</span> <span class="ident">regions</span>.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">MemoryRegionKind::Usable</span>);
+        <span class="kw">let</span> <span class="ident">usable_regions</span> <span class="op">=</span> <span class="ident">regions</span>.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">MemoryRegionType::Usable</span>);
         <span class="kw">let</span> <span class="ident">addr_ranges</span> <span class="op">=</span> <span class="ident">usable_regions</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">start</span>..<span class="ident">r</span>.<span class="ident">end</span>);
         <span class="kw">let</span> <span class="ident">frame_addresses</span> <span class="op">=</span> <span class="ident">addr_ranges</span>.<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">step_by</span>(<span class="number">4096</span>));
 
@@ -245,7 +245,7 @@
         .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">extra_flags</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">frame_type</span> {
-        <span class="ident">MemoryRegionKind::UnknownBios</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">MemoryRegionKind::UnknownUefi</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">MemoryRegionType::UnknownBios</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">MemoryRegionType::UnknownUefi</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">PageTableFlags::WRITABLE</span>
         }
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
