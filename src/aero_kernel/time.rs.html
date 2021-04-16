@@ -73,6 +73,8 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The PIT (Programmable Interval Timer) chip basically consists of an oscillator, a prescaler and 3 independent frequency dividers</span>
 <span class="doccomment">//! and it is used to create time intervals and calculate *estimate* time since epoch.</span>
@@ -85,6 +87,8 @@
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIT_DIVISOR</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1193180</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIT_BASE_FREQUENCY</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1193182</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DEFAULT_PIT_DIVISOR</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">65535</span>;
+
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PITDescriptor</span> {
     <span class="ident">ticks_since_epoch</span>: <span class="ident">u64</span>,
@@ -96,7 +100,7 @@
     <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">ticks_since_epoch</span>: <span class="number">0</span>,
-            <span class="ident">divisor</span>: <span class="number">65535</span>,
+            <span class="ident">divisor</span>: <span class="ident">DEFAULT_PIT_DIVISOR</span>,
         }
     }
 

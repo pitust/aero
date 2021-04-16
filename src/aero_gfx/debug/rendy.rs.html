@@ -140,6 +140,9 @@
 <span id="137">137</span>
 <span id="138">138</span>
 <span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::fmt</span>;
 
@@ -173,7 +176,7 @@
             <span class="ident">info</span>,
             <span class="ident">x_pos</span>: <span class="number">0</span>,
             <span class="ident">y_pos</span>: <span class="number">0</span>,
-            <span class="ident">color</span>: <span class="ident">ColorCode::new</span>(<span class="ident">Color::from_hex</span>(<span class="number">0xFFFFFF</span>), <span class="ident">Color::from_hex</span>(<span class="number">0x00</span>)),
+            <span class="ident">color</span>: <span class="ident">ColorCode::new</span>(<span class="ident">Color::WHITE</span>, <span class="ident">Color::BLACK</span>),
         }
     }
 
@@ -256,7 +259,10 @@
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_code</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">ColorCode</span>) {
-        <span class="self">self</span>.<span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>;
+        <span class="comment">// Do not set the color again if its the same color.</span>
+        <span class="kw">if</span> <span class="op">!</span>(<span class="ident">color</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">color</span>) {
+            <span class="self">self</span>.<span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>;
+        }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
