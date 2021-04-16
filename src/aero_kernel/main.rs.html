@@ -151,7 +151,7 @@
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">alloc</span>;
 
 <span class="kw">use</span> <span class="ident">arch::interrupts</span>::{<span class="ident">PIC1_DATA</span>, <span class="ident">PIC2_DATA</span>};
-<span class="kw">use</span> <span class="ident">arch::memory::paging</span>;
+<span class="kw">use</span> <span class="ident">arch::memory</span>;
 
 <span class="kw">use</span> <span class="ident">utils::io</span>;
 
@@ -215,7 +215,7 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">arch::interrupts::enable_interrupts</span>();
 
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">mut</span> <span class="ident">frame_allocator</span>) <span class="op">=</span>
-            <span class="ident">paging::init</span>(<span class="ident">physical_memory_offset</span>, <span class="ident">memory_regions</span>);
+            <span class="ident">memory::paging::init</span>(<span class="ident">physical_memory_offset</span>, <span class="ident">memory_regions</span>);
         <span class="macro">log::info!</span>(<span class="string">&quot;Loaded paging&quot;</span>);
 
         <span class="ident">arch::memory::alloc::init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)

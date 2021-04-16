@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PhysicalAddres",""],["VirtualAddress","A canonical virtual memory address. The addresses are canonicalized based on the target arch."]]});

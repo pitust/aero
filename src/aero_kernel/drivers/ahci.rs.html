@@ -482,10 +482,12 @@
 <span id="479">479</span>
 <span id="480">480</span>
 <span id="481">481</span>
+<span id="482">482</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">arch::memory::paging::GlobalAllocator</span>, <span class="ident">paging::memory_map_device</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::memory::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">GlobalAllocator</span>};
+
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">structures::paging</span>::{
         <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size4KiB</span>,
