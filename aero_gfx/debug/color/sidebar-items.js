@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ColorCode",""]]});
+initSidebarItems({"struct":[["Color",""],["ColorCode",""]]});

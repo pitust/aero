@@ -140,14 +140,12 @@
 <span id="137">137</span>
 <span id="138">138</span>
 <span id="139">139</span>
-<span id="140">140</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::fmt</span>;
 
-<span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 <span class="kw">use</span> <span class="ident">font8x8::UnicodeFonts</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::color::ColorCode</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::color</span>::{<span class="ident">Color</span>, <span class="ident">ColorCode</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::FrameBufferInfo</span>;
 
 <span class="doccomment">/// Debug renderer used by the kernel and the bootloader to log messages to the</span>
@@ -175,7 +173,7 @@
             <span class="ident">info</span>,
             <span class="ident">x_pos</span>: <span class="number">0</span>,
             <span class="ident">y_pos</span>: <span class="number">0</span>,
-            <span class="ident">color</span>: <span class="ident">ColorCode::new</span>(<span class="number">0xFFFFFF</span>, <span class="number">0x00</span>),
+            <span class="ident">color</span>: <span class="ident">ColorCode::new</span>(<span class="ident">Color::from_hex</span>(<span class="number">0xFFFFFF</span>), <span class="ident">Color::from_hex</span>(<span class="number">0x00</span>)),
         }
     }
 
@@ -221,14 +219,14 @@
         <span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">+</span><span class="op">=</span> <span class="number">8</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_pixel</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">usize</span>, <span class="ident">y</span>: <span class="ident">usize</span>, <span class="ident">color</span>: <span class="ident">u32</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_pixel</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">usize</span>, <span class="ident">y</span>: <span class="ident">usize</span>, <span class="ident">color</span>: <span class="ident">Color</span>) {
         <span class="kw">let</span> <span class="ident">pixel_offset</span> <span class="op">=</span> <span class="ident">y</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">stride</span> <span class="op">+</span> <span class="ident">x</span>;
 
         <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> [
-            (<span class="ident">color</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">8</span>) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
-            ((<span class="ident">color</span>.<span class="ident">get_bits</span>(<span class="number">8</span>..<span class="number">16</span>)) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
-            ((<span class="ident">color</span>.<span class="ident">get_bits</span>(<span class="number">16</span>..<span class="number">24</span>)) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
-            ((<span class="ident">color</span>.<span class="ident">get_bits</span>(<span class="number">24</span>..<span class="number">32</span>)) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
+            <span class="ident">color</span>.<span class="ident">get_red_bit</span>(),
+            <span class="ident">color</span>.<span class="ident">get_green_bit</span>(),
+            <span class="ident">color</span>.<span class="ident">get_blue_bit</span>(),
+            <span class="ident">color</span>.<span class="ident">get_alpha_bit</span>(),
         ];
 
         <span class="kw">let</span> <span class="ident">bytes_per_pixel</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">bytes_per_pixel</span>;
@@ -242,7 +240,7 @@
         <span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="self">self</span>.<span class="ident">y_pos</span> <span class="op">=</span> <span class="number">0</span>;
 
-        <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">fill</span>(<span class="self">self</span>.<span class="ident">color</span>.<span class="ident">get_background</span>() <span class="kw">as</span> <span class="ident">u8</span>);
+        <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">fill</span>(<span class="self">self</span>.<span class="ident">color</span>.<span class="ident">get_background</span>().<span class="ident">inner</span>() <span class="kw">as</span> <span class="ident">u8</span>);
     }
 
     <span class="kw">fn</span> <span class="ident">new_line</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
