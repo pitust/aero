@@ -139,9 +139,12 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::fmt</span>;
 
+<span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 <span class="kw">use</span> <span class="ident">font8x8::UnicodeFonts</span>;
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::color::ColorCode</span>;
@@ -160,7 +163,8 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;buffer</span><span class="op">&gt;</span> <span class="ident">DebugRendy</span><span class="op">&lt;</span><span class="lifetime">&#39;buffer</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a new debug renderer.</span>
+    <span class="doccomment">/// Create a new debug renderer with the default foreground color set to white and</span>
+    <span class="doccomment">/// background color set to black.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// **Note**: The debug renderer should **not** be used after GUI has started. Use the</span>
     <span class="doccomment">/// respective VGA functions instead.</span>
@@ -192,7 +196,7 @@
                     <span class="self">self</span>.<span class="ident">new_line</span>();
                 }
 
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">y_pos</span> <span class="op">&gt;</span><span class="op">=</span> (<span class="self">self</span>.<span class="ident">height</span>() <span class="op">-</span> <span class="number">8</span>) {
+                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">y_pos</span> <span class="op">&gt;</span><span class="op">=</span> (<span class="self">self</span>.<span class="ident">height</span>() <span class="op">-</span> <span class="number">16</span>) {
                     <span class="self">self</span>.<span class="ident">clear_screen</span>()
                 }
 
@@ -201,8 +205,8 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">char</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
-        <span class="kw">for</span> (<span class="ident">y</span>, <span class="ident">byte</span>) <span class="kw">in</span> <span class="ident">char</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
+        <span class="kw">for</span> (<span class="ident">y</span>, <span class="ident">byte</span>) <span class="kw">in</span> <span class="ident">bytes</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">for</span> (<span class="ident">x</span>, <span class="ident">bit</span>) <span class="kw">in</span> (<span class="number">0</span>..<span class="number">8</span>).<span class="ident">enumerate</span>() {
                 <span class="kw">let</span> <span class="ident">background</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bit</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span> { <span class="bool-val">true</span> } <span class="kw">else</span> { <span class="bool-val">false</span> };
 
@@ -221,10 +225,10 @@
         <span class="kw">let</span> <span class="ident">pixel_offset</span> <span class="op">=</span> <span class="ident">y</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">stride</span> <span class="op">+</span> <span class="ident">x</span>;
 
         <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> [
-            (<span class="ident">color</span> <span class="op">&amp;</span> <span class="number">255u32</span>) <span class="kw">as</span> <span class="ident">u8</span>,
-            ((<span class="ident">color</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8u32</span>) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
-            ((<span class="ident">color</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16u32</span>) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
-            <span class="number">0</span>,
+            (<span class="ident">color</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">8</span>) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
+            ((<span class="ident">color</span>.<span class="ident">get_bits</span>(<span class="number">8</span>..<span class="number">16</span>)) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
+            ((<span class="ident">color</span>.<span class="ident">get_bits</span>(<span class="number">16</span>..<span class="number">24</span>)) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
+            ((<span class="ident">color</span>.<span class="ident">get_bits</span>(<span class="number">24</span>..<span class="number">32</span>)) <span class="op">&amp;</span> <span class="number">255</span>) <span class="kw">as</span> <span class="ident">u8</span>,
         ];
 
         <span class="kw">let</span> <span class="ident">bytes_per_pixel</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">bytes_per_pixel</span>;
