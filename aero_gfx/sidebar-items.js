@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PixelFormat","Color format of pixels in the framebuffer."]],"mod":[["debug",""]],"struct":[["FrameBuffer","A pixel-based framebuffer that controls the screen output."],["FrameBufferInfo","Describes the layout and pixel format of a framebuffer."]]});

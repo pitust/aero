@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DebugRendy","Debug renderer used by the kernel and the bootloader to log messages to the framebuffer queried from the BIOS or UEFI firmware."]]});

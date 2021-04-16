@@ -123,7 +123,6 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
-<span id="123">123</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -155,19 +154,18 @@
 <span class="kw">use</span> <span class="ident">arch::memory::paging</span>;
 
 <span class="kw">use</span> <span class="ident">utils::io</span>;
-<span class="kw">use</span> <span class="ident">vga::rendy</span>;
 
 <span class="kw">mod</span> <span class="ident">acpi</span>;
 <span class="kw">mod</span> <span class="ident">arch</span>;
 <span class="kw">mod</span> <span class="ident">drivers</span>;
 <span class="kw">mod</span> <span class="ident">logger</span>;
+<span class="kw">mod</span> <span class="ident">rendy</span>;
 <span class="kw">mod</span> <span class="ident">syscall</span>;
 <span class="kw">mod</span> <span class="ident">tests</span>;
 <span class="kw">mod</span> <span class="ident">time</span>;
 <span class="kw">mod</span> <span class="ident">unwind</span>;
 <span class="kw">mod</span> <span class="ident">userland</span>;
 <span class="kw">mod</span> <span class="ident">utils</span>;
-<span class="kw">mod</span> <span class="ident">vga</span>;
 
 <span class="kw">use</span> <span class="ident">aero_boot::BootInfo</span>;
 <span class="kw">use</span> <span class="ident">linked_list_allocator::LockedHeap</span>;
