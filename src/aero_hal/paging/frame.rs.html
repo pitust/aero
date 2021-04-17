@@ -48,6 +48,8 @@
 <span id="45">45</span>
 <span id="46">46</span>
 <span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::fmt</span>;
 <span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
@@ -62,6 +64,8 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Frame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">S::SIZE</span>;
+
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_start_address</span>(<span class="ident">address</span>: <span class="ident">PhysicalAddress</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="macro">assert!</span>(<span class="ident">address</span>.<span class="ident">is_aligned</span>(<span class="ident">S::SIZE</span>));
 
@@ -92,8 +96,8 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FrameAllocator</span> {
-    <span class="kw">fn</span> <span class="ident">allocate_frame</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Frame</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">allocate_frame</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Frame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span>;
     <span class="kw">fn</span> <span class="ident">deallocate_frame</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>);
 }
 </pre></div>

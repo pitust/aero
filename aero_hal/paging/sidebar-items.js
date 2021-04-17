@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Size1GiB",""],["Size2MiB",""],["Size4KiB",""]],"mod":[["address",""],["frame",""]],"trait":[["NotGiantPageSize",""],["PageSize",""]]});
+initSidebarItems({"enum":[["Size1GiB",""],["Size2MiB",""],["Size4KiB",""]],"mod":[["address",""],["frame",""],["mapper",""],["page",""]],"struct":[["ActivePageTable",""]],"trait":[["NotGiantPageSize",""],["PageSize",""]]});
