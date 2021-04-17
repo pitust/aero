@@ -34,7 +34,7 @@
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PageSize</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">PartialOrd</span> <span class="op">+</span> <span class="ident">Ord</span> {
     <span class="doccomment">/// The page size in bytes.</span>
-    <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">usize</span>;
+    <span class="kw">const</span> <span class="ident">SIZE</span>: <span class="ident">u64</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">NotGiantPageSize</span>: <span class="ident">PageSize</span> {}
@@ -45,7 +45,7 @@
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="macro-nonterminal">$</span><span class="kw">enum</span> {}
 
         <span class="kw">impl</span> <span class="macro-nonterminal">PageSize</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">enum</span> {
-            <span class="kw">const</span> <span class="macro-nonterminal">SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>;
+            <span class="kw">const</span> <span class="macro-nonterminal">SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">size</span>;
         }
     };
 }

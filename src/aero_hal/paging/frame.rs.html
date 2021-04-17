@@ -58,7 +58,7 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Frame</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span> <span class="op">=</span> <span class="ident">Size4KiB</span><span class="op">&gt;</span> {
     <span class="ident">start_address</span>: <span class="ident">PhysicalAddress</span>,
-    <span class="ident">__phantom_size</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">size</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Frame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
@@ -72,7 +72,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">containing_address</span>(<span class="ident">address</span>: <span class="ident">PhysicalAddress</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">start_address</span>: <span class="ident">address</span>.<span class="ident">align_down</span>(<span class="ident">S::SIZE</span>),
-            <span class="ident">__phantom_size</span>: <span class="ident">PhantomData</span>,
+            <span class="ident">size</span>: <span class="ident">PhantomData</span>,
         }
     }
 
@@ -87,7 +87,7 @@
         <span class="ident">f</span>.<span class="ident">write_fmt</span>(<span class="macro">format_args!</span>(
             <span class="string">&quot;Frame[{}]({:#x})&quot;</span>,
             <span class="ident">S::SIZE</span>,
-            <span class="self">self</span>.<span class="ident">start_address</span>().<span class="ident">as_usize</span>()
+            <span class="self">self</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()
         ))
     }
 }
