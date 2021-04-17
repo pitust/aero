@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MapperError","This error is returned from `map_to` and similar methods."]],"struct":[["Mapper",""],["MapperFlush",""]]});
+initSidebarItems({"enum":[["MapperError","This error is returned from `map_to` and similar methods."]],"struct":[["Mapper",""],["MapperFlush",""]],"trait":[["MapperMap",""]]});
