@@ -38,20 +38,20 @@ an effort is made to keep this crate reasonably consistent with <code>std::sync<
 <p>Many of the types defined in this crate have ‘additional capabilities’ when compared to <code>std::sync</code>:</p>
 <ul>
 <li>
-<p>Because spinning does not depend on the thread-driven model of <code>std::sync</code>, guards (<a href="../spin/mutex/struct.MutexGuard.html" title="MutexGuard"><code>MutexGuard</code></a>,
-<a href="../spin/rwlock/struct.RwLockReadGuard.html" title="RwLockReadGuard"><code>RwLockReadGuard</code></a>, <a href="../spin/type.RwLockWriteGuard.html" title="RwLockWriteGuard"><code>RwLockWriteGuard</code></a>, etc.) may be sent and shared between threads.</p>
+<p>Because spinning does not depend on the thread-driven model of <code>std::sync</code>, guards (<a href="mutex/struct.MutexGuard.html" title="MutexGuard"><code>MutexGuard</code></a>,
+<a href="rwlock/struct.RwLockReadGuard.html" title="RwLockReadGuard"><code>RwLockReadGuard</code></a>, <a href="type.RwLockWriteGuard.html" title="RwLockWriteGuard"><code>RwLockWriteGuard</code></a>, etc.) may be sent and shared between threads.</p>
 </li>
 <li>
-<p><a href="../spin/type.RwLockUpgradableGuard.html" title="RwLockUpgradableGuard"><code>RwLockUpgradableGuard</code></a> supports being upgraded into a <a href="../spin/type.RwLockWriteGuard.html" title="RwLockWriteGuard"><code>RwLockWriteGuard</code></a>.</p>
+<p><a href="type.RwLockUpgradableGuard.html" title="RwLockUpgradableGuard"><code>RwLockUpgradableGuard</code></a> supports being upgraded into a <a href="type.RwLockWriteGuard.html" title="RwLockWriteGuard"><code>RwLockWriteGuard</code></a>.</p>
 </li>
 <li>
 <p>Guards support <a href="https://doc.rust-lang.org/nomicon/leaking.html">leaking</a>.</p>
 </li>
 <li>
-<p><a href="../spin/type.Once.html" title="Once"><code>Once</code></a> owns the value returned by its <code>call_once</code> initializer.</p>
+<p><a href="type.Once.html" title="Once"><code>Once</code></a> owns the value returned by its <code>call_once</code> initializer.</p>
 </li>
 <li>
-<p><a href="../spin/type.RwLock.html" title="RwLock"><code>RwLock</code></a> supports counting readers and writers.</p>
+<p><a href="type.RwLock.html" title="RwLock"><code>RwLock</code></a> supports counting readers and writers.</p>
 </li>
 </ul>
 <p>Conversely, the types in this crate do not have some of the features <code>std::sync</code> has:</p>
@@ -72,7 +72,7 @@ an effort is made to keep this crate reasonably consistent with <code>std::sync<
 </li>
 </ul>
 </div><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2>
-<table><tr><td><code>pub use mutex::<a class="struct" href="../spin/mutex/struct.MutexGuard.html" title="struct spin::mutex::MutexGuard">MutexGuard</a>;</code></td></tr><tr><td><code>pub use rwlock::<a class="struct" href="../spin/rwlock/struct.RwLockReadGuard.html" title="struct spin::rwlock::RwLockReadGuard">RwLockReadGuard</a>;</code></td></tr><tr><td><code>pub use relax::<a class="struct" href="../spin/relax/struct.Spin.html" title="struct spin::relax::Spin">Spin</a>;</code></td></tr><tr><td><code>pub use relax::<a class="trait" href="../spin/relax/trait.RelaxStrategy.html" title="trait spin::relax::RelaxStrategy">RelaxStrategy</a>;</code></td></tr></table><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
+<table><tr><td><code>pub use mutex::<a class="struct" href="mutex/struct.MutexGuard.html" title="struct spin::mutex::MutexGuard">MutexGuard</a>;</code></td></tr><tr><td><code>pub use rwlock::<a class="struct" href="rwlock/struct.RwLockReadGuard.html" title="struct spin::rwlock::RwLockReadGuard">RwLockReadGuard</a>;</code></td></tr><tr><td><code>pub use relax::<a class="struct" href="relax/struct.Spin.html" title="struct spin::relax::Spin">Spin</a>;</code></td></tr><tr><td><code>pub use relax::<a class="trait" href="relax/trait.RelaxStrategy.html" title="trait spin::relax::RelaxStrategy">RelaxStrategy</a>;</code></td></tr></table><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
 <table><tr class="module-item"><td><a class="mod" href="barrier/index.html" title="spin::barrier mod">barrier</a></td><td class="docblock-short"><p>Synchronization primitive allowing multiple threads to synchronize the
 beginning of some computation.</p>
 </td></tr><tr class="module-item"><td><a class="mod" href="lazy/index.html" title="spin::lazy mod">lazy</a></td><td class="docblock-short"><p>Synchronization primitives for lazy evaluation.</p>
@@ -82,13 +82,13 @@ beginning of some computation.</p>
 </td></tr><tr class="module-item"><td><a class="mod" href="relax/index.html" title="spin::relax mod">relax</a></td><td class="docblock-short"><p>Strategies that determine the behaviour of locks when encountering contention.</p>
 </td></tr><tr class="module-item"><td><a class="mod" href="rwlock/index.html" title="spin::rwlock mod">rwlock</a></td><td class="docblock-short"><p>A lock that provides data access to either one writer or many readers.</p>
 </td></tr></table><h2 id="types" class="section-header"><a href="#types">Type Definitions</a></h2>
-<table><tr class="module-item"><td><a class="type" href="type.Barrier.html" title="spin::Barrier type">Barrier</a></td><td class="docblock-short"><p>A primitive that synchronizes the execution of multiple threads. See <a href="../spin/barrier/struct.Barrier.html" title="barrier::Barrier"><code>barrier::Barrier</code></a> for documentation.</p>
-</td></tr><tr class="module-item"><td><a class="type" href="type.Lazy.html" title="spin::Lazy type">Lazy</a></td><td class="docblock-short"><p>A value which is initialized on the first access. See <a href="../spin/lazy/struct.Lazy.html" title="lazy::Lazy"><code>lazy::Lazy</code></a> for documentation.</p>
-</td></tr><tr class="module-item"><td><a class="type" href="type.Mutex.html" title="spin::Mutex type">Mutex</a></td><td class="docblock-short"><p>A primitive that synchronizes the execution of multiple threads. See <a href="../spin/mutex/struct.Mutex.html" title="mutex::Mutex"><code>mutex::Mutex</code></a> for documentation.</p>
-</td></tr><tr class="module-item"><td><a class="type" href="type.Once.html" title="spin::Once type">Once</a></td><td class="docblock-short"><p>A primitive that provides lazy one-time initialization. See <a href="../spin/once/struct.Once.html" title="once::Once"><code>once::Once</code></a> for documentation.</p>
-</td></tr><tr class="module-item"><td><a class="type" href="type.RwLock.html" title="spin::RwLock type">RwLock</a></td><td class="docblock-short"><p>A lock that provides data access to either one writer or many readers. See <a href="../spin/rwlock/struct.RwLock.html" title="rwlock::RwLock"><code>rwlock::RwLock</code></a> for documentation.</p>
-</td></tr><tr class="module-item"><td><a class="type" href="type.RwLockUpgradableGuard.html" title="spin::RwLockUpgradableGuard type">RwLockUpgradableGuard</a></td><td class="docblock-short"><p>A guard that provides immutable data access but can be upgraded to <a href="../spin/type.RwLockWriteGuard.html" title="RwLockWriteGuard"><code>RwLockWriteGuard</code></a>. See
-<a href="../spin/rwlock/struct.RwLockUpgradableGuard.html" title="rwlock::RwLockUpgradableGuard"><code>rwlock::RwLockUpgradableGuard</code></a> for documentation.</p>
-</td></tr><tr class="module-item"><td><a class="type" href="type.RwLockWriteGuard.html" title="spin::RwLockWriteGuard type">RwLockWriteGuard</a></td><td class="docblock-short"><p>A guard that provides mutable data access. See <a href="../spin/rwlock/struct.RwLockWriteGuard.html" title="rwlock::RwLockWriteGuard"><code>rwlock::RwLockWriteGuard</code></a> for documentation.</p>
-</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="spin" data-search-js="../search-index.js"></div>
+<table><tr class="module-item"><td><a class="type" href="type.Barrier.html" title="spin::Barrier type">Barrier</a></td><td class="docblock-short"><p>A primitive that synchronizes the execution of multiple threads. See <a href="barrier/struct.Barrier.html" title="barrier::Barrier"><code>barrier::Barrier</code></a> for documentation.</p>
+</td></tr><tr class="module-item"><td><a class="type" href="type.Lazy.html" title="spin::Lazy type">Lazy</a></td><td class="docblock-short"><p>A value which is initialized on the first access. See <a href="lazy/struct.Lazy.html" title="lazy::Lazy"><code>lazy::Lazy</code></a> for documentation.</p>
+</td></tr><tr class="module-item"><td><a class="type" href="type.Mutex.html" title="spin::Mutex type">Mutex</a></td><td class="docblock-short"><p>A primitive that synchronizes the execution of multiple threads. See <a href="mutex/struct.Mutex.html" title="mutex::Mutex"><code>mutex::Mutex</code></a> for documentation.</p>
+</td></tr><tr class="module-item"><td><a class="type" href="type.Once.html" title="spin::Once type">Once</a></td><td class="docblock-short"><p>A primitive that provides lazy one-time initialization. See <a href="once/struct.Once.html" title="once::Once"><code>once::Once</code></a> for documentation.</p>
+</td></tr><tr class="module-item"><td><a class="type" href="type.RwLock.html" title="spin::RwLock type">RwLock</a></td><td class="docblock-short"><p>A lock that provides data access to either one writer or many readers. See <a href="rwlock/struct.RwLock.html" title="rwlock::RwLock"><code>rwlock::RwLock</code></a> for documentation.</p>
+</td></tr><tr class="module-item"><td><a class="type" href="type.RwLockUpgradableGuard.html" title="spin::RwLockUpgradableGuard type">RwLockUpgradableGuard</a></td><td class="docblock-short"><p>A guard that provides immutable data access but can be upgraded to <a href="type.RwLockWriteGuard.html" title="RwLockWriteGuard"><code>RwLockWriteGuard</code></a>. See
+<a href="rwlock/struct.RwLockUpgradableGuard.html" title="rwlock::RwLockUpgradableGuard"><code>rwlock::RwLockUpgradableGuard</code></a> for documentation.</p>
+</td></tr><tr class="module-item"><td><a class="type" href="type.RwLockWriteGuard.html" title="spin::RwLockWriteGuard type">RwLockWriteGuard</a></td><td class="docblock-short"><p>A guard that provides mutable data access. See <a href="rwlock/struct.RwLockWriteGuard.html" title="rwlock::RwLockWriteGuard"><code>rwlock::RwLockWriteGuard</code></a> for documentation.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="spin" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
     <script src="../main.js"></script></body></html>
