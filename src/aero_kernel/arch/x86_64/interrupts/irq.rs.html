@@ -30,16 +30,36 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::drivers</span>::{<span class="ident">keyboard</span>, <span class="ident">mouse</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::interrupt</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">apic</span>,
+    <span class="ident">drivers</span>::{<span class="ident">keyboard</span>, <span class="ident">mouse</span>},
+};
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">arch::interrupts</span>::{<span class="ident">end_pic1</span>, <span class="ident">end_pic2</span>},
     <span class="ident">time</span>,
 };
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::InterruptStackFrame</span>;
+
+<span class="macro">interrupt!</span>(<span class="ident">lapic_error</span>, <span class="kw">unsafe</span> {
+    <span class="macro">log::error!</span>(<span class="string">&quot;Local apic error&quot;</span>);
+    <span class="macro">log::error!</span>(<span class="string">&quot;ESR={:#0x}&quot;</span>, <span class="ident">apic::get_local_apic</span>().<span class="ident">get_esr</span>());
+
+    <span class="ident">apic::get_local_apic</span>().<span class="ident">eoi</span>();
+});
 
 <span class="macro">interrupt!</span>(<span class="ident">pit</span>, <span class="kw">unsafe</span> {
     <span class="ident">time::PIT</span>.<span class="ident">tick</span>();

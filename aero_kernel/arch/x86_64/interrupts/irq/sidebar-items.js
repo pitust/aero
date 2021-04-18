@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["keyboard",""],["mouse",""],["pit",""]]});
+initSidebarItems({"fn":[["keyboard",""],["lapic_error",""],["mouse",""],["pit",""]]});

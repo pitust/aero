@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["IA32_APIC_BASE","APIC Location and Status (R/W)."]],"fn":[["get_local_apic","Get a mutable reference to the local apic."],["init","Initialize the local apic."]],"static":[["BSP_APIC_ID",""],["LOCAL_APIC",""]],"struct":[["LocalApic",""]]});

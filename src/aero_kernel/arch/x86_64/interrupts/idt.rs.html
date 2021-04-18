@@ -248,6 +248,8 @@
 <span id="245">245</span>
 <span id="246">246</span>
 <span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
@@ -398,6 +400,8 @@
         <span class="ident">IDT</span>[<span class="number">32</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::pit</span>);
         <span class="ident">IDT</span>[<span class="number">33</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::keyboard</span>);
         <span class="ident">IDT</span>[<span class="number">44</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::mouse</span>);
+
+        <span class="ident">IDT</span>[<span class="number">49</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::lapic_error</span>);
 
         <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_function</span>(<span class="kw">crate</span><span class="ident">::syscall::syscall</span>);
         <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_flags</span>(<span class="ident">IDTFlags::PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags::RING_3</span> <span class="op">|</span> <span class="ident">IDTFlags::INTERRUPT</span>);

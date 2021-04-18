@@ -123,6 +123,10 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -156,6 +160,7 @@
 <span class="kw">use</span> <span class="ident">utils::io</span>;
 
 <span class="kw">mod</span> <span class="ident">acpi</span>;
+<span class="kw">mod</span> <span class="ident">apic</span>;
 <span class="kw">mod</span> <span class="ident">arch</span>;
 <span class="kw">mod</span> <span class="ident">drivers</span>;
 <span class="kw">mod</span> <span class="ident">logger</span>;
@@ -221,6 +226,9 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">arch::memory::alloc::init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);
         <span class="macro">log::info!</span>(<span class="string">&quot;Loaded heap&quot;</span>);
+
+        <span class="ident">apic::init</span>(<span class="ident">physical_memory_offset</span>);
+        <span class="macro">log::info!</span>(<span class="string">&quot;Loaded local apic&quot;</span>);
 
         <span class="ident">acpi::init</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>,
