@@ -127,6 +127,12 @@
 <span id="124">124</span>
 <span id="125">125</span>
 <span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -190,6 +196,12 @@ _______ _______ ______ _______    _______ ______
 
 <span class="attribute">#[<span class="ident">export_name</span> <span class="op">=</span> <span class="string">&quot;_start&quot;</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="comment">// Initialize the COM ports before doing anything else.</span>
+    <span class="comment">//</span>
+    <span class="comment">// This will help printing panics before or when the debug renderer is initialized</span>
+    <span class="comment">// if serial output is avaliable.</span>
+    <span class="ident">drivers::uart_16550::init</span>();
+
     <span class="kw">let</span> <span class="ident">physical_memory_offset</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">boot_info</span>.<span class="ident">physical_memory_offset</span>);
     <span class="kw">let</span> <span class="ident">rsdp_address</span> <span class="op">=</span> <span class="ident">PhysAddr::new</span>(<span class="ident">boot_info</span>.<span class="ident">rsdp_address</span>);
 

@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init",""],["set_color_code",""]],"static":[["DEBUG_RENDY",""]]});
+initSidebarItems({"fn":[["init",""],["is_initialized",""],["set_color_code",""]],"static":[["DEBUG_RENDY",""]]});
