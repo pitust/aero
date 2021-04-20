@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SDT",""]]});
+initSidebarItems({"struct":[["Sdt",""]]});

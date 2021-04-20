@@ -74,7 +74,6 @@
 <span id="71">71</span>
 <span id="72">72</span>
 <span id="73">73</span>
-<span id="74">74</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The PIT (Programmable Interval Timer) chip basically consists of an oscillator, a prescaler and 3 independent frequency dividers</span>
 <span class="doccomment">//! and it is used to create time intervals and calculate *estimate* time since epoch.</span>
@@ -89,13 +88,12 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIT_BASE_FREQUENCY</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1193182</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DEFAULT_PIT_DIVISOR</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">65535</span>;
 
-
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PITDescriptor</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PitDescriptor</span> {
     <span class="ident">ticks_since_epoch</span>: <span class="ident">u64</span>,
     <span class="ident">divisor</span>: <span class="ident">u64</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">PITDescriptor</span> {
+<span class="kw">impl</span> <span class="ident">PitDescriptor</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
@@ -136,7 +134,7 @@
 }
 
 <span class="doccomment">/// The PIT (Programmable Interval Timer)</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PIT</span>: <span class="ident">PITDescriptor</span> <span class="op">=</span> <span class="ident">PITDescriptor::new</span>();
+<span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PIT</span>: <span class="ident">PitDescriptor</span> <span class="op">=</span> <span class="ident">PitDescriptor::new</span>();
 
 <span class="doccomment">/// Initialise the PIT chip.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
@@ -151,5 +149,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

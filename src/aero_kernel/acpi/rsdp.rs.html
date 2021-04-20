@@ -30,7 +30,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RSDP</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Rsdp</span> {
     <span class="kw">pub</span> <span class="ident">signature</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
     <span class="kw">pub</span> <span class="ident">checksum</span>: <span class="ident">u8</span>,
     <span class="kw">pub</span> <span class="ident">oemid</span>: [<span class="ident">u8</span>; <span class="number">6</span>],
@@ -42,7 +42,7 @@
     <span class="kw">pub</span> <span class="ident">reserved</span>: [<span class="ident">u8</span>; <span class="number">3</span>],
 }
 
-<span class="kw">impl</span> <span class="ident">RSDP</span> {
+<span class="kw">impl</span> <span class="ident">Rsdp</span> {
     <span class="doccomment">/// Get the SDT address.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns the RSDT address if the revision is `0` else it returns the XSDT address.</span>
@@ -55,5 +55,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

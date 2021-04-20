@@ -109,7 +109,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SDT</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Sdt</span> {
     <span class="kw">pub</span> <span class="ident">signature</span>: [<span class="ident">u8</span>; <span class="number">4</span>],
     <span class="kw">pub</span> <span class="ident">length</span>: <span class="ident">u32</span>,
     <span class="kw">pub</span> <span class="ident">revision</span>: <span class="ident">u8</span>,
@@ -121,7 +121,7 @@
     <span class="kw">pub</span> <span class="ident">creator_revision</span>: <span class="ident">u32</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">SDT</span> {
+<span class="kw">impl</span> <span class="ident">Sdt</span> {
     <span class="doccomment">/// Get SDT from its address.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_address</span>(
         <span class="ident">address</span>: <span class="ident">u64</span>,
@@ -193,5 +193,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

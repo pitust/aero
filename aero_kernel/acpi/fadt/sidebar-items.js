@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["SIGNATURE",""]],"struct":[["FADT",""]]});
+initSidebarItems({"constant":[["SIGNATURE",""]],"struct":[["Fadt",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["RSDP",""]]});
+initSidebarItems({"struct":[["Rsdp",""]]});
