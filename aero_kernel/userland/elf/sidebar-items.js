@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ELFError",""]],"struct":[["ELF",""]]});
+initSidebarItems({"enum":[["ELFError",""]],"struct":[["Elf",""]]});
