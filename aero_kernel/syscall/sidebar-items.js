@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["syscall",""]],"mod":[["fs",""],["process",""],["time",""]]});
+initSidebarItems({"constant":[["SYSCALL_TABLE_LENGTH",""]],"fn":[["init",""],["syscall_handler",""]],"mod":[["fs",""],["process",""],["time",""]],"static":[["SYSCALL_HANDLER_TABLE",""]],"struct":[["SyscallEntry",""],["SyscallTable",""]]});
