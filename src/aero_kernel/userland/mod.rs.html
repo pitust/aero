@@ -15,18 +15,14 @@
 <span id="12">12</span>
 <span id="13">13</span>
 <span id="14">14</span>
-<span id="15">15</span>
-<span id="16">16</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::syscall</span>;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">elf</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">process</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">scheduler</span>;
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mission_hello_world</span>();
-    <span class="comment">// pub fn jump_userland() -&gt; !;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">jump_userland</span>(<span class="ident">address</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>;
 }
 
 <span class="doccomment">/// Initialize userland.</span>

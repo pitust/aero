@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["dynamic",""],["gnu_hash",""],["header",""],["program_header",""],["reloc",""],["section_header",""],["sym",""]],"struct":[["Note","Note section contents. Each entry in the note section begins with a header of a fixed form."]]});

@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["ELFCOMPRESS_HIOS","End of OS-specific."],["ELFCOMPRESS_HIPROC","End of processor-specific."],["ELFCOMPRESS_LOOS","Start of OS-specific."],["ELFCOMPRESS_LOPROC","Start of processor-specific."],["ELFCOMPRESS_ZLIB","ZLIB/DEFLATE algorithm."]],"mod":[["compression_header32",""],["compression_header64",""]]});
