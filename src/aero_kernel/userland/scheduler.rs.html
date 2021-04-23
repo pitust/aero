@@ -53,10 +53,18 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">alloc::collections::VecDeque</span>;
 <span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>, <span class="ident">Once</span>};
 
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::jump_userland</span>;
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::process::Process</span>;
 
 <span class="kw">static</span> <span class="ident">SCHEDULER</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Scheduler</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
@@ -78,6 +86,12 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">process</span>: <span class="ident">Process</span>) {
         <span class="self">self</span>.<span class="ident">processes</span>.<span class="ident">push_back</span>(<span class="ident">process</span>);
+
+        <span class="comment">// let active = self.processes.front().unwrap();</span>
+
+        <span class="comment">// unsafe {</span>
+        <span class="comment">//     jump_userland((crate::PHYSICAL_MEMORY_OFFSET + active.entry_point.as_u64()).as_u64());</span>
+        <span class="comment">// }</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>

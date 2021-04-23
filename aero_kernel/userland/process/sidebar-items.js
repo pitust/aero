@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ProcessState",""]],"static":[["PID_COUNTER",""]],"struct":[["PIDCounter",""],["Process",""]]});
+initSidebarItems({"enum":[["ProcessState",""]],"static":[["PID_COUNTER","The process id counter. Increment after a new process is created."]],"struct":[["PIDCounter",""],["Process",""]]});

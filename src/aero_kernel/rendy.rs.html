@@ -68,6 +68,11 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
 
@@ -115,6 +120,11 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">_print</span>(<span class="ident">args</span>: <span class="ident">fmt::Arguments</span>) {
     <span class="ident">DEBUG_RENDY</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>().<span class="ident">lock</span>().<span class="ident">write_fmt</span>(<span class="ident">args</span>).<span class="ident">unwrap</span>();
+}
+
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">print</span>(<span class="kw">_</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) {
+    <span class="ident">DEBUG_RENDY</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>().<span class="ident">lock</span>().<span class="ident">write_str</span>(<span class="string">&quot;Lol&quot;</span>).<span class="ident">unwrap</span>();
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_code</span>(<span class="ident">color_code</span>: <span class="ident">ColorCode</span>) {
