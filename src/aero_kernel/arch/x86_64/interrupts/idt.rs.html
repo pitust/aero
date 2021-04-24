@@ -403,8 +403,8 @@
 
         <span class="ident">IDT</span>[<span class="number">49</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::lapic_error</span>);
 
-        <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="kw">crate</span><span class="ident">::syscall::syscall_handler</span> <span class="kw">as</span> <span class="ident">usize</span>);
         <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_flags</span>(<span class="ident">IDTFlags::PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags::RING_3</span> <span class="op">|</span> <span class="ident">IDTFlags::INTERRUPT</span>);
+        <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="kw">crate</span><span class="ident">::syscall::syscall_handler</span> <span class="kw">as</span> <span class="ident">usize</span>);
 
         <span class="kw">let</span> <span class="ident">idt_descriptor</span> <span class="op">=</span> <span class="ident">IdtDescriptor::new</span>(
             ((<span class="ident">IDT</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">IdtEntry</span><span class="op">&gt;</span>()) <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,

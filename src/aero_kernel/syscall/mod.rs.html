@@ -80,6 +80,12 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! System Calls are used to call a kernel service from user land.</span>
 <span class="doccomment">//!</span>
@@ -105,20 +111,23 @@
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SYSCALL_TABLE_LENGTH</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">313</span>;
 
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SYS_EXIT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">60</span>;
+
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">syscall_handler</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">syscall_handler</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_unimplemented</span>();
 }
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">SYSCALL_HANDLER_TABLE</span>: <span class="ident">SyscallTable</span> <span class="op">=</span> <span class="ident">SyscallTable::new</span>();
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="kw">struct</span> <span class="ident">SyscallEntry</span>(<span class="kw-2">*</span><span class="kw">const</span> <span class="ident">usize</span>);
 
 <span class="kw">impl</span> <span class="ident">SyscallEntry</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">null</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="number">0x00</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>) <span class="comment">// TODO: Replace NULL (0x00) with sys_unimplemented</span>
+        <span class="self">Self</span>(<span class="ident">sys_unimplemented</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
@@ -155,9 +164,12 @@
     }
 }
 
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">SyscallTable</span> {}
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">SyscallTable</span> {}
+
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
     <span class="kw">unsafe</span> {
-        <span class="ident">SYSCALL_HANDLER_TABLE</span>[<span class="number">60</span>].<span class="ident">set_function</span>(<span class="ident">process::exit</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
+        <span class="ident">SYSCALL_HANDLER_TABLE</span>[<span class="ident">SYS_EXIT</span>].<span class="ident">set_function</span>(<span class="ident">process::exit</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
     }
 }
 </pre></div>
