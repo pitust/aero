@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init","Initialize the logger."]],"static":[["LOGGER",""]],"struct":[["AeroLogger",""]]});
+initSidebarItems({"constant":[["MAX_LOG_LEVEL_SPACE",""]],"fn":[["init","Initialize the global logger instance."],["log_debug",""]],"static":[["LOGGER",""]],"struct":[["AeroLogger",""]]});
