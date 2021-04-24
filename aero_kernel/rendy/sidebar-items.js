@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init",""],["is_initialized",""],["print",""],["set_color_code",""]],"static":[["DEBUG_RENDY",""]]});
+initSidebarItems({"fn":[["get_debug_rendy","Get a mutable reference to the debug renderer."],["init",""],["is_initialized","Return [true] if the debug renderer is initialized."],["set_color_code",""]],"static":[["DEBUG_RENDY",""]]});
