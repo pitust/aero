@@ -72,8 +72,40 @@
 <span id="69">69</span>
 <span id="70">70</span>
 <span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Wrapper functions for the hardware IO using respective assembly instructions.</span>
+
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_EFER</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000080</span>;
+
+<span class="doccomment">/// System Call Target Address (R/W).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_STAR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000081</span>;
+
+<span class="doccomment">/// IA-32e Mode System Call Target Address (R/W).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_LSTAR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000082</span>;
+
+<span class="doccomment">/// System Call Flag Mask (R/W).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_FMASK</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000084</span>;
 
 <span class="doccomment">/// Wrapper function to the `outb` assembly instruction used to do the</span>
 <span class="doccomment">/// low level port output.</span>
@@ -135,7 +167,17 @@
     <span class="ident">outb</span>(<span class="number">0x80</span>, <span class="number">0</span>)
 }
 
-<span class="doccomment">/// Read 64 bits msr register.</span>
+<span class="doccomment">/// Wrapper function to the `wrmsr` assembly instruction used</span>
+<span class="doccomment">/// to write 64 bits to msr register.</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">wrmsr</span>(<span class="ident">msr</span>: <span class="ident">u32</span>, <span class="ident">value</span>: <span class="ident">u64</span>) {
+    <span class="kw">let</span> <span class="ident">low</span> <span class="op">=</span> <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>;
+    <span class="kw">let</span> <span class="ident">high</span> <span class="op">=</span> (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
+
+    <span class="macro">asm!</span>(<span class="string">&quot;wrmsr&quot;</span>, <span class="kw">in</span>(<span class="string">&quot;ecx&quot;</span>) <span class="ident">msr</span>, <span class="kw">in</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">low</span>, <span class="kw">in</span>(<span class="string">&quot;edx&quot;</span>) <span class="ident">high</span>, <span class="ident">options</span>(<span class="ident">nomem</span>));
+}
+
+<span class="doccomment">/// Wrapper function to the `rdmsr` assembly instruction used</span>
+<span class="comment">// to read 64 bits msr register.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">rdmsr</span>(<span class="ident">msr</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
     <span class="kw">let</span> (<span class="ident">high</span>, <span class="ident">low</span>): (<span class="ident">u32</span>, <span class="ident">u32</span>);

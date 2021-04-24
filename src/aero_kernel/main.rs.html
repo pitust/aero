@@ -156,6 +156,12 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -307,6 +313,12 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">scheduler::get_scheduler</span>().<span class="ident">push</span>(<span class="ident">hello_process</span>);
 
     <span class="kw">unsafe</span> {
+        <span class="comment">// let ret: u64;</span>
+
+        <span class="comment">// asm!(&quot;syscall&quot;, lateout(&quot;rax&quot;) ret, in(&quot;rax&quot;) 60, in(&quot;rdi&quot;) 1, lateout(&quot;rcx&quot;) _, lateout(&quot;r11&quot;) _);</span>
+
+        <span class="comment">// println!(&quot;ret: {}&quot;, ret);</span>
+
         <span class="kw">loop</span> {
             <span class="ident">arch::interrupts::halt</span>();
         }
