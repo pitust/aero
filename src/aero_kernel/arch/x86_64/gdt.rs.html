@@ -177,9 +177,6 @@
 <span id="174">174</span>
 <span id="175">175</span>
 <span id="176">176</span>
-<span id="177">177</span>
-<span id="178">178</span>
-<span id="179">179</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The GDT contains entries telling the CPU about memory segments.</span>
 <span class="doccomment">//!</span>
@@ -189,7 +186,7 @@
 
 <span class="kw">const</span> <span class="ident">GDT_ENTRIES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">6</span>;
 
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GDT</span>: [<span class="ident">GdtEntry</span>; <span class="ident">GDT_ENTRIES</span>] <span class="op">=</span> [<span class="ident">GdtEntry::null</span>(); <span class="ident">GDT_ENTRIES</span>];
+<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GDT</span>: [<span class="ident">GdtEntry</span>; <span class="ident">GDT_ENTRIES</span>] <span class="op">=</span> [<span class="ident">GdtEntry::NULL</span>; <span class="ident">GDT_ENTRIES</span>];
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">struct</span> <span class="ident">GdtDescriptor</span> {
@@ -225,6 +222,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">GdtEntry</span> {
+    <span class="kw">const</span> <span class="ident">NULL</span>: <span class="self">Self</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::new</span>(<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>);
+
     <span class="doccomment">/// Create a new GDT entry.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(
@@ -243,11 +242,6 @@
             <span class="ident">limit_hi_flags</span>,
             <span class="ident">base_hi</span>,
         }
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">null</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::new</span>(<span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>)
     }
 }
 
