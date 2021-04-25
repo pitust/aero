@@ -79,6 +79,10 @@
 <span id="76">76</span>
 <span id="77">77</span>
 <span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
 
@@ -146,6 +150,10 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_code</span>(<span class="ident">color_code</span>: <span class="ident">ColorCode</span>) {
     <span class="ident">get_debug_rendy</span>().<span class="ident">set_color_code</span>(<span class="ident">color_code</span>);
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_screen</span>() {
+    <span class="ident">get_debug_rendy</span>().<span class="ident">clear_screen</span>();
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">framebuffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">FrameBuffer</span>) {
