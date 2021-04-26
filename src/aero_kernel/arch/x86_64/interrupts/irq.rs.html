@@ -40,6 +40,8 @@
 <span id="37">37</span>
 <span id="38">38</span>
 <span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::interrupt</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
@@ -59,6 +61,8 @@
     <span class="macro">log::error!</span>(<span class="string">&quot;ESR={:#0x}&quot;</span>, <span class="ident">apic::get_local_apic</span>().<span class="ident">get_esr</span>());
 
     <span class="ident">apic::get_local_apic</span>().<span class="ident">eoi</span>();
+
+    <span class="kw">loop</span> {}
 });
 
 <span class="macro">interrupt!</span>(<span class="ident">pit</span>, <span class="kw">unsafe</span> {

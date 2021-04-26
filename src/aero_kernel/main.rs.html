@@ -280,6 +280,9 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">arch::interrupts::enable_interrupts</span>();
     }
 
+    <span class="ident">apic::init</span>(<span class="ident">physical_memory_offset</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded local apic&quot;</span>);
+
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">mut</span> <span class="ident">frame_allocator</span>) <span class="op">=</span>
         <span class="ident">memory::paging::init</span>(<span class="ident">physical_memory_offset</span>, <span class="ident">memory_regions</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded paging&quot;</span>);
@@ -290,9 +293,6 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">arch::memory::alloc::init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)
         .<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded heap&quot;</span>);
-
-    <span class="ident">apic::init</span>(<span class="ident">physical_memory_offset</span>);
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded local apic&quot;</span>);
 
     <span class="ident">acpi::init</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>,

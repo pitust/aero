@@ -248,6 +248,14 @@
 <span id="245">245</span>
 <span id="246">246</span>
 <span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
@@ -445,7 +453,15 @@
     <span class="ident">io::outb</span>(<span class="ident">PIC1_COMMAND</span>, <span class="ident">PIC_EOI</span>);
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_pic</span>() {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">disable_pic</span>() {
+    <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0xFF</span>);
+    <span class="ident">io::wait</span>();
+
+    <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0xFF</span>);
+    <span class="ident">io::wait</span>();
+}
+
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_pic</span>() {
     <span class="kw">let</span> (<span class="ident">a1</span>, <span class="ident">a2</span>);
 
     <span class="ident">a1</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="ident">PIC1_DATA</span>);
