@@ -162,6 +162,9 @@
 <span id="159">159</span>
 <span id="160">160</span>
 <span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -280,6 +283,9 @@ _______ _______ ______ _______    _______ ______
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">mut</span> <span class="ident">frame_allocator</span>) <span class="op">=</span>
         <span class="ident">memory::paging::init</span>(<span class="ident">physical_memory_offset</span>, <span class="ident">memory_regions</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded paging&quot;</span>);
+
+    <span class="ident">arch::gdt::init_local</span>(<span class="ident">boot_info</span>.<span class="ident">stack_top</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded local GDT&quot;</span>);
 
     <span class="ident">arch::memory::alloc::init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)
         .<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);

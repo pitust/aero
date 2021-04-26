@@ -86,6 +86,8 @@
 <span id="83">83</span>
 <span id="84">84</span>
 <span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">custom_test_frameworks</span>)]</span>
@@ -94,6 +96,7 @@
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">ops</span>, <span class="ident">slice</span>};
 
 <span class="kw">use</span> <span class="ident">aero_gfx::FrameBuffer</span>;
+<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
 
 <span class="doccomment">/// Represents the different types of memory.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
@@ -117,6 +120,7 @@
     <span class="kw">pub</span> <span class="ident">physical_memory_offset</span>: <span class="ident">u64</span>,
     <span class="kw">pub</span> <span class="ident">framebuffer</span>: <span class="ident">FrameBuffer</span>,
     <span class="kw">pub</span> <span class="ident">memory_regions</span>: <span class="ident">MemoryRegions</span>,
+    <span class="kw">pub</span> <span class="ident">stack_top</span>: <span class="ident">VirtAddr</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
