@@ -93,6 +93,9 @@
 <span id="90">90</span>
 <span id="91">91</span>
 <span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Wrapper functions for the hardware IO using respective assembly instructions.</span>
 
@@ -106,6 +109,9 @@
 
 <span class="doccomment">/// System Call Flag Mask (R/W).</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_FMASK</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000084</span>;
+
+<span class="doccomment">/// APIC Location and Status (R/W).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_APIC_BASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x1b</span>;
 
 <span class="doccomment">/// Wrapper function to the `outb` assembly instruction used to do the</span>
 <span class="doccomment">/// low level port output.</span>
