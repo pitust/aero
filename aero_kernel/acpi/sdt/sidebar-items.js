@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Sdt",""]]});
+initSidebarItems({"constant":[["RSDT_SIGNATURE",""],["XSDT_SIGNATURE",""]],"struct":[["Sdt",""]]});
