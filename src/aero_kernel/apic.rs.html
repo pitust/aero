@@ -152,6 +152,11 @@
 <span id="149">149</span>
 <span id="150">150</span>
 <span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::intrinsics</span>;
 
@@ -263,6 +268,11 @@
         .<span class="ident">get</span>()
         .<span class="ident">expect</span>(<span class="string">&quot;Attempted to get the local apic before it was initialized&quot;</span>)
         .<span class="ident">lock</span>()
+}
+
+<span class="doccomment">/// Get the local BSP&#39;s id.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bsp_id</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="ident">BSP_APIC_ID</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>)
 }
 
 <span class="doccomment">/// Initialize the local apic.</span>
