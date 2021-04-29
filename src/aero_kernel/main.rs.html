@@ -169,6 +169,17 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -335,6 +346,17 @@ _______ _______ ______ _______    _______ ______
 
         <span class="kw">loop</span> {
             <span class="ident">arch::interrupts::halt</span>();
+        }
+    }
+}
+
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_ap_startup</span>(<span class="ident">cpu_id</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="macro">log::info!</span>(<span class="string">&quot;Starting CPU with id: {}&quot;</span>, <span class="ident">cpu_id</span>);
+
+    <span class="kw">unsafe</span> {
+        <span class="kw">loop</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;cli; hlt&quot;</span>);
         }
     }
 }
