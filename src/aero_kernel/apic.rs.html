@@ -192,6 +192,13 @@
 <span id="189">189</span>
 <span id="190">190</span>
 <span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::intrinsics</span>;
 
@@ -331,18 +338,25 @@
 }
 
 <span class="doccomment">/// Get the local BSP&#39;s id.</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bsp_id</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
     <span class="ident">BSP_APIC_ID</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>)
 }
 
-<span class="doccomment">/// Return the number of active CPUs</span>
+<span class="doccomment">/// Return the number of active CPUs.</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_cpu_count</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
     <span class="ident">CPU_COUNT</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>)
 }
 
 <span class="doccomment">/// Returns true if the AP is ready.</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ap_ready</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
     <span class="ident">AP_READY</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mark_ap_ready</span>() {
+    <span class="ident">AP_READY</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering::SeqCst</span>);
 }
 
 <span class="doccomment">/// Initialize the local apic.</span>
