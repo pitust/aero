@@ -483,10 +483,14 @@
 <span id="480">480</span>
 <span id="481">481</span>
 <span id="482">482</span>
+<span id="483">483</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::memory::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">GlobalAllocator</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch</span>::{
+    <span class="ident">interrupts</span>,
+    <span class="ident">memory::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">GlobalAllocator</span>},
+};
 
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">structures::paging</span>::{
@@ -895,9 +899,7 @@
     <span class="doccomment">/// Start the command engine.</span>
     <span class="kw">fn</span> <span class="ident">start_command</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">while</span> <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">&amp;</span> <span class="ident">HBA_PX_CMD_CR</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-            <span class="kw">unsafe</span> {
-                <span class="macro">asm!</span>(<span class="string">&quot;pause&quot;</span>);
-            }
+            <span class="ident">interrupts::pause</span>();
         }
 
         <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">|</span><span class="op">=</span> <span class="ident">HBA_PX_CMD_FRE</span>;

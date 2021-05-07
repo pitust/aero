@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["SYSCALL_TABLE_LENGTH",""],["SYS_EXIT",""]],"fn":[["init",""],["sys_unimplemented",""],["syscall_handler",""]],"mod":[["fs",""],["process",""],["time",""]],"static":[["SYSCALL_HANDLER_TABLE",""]],"struct":[["SyscallEntry",""],["SyscallTable",""]]});
+initSidebarItems({"fn":[["__impl_syscall_handler",""],["__inner_syscall",""],["__interrupt_syscall_interrupt_handler",""],["init",""],["syscall_handler",""],["syscall_interrupt_handler",""]],"mod":[["fs",""],["process",""],["time",""]]});

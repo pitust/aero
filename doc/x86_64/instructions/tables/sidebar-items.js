@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["lgdt","Load a GDT."],["lidt","Load an IDT."],["load_tss","Load the task state register using the `ltr` instruction."]]});
+initSidebarItems({"fn":[["lgdt","Load a GDT."],["lidt","Load an IDT."],["load_tss","Load the task state register using the `ltr` instruction."],["sidt","Get the address of the current IDT."]]});

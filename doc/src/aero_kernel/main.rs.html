@@ -188,6 +188,20 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -202,14 +216,14 @@
     <span class="ident">core_intrinsics</span>,
     <span class="ident">asm</span>,
     <span class="ident">naked_functions</span>,
-    <span class="ident">abi_x86_interrupt</span>,
     <span class="ident">alloc_error_handler</span>,
-    <span class="ident">const_mut_refs</span>,
     <span class="ident">lang_items</span>,
     <span class="ident">panic_info_message</span>,
     <span class="ident">thread_local</span>,
-    <span class="ident">const_fn_fn_ptr_basics</span>,
-    <span class="ident">decl_macro</span>
+    <span class="ident">decl_macro</span>,
+    <span class="ident">global_asm</span>,
+    <span class="ident">extern_types</span>,
+    <span class="ident">new_uninit</span>
 )]</span>
 <span class="attribute">#![<span class="ident">test_runner</span>(<span class="kw">crate</span><span class="ident">::tests::test_runner</span>)]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
@@ -220,7 +234,7 @@
 <span class="kw">use</span> <span class="ident">aero_boot::BootInfo</span>;
 
 <span class="kw">use</span> <span class="ident">linked_list_allocator::LockedHeap</span>;
-<span class="kw">use</span> <span class="ident">x86_64</span>::{<span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
+<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
 
 <span class="kw">mod</span> <span class="ident">acpi</span>;
 <span class="kw">mod</span> <span class="ident">apic</span>;
@@ -231,9 +245,16 @@
 <span class="kw">mod</span> <span class="ident">syscall</span>;
 <span class="kw">mod</span> <span class="ident">tests</span>;
 <span class="kw">mod</span> <span class="ident">time</span>;
+<span class="kw">mod</span> <span class="ident">tls</span>;
 <span class="kw">mod</span> <span class="ident">unwind</span>;
 <span class="kw">mod</span> <span class="ident">userland</span>;
 <span class="kw">mod</span> <span class="ident">utils</span>;
+<span class="kw">mod</span> <span class="ident">prelude</span> {
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::rendy</span>::{<span class="ident">print</span>, <span class="ident">println</span>};
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils</span>::<span class="kw-2">*</span>;
+}
+
+<span class="kw">use</span> <span class="ident">arch::interrupts</span>;
 
 <span class="kw">use</span> <span class="ident">arch::interrupts</span>::{<span class="ident">PIC1_DATA</span>, <span class="ident">PIC2_DATA</span>};
 <span class="kw">use</span> <span class="ident">arch::memory</span>;
@@ -269,26 +290,23 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">drivers::uart_16550::init</span>();
 
     <span class="kw">unsafe</span> {
-        <span class="ident">arch::interrupts::disable_interrupts</span>();
+        <span class="ident">interrupts::disable_interrupts</span>();
     }
-
-    <span class="kw">let</span> <span class="ident">physical_memory_offset</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">boot_info</span>.<span class="ident">physical_memory_offset</span>);
-    <span class="kw">let</span> <span class="ident">rsdp_address</span> <span class="op">=</span> <span class="ident">PhysAddr::new</span>(<span class="ident">boot_info</span>.<span class="ident">rsdp_address</span>);
 
     <span class="kw">let</span> <span class="ident">memory_regions</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">boot_info</span>.<span class="ident">memory_regions</span>;
     <span class="kw">let</span> <span class="ident">framebuffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">boot_info</span>.<span class="ident">framebuffer</span>;
 
     <span class="kw">unsafe</span> {
-        <span class="ident">PHYSICAL_MEMORY_OFFSET</span> <span class="op">=</span> <span class="ident">physical_memory_offset</span>;
+        <span class="ident">PHYSICAL_MEMORY_OFFSET</span> <span class="op">=</span> <span class="ident">boot_info</span>.<span class="ident">physical_memory_offset</span>;
     }
 
     <span class="ident">rendy::init</span>(<span class="ident">framebuffer</span>);
     <span class="ident">logger::init</span>();
 
-    <span class="ident">arch::gdt::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
+    <span class="ident">arch::gdt::init_boot</span>();
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded bootstrap GDT&quot;</span>);
 
-    <span class="ident">arch::interrupts::init</span>();
+    <span class="ident">interrupts::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded IDT&quot;</span>);
 
     <span class="ident">time::init</span>();
@@ -301,31 +319,34 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0b11111000</span>);
         <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0b11101111</span>);
 
-        <span class="ident">arch::interrupts::enable_interrupts</span>();
+        <span class="ident">interrupts::enable_interrupts</span>();
     }
 
-    <span class="kw">let</span> <span class="ident">apic_type</span> <span class="op">=</span> <span class="ident">apic::init</span>(<span class="ident">physical_memory_offset</span>);
+    <span class="kw">let</span> <span class="ident">apic_type</span> <span class="op">=</span> <span class="ident">apic::init</span>();
     <span class="macro">log::info!</span>(
         <span class="string">&quot;Loaded local apic (x2apic={})&quot;</span>,
         <span class="ident">apic_type</span>.<span class="ident">supports_x2_apic</span>()
     );
 
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">mut</span> <span class="ident">frame_allocator</span>) <span class="op">=</span>
-        <span class="ident">memory::paging::init</span>(<span class="ident">physical_memory_offset</span>, <span class="ident">memory_regions</span>);
+        <span class="ident">memory::paging::init</span>(<span class="ident">boot_info</span>.<span class="ident">physical_memory_offset</span>, <span class="ident">memory_regions</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded paging&quot;</span>);
-
-    <span class="ident">arch::gdt::init_local</span>(<span class="ident">boot_info</span>.<span class="ident">stack_top</span>);
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded local GDT&quot;</span>);
 
     <span class="ident">arch::memory::alloc::init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>)
         .<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded heap&quot;</span>);
 
+    <span class="ident">tls::init</span>();
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded TLS&quot;</span>);
+
+    <span class="ident">arch::gdt::init</span>();
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
+
     <span class="ident">acpi::init</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>,
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">frame_allocator</span>,
-        <span class="ident">rsdp_address</span>,
-        <span class="ident">physical_memory_offset</span>,
+        <span class="ident">boot_info</span>.<span class="ident">rsdp_address</span>,
+        <span class="ident">boot_info</span>.<span class="ident">physical_memory_offset</span>,
     );
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
 
@@ -335,25 +356,22 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">userland::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded userland&quot;</span>);
 
+    <span class="ident">apic::mark_bsp_ready</span>(<span class="bool-val">true</span>);
+
     <span class="macro">log::info!</span>(<span class="string">&quot;Initialized kernel&quot;</span>);
 
-    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ASCII_INTRO</span>);
-
-    <span class="macro">print!</span>(<span class="string">&quot;$ &quot;</span>);
+    <span class="macro">prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ASCII_INTRO</span>);
+    <span class="macro">prelude::print!</span>(<span class="string">&quot;$ &quot;</span>);
 
     <span class="kw">let</span> <span class="ident">hello_process</span> <span class="op">=</span> <span class="ident">Process::from_function</span>(<span class="ident">mission_hello_world</span>);
 
     <span class="ident">scheduler::get_scheduler</span>().<span class="ident">push</span>(<span class="ident">hello_process</span>);
 
     <span class="kw">unsafe</span> {
-        <span class="comment">// let ret: u64;</span>
-
-        <span class="comment">// asm!(&quot;syscall&quot;, lateout(&quot;rax&quot;) ret, in(&quot;rax&quot;) 60, in(&quot;rdi&quot;) 1, lateout(&quot;rcx&quot;) _, lateout(&quot;r11&quot;) _);</span>
-
-        <span class="comment">// println!(&quot;ret: {}&quot;, ret);</span>
+        <span class="ident">aero_syscall::sys_exit</span>(<span class="number">1</span>);
 
         <span class="kw">loop</span> {
-            <span class="ident">arch::interrupts::halt</span>();
+            <span class="ident">interrupts::halt</span>();
         }
     }
 }
@@ -365,14 +383,24 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">arch::gdt::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;(cpu={}) Loaded GDT&quot;</span>, <span class="ident">cpu_id</span>);
 
-    <span class="ident">arch::interrupts::init</span>();
+    <span class="ident">interrupts::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;(cpu={}) Loaded IDT&quot;</span>, <span class="ident">cpu_id</span>);
 
-    <span class="ident">apic::mark_ap_ready</span>();
+    <span class="ident">apic::mark_ap_ready</span>(<span class="bool-val">true</span>);
+
+    <span class="kw">while</span> <span class="op">!</span><span class="ident">apic::is_bsp_ready</span>() {
+        <span class="ident">interrupts::pause</span>();
+    }
 
     <span class="kw">unsafe</span> {
         <span class="kw">loop</span> {
-            <span class="macro">asm!</span>(<span class="string">&quot;cli; hlt&quot;</span>);
+            <span class="ident">interrupts::disable_interrupts</span>();
+
+            <span class="kw">if</span> <span class="ident">scheduler::reschedule</span>() {
+                <span class="ident">interrupts::enable_interrupts</span>();
+            } <span class="kw">else</span> {
+                <span class="ident">interrupts::enable_interrupts_and_halt</span>();
+            }
         }
     }
 }

@@ -11,7 +11,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::userland::scheduler</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">i32</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) {
     <span class="macro">log::debug!</span>(<span class="string">&quot;Exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
 
     <span class="ident">scheduler::get_scheduler</span>();

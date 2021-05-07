@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["init","Initialize support for the `#[thread_local]` attribute."]]});

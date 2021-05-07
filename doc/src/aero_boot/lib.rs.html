@@ -96,7 +96,7 @@
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">ops</span>, <span class="ident">slice</span>};
 
 <span class="kw">use</span> <span class="ident">aero_gfx::FrameBuffer</span>;
-<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
+<span class="kw">use</span> <span class="ident">x86_64</span>::{<span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
 
 <span class="doccomment">/// Represents the different types of memory.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
@@ -116,8 +116,8 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BootInfo</span> {
-    <span class="kw">pub</span> <span class="ident">rsdp_address</span>: <span class="ident">u64</span>,
-    <span class="kw">pub</span> <span class="ident">physical_memory_offset</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rsdp_address</span>: <span class="ident">PhysAddr</span>,
+    <span class="kw">pub</span> <span class="ident">physical_memory_offset</span>: <span class="ident">VirtAddr</span>,
     <span class="kw">pub</span> <span class="ident">framebuffer</span>: <span class="ident">FrameBuffer</span>,
     <span class="kw">pub</span> <span class="ident">memory_regions</span>: <span class="ident">MemoryRegions</span>,
     <span class="kw">pub</span> <span class="ident">stack_top</span>: <span class="ident">VirtAddr</span>,

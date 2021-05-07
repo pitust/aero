@@ -302,6 +302,158 @@
 <span id="299">299</span>
 <span id="300">300</span>
 <span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The GDT contains entries telling the CPU about memory segments.</span>
 <span class="doccomment">//!</span>
@@ -309,43 +461,35 @@
 
 <span class="kw">use</span> <span class="ident">core::mem</span>;
 
-<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 
-<span class="kw">const</span> <span class="ident">GDT_ENTRY_COUNT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
-<span class="kw">const</span> <span class="ident">GDT_LOCAL_ENTRY_COUNT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">7</span>;
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="doccomment">/// Specifies which element to load into a segment from</span>
+    <span class="doccomment">/// descriptor tables (i.e., is a index to LDT or GDT table</span>
+    <span class="doccomment">/// with some additional flags).</span>
+    <span class="kw">struct</span> <span class="ident">SegmentSelector</span>: <span class="ident">u16</span> {
+        <span class="kw">const</span> <span class="ident">RPL_0</span> <span class="op">=</span> <span class="number">0b00</span>;
+        <span class="kw">const</span> <span class="ident">RPL_1</span> <span class="op">=</span> <span class="number">0b01</span>;
+        <span class="kw">const</span> <span class="ident">RPL_2</span> <span class="op">=</span> <span class="number">0b10</span>;
+        <span class="kw">const</span> <span class="ident">RPL_3</span> <span class="op">=</span> <span class="number">0b11</span>;
+        <span class="kw">const</span> <span class="ident">TI_GDT</span> <span class="op">=</span> <span class="number">0</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;
+        <span class="kw">const</span> <span class="ident">TI_LDT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;
+    }
+}
 
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GDT</span>: [<span class="ident">GdtEntry</span>; <span class="ident">GDT_ENTRY_COUNT</span>] <span class="op">=</span> [
-    <span class="comment">// GDT NULL descriptor.</span>
-    <span class="ident">GdtEntry::NULL</span>,
-    <span class="comment">// GDT kernel code descriptor.</span>
-    <span class="ident">GdtEntry::new</span>(
-        <span class="ident">GdtAccessFlags::PRESENT</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_0</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::EXECUTABLE</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
-        <span class="ident">GdtEntryFlags::LONG_MODE</span>,
-    ),
-    <span class="comment">// GDT kernel data descriptor.</span>
-    <span class="ident">GdtEntry::new</span>(
-        <span class="ident">GdtAccessFlags::PRESENT</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_0</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
-        <span class="ident">GdtEntryFlags::LONG_MODE</span>,
-    ),
-    <span class="comment">// GDT kernel TLS (Thread Local Storage) descriptor.</span>
-    <span class="ident">GdtEntry::new</span>(
-        <span class="ident">GdtAccessFlags::PRESENT</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_0</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
-            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
-        <span class="ident">GdtEntryFlags::LONG_MODE</span>,
-    ),
-];
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">GdtEntryFlags</span>: <span class="ident">u8</span> {
+        <span class="kw">const</span> <span class="ident">NULL</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">const</span> <span class="ident">PROTECTED_MODE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>;
+        <span class="kw">const</span> <span class="ident">LONG_MODE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>;
+    }
+}
 
-<span class="attribute">#[<span class="ident">thread_local</span>]</span>
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">LOCAL_GDT</span>: [<span class="ident">GdtEntry</span>; <span class="ident">GDT_LOCAL_ENTRY_COUNT</span>] <span class="op">=</span> [
+<span class="kw">const</span> <span class="ident">GDT_ENTRY_COUNT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">10</span>;
+<span class="kw">const</span> <span class="ident">TEMP_GDT_ENTRY_COUNT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
+<span class="kw">const</span> <span class="ident">USER_TCB_OFFSET</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xB0000000</span>;
+
+<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">TEMP_GDT</span>: [<span class="ident">GdtEntry</span>; <span class="ident">TEMP_GDT_ENTRY_COUNT</span>] <span class="op">=</span> [
     <span class="comment">// GDT null descriptor.</span>
     <span class="ident">GdtEntry::NULL</span>,
     <span class="comment">// GDT kernel code descriptor.</span>
@@ -365,6 +509,54 @@
             <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
         <span class="ident">GdtEntryFlags::LONG_MODE</span>,
     ),
+    <span class="comment">// GDT kernel TLS descriptor.</span>
+    <span class="ident">GdtEntry::new</span>(
+        <span class="ident">GdtAccessFlags::PRESENT</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_0</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
+        <span class="ident">GdtEntryFlags::LONG_MODE</span>,
+    ),
+];
+
+<span class="attribute">#[<span class="ident">thread_local</span>]</span>
+<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GDT</span>: [<span class="ident">GdtEntry</span>; <span class="ident">GDT_ENTRY_COUNT</span>] <span class="op">=</span> [
+    <span class="comment">// GDT null descriptor.</span>
+    <span class="ident">GdtEntry::NULL</span>,
+    <span class="comment">// GDT kernel code descriptor.</span>
+    <span class="ident">GdtEntry::new</span>(
+        <span class="ident">GdtAccessFlags::PRESENT</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_0</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::EXECUTABLE</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
+        <span class="ident">GdtEntryFlags::LONG_MODE</span>,
+    ),
+    <span class="comment">// GDT kernel data descriptor.</span>
+    <span class="ident">GdtEntry::new</span>(
+        <span class="ident">GdtAccessFlags::PRESENT</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_0</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
+        <span class="ident">GdtEntryFlags::LONG_MODE</span>,
+    ),
+    <span class="comment">// GDT kernel TLS descriptor.</span>
+    <span class="ident">GdtEntry::new</span>(
+        <span class="ident">GdtAccessFlags::PRESENT</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_0</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
+        <span class="ident">GdtEntryFlags::LONG_MODE</span>,
+    ),
+    <span class="comment">// GDT dummy user code descriptor. Required for SYSEXIT.</span>
+    <span class="ident">GdtEntry::new</span>(
+        <span class="ident">GdtAccessFlags::PRESENT</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_0</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::EXECUTABLE</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
+        <span class="ident">GdtEntryFlags::PROTECTED_MODE</span>,
+    ),
     <span class="comment">// GDT user data descriptor.</span>
     <span class="ident">GdtEntry::new</span>(
         <span class="ident">GdtAccessFlags::PRESENT</span>
@@ -382,6 +574,14 @@
             <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
         <span class="ident">GdtEntryFlags::LONG_MODE</span>,
     ),
+    <span class="comment">// GDT user TLS descriptor.</span>
+    <span class="ident">GdtEntry::new</span>(
+        <span class="ident">GdtAccessFlags::PRESENT</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_3</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::SYSTEM</span>
+            <span class="op">|</span> <span class="ident">GdtAccessFlags::PRIVILEGE</span>,
+        <span class="ident">GdtEntryFlags::LONG_MODE</span>,
+    ),
     <span class="comment">// GDT TSS descriptor.</span>
     <span class="ident">GdtEntry::new</span>(
         <span class="ident">GdtAccessFlags::PRESENT</span> <span class="op">|</span> <span class="ident">GdtAccessFlags::RING_3</span> <span class="op">|</span> <span class="ident">GdtAccessFlags::TSS_AVAIL</span>,
@@ -393,21 +593,13 @@
 ];
 
 <span class="attribute">#[<span class="ident">thread_local</span>]</span>
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">TSS</span>: <span class="ident">TssEntry</span> <span class="op">=</span> <span class="ident">TssEntry::new</span>();
+<span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PROCESSOR_CONTROL_REGION</span>: <span class="ident">ProcessorControlRegion</span> <span class="op">=</span> <span class="ident">ProcessorControlRegion::new</span>();
 
-<span class="macro">bitflags::bitflags!</span> {
-    <span class="doccomment">/// Specifies which element to load into a segment from</span>
-    <span class="doccomment">/// descriptor tables (i.e., is a index to LDT or GDT table</span>
-    <span class="doccomment">/// with some additional flags).</span>
-    <span class="kw">struct</span> <span class="ident">SegmentSelector</span>: <span class="ident">u16</span> {
-        <span class="kw">const</span> <span class="ident">RPL_0</span> <span class="op">=</span> <span class="number">0b00</span>;
-        <span class="kw">const</span> <span class="ident">RPL_1</span> <span class="op">=</span> <span class="number">0b01</span>;
-        <span class="kw">const</span> <span class="ident">RPL_2</span> <span class="op">=</span> <span class="number">0b10</span>;
-        <span class="kw">const</span> <span class="ident">RPL_3</span> <span class="op">=</span> <span class="number">0b11</span>;
-        <span class="kw">const</span> <span class="ident">TI_GDT</span> <span class="op">=</span> <span class="number">0</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;
-        <span class="kw">const</span> <span class="ident">TI_LDT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;
-    }
-}
+<span class="attribute">#[<span class="ident">thread_local</span>]</span>
+<span class="kw">static</span> <span class="ident">INIT_STACK</span>: [<span class="ident">u8</span>; <span class="number">256</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">256</span>];
+
+<span class="attribute">#[<span class="ident">thread_local</span>]</span>
+<span class="kw">static</span> <span class="ident">FAULT_STACK</span>: [<span class="ident">u8</span>; <span class="number">256</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">256</span>];
 
 <span class="kw">struct</span> <span class="ident">GdtAccessFlags</span>;
 
@@ -422,12 +614,16 @@
     <span class="kw">const</span> <span class="ident">TSS_AVAIL</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">9</span>;
 }
 
-<span class="macro">bitflags::bitflags!</span> {
-    <span class="kw">struct</span> <span class="ident">GdtEntryFlags</span>: <span class="ident">u8</span> {
-        <span class="kw">const</span> <span class="ident">NULL</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">const</span> <span class="ident">PROTECTED_MODE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>;
-        <span class="kw">const</span> <span class="ident">LONG_MODE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>;
-    }
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GdtEntryType</span>;
+
+<span class="kw">impl</span> <span class="ident">GdtEntryType</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KERNEL_CODE</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">1</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KERNEL_DATA</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">2</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KERNEL_TLS</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">3</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">USER_CODE32_UNUSED</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">4</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">USER_TLS</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">7</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TSS</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">8</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TSS_HI</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">9</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">SegmentSelector</span> {
@@ -459,7 +655,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GdtEntry</span> {
+<span class="kw">struct</span> <span class="ident">GdtEntry</span> {
     <span class="ident">limit_low</span>: <span class="ident">u16</span>,
     <span class="ident">base_low</span>: <span class="ident">u16</span>,
     <span class="ident">base_middle</span>: <span class="ident">u8</span>,
@@ -485,24 +681,47 @@
             <span class="ident">base_hi</span>: <span class="number">0x00</span>,
         }
     }
+
+    <span class="kw">fn</span> <span class="ident">set_offset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u32</span>) {
+        <span class="self">self</span>.<span class="ident">base_low</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="self">self</span>.<span class="ident">base_middle</span> <span class="op">=</span> (<span class="ident">offset</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>;
+        <span class="self">self</span>.<span class="ident">base_hi</span> <span class="op">=</span> (<span class="ident">offset</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>) <span class="kw">as</span> <span class="ident">u8</span>;
+    }
+
+    <span class="kw">fn</span> <span class="ident">set_limit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) {
+        <span class="self">self</span>.<span class="ident">limit_low</span> <span class="op">=</span> <span class="ident">limit</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="self">self</span>.<span class="ident">limit_hi_flags</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">limit_hi_flags</span> <span class="op">&amp;</span> <span class="number">0xF0</span> <span class="op">|</span> ((<span class="ident">limit</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>) <span class="op">&amp;</span> <span class="number">0x0F</span>;
+    }
+
+    <span class="kw">fn</span> <span class="ident">set_raw</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>) {
+        <span class="kw">unsafe</span> {
+            (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>).<span class="ident">write</span>(<span class="ident">value</span>);
+        }
+    }
 }
 
 <span class="doccomment">/// The Task State Segment (TSS) is a special data structure for x86 processors which holds information about a task.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// **Notes**: &lt;https://wiki.osdev.org/Task_State_Segment&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">align</span>(<span class="number">16</span>))]</span>
-<span class="kw">struct</span> <span class="ident">TssEntry</span> {
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Tss</span> {
     <span class="ident">reserved</span>: <span class="ident">u32</span>,
+
+    <span class="doccomment">/// The full 64-bit canonical forms of the stack pointers (RSP) for privilege levels 0-2.</span>
     <span class="ident">rsp</span>: [<span class="ident">u64</span>; <span class="number">3</span>],
     <span class="ident">reserved2</span>: <span class="ident">u64</span>,
+
+    <span class="doccomment">/// The full 64-bit canonical forms of the interrupt stack table (IST) pointers.</span>
     <span class="ident">ist</span>: [<span class="ident">u64</span>; <span class="number">7</span>],
     <span class="ident">reserved3</span>: <span class="ident">u64</span>,
     <span class="ident">reserved4</span>: <span class="ident">u16</span>,
+
+    <span class="doccomment">/// The 16-bit offset to the I/O permission bit map from the 64-bit TSS base.</span>
     <span class="ident">iomap_base</span>: <span class="ident">u16</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">TssEntry</span> {
+<span class="kw">impl</span> <span class="ident">Tss</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
@@ -517,9 +736,84 @@
     }
 }
 
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProcessorControlRegion</span> {
+    <span class="kw">pub</span> <span class="ident">fs_offset</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">user_rsp</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">tss</span>: <span class="ident">Tss</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">ProcessorControlRegion</span> {
+    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">fs_offset</span>: <span class="number">0x00</span>,
+            <span class="ident">user_rsp</span>: <span class="number">0x00</span>,
+            <span class="ident">tss</span>: <span class="ident">Tss::new</span>(),
+        }
+    }
+}
+
+<span class="doccomment">/// Initialize the temporary GDT.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_boot</span>() {
+    <span class="kw">unsafe</span> {
+        <span class="kw">let</span> <span class="ident">gdt_descriptor</span> <span class="op">=</span> <span class="ident">GdtDescriptor::new</span>(
+            (<span class="ident">mem::size_of</span>::<span class="op">&lt;</span>[<span class="ident">GdtEntry</span>; <span class="ident">TEMP_GDT_ENTRY_COUNT</span>]<span class="op">&gt;</span>() <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
+            (<span class="kw-2">&amp;</span><span class="ident">TEMP_GDT</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>) <span class="kw">as</span> <span class="ident">u64</span>,
+        );
+
+        <span class="ident">load_gdt</span>(<span class="kw-2">&amp;</span><span class="ident">gdt_descriptor</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
+    }
+
+    <span class="comment">// Load the GDT segments.</span>
+    <span class="kw">unsafe</span> {
+        <span class="ident">load_cs</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_CODE</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="ident">load_ds</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_DATA</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="ident">load_es</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_DATA</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="ident">load_fs</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_DATA</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="ident">load_gs</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_TLS</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="ident">load_ss</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_DATA</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+    }
+}
+
 <span class="doccomment">/// Initialize the GDT.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
     <span class="kw">unsafe</span> {
+        <span class="kw">let</span> <span class="ident">pcr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PROCESSOR_CONTROL_REGION</span>;
+        <span class="kw">let</span> <span class="ident">tss_ptr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">pcr</span>.<span class="ident">tss</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>;
+
+        <span class="ident">GDT</span>[<span class="ident">GdtEntryType::TSS</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">set_offset</span>(<span class="ident">tss_ptr</span> <span class="kw">as</span> <span class="ident">u32</span>);
+        <span class="ident">GDT</span>[<span class="ident">GdtEntryType::TSS</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">set_limit</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Tss</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>);
+        <span class="ident">GDT</span>[<span class="ident">GdtEntryType::TSS_HI</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">set_raw</span>((<span class="ident">tss_ptr</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>);
+
+        <span class="kw">let</span> <span class="ident">init_stack_addr</span> <span class="op">=</span> <span class="ident">INIT_STACK</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> <span class="ident">INIT_STACK</span>.<span class="ident">len</span>();
+        <span class="kw">let</span> <span class="ident">fault_stack_addr</span> <span class="op">=</span> <span class="ident">FAULT_STACK</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> <span class="ident">FAULT_STACK</span>.<span class="ident">len</span>();
+
+        <span class="ident">PROCESSOR_CONTROL_REGION</span>.<span class="ident">tss</span>.<span class="ident">rsp</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">init_stack_addr</span> <span class="kw">as</span> <span class="ident">u64</span>;
+        <span class="ident">PROCESSOR_CONTROL_REGION</span>.<span class="ident">tss</span>.<span class="ident">ist</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">fault_stack_addr</span> <span class="kw">as</span> <span class="ident">u64</span>;
+
         <span class="kw">let</span> <span class="ident">gdt_descriptor</span> <span class="op">=</span> <span class="ident">GdtDescriptor::new</span>(
             (<span class="ident">mem::size_of</span>::<span class="op">&lt;</span>[<span class="ident">GdtEntry</span>; <span class="ident">GDT_ENTRY_COUNT</span>]<span class="op">&gt;</span>() <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
             (<span class="kw-2">&amp;</span><span class="ident">GDT</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>) <span class="kw">as</span> <span class="ident">u64</span>,
@@ -527,34 +821,44 @@
 
         <span class="ident">load_gdt</span>(<span class="kw-2">&amp;</span><span class="ident">gdt_descriptor</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
 
-        <span class="comment">// Load the GDT segments.</span>
-        <span class="ident">load_cs</span>(<span class="ident">SegmentSelector::new</span>(<span class="number">1</span>, <span class="ident">SegmentSelector::RPL_0</span>));
-        <span class="ident">load_ds</span>(<span class="ident">SegmentSelector::new</span>(<span class="number">2</span>, <span class="ident">SegmentSelector::RPL_0</span>));
-        <span class="ident">load_es</span>(<span class="ident">SegmentSelector::new</span>(<span class="number">2</span>, <span class="ident">SegmentSelector::RPL_0</span>));
-        <span class="ident">load_fs</span>(<span class="ident">SegmentSelector::new</span>(<span class="number">2</span>, <span class="ident">SegmentSelector::RPL_0</span>));
-        <span class="ident">load_gs</span>(<span class="ident">SegmentSelector::new</span>(<span class="number">3</span>, <span class="ident">SegmentSelector::RPL_0</span>));
-        <span class="ident">load_ss</span>(<span class="ident">SegmentSelector::new</span>(<span class="number">2</span>, <span class="ident">SegmentSelector::RPL_0</span>));
+        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_GS_BASE</span>, <span class="ident">pcr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="ident">u64</span>);
+        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_KERNEL_GSBASE</span>, <span class="number">0x00</span>);
+
+        <span class="comment">// Now set the user space TLS (Thread Local Storage).</span>
+        <span class="ident">GDT</span>[<span class="ident">GdtEntryType::USER_TLS</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">set_offset</span>((<span class="ident">USER_TCB_OFFSET</span> <span class="op">*</span> <span class="number">0x1000</span>) <span class="kw">as</span> <span class="ident">u32</span>);
+
+        <span class="ident">load_fs</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::USER_TLS</span>,
+            <span class="ident">SegmentSelector::RPL_3</span>,
+        ));
+
+        <span class="comment">// Reload the GDT segments.</span>
+        <span class="ident">load_cs</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_CODE</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="ident">load_ds</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_DATA</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="ident">load_es</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_DATA</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="ident">load_ss</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::KERNEL_DATA</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
+
+        <span class="comment">// Load the Task State Segment.</span>
+        <span class="ident">load_tss</span>(<span class="ident">SegmentSelector::new</span>(
+            <span class="ident">GdtEntryType::TSS</span>,
+            <span class="ident">SegmentSelector::RPL_0</span>,
+        ));
     }
-}
-
-<span class="doccomment">/// Initialize the local GDT.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_local</span>(<span class="ident">stack_top</span>: <span class="ident">VirtAddr</span>) {
-    <span class="comment">// unsafe {</span>
-    <span class="comment">// let gdt_descriptor = GdtDescriptor::new(</span>
-    <span class="comment">//     (mem::size_of::&lt;[GdtEntry; GDT_LOCAL_ENTRY_COUNT]&gt;() - 1) as u16,</span>
-    <span class="comment">//     (&amp;LOCAL_GDT as *const _) as u64,</span>
-    <span class="comment">// );</span>
-
-    <span class="comment">// load_gdt(&amp;gdt_descriptor as *const _);</span>
-
-    <span class="comment">// // Reload the GDT segments.</span>
-    <span class="comment">// load_cs(SegmentSelector::new(1, SegmentSelector::RPL_0));</span>
-    <span class="comment">// load_ds(SegmentSelector::new(2, SegmentSelector::RPL_0));</span>
-    <span class="comment">// load_es(SegmentSelector::new(2, SegmentSelector::RPL_0));</span>
-    <span class="comment">// load_ss(SegmentSelector::new(2, SegmentSelector::RPL_0));</span>
-
-    <span class="comment">// load_tss(SegmentSelector::new(8, SegmentSelector::RPL_0));</span>
-    <span class="comment">// }</span>
 }
 
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>

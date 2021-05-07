@@ -72,8 +72,6 @@
 <span id="69">69</span>
 <span id="70">70</span>
 <span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The PIT (Programmable Interval Timer) chip basically consists of an oscillator, a prescaler and 3 independent frequency dividers</span>
 <span class="doccomment">//! and it is used to create time intervals and calculate *estimate* time since epoch.</span>
@@ -82,7 +80,7 @@
 
 <span class="kw">use</span> <span class="ident">core::time::Duration</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">arch::interrupts</span>, <span class="ident">utils::io</span>};
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIT_DIVISOR</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1193180</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIT_BASE_FREQUENCY</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1193182</span>;
@@ -106,10 +104,8 @@
         <span class="kw">let</span> <span class="ident">start_time</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ticks_since_epoch</span>;
         <span class="kw">let</span> <span class="ident">seconds</span> <span class="op">=</span> <span class="ident">duration</span>.<span class="ident">as_secs</span>();
 
-        <span class="kw">unsafe</span> {
-            <span class="kw">while</span> <span class="self">self</span>.<span class="ident">ticks_since_epoch</span> <span class="op">&lt;</span> <span class="ident">start_time</span> <span class="op">+</span> <span class="ident">seconds</span> {
-                <span class="macro">asm!</span>(<span class="string">&quot;pause&quot;</span>);
-            }
+        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">ticks_since_epoch</span> <span class="op">&lt;</span> <span class="ident">start_time</span> <span class="op">+</span> <span class="ident">seconds</span> {
+            <span class="ident">interrupts::pause</span>();
         }
     }
 

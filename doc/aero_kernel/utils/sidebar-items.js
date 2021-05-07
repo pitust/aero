@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["io","Wrapper functions for the hardware IO using respective assembly instructions."]]});
+initSidebarItems({"macro":[["intel_asm",""],["intel_fn",""],["pop_fs",""],["pop_preserved",""],["pop_scratch","Pop scratch registers."],["push_fs",""],["push_preserved","Push preserved registers."],["push_scratch","Push scratch registers."],["swapgs_iff_ring3_fast_errorcode",""]],"mod":[["io","Wrapper functions for the hardware IO using respective assembly instructions."],["linker",""]]});

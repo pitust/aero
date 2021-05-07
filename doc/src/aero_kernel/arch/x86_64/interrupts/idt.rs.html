@@ -256,6 +256,23 @@
 <span id="253">253</span>
 <span id="254">254</span>
 <span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IDT is similar to the Global Descriptor Table in structure.</span>
 <span class="doccomment">//!</span>
@@ -276,7 +293,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">ICW1_ICW4</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">ICW4_8086</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">IDTInterruptHandlerFn</span> <span class="op">=</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span>(<span class="ident">InterruptStackFrame</span>);
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">InterruptHandlerFn</span> <span class="op">=</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>();
 
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">IDT</span>: [<span class="ident">IdtEntry</span>; <span class="ident">IDT_ENTRIES</span>] <span class="op">=</span> [<span class="ident">IdtEntry::NULL</span>; <span class="ident">IDT_ENTRIES</span>];
 
@@ -361,10 +378,61 @@
     }
 
     <span class="doccomment">/// Set the handler function of the IDT entry.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">IDTInterruptHandlerFn</span>) {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">InterruptHandlerFn</span>) {
         <span class="self">self</span>.<span class="ident">set_flags</span>(<span class="ident">IDTFlags::PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags::RING_0</span> <span class="op">|</span> <span class="ident">IDTFlags::INTERRUPT</span>);
         <span class="self">self</span>.<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="ident">handler</span> <span class="kw">as</span> <span class="ident">usize</span>);
     }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ScratchRegisters</span> {
+    <span class="kw">pub</span> <span class="ident">r11</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">r10</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">r9</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">r8</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rsi</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rdi</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rdx</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rcx</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rax</span>: <span class="ident">usize</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PreservedRegisters</span> {
+    <span class="kw">pub</span> <span class="ident">r15</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">r14</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">r13</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">r12</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rbp</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rbx</span>: <span class="ident">usize</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IretRegisters</span> {
+    <span class="kw">pub</span> <span class="ident">rip</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">cs</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rflags</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rsp</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">ss</span>: <span class="ident">usize</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InterruptStack</span> {
+    <span class="kw">pub</span> <span class="ident">fs</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">preserved</span>: <span class="ident">PreservedRegisters</span>,
+    <span class="kw">pub</span> <span class="ident">scratch</span>: <span class="ident">ScratchRegisters</span>,
+    <span class="kw">pub</span> <span class="ident">iret</span>: <span class="ident">IretRegisters</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InterruptErrorStack</span> {
+    <span class="kw">pub</span> <span class="ident">code</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">stack</span>: <span class="ident">InterruptStack</span>,
 }
 
 <span class="doccomment">/// Initialize the IDT.</span>
@@ -408,7 +476,7 @@
         <span class="ident">IDT</span>[<span class="number">49</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::lapic_error</span>);
 
         <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_flags</span>(<span class="ident">IDTFlags::PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags::RING_3</span> <span class="op">|</span> <span class="ident">IDTFlags::INTERRUPT</span>);
-        <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="kw">crate</span><span class="ident">::syscall::syscall_handler</span> <span class="kw">as</span> <span class="ident">usize</span>);
+        <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="kw">crate</span><span class="ident">::syscall::syscall_interrupt_handler</span> <span class="kw">as</span> <span class="ident">usize</span>);
 
         <span class="kw">let</span> <span class="ident">idt_descriptor</span> <span class="op">=</span> <span class="ident">IdtDescriptor::new</span>(
             ((<span class="ident">IDT</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">IdtEntry</span><span class="op">&gt;</span>()) <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
@@ -423,23 +491,6 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_idt</span>(<span class="ident">idt_descriptor</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">IdtDescriptor</span>) {
     <span class="macro">asm!</span>(<span class="string">&quot;lidt [{}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">idt_descriptor</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
-}
-
-<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">disable_interrupts</span>() {
-    <span class="macro">asm!</span>(<span class="string">&quot;cli&quot;</span>);
-}
-
-<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">enable_interrupts</span>() {
-    <span class="macro">asm!</span>(<span class="string">&quot;sti&quot;</span>);
-}
-
-<span class="doccomment">/// Halt the CPU. Will resume when interrupt is recieved if interrupts are</span>
-<span class="doccomment">/// enabled.</span>
-<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">halt</span>() {
-    <span class="macro">asm!</span>(<span class="string">&quot;hlt&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -494,23 +545,6 @@
     <span class="ident">io::wait</span>();
     <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="ident">a2</span>);
     <span class="ident">io::wait</span>();
-}
-
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">interrupt</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">stack_frame</span>: <span class="ident">InterruptStackFrame</span>) {
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
-        }
-    };
-
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="kw">unsafe</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;x86-interrupt&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">stack_frame</span>: <span class="ident">InterruptStackFrame</span>) {
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
-        }
-    };
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="aero_kernel" data-search-index-js="../../../../../search-index.js" data-search-js="../../../../../search.js"></div>
