@@ -68,13 +68,73 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">use</span> <span class="ident">core::alloc::Layout</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
 <span class="kw">use</span> <span class="ident">core::ptr</span>;
 
-<span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
+<span class="kw">use</span> <span class="ident">alloc::alloc::alloc_zeroed</span>;
 
+<span class="kw">use</span> <span class="ident">spin::Once</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::linker::LinkerSymbol</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">arch::gdt::PROCESSOR_CONTROL_REGION</span>, <span class="ident">utils::io</span>};
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::gdt::PROCESSOR_CONTROL_REGION</span>;
+
+<span class="kw">static</span> <span class="ident">THREAD_LOCAL_STORAGE</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">ThreadLocalStorage</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
+
+<span class="doccomment">/// The TCB (Thread Control Block) containg the self pointer to itself and that means</span>
+<span class="doccomment">/// the size of TCB will **always** be the size of a pointer.</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">struct</span> <span class="ident">ThreadControlBlock</span> {
+    <span class="ident">self_pointer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>,
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">struct</span> <span class="ident">ThreadLocalStorage</span> {
+    <span class="doccomment">/// Pointer to the allocated memory for the TLS.</span>
+    <span class="ident">pointer</span>: <span class="ident">usize</span>,
+    <span class="ident">tcb_offset</span>: <span class="ident">usize</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">ThreadLocalStorage</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">pointer</span>: <span class="ident">usize</span>, <span class="ident">tcb_offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">pointer</span>,
+            <span class="ident">tcb_offset</span>,
+        }
+    }
+}
 
 <span class="doccomment">/// Initialize support for the `#[thread_local]` attribute.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
@@ -93,47 +153,43 @@
     <span class="kw">let</span> <span class="ident">total_size</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">__tbss_end</span>.<span class="ident">as_usize</span>() <span class="op">-</span> <span class="ident">__tdata_start</span>.<span class="ident">as_usize</span>() };
     <span class="kw">let</span> <span class="ident">tdata_size</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">__tdata_end</span>.<span class="ident">as_usize</span>() <span class="op">-</span> <span class="ident">__tdata_start</span>.<span class="ident">as_usize</span>() };
 
-    <span class="comment">// Here we add 8 to the total size to store the TCB pointer.</span>
-    <span class="kw">let</span> <span class="ident">total_tls_size</span> <span class="op">=</span> <span class="ident">total_size</span> <span class="op">+</span> <span class="number">8</span>;
+    <span class="comment">// Here we add the size of TCB to the total size to store the TCB pointer.</span>
+    <span class="kw">let</span> <span class="ident">total_tls_size</span> <span class="op">=</span> <span class="ident">total_size</span> <span class="op">+</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">ThreadControlBlock</span><span class="op">&gt;</span>();
+    <span class="kw">let</span> <span class="ident">tls_layout</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+        <span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">total_tls_size</span>, <span class="ident">mem::align_of</span>::<span class="op">&lt;</span><span class="ident">ThreadControlBlock</span><span class="op">&gt;</span>())
+    };
 
-    <span class="comment">// Puts the TLS into kernel&#39;s heap and prevents it from being dropped.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tls_raw_ptr</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span><span class="ident">::new_uninit_slice</span>(<span class="ident">total_tls_size</span>);
+    <span class="kw">let</span> <span class="ident">tls_raw_ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">alloc_zeroed</span>(<span class="ident">tls_layout</span>) };
+    <span class="kw">let</span> <span class="ident">tls_offset</span> <span class="op">=</span> <span class="ident">tls_raw_ptr</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
     <span class="kw">unsafe</span> {
-        <span class="ident">ptr::copy</span>(
-            <span class="ident">__tdata_start</span>.<span class="ident">as_ptr</span>(),
-            <span class="ident">tls_raw_ptr</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,
-            <span class="ident">tdata_size</span>,
-        );
-
+        <span class="ident">ptr::copy</span>(<span class="ident">__tdata_start</span>.<span class="ident">as_ptr</span>(), <span class="ident">tls_raw_ptr</span>, <span class="ident">tdata_size</span>);
         <span class="ident">ptr::write_bytes</span>(
-            ((<span class="ident">tls_raw_ptr</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">+</span> <span class="ident">tdata_size</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,
+            (<span class="ident">tls_offset</span> <span class="op">+</span> <span class="ident">tdata_size</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,
             <span class="number">0</span>,
             <span class="ident">total_tls_size</span> <span class="op">-</span> <span class="ident">tdata_size</span>,
         );
     }
 
-    <span class="kw">let</span> <span class="ident">tls_ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Box::into_raw</span>(<span class="ident">tls_raw_ptr</span>.<span class="ident">assume_init</span>()) };
+    <span class="kw">let</span> <span class="ident">tcb_ptr</span> <span class="op">=</span> ((<span class="ident">tls_raw_ptr</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> (<span class="ident">total_size</span> <span class="kw">as</span> <span class="ident">u64</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>;
+    <span class="kw">let</span> <span class="ident">tcb_offset</span> <span class="op">=</span> <span class="ident">tcb_ptr</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
-    <span class="kw">let</span> <span class="ident">fs_ptr</span> <span class="op">=</span> ((<span class="ident">tls_ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> (<span class="ident">total_size</span> <span class="kw">as</span> <span class="ident">u64</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>;
-    <span class="kw">let</span> <span class="ident">fs_offset</span> <span class="op">=</span> <span class="ident">fs_ptr</span> <span class="kw">as</span> <span class="ident">u64</span>;
-
-    <span class="comment">// Set the FS base segment to the fs_offset enabling thread locals and</span>
-    <span class="comment">// set fs[:0x00] to the fs offset as SystemV abi expects the pointer equal</span>
+    <span class="comment">// Set the FS base segment to the tcb_offset to enable thread locals and</span>
+    <span class="comment">// set fs[:0x00] to the tcb offset as SystemV abi expects the pointer equal</span>
     <span class="comment">// to its offset.</span>
     <span class="comment">//</span>
-    <span class="comment">// SAFTEY: The fs pointer and fs offset are guaranteed to be correct.</span>
+    <span class="comment">// SAFTEY: The fs pointer and tcb offset are guaranteed to be correct.</span>
     <span class="kw">unsafe</span> {
-        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_FS_BASE</span>, <span class="ident">fs_offset</span>);
-        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_GS_BASE</span>, <span class="ident">fs_offset</span>);
+        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_FS_BASE</span>, <span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">u64</span>);
 
-        <span class="kw-2">*</span><span class="ident">fs_ptr</span> <span class="op">=</span> <span class="ident">fs_offset</span>;
+        <span class="kw-2">*</span><span class="ident">tcb_ptr</span> <span class="op">=</span> <span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">u64</span>;
     }
 
-    <span class="comment">// SAFTEY: Safe to access PROCESSOR_CONTROL_REGION as thread local variables</span>
-    <span class="comment">// at this point are accessible.</span>
+    <span class="ident">THREAD_LOCAL_STORAGE</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ThreadLocalStorage::new</span>(<span class="ident">tls_offset</span>, <span class="ident">tcb_offset</span>));
+
+    <span class="comment">// SAFTEY: Safe to access thread local variables as at this point are accessible.</span>
     <span class="kw">unsafe</span> {
-        <span class="ident">PROCESSOR_CONTROL_REGION</span>.<span class="ident">fs_offset</span> <span class="op">=</span> <span class="ident">fs_offset</span> <span class="kw">as</span> <span class="ident">usize</span>;
+        <span class="ident">PROCESSOR_CONTROL_REGION</span>.<span class="ident">fs_offset</span> <span class="op">=</span> <span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">usize</span>;
     }
 }
 </pre></div>
