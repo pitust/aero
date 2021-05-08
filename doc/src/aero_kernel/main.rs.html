@@ -202,6 +202,17 @@
 <span id="199">199</span>
 <span id="200">200</span>
 <span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -262,6 +273,8 @@
 <span class="kw">use</span> <span class="ident">userland</span>::{<span class="ident">process::Process</span>, <span class="ident">scheduler</span>};
 <span class="kw">use</span> <span class="ident">utils::io</span>;
 
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::memory::pti::PTI_CONTEXT_STACK_ADDRESS</span>;
+
 <span class="attribute">#[<span class="ident">global_allocator</span>]</span>
 <span class="kw">static</span> <span class="ident">AERO_SYSTEM_ALLOCATOR</span>: <span class="ident">LockedHeap</span> <span class="op">=</span> <span class="ident">LockedHeap::empty</span>();
 
@@ -283,20 +296,25 @@ _______ _______ ______ _______    _______ ______
 
 <span class="attribute">#[<span class="ident">export_name</span> <span class="op">=</span> <span class="string">&quot;_start&quot;</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="comment">// Initialize the COM ports before doing anything else.</span>
-    <span class="comment">//</span>
-    <span class="comment">// This will help printing panics before or when the debug renderer is initialized</span>
-    <span class="comment">// if serial output is avaliable.</span>
-    <span class="ident">drivers::uart_16550::init</span>();
-
+    <span class="comment">/*
+     * First of all make sure interrupts are disabled.
+     */</span>
     <span class="kw">unsafe</span> {
         <span class="ident">interrupts::disable_interrupts</span>();
     }
+
+    <span class="comment">/* Initialize the COM ports before doing anything else.
+     *
+     * This will help printing panics before or when the debug renderer is initialized
+     * if serial output is avaliable.
+     */</span>
+    <span class="ident">drivers::uart_16550::init</span>();
 
     <span class="kw">let</span> <span class="ident">memory_regions</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">boot_info</span>.<span class="ident">memory_regions</span>;
     <span class="kw">let</span> <span class="ident">framebuffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">boot_info</span>.<span class="ident">framebuffer</span>;
 
     <span class="kw">unsafe</span> {
+        <span class="ident">PTI_CONTEXT_STACK_ADDRESS</span> <span class="op">=</span> <span class="ident">boot_info</span>.<span class="ident">stack_top</span>.<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="ident">PHYSICAL_MEMORY_OFFSET</span> <span class="op">=</span> <span class="ident">boot_info</span>.<span class="ident">physical_memory_offset</span>;
     }
 
@@ -314,13 +332,6 @@ _______ _______ ______ _______    _______ ______
 
     <span class="ident">drivers::mouse::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PS/2 driver&quot;</span>);
-
-    <span class="kw">unsafe</span> {
-        <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0b11111000</span>);
-        <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0b11101111</span>);
-
-        <span class="ident">interrupts::enable_interrupts</span>();
-    }
 
     <span class="kw">let</span> <span class="ident">apic_type</span> <span class="op">=</span> <span class="ident">apic::init</span>();
     <span class="macro">log::info!</span>(
@@ -341,6 +352,17 @@ _______ _______ ______ _______    _______ ______
 
     <span class="ident">arch::gdt::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
+
+    <span class="comment">/*
+     * NOTE: We need to enable interrupts after we have initialized TLS and GDT
+     * as the PTI context switch functions depend on thread local globals.
+     */</span>
+    <span class="kw">unsafe</span> {
+        <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0b11111000</span>);
+        <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0b11101111</span>);
+
+        <span class="ident">interrupts::enable_interrupts</span>();
+    }
 
     <span class="ident">acpi::init</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>,

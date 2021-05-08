@@ -124,6 +124,14 @@
 <span id="121">121</span>
 <span id="122">122</span>
 <span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">exceptions</span>;
 <span class="kw">mod</span> <span class="ident">idt</span>;
@@ -158,9 +166,13 @@
             <span class="comment">// Push the error code.</span>
             <span class="string">&quot;push rax\n&quot;</span>,
 
+            <span class="string">&quot;call map_pti\n&quot;</span>,
+
             <span class="comment">// Call the inner interrupt handler implementation.</span>
             <span class="string">&quot;mov rdi, rsp\n&quot;</span>,
             <span class="string">&quot;call __interrupt_&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>), <span class="string">&quot;\n&quot;</span>,
+
+            <span class="string">&quot;call unmap_pti\n&quot;</span>,
 
             <span class="comment">// Pop the error code.</span>
             <span class="string">&quot;add rsp, 8\n&quot;</span>,
@@ -196,8 +208,12 @@
             <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::push_preserved!</span>(),
             <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::push_fs!</span>(),
 
+            <span class="string">&quot;call map_pti\n&quot;</span>,
+
             <span class="string">&quot;mov rdi, rsp\n&quot;</span>,
             <span class="string">&quot;call __interrupt_&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>), <span class="string">&quot;\n&quot;</span>,
+
+            <span class="string">&quot;call unmap_pti\n&quot;</span>,
 
             <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::pop_fs!</span>(),
             <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::pop_preserved!</span>(),
