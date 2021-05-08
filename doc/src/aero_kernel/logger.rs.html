@@ -67,16 +67,46 @@
 <span id="64">64</span>
 <span id="65">65</span>
 <span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::rendy</span>;
+<span class="kw">use</span> <span class="ident">core::fmt::Write</span>;
 
 <span class="kw">use</span> <span class="ident">aero_gfx::debug::color</span>::{<span class="ident">Color</span>, <span class="ident">ColorCode</span>};
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">Level</span>, <span class="ident">LevelFilter</span>, <span class="ident">Metadata</span>, <span class="ident">Record</span>};
+<span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>, <span class="ident">Once</span>};
 
-<span class="kw">static</span> <span class="ident">LOGGER</span>: <span class="ident">AeroLogger</span> <span class="op">=</span> <span class="ident">AeroLogger</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::rendy</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::buffer::RingBuffer</span>;
 
 <span class="kw">const</span> <span class="ident">MAX_LOG_LEVEL_SPACE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">6</span>;
+<span class="kw">const</span> <span class="ident">DEFAULT_LOG_RING_BUFFER_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">256</span>;
+
+<span class="kw">static</span> <span class="ident">LOG_RING_BUFFER</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">RingBuffer</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="ident">DEFAULT_LOG_RING_BUFFER_SIZE</span>]<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
+<span class="kw">static</span> <span class="ident">LOGGER</span>: <span class="ident">AeroLogger</span> <span class="op">=</span> <span class="ident">AeroLogger</span>;
 
 <span class="kw">struct</span> <span class="ident">AeroLogger</span>;
 
@@ -88,6 +118,13 @@
     <span class="kw">fn</span> <span class="ident">log</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">record</span>: <span class="kw-2">&amp;</span><span class="ident">Record</span>) {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">enabled</span>(<span class="ident">record</span>.<span class="ident">metadata</span>()) {
             <span class="kw">let</span> <span class="ident">level</span> <span class="op">=</span> <span class="ident">record</span>.<span class="ident">level</span>();
+            <span class="kw">let</span> <span class="ident">spaces</span> <span class="op">=</span> <span class="ident">MAX_LOG_LEVEL_SPACE</span> <span class="op">-</span> <span class="ident">level</span>.<span class="ident">as_str</span>().<span class="ident">len</span>();
+
+            <span class="comment">/*
+             * First of all append the log message to the log ring buffer.
+             */</span>
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">log_ring</span> <span class="op">=</span> <span class="ident">get_log_ring_buffer</span>();
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="macro">writeln!</span>(<span class="ident">log_ring</span>, <span class="string">&quot;[{}] {}&quot;</span>, <span class="ident">level</span>, <span class="ident">record</span>.<span class="ident">args</span>());
 
             <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::WHITE</span>, <span class="ident">Color::BLACK</span>));
             <span class="macro">print!</span>(<span class="string">&quot;[ &quot;</span>);
@@ -114,8 +151,6 @@
 
             <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::WHITE</span>, <span class="ident">Color::BLACK</span>));
 
-            <span class="kw">let</span> <span class="ident">spaces</span> <span class="op">=</span> <span class="ident">MAX_LOG_LEVEL_SPACE</span> <span class="op">-</span> <span class="ident">level</span>.<span class="ident">as_str</span>().<span class="ident">len</span>();
-
             <span class="macro">println!</span>(<span class="string">&quot;{: &lt;1$}]        {args}&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="ident">spaces</span>, <span class="ident">args</span> <span class="op">=</span> <span class="ident">record</span>.<span class="ident">args</span>());
         }
     }
@@ -123,8 +158,19 @@
     <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
 }
 
-<span class="doccomment">/// Initialize the global logger instance.</span>
+<span class="doccomment">/// Returns a mutable reference to the logging ring buffer.</span>
+<span class="kw">fn</span> <span class="ident">get_log_ring_buffer</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">RingBuffer</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="ident">DEFAULT_LOG_RING_BUFFER_SIZE</span>]<span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="ident">LOG_RING_BUFFER</span>
+        .<span class="ident">get</span>()
+        .<span class="ident">expect</span>(<span class="string">&quot;Attempted to get the logging ring buffer before it was initialized&quot;</span>)
+        .<span class="ident">lock</span>()
+}
+
+<span class="doccomment">/// Initialize the global logger instance and the logger ring</span>
+<span class="doccomment">/// buffer.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
+    <span class="ident">LOG_RING_BUFFER</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Mutex::new</span>(<span class="ident">RingBuffer::new</span>([<span class="number">0</span>; <span class="ident">DEFAULT_LOG_RING_BUFFER_SIZE</span>])));
+
     <span class="ident">log::set_logger</span>(<span class="kw-2">&amp;</span><span class="ident">LOGGER</span>)
         .<span class="ident">map</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">log::set_max_level</span>(<span class="ident">LevelFilter::Trace</span>))
         .<span class="ident">unwrap</span>();

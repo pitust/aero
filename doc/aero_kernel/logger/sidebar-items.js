@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["MAX_LOG_LEVEL_SPACE",""]],"fn":[["init","Initialize the global logger instance."],["log_debug",""]],"static":[["LOGGER",""]],"struct":[["AeroLogger",""]]});
+initSidebarItems({"constant":[["DEFAULT_LOG_RING_BUFFER_SIZE",""],["MAX_LOG_LEVEL_SPACE",""]],"fn":[["get_log_ring_buffer","Returns a mutable reference to the logging ring buffer."],["init","Initialize the global logger instance and the logger ring buffer."],["log_debug",""]],"static":[["LOGGER",""],["LOG_RING_BUFFER",""]],"struct":[["AeroLogger",""]]});
