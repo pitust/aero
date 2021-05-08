@@ -137,6 +137,18 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! System Calls are used to call a kernel service from user land.</span>
 <span class="doccomment">//!</span>
@@ -201,6 +213,13 @@
 );
 
 <span class="macro">intel_fn!</span>(
+    <span class="doccomment">/**
+    * 64-bit `syscall` instruction handler.
+    *
+    * The `syscall` instruction should only be used for 64-bit system calls. The
+    * `syscall` instruction saves RIP to RAX, clears rflags.RF, saves rflags
+    * to R11 and then loads new SS, CS and RIP from previously programmed MSRs.
+    */</span>
     <span class="kw">pub</span> <span class="ident">__asm__</span> <span class="ident">volatile</span> <span class="kw">fn</span> <span class="ident">syscall_handler</span>() {
         <span class="string">&quot;swapgs\n&quot;</span>, <span class="comment">// Set gs segment to TSS.</span>
 
@@ -225,12 +244,17 @@
         <span class="kw">crate</span><span class="macro">::prelude::pop_preserved!</span>(),
         <span class="kw">crate</span><span class="macro">::prelude::pop_scratch!</span>(),
 
-        <span class="comment">// Set ZF iff forbidden bits 63:47 (i.e. the bits that must be sign extended) of the pushed</span>
-        <span class="comment">// RCX are set.</span>
+        <span class="comment">/*
+        * In Intel CPUs, `sysretq` with non-canonical RCX or RIP will cause
+        * a general protection fault in kernel space. This lets the user take over
+        * the kernel, since userland controls RSP.
+        *
+        * So set the ZF iff forbidden bits 63:47 (i.e. the bits that must be sign extended) of the
+        * pushed RCX are set. Then do a conditional jump to slow `sysretq` if ZF was set then the
+        * address had an invalid higher half. This prevents execution **possibly** of attacker controlled
+        * code.
+        */</span>
         <span class="string">&quot;test DWORD PTR [rsp + 4], 0xFFFF8000\n&quot;</span>,
-
-        <span class="comment">// If ZF was set then the address had an invalid higher half and jump to label 1.</span>
-        <span class="comment">// This prevents execution **possibly** of attacker controlled code.</span>
         <span class="string">&quot;jnz 1f\n&quot;</span>,
 
         <span class="string">&quot;pop rcx\n&quot;</span>, <span class="comment">// Pop userspace return pointer.</span>
