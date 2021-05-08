@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["SYS_EXIT",""]]});
+initSidebarItems({"constant":[["SYS_EXIT",""],["SYS_REBOOT",""]],"macro":[["define_syscall_ids",""]]});
