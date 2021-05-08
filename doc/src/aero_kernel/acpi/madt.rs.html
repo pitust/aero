@@ -229,6 +229,25 @@
 <span id="226">226</span>
 <span id="227">227</span>
 <span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">intrinsics</span>, <span class="ident">mem</span>, <span class="ident">sync::atomic::Ordering</span>};
 
@@ -265,9 +284,16 @@
     ) {
         <span class="ident">MADT</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>);
 
-        <span class="kw">let</span> <span class="ident">trampoline_frame</span> <span class="op">=</span> <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>(<span class="ident">TRAMPOLINE</span>));
-        <span class="kw">let</span> <span class="ident">trampoline_page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">TRAMPOLINE</span>));
+        <span class="kw">let</span> <span class="ident">trampoline_frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>(<span class="ident">TRAMPOLINE</span>));
+        <span class="kw">let</span> <span class="ident">trampoline_page</span>: <span class="ident">Page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">TRAMPOLINE</span>));
 
+        <span class="comment">/*
+         * Identity map the trampoline frame and make it writable.
+         *
+         * NOTE: Rather then using the identity_map function in the mapper
+         * struct we are using the map_to function as we will be unmapping the
+         * frame when we are done and that should save one call.
+         */</span>
         <span class="kw">unsafe</span> {
             <span class="ident">offset_table</span>
                 .<span class="ident">map_to</span>(
@@ -282,7 +308,10 @@
 
         <span class="macro">log::debug!</span>(<span class="string">&quot;Storing AP trampoline in {:#x}&quot;</span>, <span class="ident">TRAMPOLINE</span>);
 
-        <span class="comment">// Atomic store the AP trampoline code to a fixed address in low conventional memory.</span>
+        <span class="comment">/*
+         * Atomic store the AP trampoline code to a fixed address in low conventional
+         * memory.
+         */</span>
         <span class="kw">unsafe</span> {
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">TRAMPOLINE_BIN</span>.<span class="ident">len</span>() {
                 <span class="ident">intrinsics::atomic_store</span>((<span class="ident">TRAMPOLINE</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">add</span>(<span class="ident">i</span>), <span class="ident">TRAMPOLINE_BIN</span>[<span class="ident">i</span>]);
@@ -293,8 +322,10 @@
             <span class="kw">match</span> <span class="ident">entry</span> {
                 <span class="ident">MadtEntry::LocalApic</span>(<span class="ident">local_apic</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">if</span> <span class="ident">local_apic</span>.<span class="ident">apic_id</span> <span class="op">=</span><span class="op">=</span> <span class="ident">apic::get_bsp_id</span>() <span class="kw">as</span> <span class="ident">u8</span> {
-                        <span class="comment">// We do not want to start the BSP that is already running</span>
-                        <span class="comment">// this code :D</span>
+                        <span class="comment">/*
+                         * We do not want to start the BSP that is already running
+                         * this code :D
+                         */</span>
                         <span class="kw">continue</span>;
                     }
 
@@ -378,6 +409,13 @@
                 <span class="ident">MadtEntry::IntSrcOverride</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
             }
         }
+
+        <span class="comment">/*
+         * Now that we have initialized are APs. Its now safe to unmap the
+         * AP trampoline and the trampoline region is marked as usable again.
+         */</span>
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">toilet</span>) <span class="op">=</span> <span class="ident">offset_table</span>.<span class="ident">unmap</span>(<span class="ident">trampoline_page</span>).<span class="ident">unwrap</span>();
+        <span class="ident">toilet</span>.<span class="ident">flush</span>();
     }
 
     <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MadtIterator</span> {
