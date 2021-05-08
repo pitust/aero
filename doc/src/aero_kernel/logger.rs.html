@@ -85,11 +85,6 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
-<span id="85">85</span>
-<span id="86">86</span>
-<span id="87">87</span>
-<span id="88">88</span>
-<span id="89">89</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core::fmt::Write</span>;
 
@@ -174,11 +169,6 @@
     <span class="ident">log::set_logger</span>(<span class="kw-2">&amp;</span><span class="ident">LOGGER</span>)
         .<span class="ident">map</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">log::set_max_level</span>(<span class="ident">LevelFilter::Trace</span>))
         .<span class="ident">unwrap</span>();
-}
-
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">log_debug</span>(<span class="kw">_</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) {
-    <span class="macro">log::debug!</span>(<span class="string">&quot;(asm)&quot;</span>)
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
