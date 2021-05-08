@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["alloc",""],["paging",""]]});
+initSidebarItems({"mod":[["alloc",""],["paging",""],["pti","PTI (Page Table Isolation) is a feature that mitigates the Meltdown security vulnerability (affecting mainly Intel’s x86 CPUs) and improves kernel hardening against attempts to bypass kernel address space layout randomization."]]});

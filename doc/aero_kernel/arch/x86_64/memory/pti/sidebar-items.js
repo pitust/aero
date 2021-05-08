@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["PTI_STACK_SIZE",""]],"fn":[["map_pti",""],["switch_pti_stack",""],["unmap_pti",""]],"static":[["PTI_CONTEXT_STACK_ADDRESS","The PTI context stack stored as a thread local."],["PTI_CPU_STACK","The PTI CPU stack stored as a thread local."]]});
