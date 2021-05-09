@@ -250,7 +250,7 @@
      * `syscall` instruction saves RIP to RAX, clears rflags.RF, saves rflags
      * to R11 and then loads new SS, CS and RIP from previously programmed MSRs.
      */</span>
-    <span class="kw">pub</span> <span class="ident">__asm__</span> <span class="ident">volatile</span> <span class="kw">fn</span> <span class="ident">syscall_handler</span>() {
+    <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;asm&quot;</span> <span class="kw">fn</span> <span class="ident">syscall_handler</span>() {
         <span class="string">&quot;swapgs\n&quot;</span>, <span class="comment">// Set gs segment to TSS.</span>
 
         <span class="string">&quot;mov gs:[0x08], rsp\n&quot;</span>, <span class="comment">// Save userspace stack pointer.</span>
@@ -299,7 +299,7 @@
         <span class="string">&quot;sysretq\n&quot;</span>, <span class="comment">// Return back into userspace.</span>
     }
 
-    <span class="ident">__label__</span> <span class="ident">volatile</span> <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;asm&quot;</span> <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> {
         <span class="string">&quot;xor rcx, rcx\n&quot;</span>,
         <span class="string">&quot;xor r11, r11\n&quot;</span>,
         <span class="string">&quot;swapgs\n&quot;</span>,
