@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BlockIO","The Block I/O protocol."],["BlockIOMedia","Media information structure"]],"type":[["Lba","EFI LBA type"]]});
