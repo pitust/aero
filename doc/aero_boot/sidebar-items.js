@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MemoryRegionType","Represents the different types of memory."]],"fn":[["test_runner",""]],"struct":[["BootInfo",""],["MemoryRegion","Represent a physical memory region."],["MemoryRegions",""]]});
+initSidebarItems({"enum":[["MemoryRegionType","Represents the different types of memory."]],"struct":[["BootInfo",""],["MemoryRegion","Represent a physical memory region."],["MemoryRegions",""]]});
