@@ -454,7 +454,6 @@
 <span id="451">451</span>
 <span id="452">452</span>
 <span id="453">453</span>
-<span id="454">454</span>
 </pre><pre class="rust">
 <span class="doccomment">//! The GDT contains entries telling the CPU about memory segments.</span>
 <span class="doccomment">//!</span>
@@ -463,8 +462,7 @@
 <span class="kw">use</span> <span class="ident">core::mem</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
-
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::memory::pti</span>::{<span class="ident">PTI_CPU_STACK</span>, <span class="ident">PTI_STACK_SIZE</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::pti</span>::{<span class="ident">PTI_CPU_STACK</span>, <span class="ident">PTI_STACK_SIZE</span>};
 
 <span class="macro">bitflags::bitflags!</span> {
     <span class="doccomment">/// Specifies which element to load into a segment from</span>

@@ -483,14 +483,12 @@
 <span id="480">480</span>
 <span id="481">481</span>
 <span id="482">482</span>
-<span id="483">483</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">core::mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch</span>::{
-    <span class="ident">interrupts</span>,
-    <span class="ident">memory::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">GlobalAllocator</span>},
-};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">GlobalAllocator</span>};
 
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">structures::paging</span>::{

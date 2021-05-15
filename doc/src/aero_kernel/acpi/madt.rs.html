@@ -264,8 +264,8 @@
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::sdt::Sdt</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">apic</span>::{<span class="self">self</span>, <span class="ident">IoApicHeader</span>},
-    <span class="ident">arch::memory::alloc::malloc_align</span>,
     <span class="ident">kernel_ap_startup</span>,
+    <span class="ident">mem::alloc::malloc_align</span>,
 };
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic::CPU_COUNT</span>;

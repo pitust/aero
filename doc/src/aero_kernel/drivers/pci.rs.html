@@ -557,14 +557,18 @@
 <span id="554">554</span>
 <span id="555">555</span>
 <span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">core::mem</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::drivers::ahci::AHCI</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::GlobalAllocator</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">acpi::mcfg</span>::{<span class="self">self</span>, <span class="ident">DeviceConfig</span>, <span class="ident">Mcfg</span>},
     <span class="ident">utils::io</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">arch::memory::paging::GlobalAllocator</span>, <span class="ident">drivers::ahci::AHCI</span>};
 
 <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 <span class="kw">use</span> <span class="ident">x86_64::structures::paging::OffsetPageTable</span>;
