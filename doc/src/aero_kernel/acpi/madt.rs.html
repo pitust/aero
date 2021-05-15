@@ -248,16 +248,23 @@
 <span id="245">245</span>
 <span id="246">246</span>
 <span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">intrinsics</span>, <span class="ident">mem</span>, <span class="ident">sync::atomic::Ordering</span>};
 
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
-<span class="kw">use</span> <span class="ident">x86_64</span>::{<span class="ident">registers::control::Cr3</span>, <span class="ident">structures::paging</span>::<span class="kw-2">*</span>, <span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
+<span class="kw">use</span> <span class="ident">x86_64</span>::{
+    <span class="ident">registers::control::Cr3</span>,
+    <span class="ident">structures::paging</span>::{<span class="ident">mapper::MapToError</span>, <span class="kw-2">*</span>},
+    <span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>,
+};
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::sdt::Sdt</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">apic</span>::{<span class="self">self</span>, <span class="ident">IoApicHeader</span>},
-    <span class="ident">arch</span>::{<span class="ident">interrupts</span>, <span class="ident">memory::alloc::malloc_align</span>},
+    <span class="ident">arch::memory::alloc::malloc_align</span>,
     <span class="ident">kernel_ap_startup</span>,
 };
 
@@ -281,7 +288,7 @@
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="self">self</span>,
         <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span>,
         <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
-    ) {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="ident">MADT</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>);
 
         <span class="kw">let</span> <span class="ident">trampoline_frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>(<span class="ident">TRAMPOLINE</span>));
@@ -295,22 +302,20 @@
          * frame when we are done and that should save one call.
          */</span>
         <span class="kw">unsafe</span> {
-            <span class="ident">offset_table</span>
-                .<span class="ident">map_to</span>(
-                    <span class="ident">trampoline_page</span>,
-                    <span class="ident">trampoline_frame</span>,
-                    <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                    <span class="ident">frame_allocator</span>,
-                )
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">flush</span>();
-        }
+            <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
+                <span class="ident">trampoline_page</span>,
+                <span class="ident">trampoline_frame</span>,
+                <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
+                <span class="ident">frame_allocator</span>,
+            )
+        }<span class="question-mark">?</span>
+        .<span class="ident">flush</span>();
 
         <span class="macro">log::debug!</span>(<span class="string">&quot;Storing AP trampoline in {:#x}&quot;</span>, <span class="ident">TRAMPOLINE</span>);
 
         <span class="comment">/*
-         * Atomic store the AP trampoline code to a fixed address in low conventional
-         * memory.
+         * Atomic store the AP trampoline code and page table to a fixed address
+         * in low conventional memory.
          */</span>
         <span class="kw">unsafe</span> {
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">TRAMPOLINE_BIN</span>.<span class="ident">len</span>() {
@@ -405,7 +410,6 @@
                 }
 
                 <span class="ident">MadtEntry::IoApic</span>(<span class="ident">io_apic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">apic::init_io_apic</span>(<span class="ident">io_apic</span>),
-
                 <span class="ident">MadtEntry::IntSrcOverride</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
             }
         }
@@ -416,6 +420,8 @@
          */</span>
         <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">toilet</span>) <span class="op">=</span> <span class="ident">offset_table</span>.<span class="ident">unmap</span>(<span class="ident">trampoline_page</span>).<span class="ident">unwrap</span>();
         <span class="ident">toilet</span>.<span class="ident">flush</span>();
+
+        <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MadtIterator</span> {
