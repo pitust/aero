@@ -220,6 +220,20 @@
 <span id="217">217</span>
 <span id="218">218</span>
 <span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
 </pre><pre class="rust">
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
@@ -255,7 +269,7 @@
 
 <span class="kw">use</span> <span class="ident">linked_list_allocator::LockedHeap</span>;
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
-<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
+<span class="kw">use</span> <span class="ident">x86_64</span>::{<span class="ident">registers</span>, <span class="ident">VirtAddr</span>};
 
 <span class="kw">mod</span> <span class="ident">acpi</span>;
 <span class="kw">mod</span> <span class="ident">apic</span>;
@@ -309,6 +323,10 @@ _______ _______ ______ _______    _______ ______
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">BootInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="comment">/*
+     * NOTE: In this function we only want to initialize essential serivces, including
+     * the task scheduler. Rest of the initializing (including kernel modules) should go
+     * into the kernel main thread function instead.
+     *
      * First of all make sure interrupts are disabled.
      */</span>
     <span class="kw">unsafe</span> {
@@ -318,10 +336,21 @@ _______ _______ ______ _______    _______ ______
     <span class="comment">/*
      * Initialize the COM ports before doing anything else.
      *
-     * This will help printing panics before or when the debug renderer is initialized
-     * if serial output is avaliable.
+     * This will help printing panics and logs before or when the debug renderer
+     * is initialized if serial output is avaliable.
      */</span>
     <span class="ident">drivers::uart_16550::init</span>();
+    <span class="ident">logger::init</span>();
+
+    <span class="comment">/*
+     * Now that we have initialized basic logging we have to make sure that the
+     * kernel is loaded in the higher half offset that we set in the linker script.
+     */</span>
+    {
+        <span class="kw">let</span> <span class="ident">rip</span> <span class="op">=</span> <span class="ident">registers::read_rip</span>().<span class="ident">as_u64</span>();
+
+        <span class="macro">assert_eq!</span>(<span class="ident">rip</span> <span class="op">&amp;</span> <span class="number">0xffffffffffff0000</span>, <span class="number">0xffff800080000000</span>);
+    }
 
     <span class="kw">unsafe</span> {
         <span class="ident">PHYSICAL_MEMORY_OFFSET</span> <span class="op">=</span> <span class="ident">boot_info</span>.<span class="ident">physical_memory_offset</span>;
@@ -330,7 +359,6 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">UNWIND_INFO</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">boot_info</span>.<span class="ident">unwind_info</span>);
 
     <span class="ident">rendy::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">boot_info</span>.<span class="ident">framebuffer</span>);
-    <span class="ident">logger::init</span>();
 
     <span class="ident">arch::gdt::init_boot</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded bootstrap GDT&quot;</span>);
