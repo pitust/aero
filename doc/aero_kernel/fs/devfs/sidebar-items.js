@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["MAX_DEVICES",""]],"fn":[["init","Initialize devfs and install it in the dyn filesystem hashmap."],["install_device",""]],"struct":[["DEVICES",""],["DevFs",""],["DevNull",""],["DevUrandom",""],["DevZero",""]],"trait":[["Device",""]]});

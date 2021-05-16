@@ -14,20 +14,46 @@
 <span id="11">11</span>
 <span id="12">12</span>
 <span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
 </pre><pre class="rust">
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">vfs</span>;
+<span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 
-<span class="doccomment">/// File systems are the machine&#39;s way of ordering your data on readable and/or writable media.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ## Notes</span>
-<span class="doccomment">/// * https://wiki.osdev.org/File_Systems</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FileSystem</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="kw">const</span> <span class="ident">SIGNATURE</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
+<span class="kw">use</span> <span class="ident">hashbrown::HashMap</span>;
+<span class="kw">use</span> <span class="ident">spin::Mutex</span>;
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">devfs</span>;
+
+<span class="macro">lazy_static::lazy_static!</span> {
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">FILE_SYSTEMS</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Mutex::new</span>(<span class="ident">HashMap::new</span>());
 }
 
-<span class="doccomment">/// Initialize the file system. By default aero will use Aero VFS for its</span>
-<span class="doccomment">/// file system.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {}
+<span class="doccomment">/// ## Notes</span>
+<span class="doccomment">/// * https://wiki.osdev.org/File_Systems</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FileSystem</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {}
+
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">install_filesystem</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">FileSystem</span><span class="op">&gt;</span>(
+    <span class="ident">signature</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="ident">filesystem</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>,
+) {
+    <span class="ident">FILE_SYSTEMS</span>.<span class="ident">lock</span>().<span class="ident">insert</span>(<span class="ident">signature</span>, <span class="ident">filesystem</span>);
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
+    <span class="ident">devfs::init</span>();
+}
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
