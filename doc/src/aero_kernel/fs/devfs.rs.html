@@ -100,7 +100,7 @@
 
 <span class="doccomment">/// Initialize devfs and install it in the dyn filesystem hashmap.</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">init</span>() {
-    <span class="kw">let</span> <span class="ident">devfs</span> <span class="op">=</span> <span class="ident">DevFs</span>;
+    <span class="kw">let</span> <span class="ident">devfs</span> <span class="op">=</span> <span class="kw">box</span> <span class="ident">DevFs</span>;
 
     <span class="comment">/*
      * First of all lets install all of the devices in devfs:
@@ -109,18 +109,18 @@
      * /dev/zero
      * /dev/urandom
      */</span>
-    <span class="kw">let</span> <span class="ident">null</span> <span class="op">=</span> <span class="ident">DevNull</span>;
-    <span class="ident">install_device</span>(<span class="string">&quot;null&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">null</span>));
+    <span class="kw">let</span> <span class="ident">null</span> <span class="op">=</span> <span class="kw">box</span> <span class="ident">DevNull</span>;
+    <span class="ident">install_device</span>(<span class="string">&quot;null&quot;</span>, <span class="ident">null</span>);
 
     <span class="macro">log::debug!</span>(<span class="string">&quot;Installed /dev/null&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">DevZero</span>;
-    <span class="ident">install_device</span>(<span class="string">&quot;zero&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">zero</span>));
+    <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="kw">box</span> <span class="ident">DevZero</span>;
+    <span class="ident">install_device</span>(<span class="string">&quot;zero&quot;</span>, <span class="ident">zero</span>);
 
     <span class="macro">log::debug!</span>(<span class="string">&quot;Installed /dev/zero&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">urandom</span> <span class="op">=</span> <span class="ident">DevUrandom</span>;
-    <span class="ident">install_device</span>(<span class="string">&quot;urandom&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">urandom</span>));
+    <span class="kw">let</span> <span class="ident">urandom</span> <span class="op">=</span> <span class="kw">box</span> <span class="ident">DevUrandom</span>;
+    <span class="ident">install_device</span>(<span class="string">&quot;urandom&quot;</span>, <span class="ident">urandom</span>);
 
     <span class="macro">log::debug!</span>(<span class="string">&quot;Installed /dev/urandom&quot;</span>);
 
@@ -128,7 +128,7 @@
      * Now after we have initialized devfs we are going to install it as a filesystem
      * in our dyn filesystems hashmap with &quot;dev&quot; as its signature.
      */</span>
-    <span class="ident">install_filesystem</span>(<span class="string">&quot;dev&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">devfs</span>));
+    <span class="ident">install_filesystem</span>(<span class="string">&quot;dev&quot;</span>, <span class="ident">devfs</span>);
 
     <span class="macro">log::debug!</span>(<span class="string">&quot;Installed devfs&quot;</span>);
 }
