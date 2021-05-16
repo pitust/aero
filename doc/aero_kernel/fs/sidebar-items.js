@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init",""],["install_filesystem",""]],"mod":[["devfs",""]],"struct":[["FILE_SYSTEMS",""]],"trait":[["FileSystem","Notes"]]});
+initSidebarItems({"enum":[["AeroInvalidPath",""]],"fn":[["init",""],["install_filesystem",""]],"mod":[["devfs",""]],"struct":[["FILE_SYSTEMS",""],["Path","Structure that represents a path in a file system. This structure is a transparent wrapper around ref [str]."]],"trait":[["FileSystem","Notes"]]});
