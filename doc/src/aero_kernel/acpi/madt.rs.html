@@ -250,7 +250,6 @@
 <span id="247">247</span>
 <span id="248">248</span>
 <span id="249">249</span>
-<span id="250">250</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">intrinsics</span>, <span class="ident">mem</span>, <span class="ident">sync::atomic::Ordering</span>};
 
@@ -265,7 +264,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">apic</span>::{<span class="self">self</span>, <span class="ident">IoApicHeader</span>},
     <span class="ident">kernel_ap_startup</span>,
-    <span class="ident">mem::alloc::malloc_align</span>,
+    <span class="ident">mem</span>::{<span class="ident">alloc::malloc_align</span>, <span class="ident">paging::FRAME_ALLOCATOR</span>},
 };
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic::CPU_COUNT</span>;
@@ -286,7 +285,6 @@
 <span class="kw">impl</span> <span class="ident">Madt</span> {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">init</span>(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="self">self</span>,
-        <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span>,
         <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="ident">MADT</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>);
@@ -306,7 +304,7 @@
                 <span class="ident">trampoline_page</span>,
                 <span class="ident">trampoline_frame</span>,
                 <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                <span class="ident">frame_allocator</span>,
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
             )
         }<span class="question-mark">?</span>
         .<span class="ident">flush</span>();

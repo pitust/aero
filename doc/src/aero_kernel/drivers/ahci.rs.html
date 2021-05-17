@@ -471,24 +471,13 @@
 <span id="468">468</span>
 <span id="469">469</span>
 <span id="470">470</span>
-<span id="471">471</span>
-<span id="472">472</span>
-<span id="473">473</span>
-<span id="474">474</span>
-<span id="475">475</span>
-<span id="476">476</span>
-<span id="477">477</span>
-<span id="478">478</span>
-<span id="479">479</span>
-<span id="480">480</span>
-<span id="481">481</span>
-<span id="482">482</span>
 </pre><pre class="rust">
-<span class="kw">use</span> <span class="ident">core::mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>};
+<span class="kw">use</span> <span class="ident">core::mem</span>;
+
+<span class="kw">use</span> <span class="ident">core::mem::MaybeUninit</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts</span>;
-
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">GlobalAllocator</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">FRAME_ALLOCATOR</span>};
 
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">structures::paging</span>::{
@@ -730,14 +719,10 @@
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">configure</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
-        <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
-    ) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">configure</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) {
         <span class="self">self</span>.<span class="ident">stop_command</span>();
 
-        <span class="kw">let</span> <span class="ident">mapped_clb</span> <span class="op">=</span> <span class="ident">frame_allocator</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">mapped_clb</span> <span class="op">=</span> <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
 
         <span class="ident">offset_table</span>
             .<span class="ident">map_to</span>(
@@ -747,7 +732,7 @@
                     <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
                     <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
                     <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                <span class="ident">frame_allocator</span>,
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
             )
             .<span class="ident">unwrap</span>()
             .<span class="ident">flush</span>();
@@ -755,7 +740,7 @@
         <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_list_base</span> <span class="op">=</span> <span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_list_base_upper</span> <span class="op">=</span> (<span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
 
-        <span class="kw">let</span> <span class="ident">mapped_fis</span> <span class="op">=</span> <span class="ident">frame_allocator</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">mapped_fis</span> <span class="op">=</span> <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
 
         <span class="ident">offset_table</span>
             .<span class="ident">map_to</span>(
@@ -765,7 +750,7 @@
                     <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
                     <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
                     <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                <span class="ident">frame_allocator</span>,
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
             )
             .<span class="ident">unwrap</span>()
             .<span class="ident">flush</span>();
@@ -783,7 +768,7 @@
             <span class="comment">// 8 prdt entries per command table.</span>
             <span class="ident">command_header</span>.<span class="ident">prdt_length</span> <span class="op">=</span> <span class="number">8</span>;
 
-            <span class="kw">let</span> <span class="ident">command_table</span> <span class="op">=</span> <span class="ident">frame_allocator</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="ident">command_table</span> <span class="op">=</span> <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
 
             <span class="ident">offset_table</span>
                 .<span class="ident">map_to</span>(
@@ -793,7 +778,7 @@
                         <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
                         <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
                         <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                    <span class="ident">frame_allocator</span>,
+                    <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
                 )
                 .<span class="ident">unwrap</span>()
                 .<span class="ident">flush</span>();
@@ -910,11 +895,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">AHCI</span> {
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
-        <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
-        <span class="ident">header</span>: <span class="ident">PCIHeader</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>, <span class="ident">header</span>: <span class="ident">PCIHeader</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="macro">log::info!</span>(<span class="string">&quot;Loaded AHCI driver&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">abar</span> <span class="op">=</span> <span class="ident">header</span>.<span class="ident">get_bar</span>(<span class="number">5</span>).<span class="ident">unwrap</span>();
@@ -931,24 +912,19 @@
             <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>((<span class="ident">abar_address</span> <span class="op">+</span> <span class="ident">abar_size</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u64</span>));
 
         <span class="kw">for</span> <span class="ident">frame</span> <span class="kw">in</span> <span class="ident">PhysFrame::range_inclusive</span>(<span class="ident">start</span>, <span class="ident">end</span>) {
-            <span class="ident">memory_map_device</span>(<span class="ident">offset_table</span>, <span class="ident">frame_allocator</span>, <span class="ident">frame</span>)
-                .<span class="ident">expect</span>(<span class="string">&quot;Failed to memory map the SATA device&quot;</span>);
+            <span class="ident">memory_map_device</span>(<span class="ident">offset_table</span>, <span class="ident">frame</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to memory map the SATA device&quot;</span>);
         }
 
         <span class="kw">let</span> <span class="ident">memory</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">abar_address</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HBAMemory</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">Self</span> { <span class="ident">memory</span> };
 
-        <span class="ident">this</span>.<span class="ident">probe_ports</span>(<span class="ident">offset_table</span>, <span class="ident">frame_allocator</span>);
+        <span class="ident">this</span>.<span class="ident">probe_ports</span>(<span class="ident">offset_table</span>);
 
         <span class="ident">this</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">probe_ports</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
-        <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
-    ) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">probe_ports</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) {
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">32</span> {
             <span class="kw">if</span> (<span class="self">self</span>.<span class="ident">memory</span>.<span class="ident">ports_implemented</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">i</span>)) <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
                 <span class="kw">let</span> <span class="ident">hba_port</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">memory</span>.<span class="ident">get_port</span>(<span class="ident">i</span>);
@@ -959,7 +935,7 @@
 
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">Port::new</span>(<span class="ident">hba_port</span>, <span class="ident">hba_port_type</span>, <span class="ident">i</span>);
 
-                    <span class="ident">port</span>.<span class="ident">configure</span>(<span class="ident">offset_table</span>, <span class="ident">frame_allocator</span>);
+                    <span class="ident">port</span>.<span class="ident">configure</span>(<span class="ident">offset_table</span>);
                     <span class="comment">// port.read(0, 4, &amp;mut buffer);</span>
                 }
             }

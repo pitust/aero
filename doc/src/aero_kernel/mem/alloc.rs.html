@@ -76,7 +76,6 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
-<span id="76">76</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">core::alloc</span>::{<span class="self">self</span>, <span class="ident">GlobalAlloc</span>, <span class="ident">Layout</span>};
 
@@ -89,7 +88,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::AERO_SYSTEM_ALLOCATOR</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::paging::GlobalAllocator</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::paging::FRAME_ALLOCATOR</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xfffffe8000000000</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HEAP_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="number">1024</span>;
@@ -104,10 +103,7 @@
 }
 
 <span class="doccomment">/// Initialize the heap.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(
-    <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
-    <span class="ident">frame_allocator</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GlobalAllocator</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">page_range</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="ident">heap_start</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">HEAP_START</span> <span class="kw">as</span> <span class="ident">u64</span>);
         <span class="kw">let</span> <span class="ident">heap_end</span> <span class="op">=</span> <span class="ident">heap_start</span> <span class="op">+</span> <span class="ident">HEAP_SIZE</span> <span class="op">-</span> <span class="number">1u64</span>;
@@ -119,16 +115,18 @@
     };
 
     <span class="kw">for</span> <span class="ident">page</span> <span class="kw">in</span> <span class="ident">page_range</span> {
-        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">frame_allocator</span>
-            .<span class="ident">allocate_frame</span>()
-            .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+            <span class="ident">FRAME_ALLOCATOR</span>
+                .<span class="ident">allocate_frame</span>()
+                .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>
+        };
 
         <span class="kw">unsafe</span> {
             <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
                 <span class="ident">page</span>,
                 <span class="ident">frame</span>,
                 <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                <span class="ident">frame_allocator</span>,
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
             )
         }<span class="question-mark">?</span>
         .<span class="ident">flush</span>();
