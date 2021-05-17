@@ -105,10 +105,11 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Thread Local Storage (TLS) are per-thread global variables. On 64-bit each CPU core&#39;s</span>
-<span class="doccomment">//! `gs` GDT segment points to the thread local memory area where the thread local static&#39;s</span>
-<span class="doccomment">//! live. TLS statics are simply accessed through an offset from `gs`.</span>
+<span class="doccomment">//! `fs` GDT segment points to the thread local memory area where the thread local static&#39;s</span>
+<span class="doccomment">//! live. TLS statics are simply accessed through an offset from `fs`.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Notes</span>
 <span class="doccomment">//! * &lt;https://wiki.osdev.org/Thread_Local_Storage&gt;</span>
@@ -191,7 +192,8 @@
     <span class="kw">let</span> <span class="ident">tcb_ptr</span> <span class="op">=</span> ((<span class="ident">tls_raw_ptr</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> (<span class="ident">total_size</span> <span class="kw">as</span> <span class="ident">u64</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>;
     <span class="kw">let</span> <span class="ident">tcb_offset</span> <span class="op">=</span> <span class="ident">tcb_ptr</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
-    <span class="comment">/* Set the FS base segment to the tcb_offset to enable thread locals and
+    <span class="comment">/*
+     * Set the FS base segment to the tcb_offset to enable thread locals and
      * set fs[:0x00] to the tcb offset as SystemV abi expects the pointer equal
      * to its offset.
      *

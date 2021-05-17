@@ -35,12 +35,14 @@
 <span id="32">32</span>
 <span id="33">33</span>
 <span id="34">34</span>
+<span id="35">35</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">core::ptr</span>;
 
-<span class="kw">use</span> <span class="ident">x86_64::structures::paging</span>::{<span class="ident">FrameAllocator</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Size4KiB</span>};
+<span class="kw">use</span> <span class="ident">x86_64::structures::paging::OffsetPageTable</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">sdt::Sdt</span>, <span class="ident">GenericAddressStructure</span>};
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::sdt::Sdt</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::GenericAddressStructure</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIGNATURE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;HPET&quot;</span>;
 

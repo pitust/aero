@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init","Initialize userland."],["jump_userland",""]],"mod":[["process",""],["scheduler",""]]});
+initSidebarItems({"fn":[["init","Initialize userland."]],"mod":[["process",""],["scheduler",""]]});
