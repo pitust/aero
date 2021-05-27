@@ -2,7 +2,7 @@ var N = null;var sourcesIndex = {};
 sourcesIndex["aero_boot"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["aero_gfx"] = {"name":"","dirs":[{"name":"debug","files":["color.rs","mod.rs","rendy.rs"]}],"files":["lib.rs"]};
 sourcesIndex["aero_hal"] = {"name":"","dirs":[{"name":"paging","files":["address.rs","frame.rs","mapper.rs","mod.rs","page.rs"]}],"files":["lib.rs"]};
-sourcesIndex["aero_kernel"] = {"name":"","dirs":[{"name":"acpi","files":["fadt.rs","hpet.rs","madt.rs","mcfg.rs","mod.rs","rsdp.rs","sdt.rs"]},{"name":"arch","dirs":[{"name":"x86_64","dirs":[{"name":"interrupts","files":["exceptions.rs","idt.rs","irq.rs","mod.rs"]}],"files":["gdt.rs","mod.rs"]}],"files":["mod.rs"]},{"name":"drivers","files":["ahci.rs","keyboard.rs","mod.rs","mouse.rs","pci.rs","uart_16550.rs"]},{"name":"fs","files":["devfs.rs","mod.rs"]},{"name":"mem","dirs":[{"name":"paging","files":["frame.rs","mod.rs"]}],"files":["alloc.rs","mod.rs","pti.rs"]},{"name":"syscall","files":["fs.rs","mod.rs","process.rs","time.rs"]},{"name":"userland","files":["mod.rs","process.rs","scheduler.rs"]},{"name":"utils","files":["buffer.rs","io.rs","linker.rs","mod.rs"]}],"files":["apic.rs","logger.rs","main.rs","rendy.rs","tests.rs","time.rs","tls.rs","unwind.rs"]};
+sourcesIndex["aero_kernel"] = {"name":"","dirs":[{"name":"acpi","files":["fadt.rs","hpet.rs","madt.rs","mcfg.rs","mod.rs","rsdp.rs","sdt.rs"]},{"name":"arch","dirs":[{"name":"x86_64","dirs":[{"name":"interrupts","files":["exceptions.rs","idt.rs","irq.rs","mod.rs"]}],"files":["gdt.rs","mod.rs"]}],"files":["mod.rs"]},{"name":"drivers","files":["ahci.rs","keyboard.rs","mod.rs","mouse.rs","pci.rs","uart_16550.rs"]},{"name":"fs","files":["devfs.rs","file_table.rs","mod.rs"]},{"name":"mem","dirs":[{"name":"paging","files":["frame.rs","mod.rs"]}],"files":["alloc.rs","mod.rs","pti.rs"]},{"name":"syscall","files":["fs.rs","mod.rs","process.rs","time.rs"]},{"name":"userland","files":["context.rs","mod.rs","process.rs","scheduler.rs"]},{"name":"utils","files":["buffer.rs","io.rs","linker.rs","mod.rs","stack.rs"]}],"files":["apic.rs","logger.rs","main.rs","rendy.rs","tests.rs","time.rs","tls.rs","unwind.rs"]};
 sourcesIndex["aero_syscall"] = {"name":"","files":["consts.rs","lib.rs","syscall.rs"]};
 sourcesIndex["ahash"] = {"name":"","files":["convert.rs","fallback_hash.rs","lib.rs","operations.rs","random_state.rs","specialize.rs"]};
 sourcesIndex["bit_field"] = {"name":"","files":["lib.rs"]};
@@ -16,6 +16,7 @@ sourcesIndex["lock_api"] = {"name":"","files":["lib.rs","mutex.rs","remutex.rs",
 sourcesIndex["log"] = {"name":"","files":["lib.rs","macros.rs"]};
 sourcesIndex["raw_cpuid"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["rlibc"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["rustc_demangle"] = {"name":"","files":["legacy.rs","lib.rs","v0.rs"]};
 sourcesIndex["scopeguard"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["spin"] = {"name":"","dirs":[{"name":"mutex","files":["spin.rs"]}],"files":["barrier.rs","lazy.rs","lib.rs","mutex.rs","once.rs","relax.rs","rwlock.rs"]};
 sourcesIndex["spinning_top"] = {"name":"","files":["lib.rs","spinlock.rs"]};

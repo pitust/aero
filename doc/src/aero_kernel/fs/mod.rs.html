@@ -66,12 +66,36 @@
 <span id="63">63</span>
 <span id="64">64</span>
 <span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
 </pre><pre class="rust">
+<span class="comment">/*
+ * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
+ * file at the top-level directory of this project.
+ *
+ * Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or
+ * http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+ * &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your
+ * option. This file may not be copied, modified, or distributed
+ * except according to those terms.
+ */</span>
+
 <span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">collections::BTreeMap</span>, <span class="ident">sync::Arc</span>};
 
 <span class="kw">use</span> <span class="ident">spin::RwLock</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">devfs</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">file_table</span>;
 
 <span class="kw">static</span> <span class="ident">FILE_SYSTEMS</span>: <span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RwLock::new</span>(<span class="ident">BTreeMap::new</span>());
 

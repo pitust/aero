@@ -236,20 +236,43 @@
 <span id="233">233</span>
 <span id="234">234</span>
 <span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
 </pre><pre class="rust">
+<span class="comment">/*
+ * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
+ * file at the top-level directory of this project.
+ *
+ * Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or
+ * http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+ * &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your
+ * option. This file may not be copied, modified, or distributed
+ * except according to those terms.
+ */</span>
+
 <span class="doccomment">//! # Aero</span>
 <span class="doccomment">//! Aero is a new modern, unix based operating system. It is being developed for educational purposes.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Code organization and architecture</span>
 <span class="doccomment">//! The code is divided into different *modules*, each representing a *subsystem* of the kernel.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! **Notes**: &lt;https://en.wikipedia.org/wiki/Unix&gt;</span>
+<span class="doccomment">//! ## Notes:</span>
+<span class="doccomment">//! * &lt;https://en.wikipedia.org/wiki/Unix&gt;</span>
 
 <span class="attribute">#![<span class="ident">feature</span>(
     <span class="ident">custom_test_frameworks</span>,
     <span class="ident">core_intrinsics</span>,
     <span class="ident">asm</span>,
-    <span class="ident">naked_functions</span>,
     <span class="ident">alloc_error_handler</span>,
     <span class="ident">lang_items</span>,
     <span class="ident">panic_info_message</span>,
@@ -290,17 +313,20 @@
 <span class="kw">mod</span> <span class="ident">utils</span>;
 <span class="kw">mod</span> <span class="ident">prelude</span> {
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::drivers::uart_16550</span>::{<span class="ident">serial_print</span>, <span class="ident">serial_println</span>};
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem</span>::{<span class="ident">memcmp</span>, <span class="ident">memcpy</span>, <span class="ident">memmove</span>, <span class="ident">memset</span>};
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::rendy</span>::{<span class="ident">print</span>, <span class="ident">println</span>};
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils</span>::<span class="kw-2">*</span>;
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils</span>::{
+        <span class="ident">const_unsafe</span>, <span class="ident">intel_asm</span>, <span class="ident">intel_fn</span>, <span class="ident">pop_fs</span>, <span class="ident">pop_preserved</span>, <span class="ident">pop_scratch</span>, <span class="ident">push_fs</span>,
+        <span class="ident">push_preserved</span>, <span class="ident">push_scratch</span>,
+    };
 }
 
 <span class="kw">use</span> <span class="ident">arch::interrupts</span>;
+<span class="kw">use</span> <span class="ident">arch::interrupts</span>::{<span class="ident">PIC1_DATA</span>, <span class="ident">PIC2_DATA</span>};
 
 <span class="kw">use</span> <span class="ident">utils::io</span>;
 
-<span class="kw">use</span> <span class="ident">arch::interrupts</span>::{<span class="ident">PIC1_DATA</span>, <span class="ident">PIC2_DATA</span>};
-
-<span class="kw">use</span> <span class="ident">userland</span>::{<span class="ident">process::Process</span>, <span class="ident">scheduler</span>};
+<span class="kw">use</span> <span class="ident">userland::scheduler</span>;
 
 <span class="attribute">#[<span class="ident">global_allocator</span>]</span>
 <span class="kw">static</span> <span class="ident">AERO_SYSTEM_ALLOCATOR</span>: <span class="ident">LockedHeap</span> <span class="op">=</span> <span class="ident">LockedHeap::empty</span>();
@@ -384,7 +410,7 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">tls::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded TLS&quot;</span>);
 
-    <span class="ident">arch::gdt::init</span>();
+    <span class="ident">arch::gdt::init</span>(<span class="ident">boot_info</span>.<span class="ident">unwind_info</span>.<span class="ident">stack_top</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
 
     <span class="comment">/*
@@ -424,15 +450,21 @@ _______ _______ ______ _______    _______ ______
     <span class="comment">/*
      * Now that all of the essential initialization is done we are going to schedule
      * the kernel main thread.
+     *
+     * TODO(Andy-Python-Programmer): Add support in the scheduler to run kernel processes
+     * with ring 0 permissions:
+     *
+     * let init = Process::from_function(kernel_main_thread);
+     * scheduler::get_scheduler().push(init);
      */</span>
-    <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="ident">Process::from_function</span>(<span class="ident">kernel_main_thread</span>);
-    <span class="ident">scheduler::get_scheduler</span>().<span class="ident">push</span>(<span class="ident">init</span>);
+
+    <span class="ident">userland::run</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to run userspace shell&quot;</span>);
 
     <span class="kw">unsafe</span> {
         <span class="kw">loop</span> {
             <span class="ident">interrupts::disable_interrupts</span>();
 
-            <span class="kw">if</span> <span class="ident">scheduler::reschedule</span>() {
+            <span class="kw">if</span> <span class="ident">scheduler::get_scheduler</span>().<span class="ident">reschedule</span>() {
                 <span class="ident">interrupts::enable_interrupts</span>();
             } <span class="kw">else</span> {
                 <span class="ident">interrupts::enable_interrupts_and_halt</span>();
@@ -448,14 +480,6 @@ _______ _______ ______ _______    _______ ______
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_ap_startup</span>(<span class="ident">cpu_id</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="macro">log::info!</span>(<span class="string">&quot;Starting CPU with id: {}&quot;</span>, <span class="ident">cpu_id</span>);
 
-    <span class="ident">arch::gdt::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;(cpu={}) Loaded GDT&quot;</span>, <span class="ident">cpu_id</span>);
-
-    <span class="ident">interrupts::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;(cpu={}) Loaded IDT&quot;</span>, <span class="ident">cpu_id</span>);
-
-    <span class="ident">apic::mark_ap_ready</span>(<span class="bool-val">true</span>);
-
     <span class="kw">while</span> <span class="op">!</span><span class="ident">apic::is_bsp_ready</span>() {
         <span class="ident">interrupts::pause</span>();
     }
@@ -464,7 +488,7 @@ _______ _______ ______ _______    _______ ______
         <span class="kw">loop</span> {
             <span class="ident">interrupts::disable_interrupts</span>();
 
-            <span class="kw">if</span> <span class="ident">scheduler::reschedule</span>() {
+            <span class="kw">if</span> <span class="ident">scheduler::get_scheduler</span>().<span class="ident">reschedule</span>() {
                 <span class="ident">interrupts::enable_interrupts</span>();
             } <span class="kw">else</span> {
                 <span class="ident">interrupts::enable_interrupts_and_halt</span>();

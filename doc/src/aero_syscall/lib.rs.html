@@ -1,41 +1,148 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `aero_syscall/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
 <link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../aero_syscall/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
-<span id="2"> 2</span>
-<span id="3"> 3</span>
-<span id="4"> 4</span>
-<span id="5"> 5</span>
-<span id="6"> 6</span>
-<span id="7"> 7</span>
-<span id="8"> 8</span>
-<span id="9"> 9</span>
-<span id="10">10</span>
-<span id="11">11</span>
-<span id="12">12</span>
-<span id="13">13</span>
-<span id="14">14</span>
-<span id="15">15</span>
-<span id="16">16</span>
-<span id="17">17</span>
-<span id="18">18</span>
-<span id="19">19</span>
-<span id="20">20</span>
-<span id="21">21</span>
-<span id="22">22</span>
-<span id="23">23</span>
-<span id="24">24</span>
-<span id="25">25</span>
-<span id="26">26</span>
-<span id="27">27</span>
-<span id="28">28</span>
-<span id="29">29</span>
-<span id="30">30</span>
-<span id="31">31</span>
-<span id="32">32</span>
-<span id="33">33</span>
-<span id="34">34</span>
-<span id="35">35</span>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><pre class="rust">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">asm</span>, <span class="ident">decl_macro</span>)]</span>
@@ -55,6 +162,92 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">isize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AeroSyscallError</span> {
+    <span class="ident">EDOM</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="ident">EILSEQ</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="ident">ERANGE</span> <span class="op">=</span> <span class="number">3</span>,
+
+    <span class="ident">E2BIG</span> <span class="op">=</span> <span class="number">1001</span>,
+    <span class="ident">EACCES</span> <span class="op">=</span> <span class="number">1002</span>,
+    <span class="ident">EADDRINUSE</span> <span class="op">=</span> <span class="number">1003</span>,
+    <span class="ident">EADDRNOTAVAIL</span> <span class="op">=</span> <span class="number">1004</span>,
+    <span class="ident">EAFNOSUPPORT</span> <span class="op">=</span> <span class="number">1005</span>,
+    <span class="ident">EAGAIN</span> <span class="op">=</span> <span class="number">1006</span>,
+    <span class="ident">EALREADY</span> <span class="op">=</span> <span class="number">1007</span>,
+    <span class="ident">EBADF</span> <span class="op">=</span> <span class="number">1008</span>,
+    <span class="ident">EBADMSG</span> <span class="op">=</span> <span class="number">1009</span>,
+    <span class="ident">EBUSY</span> <span class="op">=</span> <span class="number">1010</span>,
+    <span class="ident">ECANCELED</span> <span class="op">=</span> <span class="number">1011</span>,
+    <span class="ident">ECHILD</span> <span class="op">=</span> <span class="number">1012</span>,
+    <span class="ident">ECONNABORTED</span> <span class="op">=</span> <span class="number">1013</span>,
+    <span class="ident">ECONNREFUSED</span> <span class="op">=</span> <span class="number">1014</span>,
+    <span class="ident">ECONNRESET</span> <span class="op">=</span> <span class="number">1015</span>,
+    <span class="ident">EDEADLK</span> <span class="op">=</span> <span class="number">1016</span>,
+    <span class="ident">EDESTADDRREQ</span> <span class="op">=</span> <span class="number">1017</span>,
+    <span class="ident">EDQUOT</span> <span class="op">=</span> <span class="number">1018</span>,
+    <span class="ident">EEXIST</span> <span class="op">=</span> <span class="number">1019</span>,
+    <span class="ident">EFAULT</span> <span class="op">=</span> <span class="number">1020</span>,
+    <span class="ident">EFBIG</span> <span class="op">=</span> <span class="number">1021</span>,
+    <span class="ident">EHOSTUNREACH</span> <span class="op">=</span> <span class="number">1022</span>,
+    <span class="ident">EIDRM</span> <span class="op">=</span> <span class="number">1023</span>,
+    <span class="ident">EINPROGRESS</span> <span class="op">=</span> <span class="number">1024</span>,
+    <span class="ident">EINTR</span> <span class="op">=</span> <span class="number">1025</span>,
+    <span class="ident">EINVAL</span> <span class="op">=</span> <span class="number">1026</span>,
+    <span class="ident">EIO</span> <span class="op">=</span> <span class="number">1027</span>,
+    <span class="ident">EISCONN</span> <span class="op">=</span> <span class="number">1028</span>,
+    <span class="ident">EISDIR</span> <span class="op">=</span> <span class="number">1029</span>,
+    <span class="ident">ELOOP</span> <span class="op">=</span> <span class="number">1030</span>,
+    <span class="ident">EMFILE</span> <span class="op">=</span> <span class="number">1031</span>,
+    <span class="ident">EMLINK</span> <span class="op">=</span> <span class="number">1032</span>,
+    <span class="ident">EMSGSIZE</span> <span class="op">=</span> <span class="number">1034</span>,
+    <span class="ident">EMULTIHOP</span> <span class="op">=</span> <span class="number">1035</span>,
+    <span class="ident">ENAMETOOLONG</span> <span class="op">=</span> <span class="number">1036</span>,
+    <span class="ident">ENETDOWN</span> <span class="op">=</span> <span class="number">1037</span>,
+    <span class="ident">ENETRESET</span> <span class="op">=</span> <span class="number">1038</span>,
+    <span class="ident">ENETUNREACH</span> <span class="op">=</span> <span class="number">1039</span>,
+    <span class="ident">ENFILE</span> <span class="op">=</span> <span class="number">1040</span>,
+    <span class="ident">ENOBUFS</span> <span class="op">=</span> <span class="number">1041</span>,
+    <span class="ident">ENODEV</span> <span class="op">=</span> <span class="number">1042</span>,
+    <span class="ident">ENOENT</span> <span class="op">=</span> <span class="number">1043</span>,
+    <span class="ident">ENOEXEC</span> <span class="op">=</span> <span class="number">1044</span>,
+    <span class="ident">ENOLCK</span> <span class="op">=</span> <span class="number">1045</span>,
+    <span class="ident">ENOLINK</span> <span class="op">=</span> <span class="number">1046</span>,
+    <span class="ident">ENOMEM</span> <span class="op">=</span> <span class="number">1047</span>,
+    <span class="ident">ENOMSG</span> <span class="op">=</span> <span class="number">1048</span>,
+    <span class="ident">ENOPROTOOPT</span> <span class="op">=</span> <span class="number">1049</span>,
+    <span class="ident">ENOSPC</span> <span class="op">=</span> <span class="number">1050</span>,
+    <span class="ident">ENOSYS</span> <span class="op">=</span> <span class="number">1051</span>,
+    <span class="ident">ENOTCONN</span> <span class="op">=</span> <span class="number">1052</span>,
+    <span class="ident">ENOTDIR</span> <span class="op">=</span> <span class="number">1053</span>,
+    <span class="ident">ENOTEMPTY</span> <span class="op">=</span> <span class="number">1054</span>,
+    <span class="ident">ENOTRECOVERABLE</span> <span class="op">=</span> <span class="number">1055</span>,
+    <span class="ident">ENOTSOCK</span> <span class="op">=</span> <span class="number">1056</span>,
+    <span class="ident">ENOTSUP</span> <span class="op">=</span> <span class="number">1057</span>,
+    <span class="ident">ENOTTY</span> <span class="op">=</span> <span class="number">1058</span>,
+    <span class="ident">ENXIO</span> <span class="op">=</span> <span class="number">1059</span>,
+    <span class="ident">EOPNOTSUPP</span> <span class="op">=</span> <span class="number">1060</span>,
+    <span class="ident">EOVERFLOW</span> <span class="op">=</span> <span class="number">1061</span>,
+    <span class="ident">EOWNERDEAD</span> <span class="op">=</span> <span class="number">1062</span>,
+    <span class="ident">EPERM</span> <span class="op">=</span> <span class="number">1063</span>,
+    <span class="ident">EPIPE</span> <span class="op">=</span> <span class="number">1064</span>,
+    <span class="ident">EPROTO</span> <span class="op">=</span> <span class="number">1065</span>,
+    <span class="ident">EPROTONOSUPPORT</span> <span class="op">=</span> <span class="number">1066</span>,
+    <span class="ident">EPROTOTYPE</span> <span class="op">=</span> <span class="number">1067</span>,
+    <span class="ident">EROFS</span> <span class="op">=</span> <span class="number">1068</span>,
+    <span class="ident">ESPIPE</span> <span class="op">=</span> <span class="number">1069</span>,
+    <span class="ident">ESRCH</span> <span class="op">=</span> <span class="number">1070</span>,
+    <span class="ident">ESTALE</span> <span class="op">=</span> <span class="number">1071</span>,
+    <span class="ident">ETIMEDOUT</span> <span class="op">=</span> <span class="number">1072</span>,
+    <span class="ident">ETXTBSY</span> <span class="op">=</span> <span class="number">1073</span>,
+    <span class="ident">EXDEV</span> <span class="op">=</span> <span class="number">1075</span>,
+    <span class="ident">ENODATA</span> <span class="op">=</span> <span class="number">1076</span>,
+    <span class="ident">ETIME</span> <span class="op">=</span> <span class="number">1077</span>,
+    <span class="ident">ENOKEY</span> <span class="op">=</span> <span class="number">1078</span>,
+    <span class="ident">ESHUTDOWN</span> <span class="op">=</span> <span class="number">1079</span>,
+    <span class="ident">EHOSTDOWN</span> <span class="op">=</span> <span class="number">1080</span>,
+    <span class="ident">EBADFD</span> <span class="op">=</span> <span class="number">1081</span>,
+    <span class="ident">ENOMEDIUM</span> <span class="op">=</span> <span class="number">1082</span>,
+    <span class="ident">ENOTBLK</span> <span class="op">=</span> <span class="number">1083</span>,
+
     <span class="ident">Unknown</span> <span class="op">=</span> <span class="ident">isize::MAX</span>,
 }
 
@@ -69,8 +262,29 @@
 
 <span class="doccomment">/// Exits the current process with the provided status.</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-    <span class="kw">unsafe</span> { <span class="ident">syscall1</span>(<span class="ident">prelude::SYS_EXIT</span>, <span class="ident">status</span>) }
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">unsafe</span> {
+        <span class="ident">syscall1</span>(<span class="ident">prelude::SYS_EXIT</span>, <span class="ident">status</span>);
+    }
+
+    <span class="macro">unreachable!</span>()
+}
+
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_open</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">mode</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">unsafe</span> { <span class="ident">syscall3</span>(<span class="ident">prelude::SYS_OPEN</span>, <span class="ident">path</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">path</span>.<span class="ident">len</span>(), <span class="ident">mode</span>) }
+}
+
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_write</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">unsafe</span> {
+        <span class="ident">syscall3</span>(
+            <span class="ident">prelude::SYS_WRITE</span>,
+            <span class="ident">fd</span> <span class="kw">as</span> <span class="ident">usize</span>,
+            <span class="ident">buf</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>,
+            <span class="ident">buf</span>.<span class="ident">len</span>(),
+        )
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_syscall" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

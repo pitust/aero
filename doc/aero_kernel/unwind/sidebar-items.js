@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["_Unwind_Resume",""],["exception_begin_unwind",""],["rust_begin_unwind",""],["rust_eh_personality",""]]});
+initSidebarItems({"fn":[["_Unwind_Resume","This function is automatically called after each unwinding cleanup routine finishes executing. Our task here is to resume the unwinding procedure by figuring out where we just came from and picking up where we left off."],["rust_begin_unwind",""],["rust_eh_personality","This function is the entry point for the unwinding process."],["unwind_stack_trace",""]]});

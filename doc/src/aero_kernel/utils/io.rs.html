@@ -104,7 +104,26 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
 </pre><pre class="rust">
+<span class="comment">/*
+ * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
+ * file at the top-level directory of this project.
+ *
+ * Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or
+ * http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+ * &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your
+ * option. This file may not be copied, modified, or distributed
+ * except according to those terms.
+ */</span>
+
 <span class="doccomment">//! Wrapper functions for the hardware IO using respective assembly instructions.</span>
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_EFER</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000080</span>;
@@ -122,9 +141,6 @@
 
 <span class="doccomment">/// APIC Location and Status (R/W).</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_APIC_BASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x1b</span>;
-
-<span class="doccomment">/// Map of BASE Address of GS (R/W).</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_GS_BASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000101</span>;
 
 <span class="doccomment">/// Swap Target of BASE Address of GS (R/W).</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_KERNEL_GSBASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000102</span>;

@@ -169,7 +169,42 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
 </pre><pre class="rust">
+<span class="comment">/*
+ * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
+ * file at the top-level directory of this project.
+ *
+ * Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or
+ * http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+ * &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your
+ * option. This file may not be copied, modified, or distributed
+ * except according to those terms.
+ */</span>
+
 <span class="doccomment">//! System Calls are used to call a kernel service from user land.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! | %rax   | Name                    |</span>
@@ -205,8 +240,8 @@
     <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">scratch</span>.<span class="ident">rdi</span>;
     <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">scratch</span>.<span class="ident">rsi</span>;
     <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">scratch</span>.<span class="ident">rdx</span>;
-    <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">scratch</span>.<span class="ident">r10</span>;
-    <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">scratch</span>.<span class="ident">r8</span>;
+    <span class="comment">// let e = scratch.r10;</span>
+    <span class="comment">// let f = scratch.r8;</span>
 
     <span class="kw">match</span> <span class="ident">a</span> {
         <span class="ident">SYS_EXIT</span> <span class="op">=</span><span class="op">&gt;</span> {}
@@ -215,10 +250,12 @@
 
     <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">a</span> {
         <span class="ident">SYS_EXIT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::exit</span>(<span class="ident">b</span>),
+        <span class="ident">SYS_OPEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::open</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
+        <span class="ident">SYS_WRITE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::write</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">log::error!</span>(<span class="string">&quot;Invalid syscall: {:#x}&quot;</span>, <span class="ident">a</span>);
 
-            <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::Unknown</span>)
+            <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::ENOSYS</span>)
         }
     };
 
@@ -247,7 +284,7 @@
     }
 );
 
-<span class="macro">intel_fn!</span>(
+<span class="macro">intel_fn!</span> {
     <span class="attribute">#![<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
 
     <span class="doccomment">/**
@@ -256,28 +293,39 @@
      * The `syscall` instruction should only be used for 64-bit system calls. The
      * `syscall` instruction saves RIP to RAX, clears rflags.RF, saves rflags
      * to R11 and then loads new SS, CS and RIP from previously programmed MSRs.
+     *
+     * ## Saftey
+     * The syscall instruction should only be called in usermode/ring 3. If not you will
+     * be pleased by a page fault :D
      */</span>
     <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;asm&quot;</span> <span class="kw">fn</span> <span class="ident">syscall_handler</span>() {
         <span class="string">&quot;swapgs\n&quot;</span>, <span class="comment">// Set gs segment to TSS.</span>
 
-        <span class="string">&quot;mov gs:[0x08], rsp\n&quot;</span>, <span class="comment">// Save userspace stack pointer.</span>
-        <span class="string">&quot;mov rsp, gs:[0x14]\n&quot;</span>, <span class="comment">// Load kernel stack pointer.</span>
+        <span class="string">&quot;mov gs:[0x1C], rsp\n&quot;</span>, <span class="comment">// Save userspace stack pointer.</span>
+        <span class="string">&quot;mov rsp, gs:[0x04]\n&quot;</span>, <span class="comment">// Load kernel stack pointer.</span>
 
         <span class="string">&quot;push QWORD PTR 5 * 8 + 3\n&quot;</span>, <span class="comment">// Push fake userspace SS resembling `iret` frame.</span>
 
-        <span class="string">&quot;push QWORD PTR gs:[0x08]\n&quot;</span>, <span class="comment">// Push userspace rsp.</span>
+        <span class="string">&quot;push QWORD PTR gs:[0x1C]\n&quot;</span>, <span class="comment">// Push userspace rsp.</span>
         <span class="string">&quot;push r11\n&quot;</span>, <span class="comment">// Push rflags in r11.</span>
 
         <span class="string">&quot;push QWORD PTR 6 * 8 + 3\n&quot;</span>, <span class="comment">// Push fake CS resembling `iret` stack frame.</span>
         <span class="string">&quot;push rcx\n&quot;</span>, <span class="comment">// Push userspace return pointer.</span>
 
+        <span class="string">&quot;call restore_kernel_tls\n&quot;</span>, <span class="comment">// Restore the kernel thread local storage.</span>
+
         <span class="string">&quot;push rax\n&quot;</span>,
         <span class="kw">crate</span><span class="macro">::prelude::push_scratch!</span>(),
         <span class="kw">crate</span><span class="macro">::prelude::push_preserved!</span>(),
+        <span class="kw">crate</span><span class="macro">::prelude::push_fs!</span>(),
 
         <span class="string">&quot;mov rdi, rsp\n&quot;</span>,
         <span class="string">&quot;call __impl_syscall_handler\n&quot;</span>, <span class="comment">// Call the inner syscall handler function.</span>
 
+        <span class="string">&quot;cli\n&quot;</span>, <span class="comment">// Renabled after `sysretq`. To be safe as we are doing `swapfs`.</span>
+        <span class="string">&quot;call restore_user_tls\n&quot;</span>, <span class="comment">// Restore the userland thread local storage.</span>
+
+        <span class="kw">crate</span><span class="macro">::prelude::pop_fs!</span>(),
         <span class="kw">crate</span><span class="macro">::prelude::pop_preserved!</span>(),
         <span class="kw">crate</span><span class="macro">::prelude::pop_scratch!</span>(),
 
@@ -298,9 +346,9 @@
         <span class="string">&quot;add rsp, 8\n&quot;</span>, <span class="comment">// Pop fake userspace CS.</span>
 
         <span class="string">&quot;pop r11\n&quot;</span>, <span class="comment">// Pop rflags in r11.</span>
-        <span class="string">&quot;pop QWORD PTR gs:[0x08]\n&quot;</span>, <span class="comment">// Pop userspace stack pointer.</span>
+        <span class="string">&quot;pop QWORD PTR gs:[0x1C]\n&quot;</span>, <span class="comment">// Pop userspace stack pointer.</span>
 
-        <span class="string">&quot;mov rsp, gs:[0x08]\n&quot;</span>, <span class="comment">// Restore userspace stack pointer.</span>
+        <span class="string">&quot;mov rsp, gs:[0x1C]\n&quot;</span>, <span class="comment">// Restore userspace stack pointer.</span>
         <span class="string">&quot;swapgs\n&quot;</span>, <span class="comment">// Restore gs from TSS to user data.</span>
 
         <span class="string">&quot;sysretq\n&quot;</span>, <span class="comment">// Return back into userspace.</span>
@@ -312,7 +360,7 @@
         <span class="string">&quot;swapgs\n&quot;</span>,
         <span class="string">&quot;iretq\n&quot;</span>,
     }
-);
+}
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
     <span class="kw">unsafe</span> {

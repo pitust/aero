@@ -106,7 +106,76 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
 </pre><pre class="rust">
+<span class="comment">/*
+ * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
+ * file at the top-level directory of this project.
+ *
+ * Licensed under the Apache License, Version 2.0 &lt;LICENSE-APACHE or
+ * http://www.apache.org/licenses/LICENSE-2.0&gt; or the MIT license
+ * &lt;LICENSE-MIT or http://opensource.org/licenses/MIT&gt;, at your
+ * option. This file may not be copied, modified, or distributed
+ * except according to those terms.
+ */</span>
+
 <span class="doccomment">//! Thread Local Storage (TLS) are per-thread global variables. On 64-bit each CPU core&#39;s</span>
 <span class="doccomment">//! `fs` GDT segment points to the thread local memory area where the thread local static&#39;s</span>
 <span class="doccomment">//! live. TLS statics are simply accessed through an offset from `fs`.</span>
@@ -123,10 +192,11 @@
 
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::gdt::TASK_STATE_SEGMENT</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::linker::LinkerSymbol</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::gdt::PROCESSOR_CONTROL_REGION</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
 
 <span class="kw">static</span> <span class="ident">THREAD_LOCAL_STORAGE</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">ThreadLocalStorage</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 
@@ -174,7 +244,10 @@
     <span class="comment">// Here we add the size of TCB to the total size to store the TCB pointer.</span>
     <span class="kw">let</span> <span class="ident">total_tls_size</span> <span class="op">=</span> <span class="ident">total_size</span> <span class="op">+</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">ThreadControlBlock</span><span class="op">&gt;</span>();
     <span class="kw">let</span> <span class="ident">tls_layout</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-        <span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">total_tls_size</span>, <span class="ident">mem::align_of</span>::<span class="op">&lt;</span><span class="ident">ThreadControlBlock</span><span class="op">&gt;</span>())
+        <span class="ident">Layout::from_size_align_unchecked</span>(
+            <span class="ident">total_tls_size</span> <span class="op">+</span> <span class="ident">mem::align_of</span>::<span class="op">&lt;</span><span class="ident">ThreadControlBlock</span><span class="op">&gt;</span>(),
+            <span class="ident">mem::align_of</span>::<span class="op">&lt;</span><span class="ident">ThreadControlBlock</span><span class="op">&gt;</span>(),
+        )
     };
 
     <span class="kw">let</span> <span class="ident">tls_raw_ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">alloc_zeroed</span>(<span class="ident">tls_layout</span>) };
@@ -190,7 +263,7 @@
     }
 
     <span class="kw">let</span> <span class="ident">tcb_ptr</span> <span class="op">=</span> ((<span class="ident">tls_raw_ptr</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">+</span> (<span class="ident">total_size</span> <span class="kw">as</span> <span class="ident">u64</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>;
-    <span class="kw">let</span> <span class="ident">tcb_offset</span> <span class="op">=</span> <span class="ident">tcb_ptr</span> <span class="kw">as</span> <span class="ident">usize</span>;
+    <span class="kw">let</span> <span class="ident">tcb_offset</span> <span class="op">=</span> <span class="ident">tcb_ptr</span> <span class="kw">as</span> <span class="ident">u64</span>;
 
     <span class="comment">/*
      * Set the FS base segment to the tcb_offset to enable thread locals and
@@ -202,16 +275,59 @@
     <span class="kw">unsafe</span> {
         <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_FS_BASE</span>, <span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">u64</span>);
 
-        <span class="kw-2">*</span><span class="ident">tcb_ptr</span> <span class="op">=</span> <span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">u64</span>;
+        <span class="kw-2">*</span><span class="ident">tcb_ptr</span> <span class="op">=</span> <span class="ident">tcb_offset</span>;
     }
 
-    <span class="ident">THREAD_LOCAL_STORAGE</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ThreadLocalStorage::new</span>(<span class="ident">tls_offset</span>, <span class="ident">tcb_offset</span>));
+    <span class="ident">THREAD_LOCAL_STORAGE</span>
+        .<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ThreadLocalStorage::new</span>(<span class="ident">tls_offset</span>, <span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">usize</span>));
 
     <span class="comment">// SAFTEY: Safe to access thread local variables as at this point are accessible.</span>
     <span class="kw">unsafe</span> {
-        <span class="ident">PROCESSOR_CONTROL_REGION</span>.<span class="ident">fs_offset</span> <span class="op">=</span> <span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">usize</span>;
+        <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">set_kernel_fs</span>(<span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">u64</span>);
     }
 }
+
+<span class="macro">intel_fn!</span> {
+    <span class="comment">/*
+     * This function is responsible for restoring the kernel thread local
+     * storage. Since this function is called on every syscall, it needs to
+     * be implemented in assembly to avoid lots of rust checks comming in place.
+     *
+     * ## `#[allow(unused)]`
+     * Since this function is only invoked in assembly, we need to add the attribute
+     * `unused` as the [intel_fn] macro auto externs the functions for us.
+     *
+     * ## Saftey
+     * Needs to be called under locked conditions. Ie. You need to call `swapgs` before
+     * invoking this function.
+     */</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;asm&quot;</span> <span class="kw">fn</span> <span class="ident">restore_kernel_tls</span>() {
+        <span class="string">&quot;push rbx\n&quot;</span>,
+        <span class="string">&quot;push rdx\n&quot;</span>,
+        <span class="string">&quot;push rcx\n&quot;</span>,
+        <span class="string">&quot;push rax\n&quot;</span>,
+
+        <span class="string">&quot;mov rbx, QWORD PTR gs:[104]\n&quot;</span>, <span class="comment">// Offset into TSS holding kernel tls base the current cpu.</span>
+        <span class="string">&quot;mov ecx, 0xC0000100\n&quot;</span>, <span class="comment">// IA32_FS_BASE</span>
+
+        <span class="string">&quot;mov eax, ebx\n&quot;</span>,
+        <span class="string">&quot;shr rbx, 32\n&quot;</span>,
+        <span class="string">&quot;mov edx, ebx\n&quot;</span>,
+
+        <span class="string">&quot;wrmsr\n&quot;</span>,
+
+        <span class="string">&quot;pop rax\n&quot;</span>,
+        <span class="string">&quot;pop rcx\n&quot;</span>,
+        <span class="string">&quot;pop rdx\n&quot;</span>,
+        <span class="string">&quot;pop rbx\n&quot;</span>,
+
+        <span class="string">&quot;ret\n&quot;</span>,
+    }
+}
+
+<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">restore_user_tls</span>() {}
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
