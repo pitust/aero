@@ -152,6 +152,8 @@
 <span id="149">149</span>
 <span id="150">150</span>
 <span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -223,6 +225,7 @@
 
     <span class="doccomment">/// Returns a mutable reference to the page table allocated for this</span>
     <span class="doccomment">/// address space.</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">page_table</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">PageTable</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">phys_addr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cr3</span>.<span class="ident">start_address</span>();
@@ -235,6 +238,7 @@
 
     <span class="doccomment">/// Returns a mutable refernce to the mapper pointing to the page table</span>
     <span class="doccomment">/// allocated for this address space.</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset_page_table</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OffsetPageTable</span> {
         <span class="kw">unsafe</span> { <span class="ident">OffsetPageTable::new</span>(<span class="self">self</span>.<span class="ident">page_table</span>(), <span class="ident">PHYSICAL_MEMORY_OFFSET</span>) }
     }

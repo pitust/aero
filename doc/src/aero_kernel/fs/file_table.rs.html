@@ -39,8 +39,6 @@
 <span id="36">36</span>
 <span id="37">37</span>
 <span id="38">38</span>
-<span id="39">39</span>
-<span id="40">40</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -58,9 +56,7 @@
 
 <span class="kw">use</span> <span class="ident">spin::RwLock</span>;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FileHandle</span> {
-    <span class="ident">fd</span>: <span class="ident">usize</span>,
-}
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FileHandle</span>(<span class="ident">usize</span>);
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FileTable</span>(<span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileHandle</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>);

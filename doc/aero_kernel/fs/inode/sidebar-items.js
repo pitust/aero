@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["INode","An inode describes a file. An inode structure holds metadata of the inode which includes its type, size, the number of links referring to it, and the list of blocks holding the file’s content."]],"trait":[["INodeInterface","Trait that represents an object which behaves like a file. For example device files, files on the disk, etc…"]]});

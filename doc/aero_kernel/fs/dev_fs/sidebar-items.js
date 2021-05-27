@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["get_null",""],["get_stdout",""],["init","Initialize devfs and install it in the dyn filesystem btreemap."],["install_device",""]],"macro":[["impl_dev",""]],"static":[["DEVICES",""],["DEV_NULL",""],["DEV_STDOUT",""]],"struct":[["DevFs",""],["DevNull",""],["DevStdout",""]],"trait":[["Device",""]]});
