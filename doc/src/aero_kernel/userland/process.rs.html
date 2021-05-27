@@ -149,6 +149,15 @@
 <span id="146">146</span>
 <span id="147">147</span>
 <span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -172,7 +181,7 @@
     <span class="ident">ElfFile</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">fs::file_table::FileTable</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">fs::file_table::FileTable</span>, <span class="ident">mem::AddressSpace</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">mem::paging::FRAME_ALLOCATOR</span>, <span class="ident">utils::stack::Stack</span>};
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::context::Context</span>;
@@ -205,7 +214,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Process</span> {
-    <span class="doccomment">/// Create a new process from the provided [ElfFile].</span>
+    <span class="doccomment">/// Allocates a new userland process from the provided executable ELF. This function</span>
+    <span class="doccomment">/// is responsible for mapping the loadable program headers, allocating the user stack,</span>
+    <span class="doccomment">/// creating the file tables, creating the userland address space which contains the userland</span>
+    <span class="doccomment">/// page tables and finally setting up the process context.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## Transition</span>
+    <span class="doccomment">/// Userland process transition is done through `sysretq` method.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_elf</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>, <span class="ident">elf_binary</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">raw_binary</span> <span class="op">=</span> <span class="ident">elf_binary</span>.<span class="ident">input</span>.<span class="ident">as_ptr</span>();
 
@@ -274,11 +289,14 @@
         <span class="kw">let</span> <span class="ident">stack_top</span> <span class="op">=</span> <span class="ident">process_stack</span>.<span class="ident">stack_top</span>();
         <span class="kw">let</span> <span class="ident">entry_point</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">elf_binary</span>.<span class="ident">header</span>.<span class="ident">pt2</span>.<span class="ident">entry_point</span>());
 
+        <span class="kw">let</span> <span class="ident">address_space</span> <span class="op">=</span> <span class="ident">AddressSpace::new</span>().<span class="ident">unwrap</span>();
+
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">Context::new</span>();
 
         <span class="ident">context</span>.<span class="ident">set_stack_top</span>(<span class="ident">stack_top</span>);
         <span class="ident">context</span>.<span class="ident">set_instruction_ptr</span>(<span class="ident">entry_point</span>);
         <span class="ident">context</span>.<span class="ident">rflags</span> <span class="op">=</span> <span class="number">0x200</span>;
+        <span class="ident">context</span>.<span class="ident">cr3</span> <span class="op">=</span> <span class="ident">address_space</span>.<span class="ident">cr3</span>().<span class="ident">start_address</span>().<span class="ident">as_u64</span>();
 
         <span class="kw">let</span> <span class="ident">process_id</span> <span class="op">=</span> <span class="ident">ProcessId::new</span>(<span class="ident">PID_COUNTER</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::AcqRel</span>));
         <span class="kw">let</span> <span class="ident">file_table</span> <span class="op">=</span> <span class="ident">FileTable::new</span>();
