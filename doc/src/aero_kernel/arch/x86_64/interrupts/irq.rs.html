@@ -58,7 +58,6 @@
 <span id="55">55</span>
 <span id="56">56</span>
 <span id="57">57</span>
-<span id="58">58</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -72,15 +71,14 @@
  */</span>
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::interrupt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::time</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">apic</span>,
     <span class="ident">drivers</span>::{<span class="ident">keyboard</span>, <span class="ident">mouse</span>},
 };
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">arch::interrupts</span>::{<span class="ident">end_pic1</span>, <span class="ident">end_pic2</span>},
-    <span class="ident">time</span>,
-};
+
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::INTERRUPT_CONTROLLER</span>;
 
 <span class="macro">interrupt!</span>(
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">lapic_error</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
@@ -97,7 +95,7 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pit</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
         <span class="ident">time::PIT</span>.<span class="ident">tick</span>();
 
-        <span class="ident">end_pic1</span>();
+        <span class="ident">INTERRUPT_CONTROLLER</span>.<span class="ident">eoi</span>();
     }
 );
 
@@ -106,7 +104,7 @@
         <span class="kw">let</span> <span class="ident">scancode</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="number">0x60</span>);
 
         <span class="ident">keyboard::handle</span>(<span class="ident">scancode</span>);
-        <span class="ident">end_pic1</span>();
+        <span class="ident">INTERRUPT_CONTROLLER</span>.<span class="ident">eoi</span>();
     }
 );
 
@@ -115,7 +113,7 @@
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="number">0x60</span>);
 
         <span class="ident">mouse::handle</span>(<span class="ident">data</span>);
-        <span class="ident">end_pic2</span>();
+        <span class="ident">INTERRUPT_CONTROLLER</span>.<span class="ident">eoi</span>();
     }
 );
 </pre></div>

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ProcessState",""]],"static":[["PID_COUNTER",""]],"struct":[["Process",""],["ProcessId",""]]});
+initSidebarItems({"enum":[["ProcessState",""]],"struct":[["Process",""],["ProcessId",""]]});

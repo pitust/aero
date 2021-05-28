@@ -261,53 +261,6 @@
 <span id="258">258</span>
 <span id="259">259</span>
 <span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -325,31 +278,31 @@
 <span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/Interrupt_Descriptor_Table&gt;</span>
 
 <span class="doccomment">/// The count of the IDT entries.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">IDT_ENTRIES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">256</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IDT_ENTRIES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">256</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">PIC1_COMMAND</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x20</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">PIC1_DATA</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x21</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIC1_COMMAND</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x20</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIC1_DATA</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x21</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">PIC2_COMMAND</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xA0</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">PIC2_DATA</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xA1</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIC2_COMMAND</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xA0</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIC2_DATA</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xA1</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">PIC_EOI</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x20</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIC_EOI</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x20</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">ICW1_INIT</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x10</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">ICW1_ICW4</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">ICW4_8086</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ICW1_INIT</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x10</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ICW1_READ_ISR</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x0B</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ICW1_ICW4</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ICW4_8086</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">InterruptHandlerFn</span> <span class="op">=</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>();
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">InterruptHandlerFn</span> <span class="op">=</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>();
 
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">IDT</span>: [<span class="ident">IdtEntry</span>; <span class="ident">IDT_ENTRIES</span>] <span class="op">=</span> [<span class="ident">IdtEntry::NULL</span>; <span class="ident">IDT_ENTRIES</span>];
 
-<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
 <span class="kw">use</span> <span class="ident">core::mem::size_of</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::gdt::SegmentSelector</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 
-<span class="macro">bitflags!</span> {
+<span class="macro">bitflags::bitflags!</span> {
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IDTFlags</span>: <span class="ident">u8</span> {
         <span class="kw">const</span> <span class="ident">PRESENT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
         <span class="kw">const</span> <span class="ident">RING_0</span> <span class="op">=</span> <span class="number">0</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>;
@@ -362,7 +315,7 @@
     }
 }
 
-<span class="macro">bitflags!</span> {
+<span class="macro">bitflags::bitflags!</span> {
     <span class="doccomment">/// Describes an page fault error code.</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PageFaultErrorCode</span>: <span class="ident">u64</span> {
@@ -554,7 +507,6 @@
         );
 
         <span class="ident">load_idt</span>(<span class="kw-2">&amp;</span><span class="ident">idt_descriptor</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
-        <span class="ident">load_pic</span>();
     }
 }
 
@@ -563,57 +515,11 @@
     <span class="macro">asm!</span>(<span class="string">&quot;lidt [{}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">idt_descriptor</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
 }
 
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">end_pic1</span>() {
-    <span class="ident">io::outb</span>(<span class="ident">PIC1_COMMAND</span>, <span class="ident">PIC_EOI</span>);
-}
-
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">end_pic2</span>() {
-    <span class="ident">io::outb</span>(<span class="ident">PIC2_COMMAND</span>, <span class="ident">PIC_EOI</span>);
-    <span class="ident">io::outb</span>(<span class="ident">PIC1_COMMAND</span>, <span class="ident">PIC_EOI</span>);
-}
-
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">disable_pic</span>() {
     <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0xFF</span>);
     <span class="ident">io::wait</span>();
 
     <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0xFF</span>);
-    <span class="ident">io::wait</span>();
-}
-
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">load_pic</span>() {
-    <span class="kw">let</span> (<span class="ident">a1</span>, <span class="ident">a2</span>);
-
-    <span class="ident">a1</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="ident">PIC1_DATA</span>);
-    <span class="ident">io::wait</span>();
-
-    <span class="ident">a2</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="ident">PIC2_DATA</span>);
-    <span class="ident">io::wait</span>();
-
-    <span class="ident">io::outb</span>(<span class="ident">PIC1_COMMAND</span>, <span class="ident">ICW1_INIT</span> <span class="op">|</span> <span class="ident">ICW1_ICW4</span>);
-    <span class="ident">io::wait</span>();
-    <span class="ident">io::outb</span>(<span class="ident">PIC2_COMMAND</span>, <span class="ident">ICW1_INIT</span> <span class="op">|</span> <span class="ident">ICW1_ICW4</span>);
-    <span class="ident">io::wait</span>();
-
-    <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0x20</span>);
-    <span class="ident">io::wait</span>();
-    <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0x28</span>);
-    <span class="ident">io::wait</span>();
-
-    <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">4</span>);
-    <span class="ident">io::wait</span>();
-    <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">2</span>);
-    <span class="ident">io::wait</span>();
-
-    <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="ident">ICW4_8086</span>);
-    <span class="ident">io::wait</span>();
-    <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="ident">ICW4_8086</span>);
-    <span class="ident">io::wait</span>();
-
-    <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="ident">a1</span>);
-    <span class="ident">io::wait</span>();
-    <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="ident">a2</span>);
     <span class="ident">io::wait</span>();
 }
 </pre></div>

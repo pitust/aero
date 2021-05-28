@@ -241,13 +241,6 @@
 <span id="238">238</span>
 <span id="239">239</span>
 <span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -316,16 +309,12 @@
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem</span>::{<span class="ident">memcmp</span>, <span class="ident">memcpy</span>, <span class="ident">memmove</span>, <span class="ident">memset</span>};
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::rendy</span>::{<span class="ident">print</span>, <span class="ident">println</span>};
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils</span>::{
-        <span class="ident">const_unsafe</span>, <span class="ident">downcast</span>, <span class="ident">intel_asm</span>, <span class="ident">intel_fn</span>, <span class="ident">pop_fs</span>, <span class="ident">pop_preserved</span>, <span class="ident">pop_scratch</span>, <span class="ident">push_fs</span>,
+        <span class="ident">const_unsafe</span>, <span class="ident">intel_asm</span>, <span class="ident">intel_fn</span>, <span class="ident">pop_fs</span>, <span class="ident">pop_preserved</span>, <span class="ident">pop_scratch</span>, <span class="ident">push_fs</span>,
         <span class="ident">push_preserved</span>, <span class="ident">push_scratch</span>,
     };
 }
 
 <span class="kw">use</span> <span class="ident">arch::interrupts</span>;
-<span class="kw">use</span> <span class="ident">arch::interrupts</span>::{<span class="ident">PIC1_DATA</span>, <span class="ident">PIC2_DATA</span>};
-
-<span class="kw">use</span> <span class="ident">utils::io</span>;
-
 <span class="kw">use</span> <span class="ident">userland::scheduler</span>;
 
 <span class="attribute">#[<span class="ident">global_allocator</span>]</span>
@@ -418,9 +407,6 @@ _______ _______ ______ _______    _______ ______
      * as the PTI context switch functions depend on thread local globals.
      */</span>
     <span class="kw">unsafe</span> {
-        <span class="ident">io::outb</span>(<span class="ident">PIC1_DATA</span>, <span class="number">0b11111000</span>);
-        <span class="ident">io::outb</span>(<span class="ident">PIC2_DATA</span>, <span class="number">0b11101111</span>);
-
         <span class="ident">interrupts::enable_interrupts</span>();
     }
 

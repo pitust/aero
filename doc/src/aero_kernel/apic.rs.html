@@ -265,6 +265,13 @@
 <span id="262">262</span>
 <span id="263">263</span>
 <span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -521,6 +528,13 @@
     <span class="ident">BSP_APIC_ID</span>.<span class="ident">store</span>(<span class="ident">bsp_id</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">Ordering::SeqCst</span>);
 
     <span class="ident">LOCAL_APIC</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">Mutex::new</span>(<span class="ident">local_apic</span>));
+
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>)]</span>
+    {
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts::INTERRUPT_CONTROLLER</span>;
+
+        <span class="ident">INTERRUPT_CONTROLLER</span>.<span class="ident">switch_to_apic</span>();
+    }
 
     <span class="comment">// Now disable PIC as local APIC is initialized.</span>
     <span class="comment">//</span>
