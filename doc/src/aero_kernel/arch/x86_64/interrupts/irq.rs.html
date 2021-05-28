@@ -56,8 +56,6 @@
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
-<span id="56">56</span>
-<span id="57">57</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -70,7 +68,7 @@
  * except according to those terms.
  */</span>
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::interrupt</span>;
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">interrupt</span>, <span class="ident">interrupt_stack</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::time</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -80,19 +78,8 @@
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::INTERRUPT_CONTROLLER</span>;
 
-<span class="macro">interrupt!</span>(
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">lapic_error</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
-        <span class="macro">log::error!</span>(<span class="string">&quot;Local apic error&quot;</span>);
-        <span class="macro">log::error!</span>(<span class="string">&quot;ESR={:#0x}&quot;</span>, <span class="ident">apic::get_local_apic</span>().<span class="ident">get_esr</span>());
-
-        <span class="ident">apic::get_local_apic</span>().<span class="ident">eoi</span>();
-
-        <span class="kw">loop</span> {}
-    }
-);
-
-<span class="macro">interrupt!</span>(
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pit</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
+<span class="macro">interrupt_stack!</span>(
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pit_stack</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
         <span class="ident">time::PIT</span>.<span class="ident">tick</span>();
 
         <span class="ident">INTERRUPT_CONTROLLER</span>.<span class="ident">eoi</span>();
@@ -100,7 +87,16 @@
 );
 
 <span class="macro">interrupt!</span>(
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">keyboard</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">lapic_error</span>() {
+        <span class="macro">log::error!</span>(<span class="string">&quot;Local apic error&quot;</span>);
+        <span class="macro">log::error!</span>(<span class="string">&quot;ESR={:#0x}&quot;</span>, <span class="ident">apic::get_local_apic</span>().<span class="ident">get_esr</span>());
+
+        <span class="ident">apic::get_local_apic</span>().<span class="ident">eoi</span>();
+    }
+);
+
+<span class="macro">interrupt!</span>(
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">keyboard</span>() {
         <span class="kw">let</span> <span class="ident">scancode</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="number">0x60</span>);
 
         <span class="ident">keyboard::handle</span>(<span class="ident">scancode</span>);
@@ -109,7 +105,7 @@
 );
 
 <span class="macro">interrupt!</span>(
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">mouse</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">mouse</span>() {
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">io::inb</span>(<span class="number">0x60</span>);
 
         <span class="ident">mouse::handle</span>(<span class="ident">data</span>);

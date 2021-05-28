@@ -270,8 +270,6 @@
 <span id="267">267</span>
 <span id="268">268</span>
 <span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -291,8 +289,9 @@
 <span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>, <span class="ident">Once</span>};
 <span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">acpi::madt</span>, <span class="ident">arch::interrupts</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">utils::io</span>, <span class="ident">PHYSICAL_MEMORY_OFFSET</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::acpi::madt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span>;
 
 <span class="kw">const</span> <span class="ident">APIC_SPURIOUS_VECTOR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xFF</span>;
 
@@ -533,14 +532,11 @@
     {
         <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts::INTERRUPT_CONTROLLER</span>;
 
+        <span class="comment">// Now disable PIC as local APIC is initialized.</span>
+        <span class="comment">//</span>
+        <span class="comment">// SAFTEY: Its safe to disable the PIC chip as now the local APIC is initialized.</span>
         <span class="ident">INTERRUPT_CONTROLLER</span>.<span class="ident">switch_to_apic</span>();
     }
-
-    <span class="comment">// Now disable PIC as local APIC is initialized.</span>
-    <span class="comment">//</span>
-    <span class="comment">// SAFTEY: Its safe to disable the PIC chip as now the local APIC is initialized.</span>
-    <span class="kw">unsafe</span> { <span class="ident">interrupts::disable_pic</span>() };
-    <span class="macro">log::info!</span>(<span class="string">&quot;Disabled PIC&quot;</span>);
 
     <span class="kw">return</span> <span class="ident">apic_type</span>;
 }
