@@ -64,19 +64,19 @@
 
 <span class="kw">use</span> <span class="ident">aero_syscall::AeroSyscallError</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">fs::Path</span>, <span class="ident">userland::scheduler</span>, <span class="ident">utils::validate_str</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">fs::Path</span>, <span class="ident">utils::validate_str</span>};
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="macro">log::trace!</span>(<span class="string">&quot;SYS_WRITE (fd={:#x}, buf={:#x}, len={:#x})&quot;</span>, <span class="ident">fd</span>, <span class="ident">buf</span>, <span class="ident">len</span>);
 
-    <span class="kw">let</span> <span class="ident">current_task</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>()
-        .<span class="ident">active_task_ref</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;`sys_write` was invoked with no active tasks running&quot;</span>);
+    <span class="comment">// let current_task = scheduler::active_task_ref();</span>
 
-    <span class="ident">current_task</span>
-        .<span class="ident">file_table</span>
-        .<span class="ident">get_handle</span>(<span class="ident">fd</span>)
-        .<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EBADFD</span>)<span class="question-mark">?</span>;
+    <span class="comment">// mem::drop(scheduler);</span>
+
+    <span class="comment">// current_task</span>
+    <span class="comment">//     .file_table</span>
+    <span class="comment">//     .get_handle(fd)</span>
+    <span class="comment">//     .ok_or(AeroSyscallError::EBADFD)?;</span>
 
     <span class="prelude-val">Ok</span>(<span class="number">0</span>)
 }
