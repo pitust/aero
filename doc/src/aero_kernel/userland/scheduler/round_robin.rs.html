@@ -73,11 +73,15 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">collections::VecDeque</span>, <span class="ident">sync::Arc</span>};
-<span class="kw">use</span> <span class="ident">spin::Mutex</span>;
+<span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">mutex::spin::SpinMutex</span>, <span class="ident">Mutex</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::userland::process::Process</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">userland::process::Process</span>, <span class="ident">utils::PerCpu</span>};
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::SchedulerInterface</span>;
 
@@ -105,7 +109,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RoundRobin</span> {
-    <span class="ident">queue</span>: <span class="ident">ProcessQueue</span>,
+    <span class="ident">queue</span>: <span class="ident">PerCpu</span><span class="op">&lt;</span>(<span class="ident">SpinMutex</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">ProcessQueue</span>)<span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">RoundRobin</span> {
@@ -115,18 +119,22 @@
     <span class="doccomment">/// algorithm requires.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">Arc::new</span>(<span class="self">Self</span> {
-            <span class="ident">queue</span>: <span class="ident">ProcessQueue::new</span>(),
+            <span class="ident">queue</span>: <span class="ident">PerCpu::new</span>(<span class="op">|</span><span class="op">|</span> (<span class="ident">SpinMutex::new</span>(()), <span class="ident">ProcessQueue::new</span>())),
         })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">SchedulerInterface</span> <span class="kw">for</span> <span class="ident">RoundRobin</span> {
     <span class="kw">fn</span> <span class="ident">register_process</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">process</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Process</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">register_process</span>(<span class="ident">process</span>);
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">queue</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get</span>();
+
+        <span class="ident">queue</span>.<span class="ident">register_process</span>(<span class="ident">process</span>);
     }
 
     <span class="kw">fn</span> <span class="ident">reschedule</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">process</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">front</span>() {
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">queue</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get</span>();
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">process</span>) <span class="op">=</span> <span class="ident">queue</span>.<span class="ident">front</span>() {
             <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">process</span>.<span class="ident">get_context_ref</span>();
 
             <span class="kw">unsafe</span> {

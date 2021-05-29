@@ -177,6 +177,47 @@
 <span id="174">174</span>
 <span id="175">175</span>
 <span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -189,8 +230,10 @@
  * except according to those terms.
  */</span>
 
-<span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
-<span class="kw">use</span> <span class="ident">core::any::Any</span>;
+<span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">alloc::alloc_zeroed</span>, <span class="ident">sync::Arc</span>};
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">alloc::Layout</span>, <span class="ident">any::Any</span>, <span class="ident">cell::UnsafeCell</span>, <span class="ident">mem</span>, <span class="ident">ptr::Unique</span>, <span class="ident">sync::atomic::Ordering</span>};
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic::CPU_COUNT</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">buffer</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">io</span>;
@@ -352,6 +395,45 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span> <span class="ident">Downcastable</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="kw">fn</span> <span class="ident">as_any</span>(<span class="self">self</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span> {
         <span class="self">self</span>
+    }
+}
+
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PerCpu</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="ident">data</span>: <span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">Unique</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">PerCpu</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_uninit</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PerCpu</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">PerCpu</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="ident">data</span>: <span class="ident">UnsafeCell::new</span>(<span class="ident">Unique::dangling</span>()),
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">init</span>: <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PerCpu</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">PerCpu</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::new_uninit</span>();
+
+        <span class="kw">let</span> <span class="ident">cpu_count</span> <span class="op">=</span> <span class="ident">CPU_COUNT</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>);
+
+        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="ident">cpu_count</span>;
+        <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">alloc_zeroed</span>(<span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">size</span>, <span class="number">8</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> };
+
+        <span class="kw">unsafe</span> {
+            <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">cpu_count</span> {
+                <span class="ident">raw</span>.<span class="ident">add</span>(<span class="ident">i</span>).<span class="ident">write</span>(<span class="ident">init</span>());
+            }
+
+            <span class="ident">this</span>.<span class="ident">data</span> <span class="op">=</span> <span class="ident">UnsafeCell::new</span>(<span class="ident">Unique::new_unchecked</span>(<span class="ident">raw</span>));
+        }
+
+        <span class="ident">this</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+        <span class="kw">unsafe</span> { (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">data</span>.<span class="ident">get</span>()).<span class="ident">as_mut</span>() }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">as_mut_ptr</span>() }
     }
 }
 </pre></div>
