@@ -107,6 +107,21 @@
 <span id="104">104</span>
 <span id="105">105</span>
 <span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -119,9 +134,12 @@
  * except according to those terms.
  */</span>
 
+<span class="kw">use</span> <span class="ident">core::alloc::Layout</span>;
+
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::FRAME_ALLOCATOR</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
 
+<span class="kw">use</span> <span class="ident">alloc::alloc::alloc_zeroed</span>;
 <span class="kw">use</span> <span class="ident">x86_64</span>::{
     <span class="ident">structures::paging</span>::{<span class="ident">mapper::MapToError</span>, <span class="kw-2">*</span>},
     <span class="ident">VirtAddr</span>,
@@ -202,6 +220,18 @@
             <span class="ident">stack_size</span>,
             <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>,
         )
+    }
+
+    <span class="comment">// TODO(Andy-Python-Programmer): Instead of mapping the stack on the kernel&#39;s</span>
+    <span class="comment">// heap, allocate a block of pages instead.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_kernel</span>(<span class="ident">stack_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">stack</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">alloc_zeroed</span>(<span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">stack_size</span>, <span class="number">0x100</span>)) };
+        <span class="kw">let</span> <span class="ident">stack_start</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">VirtAddr::from_ptr</span>(<span class="ident">stack</span>.<span class="ident">sub</span>(<span class="ident">stack_size</span>)) };
+
+        <span class="self">Self</span> {
+            <span class="ident">stack_start</span>,
+            <span class="ident">stack_size</span>,
+        }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stack_top</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ProcessQueue","Scheduler queue containing a vector of all of the process of the enqueued processes."],["RoundRobin",""]]});
