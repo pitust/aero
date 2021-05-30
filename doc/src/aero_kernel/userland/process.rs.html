@@ -205,6 +205,9 @@
 <span id="202">202</span>
 <span id="203">203</span>
 <span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -263,6 +266,7 @@
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Process</span> {
     <span class="ident">context</span>: <span class="ident">Context</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">address_space</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AddressSpace</span><span class="op">&gt;</span>,
 
     <span class="kw">pub</span> <span class="ident">file_table</span>: <span class="ident">FileTable</span>,
     <span class="kw">pub</span> <span class="ident">process_id</span>: <span class="ident">ProcessId</span>,
@@ -297,6 +301,7 @@
             <span class="ident">file_table</span>: <span class="ident">FileTable::new</span>(),
             <span class="ident">process_id</span>: <span class="ident">ProcessId::allocate</span>(),
             <span class="ident">entry_point</span>,
+            <span class="ident">address_space</span>: <span class="prelude-val">None</span>,
             <span class="ident">state</span>: <span class="ident">ProcessState::Running</span>,
         }))
     }
@@ -401,6 +406,7 @@
             <span class="ident">context</span>,
             <span class="ident">file_table</span>,
             <span class="ident">process_id</span>,
+            <span class="ident">address_space</span>: <span class="prelude-val">Some</span>(<span class="ident">address_space</span>),
             <span class="ident">entry_point</span>,
             <span class="ident">state</span>: <span class="ident">ProcessState::Running</span>,
         })))

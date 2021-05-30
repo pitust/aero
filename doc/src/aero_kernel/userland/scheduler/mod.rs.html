@@ -99,7 +99,6 @@
 <span id="96">96</span>
 <span id="97">97</span>
 <span id="98">98</span>
-<span id="99">99</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -112,7 +111,11 @@
  * except according to those terms.
  */</span>
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;round-robin&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">round_robin</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;round-robin&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">round_robin::reschedule</span>;
 
 <span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">collections::BTreeMap</span>, <span class="ident">sync::Arc</span>};
 
@@ -133,7 +136,6 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SchedulerInterface</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Downcastable</span> {
     <span class="doccomment">/// Register the provided process into the task scheduler queue.</span>
     <span class="kw">fn</span> <span class="ident">register_process</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">process_id</span>: <span class="ident">ProcessId</span>);
-    <span class="kw">fn</span> <span class="ident">reschedule</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
 }
 
 <span class="doccomment">/// Container or a transparent struct containing a hashmap of all of the processes</span>
@@ -181,10 +183,6 @@
 
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">register_process</span>(<span class="ident">process_id</span>);
         <span class="ident">PROCESS_CONTAINER</span>.<span class="ident">register_process</span>(<span class="ident">process_id</span>, <span class="ident">process</span>);
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reschedule</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">reschedule</span>()
     }
 }
 

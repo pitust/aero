@@ -452,7 +452,7 @@ _______ _______ ______ _______    _______ ______
         <span class="kw">loop</span> {
             <span class="ident">interrupts::disable_interrupts</span>();
 
-            <span class="kw">if</span> <span class="ident">scheduler::get_scheduler</span>().<span class="ident">reschedule</span>() {
+            <span class="kw">if</span> <span class="ident">scheduler::reschedule</span>() {
                 <span class="ident">interrupts::enable_interrupts</span>();
             } <span class="kw">else</span> {
                 <span class="ident">interrupts::enable_interrupts_and_halt</span>();
@@ -476,7 +476,7 @@ _______ _______ ______ _______    _______ ______
         <span class="kw">loop</span> {
             <span class="ident">interrupts::disable_interrupts</span>();
 
-            <span class="kw">if</span> <span class="ident">scheduler::get_scheduler</span>().<span class="ident">reschedule</span>() {
+            <span class="kw">if</span> <span class="ident">scheduler::reschedule</span>() {
                 <span class="ident">interrupts::enable_interrupts</span>();
             } <span class="kw">else</span> {
                 <span class="ident">interrupts::enable_interrupts_and_halt</span>();
