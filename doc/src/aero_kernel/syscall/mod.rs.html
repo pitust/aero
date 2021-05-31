@@ -193,6 +193,13 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -360,6 +367,13 @@
         <span class="string">&quot;swapgs\n&quot;</span>,
         <span class="string">&quot;iretq\n&quot;</span>,
     }
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyscallFrame</span> {
+    <span class="kw">pub</span> <span class="ident">rflags</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rip</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rsp</span>: <span class="ident">u64</span>,
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Stack",""]]});
+initSidebarItems({"struct":[["Stack",""],["StackHelper",""]]});

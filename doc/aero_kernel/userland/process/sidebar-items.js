@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ProcessState",""]],"struct":[["Process",""],["ProcessId",""]]});
+initSidebarItems({"enum":[["ProcessState",""]],"fn":[["context_switch",""],["sysretq_userinit",""]],"struct":[["Context",""],["Process",""],["ProcessId",""]]});
