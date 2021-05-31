@@ -307,12 +307,6 @@
 <span id="304">304</span>
 <span id="305">305</span>
 <span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -325,30 +319,32 @@
  * except according to those terms.
  */</span>
 
-<span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">alloc::alloc_zeroed</span>, <span class="ident">sync::Arc</span>};
-<span class="kw">use</span> <span class="ident">core</span>::{
-    <span class="ident">alloc::Layout</span>,
-    <span class="ident">ptr::Unique</span>,
-    <span class="ident">sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>},
-};
+<span class="kw">use</span> <span class="ident">alloc::alloc::alloc_zeroed</span>;
+<span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
+
+<span class="kw">use</span> <span class="ident">core::alloc::Layout</span>;
+<span class="kw">use</span> <span class="ident">core::ptr::Unique</span>;
+<span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
+
 <span class="kw">use</span> <span class="ident">spin::mutex::spin::SpinMutex</span>;
 
-<span class="kw">use</span> <span class="ident">x86_64</span>::{
-    <span class="ident">structures::paging</span>::{<span class="ident">mapper::MapToError</span>, <span class="kw-2">*</span>},
-    <span class="ident">VirtAddr</span>,
-};
+<span class="kw">use</span> <span class="ident">x86_64::structures::paging::mapper::MapToError</span>;
+<span class="kw">use</span> <span class="ident">x86_64::structures::paging</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
 
-<span class="kw">use</span> <span class="ident">xmas_elf</span>::{
-    <span class="ident">header</span>,
-    <span class="ident">program</span>::{<span class="self">self</span>, <span class="ident">Type</span>},
-    <span class="ident">ElfFile</span>,
-};
+<span class="kw">use</span> <span class="ident">xmas_elf::program::Type</span>;
+<span class="kw">use</span> <span class="ident">xmas_elf</span>::{<span class="ident">header</span>, <span class="ident">program</span>, <span class="ident">ElfFile</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">arch::gdt::TASK_STATE_SEGMENT</span>, <span class="ident">fs::file_table::FileTable</span>, <span class="ident">mem::AddressSpace</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>,
-    <span class="ident">syscall::SyscallFrame</span>, <span class="ident">utils::stack::StackHelper</span>,
-};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">mem::paging::FRAME_ALLOCATOR</span>, <span class="ident">utils::stack::Stack</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::gdt::TASK_STATE_SEGMENT</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fs::file_table::FileTable</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::FRAME_ALLOCATOR</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::AddressSpace</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::syscall::SyscallFrame</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::stack</span>::{<span class="ident">Stack</span>, <span class="ident">StackHelper</span>};
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
@@ -409,7 +405,6 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">process_id</span>: <span class="ident">ProcessId</span>,
 
     <span class="kw">pub</span> <span class="ident">file_table</span>: <span class="ident">FileTable</span>,
-    <span class="kw">pub</span> <span class="ident">entry_point</span>: <span class="ident">VirtAddr</span>,
     <span class="kw">pub</span> <span class="ident">state</span>: <span class="ident">ProcessState</span>,
 }
 
@@ -417,18 +412,11 @@
     <span class="doccomment">/// Creates a per-cpu idle process. An idle process is a special *kernel*</span>
     <span class="doccomment">/// which is executed when there are no runnable processes in the scheduler&#39;s</span>
     <span class="doccomment">/// queue.</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_idle</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SpinMutex</span><span class="op">&lt;</span><span class="ident">Process</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">Stack::new_kernel</span>(<span class="number">0x1000</span>);
-
-        <span class="kw">let</span> <span class="ident">stack_top</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">stack_top</span>();
-        <span class="kw">let</span> <span class="ident">entry_point</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0xcafebabe</span>);
-
         <span class="ident">Arc::new</span>(<span class="ident">SpinMutex::new</span>(<span class="self">Self</span> {
             <span class="ident">context</span>: <span class="ident">Unique::dangling</span>(),
             <span class="ident">file_table</span>: <span class="ident">FileTable::new</span>(),
             <span class="ident">process_id</span>: <span class="ident">ProcessId::allocate</span>(),
-            <span class="ident">entry_point</span>,
             <span class="ident">address_space</span>: <span class="prelude-val">None</span>,
             <span class="ident">state</span>: <span class="ident">ProcessState::Running</span>,
         }))
@@ -557,7 +545,6 @@
             <span class="ident">file_table</span>,
             <span class="ident">process_id</span>,
             <span class="ident">address_space</span>: <span class="prelude-val">Some</span>(<span class="ident">address_space</span>),
-            <span class="ident">entry_point</span>,
             <span class="ident">state</span>: <span class="ident">ProcessState::Running</span>,
         })))
     }
@@ -571,22 +558,23 @@
          * automatically enabled after `sysretq`.
          */</span>
         <span class="string">&quot;cli\n&quot;</span>,
+        <span class="string">&quot;call context_switch_finalize\n&quot;</span>,
         <span class="string">&quot;call restore_user_tls\n&quot;</span>,
 
-        <span class="string">&quot;pop r11\n&quot;</span>, <span class="comment">// Restore RFLAGS</span>
-        <span class="string">&quot;pop rcx\n&quot;</span>, <span class="comment">// Restore RIP</span>
+        <span class="string">&quot;pop r11\n&quot;</span>, <span class="comment">// Restore RFLAGS.</span>
+        <span class="string">&quot;pop rcx\n&quot;</span>, <span class="comment">// Restore RIP.</span>
 
         <span class="string">&quot;push rdx\n&quot;</span>,
 
         <span class="string">&quot;swapgs\n&quot;</span>,
 
         <span class="string">&quot;mov rdx, rsp\n&quot;</span>,
-        <span class="string">&quot;add rdx, 16\n&quot;</span>, <span class="comment">// Skip RDX and user RSP currently on the stack</span>
-        <span class="string">&quot;mov gs:[0x04], rdx\n&quot;</span>, <span class="comment">// Stash kernel stack</span>
+        <span class="string">&quot;add rdx, 16\n&quot;</span>, <span class="comment">// Skip RDX and user RSP currently on the stack.</span>
+        <span class="string">&quot;mov gs:[0x04], rdx\n&quot;</span>, <span class="comment">// Stash kernel stack.</span>
 
         <span class="string">&quot;swapgs\n&quot;</span>,
         <span class="string">&quot;pop rdx\n&quot;</span>,
-        <span class="string">&quot;pop rsp\n&quot;</span>, <span class="comment">// Restore user stack</span>
+        <span class="string">&quot;pop rsp\n&quot;</span>, <span class="comment">// Restore user stack.</span>
 
         <span class="string">&quot;sysretq\n&quot;</span>,
     }
@@ -605,13 +593,13 @@
         <span class="string">&quot;push r12\n&quot;</span>,
         <span class="string">&quot;push rbx\n&quot;</span>,
 
-        <span class="string">&quot;mov rax, cr3\n&quot;</span>, <span class="comment">// Save CR3</span>
+        <span class="string">&quot;mov rax, cr3\n&quot;</span>, <span class="comment">// Save CR3.</span>
         <span class="string">&quot;push rax\n&quot;</span>,
 
-        <span class="string">&quot;mov [rdi], rsp\n&quot;</span>,	<span class="comment">// Update old context pointer with current stack pointer</span>
-        <span class="string">&quot;mov rsp, rsi\n&quot;</span>, <span class="comment">// Switch to new stack</span>
+        <span class="string">&quot;mov [rdi], rsp\n&quot;</span>,	<span class="comment">// Update old context pointer with current stack pointer.</span>
+        <span class="string">&quot;mov rsp, rsi\n&quot;</span>, <span class="comment">// Switch to new stack.</span>
 
-        <span class="string">&quot;pop rax\n&quot;</span>, <span class="comment">// Restore CR3</span>
+        <span class="string">&quot;pop rax\n&quot;</span>, <span class="comment">// Restore CR3.</span>
         <span class="string">&quot;mov cr3, rax\n&quot;</span>,
 
         <span class="string">&quot;pop rbx\n&quot;</span>,

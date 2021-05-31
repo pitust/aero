@@ -18,7 +18,6 @@
 <span id="15">15</span>
 <span id="16">16</span>
 <span id="17">17</span>
-<span id="18">18</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -31,12 +30,11 @@
  * except according to those terms.
  */</span>
 
-<span class="kw">use</span> <span class="ident">aero_syscall::AeroSyscallError</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::userland::scheduler</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="macro">log::debug!</span>(<span class="string">&quot;Exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
-
-    <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::Unknown</span>)
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="macro">log::trace!</span>(<span class="string">&quot;Exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
+    <span class="ident">scheduler::exit_current_process</span>(<span class="ident">status</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
