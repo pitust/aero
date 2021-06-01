@@ -304,9 +304,6 @@
 <span id="301">301</span>
 <span id="302">302</span>
 <span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -335,7 +332,6 @@
 <span class="kw">use</span> <span class="ident">xmas_elf::program::Type</span>;
 <span class="kw">use</span> <span class="ident">xmas_elf</span>::{<span class="ident">header</span>, <span class="ident">program</span>, <span class="ident">ElfFile</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::gdt::TASK_STATE_SEGMENT</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fs::file_table::FileTable</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::FRAME_ALLOCATOR</span>;
@@ -403,6 +399,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">context</span>: <span class="ident">Unique</span><span class="op">&lt;</span><span class="ident">InterruptFrame</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">address_space</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AddressSpace</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">process_id</span>: <span class="ident">ProcessId</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">context_switch_rsp</span>: <span class="ident">VirtAddr</span>,
 
     <span class="kw">pub</span> <span class="ident">file_table</span>: <span class="ident">FileTable</span>,
     <span class="kw">pub</span> <span class="ident">state</span>: <span class="ident">ProcessState</span>,
@@ -417,6 +414,7 @@
             <span class="ident">context</span>: <span class="ident">Unique::dangling</span>(),
             <span class="ident">file_table</span>: <span class="ident">FileTable::new</span>(),
             <span class="ident">process_id</span>: <span class="ident">ProcessId::allocate</span>(),
+            <span class="ident">context_switch_rsp</span>: <span class="ident">VirtAddr::zero</span>(),
             <span class="ident">address_space</span>: <span class="prelude-val">None</span>,
             <span class="ident">state</span>: <span class="ident">ProcessState::Running</span>,
         }))
@@ -533,17 +531,13 @@
         <span class="kw">let</span> <span class="ident">interrupt_stack_ptr</span> <span class="op">=</span>
             <span class="kw">unsafe</span> { <span class="ident">Unique::new_unchecked</span>(<span class="ident">interrupt_stack</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">InterruptFrame</span>) };
 
-        <span class="kw">unsafe</span> {
-            <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">rsp</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">context_switch_rsp</span>;
-        }
-
-        <span class="kw">let</span> <span class="ident">process_id</span> <span class="op">=</span> <span class="ident">ProcessId::allocate</span>();
-        <span class="kw">let</span> <span class="ident">file_table</span> <span class="op">=</span> <span class="ident">FileTable::new</span>();
+        <span class="kw">let</span> <span class="ident">context_switch_rsp</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">VirtAddr::new_unsafe</span>(<span class="ident">context_switch_rsp</span>) };
 
         <span class="prelude-val">Ok</span>(<span class="ident">Arc::new</span>(<span class="ident">SpinMutex::new</span>(<span class="self">Self</span> {
             <span class="ident">context</span>: <span class="ident">interrupt_stack_ptr</span>,
-            <span class="ident">file_table</span>,
-            <span class="ident">process_id</span>,
+            <span class="ident">context_switch_rsp</span>,
+            <span class="ident">file_table</span>: <span class="ident">FileTable::new</span>(),
+            <span class="ident">process_id</span>: <span class="ident">ProcessId::allocate</span>(),
             <span class="ident">address_space</span>: <span class="prelude-val">Some</span>(<span class="ident">address_space</span>),
             <span class="ident">state</span>: <span class="ident">ProcessState::Running</span>,
         })))
