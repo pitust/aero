@@ -283,7 +283,7 @@
 <span class="doccomment">/// ## Notes</span>
 <span class="doccomment">/// * &lt;https://en.wikipedia.org/wiki/Round-robin_scheduling&gt;</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RoundRobin</span> {
-    <span class="doccomment">/// The per-cpu scheduler queues protected by a spin mutex.</span>
+    <span class="doccomment">/// The per-cpu scheduler queues.</span>
     <span class="ident">queue</span>: <span class="ident">PerCpu</span><span class="op">&lt;</span><span class="ident">ProcessQueue</span><span class="op">&gt;</span>,
 }
 

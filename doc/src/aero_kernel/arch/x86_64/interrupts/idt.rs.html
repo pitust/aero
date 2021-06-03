@@ -408,36 +408,36 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ScratchRegisters</span> {
-    <span class="kw">pub</span> <span class="ident">r11</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">r10</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">r9</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">r8</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rsi</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rdi</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rdx</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rcx</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rax</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">r11</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r10</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r9</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r8</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rsi</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rdi</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rdx</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rcx</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rax</span>: <span class="ident">u64</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PreservedRegisters</span> {
-    <span class="kw">pub</span> <span class="ident">r15</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">r14</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">r13</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">r12</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rbp</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rbx</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">r15</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r14</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r13</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r12</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rbp</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rbx</span>: <span class="ident">u64</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IretRegisters</span> {
-    <span class="kw">pub</span> <span class="ident">rip</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">cs</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rflags</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">rsp</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">ss</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">rip</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">cs</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rflags</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rsp</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">ss</span>: <span class="ident">u64</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">IretRegisters</span> {
@@ -449,7 +449,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InterruptStack</span> {
-    <span class="kw">pub</span> <span class="ident">fs</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">fs</span>: <span class="ident">u64</span>,
     <span class="kw">pub</span> <span class="ident">preserved</span>: <span class="ident">PreservedRegisters</span>,
     <span class="kw">pub</span> <span class="ident">scratch</span>: <span class="ident">ScratchRegisters</span>,
     <span class="kw">pub</span> <span class="ident">iret</span>: <span class="ident">IretRegisters</span>,
@@ -458,7 +458,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InterruptErrorStack</span> {
-    <span class="kw">pub</span> <span class="ident">code</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span> <span class="ident">code</span>: <span class="ident">u64</span>,
     <span class="kw">pub</span> <span class="ident">stack</span>: <span class="ident">InterruptStack</span>,
 }
 
