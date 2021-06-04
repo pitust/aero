@@ -239,9 +239,9 @@
  */</span>
 
 <span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">alloc::alloc_zeroed</span>, <span class="ident">sync::Arc</span>};
-<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">alloc::Layout</span>, <span class="ident">any::Any</span>, <span class="ident">cell::UnsafeCell</span>, <span class="ident">mem</span>, <span class="ident">ptr::Unique</span>, <span class="ident">sync::atomic::Ordering</span>};
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">alloc::Layout</span>, <span class="ident">any::Any</span>, <span class="ident">cell::UnsafeCell</span>, <span class="ident">mem</span>, <span class="ident">ptr::Unique</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic::CPU_COUNT</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic::get_cpu_count</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">buffer</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">io</span>;
@@ -428,9 +428,9 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">init</span>: <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PerCpu</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">PerCpu</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::new_uninit</span>();
 
-        <span class="kw">let</span> <span class="ident">cpu_count</span> <span class="op">=</span> <span class="ident">CPU_COUNT</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>);
-
+        <span class="kw">let</span> <span class="ident">cpu_count</span> <span class="op">=</span> <span class="ident">get_cpu_count</span>();
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="ident">cpu_count</span>;
+
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">alloc_zeroed</span>(<span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">size</span>, <span class="number">8</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> };
 
         <span class="kw">unsafe</span> {
@@ -453,5 +453,4 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
