@@ -126,6 +126,12 @@
 <span id="124">124</span>
 <span id="125">125</span>
 <span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -144,6 +150,8 @@
 <span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
 
 <span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Once</span>, <span class="ident">RwLock</span>};
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fs::cache::INODE_CACHE</span>;
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::inode::INodeInterface</span>;
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">AeroFilesystemError</span>, <span class="ident">FileSystem</span>};
@@ -230,6 +238,10 @@
 
 <span class="doccomment">/// Initialize devfs and install it in the dyn filesystem btreemap.</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">AeroFilesystemError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">INODE_CACHE</span>
+        .<span class="ident">get</span>()
+        .<span class="ident">expect</span>(<span class="string">&quot;INode cache was not even initialized&quot;</span>);
+
     <span class="kw">let</span> <span class="ident">devfs</span> <span class="op">=</span> <span class="ident">DevFs</span>;
 
     {

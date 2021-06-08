@@ -79,6 +79,8 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -95,6 +97,7 @@
 
 <span class="kw">use</span> <span class="ident">spin::RwLock</span>;
 
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cache</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">dev_fs</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">file_table</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">inode</span>;
@@ -157,6 +160,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
+    <span class="ident">cache::init</span>();
     <span class="ident">dev_fs::init</span>().<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize devfs&quot;</span>);
 }
 </pre></div>
