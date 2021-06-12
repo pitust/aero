@@ -423,7 +423,7 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">drivers::pci::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PCI driver&quot;</span>);
 
-    <span class="ident">fs::init</span>();
+    <span class="ident">fs::init</span>().<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded filesystem&quot;</span>);
 
     <span class="ident">userland::init</span>();

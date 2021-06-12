@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LockedRamINode",""],["RamFs","Implementation of in-memory filesystem. This is used for temporary filesystems (e.g. dev, temp) and since Aero currently does not have support for actual disk filesystems (e.g. ex2 and FAT32), ram-fs is used as the root filesystem."],["RamINode",""]]});

@@ -153,6 +153,7 @@
 <span id="151">151</span>
 <span id="152">152</span>
 <span id="153">153</span>
+<span id="154">154</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -218,6 +219,7 @@
 
     <span class="doccomment">/// Returns a reference to the page table frame allocated for this address</span>
     <span class="doccomment">/// space.</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cr3</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PhysFrame</span> {
         <span class="self">self</span>.<span class="ident">cr3</span>
     }
