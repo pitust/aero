@@ -181,7 +181,7 @@
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::cache</span>;
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::cache</span>::{<span class="ident">DirCacheItem</span>, <span class="ident">INodeCacheItem</span>};
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FileSystem</span>, <span class="ident">FilesystemError</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FileSystem</span>, <span class="ident">FileSystemError</span>, <span class="prelude-ty">Result</span>};
 
 <span class="kw">static</span> <span class="ident">DIR_CACHE_MARKER</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0x00</span>);
 
@@ -195,22 +195,22 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">INodeInterface</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Downcastable</span> {
     <span class="doccomment">/// Write at the provided `offset` with the given `buffer` as its contents.</span>
     <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Err</span>(<span class="ident">FilesystemError::NotSupported</span>)
+        <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Read at the provided `offset` to the given `buffer.</span>
     <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Err</span>(<span class="ident">FilesystemError::NotSupported</span>)
+        <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Creates a new directory with the provided `name` in the filesystem.</span>
     <span class="kw">fn</span> <span class="ident">mkdir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Err</span>(<span class="ident">FilesystemError::NotSupported</span>)
+        <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Looks up the directory entry in the filesystem.</span>
     <span class="kw">fn</span> <span class="ident">lookup</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_dir</span>: <span class="ident">DirCacheItem</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Err</span>(<span class="ident">FilesystemError::NotSupported</span>)
+        <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">weak_filesystem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
