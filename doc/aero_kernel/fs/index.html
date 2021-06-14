@@ -5,7 +5,7 @@
 to improve performance and in this case looking up inode data from an IO device such
 as a disk is very slow, so storing previously accessed inode data in memory makes file
 system access much quicker.</p>
-</td></tr><tr class="module-item"><td><a class="mod" href="dev_fs/index.html" title="aero_kernel::fs::dev_fs mod">dev_fs</a></td><td class="docblock-short"><p>The <code>/dev</code> directory contains the special device files for all the devices.</p>
+</td></tr><tr class="module-item"><td><a class="mod" href="devfs/index.html" title="aero_kernel::fs::devfs mod">devfs</a></td><td class="docblock-short"><p>The <code>/dev</code> directory contains the special device files for all the devices.</p>
 </td></tr><tr class="module-item"><td><a class="mod" href="file_table/index.html" title="aero_kernel::fs::file_table mod">file_table</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="inode/index.html" title="aero_kernel::fs::inode mod">inode</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="ramfs/index.html" title="aero_kernel::fs::ramfs mod">ramfs</a></td><td class="docblock-short"><p>Implementation of in-memory filesystem. This is used for temporary filesystems (e.g. dev, temp) and
 since Aero currently does not have support for actual disk filesystems (e.g. ex2 and FAT32), ram-fs is
 used as the root filesystem.</p>

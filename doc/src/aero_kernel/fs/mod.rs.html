@@ -193,7 +193,7 @@
 <span class="kw">use</span> <span class="self">self</span>::{<span class="ident">cache::DirCacheItem</span>, <span class="ident">ramfs::RamFs</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cache</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">dev_fs</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">devfs</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">file_table</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">inode</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ramfs</span>;
@@ -333,7 +333,7 @@
     <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;home&quot;</span>)<span class="question-mark">?</span>;
     <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;temp&quot;</span>)<span class="question-mark">?</span>;
 
-    <span class="ident">dev_fs::init</span>()<span class="question-mark">?</span>;
+    <span class="ident">devfs::init</span>()<span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(())
 }
