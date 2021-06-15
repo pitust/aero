@@ -107,6 +107,10 @@
 <span id="105">105</span>
 <span id="106">106</span>
 <span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -146,13 +150,15 @@
             <span class="kw">let</span> <span class="ident">level</span> <span class="op">=</span> <span class="ident">record</span>.<span class="ident">level</span>();
             <span class="kw">let</span> <span class="ident">spaces</span> <span class="op">=</span> <span class="ident">MAX_LOG_LEVEL_SPACE</span> <span class="op">-</span> <span class="ident">level</span>.<span class="ident">as_str</span>().<span class="ident">len</span>();
 
+            <span class="kw">let</span> <span class="ident">initialized</span> <span class="op">=</span> <span class="ident">rendy::is_initialized</span>();
+
             <span class="kw">macro</span> <span class="ident">log</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) {
-                <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
+                <span class="kw">if</span> <span class="ident">initialized</span> { <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)); }
                 <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::serial_print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
             }
 
             <span class="kw">macro</span> <span class="ident">log_ln</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) {
-                <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
+                <span class="kw">if</span> <span class="ident">initialized</span> { <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)); }
                 <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::serial_println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
             }
 
@@ -166,21 +172,23 @@
             <span class="macro">log!</span>(<span class="string">&quot;[ &quot;</span>);
 
             <span class="kw">match</span> <span class="ident">record</span>.<span class="ident">level</span>() {
-                <span class="ident">Level::Error</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Level::Error</span> <span class="kw">if</span> <span class="ident">initialized</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::from_hex</span>(<span class="number">0xDFF2800</span>), <span class="ident">Color::BLACK</span>))
                 }
 
-                <span class="ident">Level::Warn</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Level::Warn</span> <span class="kw">if</span> <span class="ident">initialized</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::from_hex</span>(<span class="number">0xFFD300</span>), <span class="ident">Color::BLACK</span>))
                 }
 
-                <span class="ident">Level::Info</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Level::Info</span> <span class="kw">if</span> <span class="ident">initialized</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::from_hex</span>(<span class="number">0x50C878</span>), <span class="ident">Color::BLACK</span>))
                 }
 
-                <span class="ident">Level::Debug</span> <span class="op">|</span> <span class="ident">Level::Trace</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Level::Debug</span> <span class="op">|</span> <span class="ident">Level::Trace</span> <span class="kw">if</span> <span class="ident">initialized</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">rendy::set_color_code</span>(<span class="ident">ColorCode::new</span>(<span class="ident">Color::from_hex</span>(<span class="number">0x10A5F5</span>), <span class="ident">Color::BLACK</span>))
                 }
+
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
             }
 
             <span class="macro">log!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">level</span>);
