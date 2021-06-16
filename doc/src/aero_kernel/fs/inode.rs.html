@@ -188,6 +188,34 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -227,6 +255,9 @@
 <span class="doccomment">/// This trait requires the implementor to implement [Send], [Sync] and [Downcastable] on</span>
 <span class="doccomment">/// the inode structure.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">INodeInterface</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Downcastable</span> {
+    <span class="doccomment">/// Returns the inode metadata of `this` inode.</span>
+    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Metadata</span>;
+
     <span class="doccomment">/// Write at the provided `offset` with the given `buffer` as its contents.</span>
     <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
@@ -264,10 +295,35 @@
     }
 }
 
+<span class="doccomment">/// Structure representing the curcial, characteristics of an inode. The metadata</span>
+<span class="doccomment">/// of an inode can be retrieved by invoking the [INodeInterface::metadata] function.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Metadata</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">id</span>: <span class="ident">usize</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">file_type</span>: <span class="ident">FileType</span>,
+
+    <span class="doccomment">/// The total size of the content that the inode holds. Set to `0x00` if</span>
+    <span class="doccomment">/// the inode file type is *not* a file.</span>
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">size</span>: <span class="ident">usize</span>,
+
+    <span class="doccomment">/// The length of the children&#39;s map of the inode. Set to `0x00` if the inode</span>
+    <span class="doccomment">/// has no children and if the file type of the inode is *not* a directory.</span>
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">children_len</span>: <span class="ident">usize</span>,
+}
+
+<span class="doccomment">/// Enum representing the inner contents of a file. The file contents depend on the</span>
+<span class="doccomment">/// file type of the inode.</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">FileContents</span> {
+    <span class="doccomment">/// This variant expresses a *normal file* (akin: A file that actually stores data</span>
+    <span class="doccomment">/// in bytes) and is protected by a spin lock.</span>
     <span class="ident">Content</span>(<span class="ident">SpinMutex</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+
+    <span class="doccomment">/// If the file type of the inode is [FileType::Device], in that case this variant</span>
+    <span class="doccomment">/// is used.</span>
     <span class="ident">Device</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">DevINode</span><span class="op">&gt;</span>),
 
+    <span class="doccomment">/// This file does *not* and *cannot* have any contents in bytes. This is useful</span>
+    <span class="doccomment">/// in the cases of directories.</span>
     <span class="prelude-val">None</span>,
 }
 
@@ -277,7 +333,7 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">FileType</span> {
     <span class="ident">File</span>,
     <span class="ident">Directory</span>,

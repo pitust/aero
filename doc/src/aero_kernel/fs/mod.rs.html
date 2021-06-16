@@ -168,6 +168,8 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -307,6 +309,8 @@
                     <span class="ident">result</span> <span class="op">=</span> <span class="ident">entry</span>;
                     <span class="kw">continue</span>;
                 }
+
+                <span class="macro">log::debug!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">result</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>());
 
                 <span class="ident">result</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">inode</span>().<span class="ident">lookup</span>(<span class="ident">result</span>.<span class="ident">clone</span>(), <span class="ident">component</span>)<span class="question-mark">?</span>;
             }
