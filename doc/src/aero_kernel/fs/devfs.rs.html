@@ -172,6 +172,7 @@
 <span id="170">170</span>
 <span id="171">171</span>
 <span id="172">172</span>
+<span id="173">173</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -331,8 +332,9 @@
 
 <span class="doccomment">/// Initializes the dev filesystem. (See the module-level documentation for more information).</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">inode</span> <span class="op">=</span> <span class="ident">lookup_path</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/dev&quot;</span>))<span class="question-mark">?</span>;
+    <span class="ident">lazy_static::initialize</span>(<span class="kw-2">&amp;</span><span class="ident">DEV_FILESYSTEM</span>);
 
+    <span class="kw">let</span> <span class="ident">inode</span> <span class="op">=</span> <span class="ident">lookup_path</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/dev&quot;</span>))<span class="question-mark">?</span>;
     <span class="ident">MOUNT_MANAGER</span>.<span class="ident">mount</span>(<span class="ident">inode</span>, <span class="ident">DEV_FILESYSTEM</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>;
 
     {
