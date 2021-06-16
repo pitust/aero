@@ -232,16 +232,6 @@
 <span id="230">230</span>
 <span id="231">231</span>
 <span id="232">232</span>
-<span id="233">233</span>
-<span id="234">234</span>
-<span id="235">235</span>
-<span id="236">236</span>
-<span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -290,7 +280,7 @@
 
 <span class="kw">use</span> <span class="ident">linked_list_allocator::LockedHeap</span>;
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
-<span class="kw">use</span> <span class="ident">x86_64</span>::{<span class="ident">registers</span>, <span class="ident">VirtAddr</span>};
+<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
 
 <span class="kw">mod</span> <span class="ident">acpi</span>;
 <span class="kw">mod</span> <span class="ident">apic</span>;
@@ -356,16 +346,6 @@ _______ _______ ______ _______    _______ ______
      */</span>
     <span class="ident">drivers::uart_16550::init</span>();
     <span class="ident">logger::init</span>();
-
-    <span class="comment">/*
-     * Now that we have initialized basic logging we have to make sure that the
-     * kernel is loaded in the higher half offset that we set in the linker script.
-     */</span>
-    {
-        <span class="kw">let</span> <span class="ident">rip</span> <span class="op">=</span> <span class="ident">registers::read_rip</span>().<span class="ident">as_u64</span>();
-
-        <span class="macro">assert_eq!</span>(<span class="ident">rip</span> <span class="op">&amp;</span> <span class="number">0xffffffffffff0000</span>, <span class="number">0xffff800080000000</span>);
-    }
 
     <span class="kw">unsafe</span> {
         <span class="ident">PHYSICAL_MEMORY_OFFSET</span> <span class="op">=</span> <span class="ident">boot_info</span>.<span class="ident">physical_memory_offset</span>;
