@@ -116,25 +116,6 @@
 <span id="114">114</span>
 <span id="115">115</span>
 <span id="116">116</span>
-<span id="117">117</span>
-<span id="118">118</span>
-<span id="119">119</span>
-<span id="120">120</span>
-<span id="121">121</span>
-<span id="122">122</span>
-<span id="123">123</span>
-<span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright 2021 The Aero Project Developers. See the COPYRIGHT
@@ -150,21 +131,14 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">frame</span>;
 
 <span class="kw">use</span> <span class="ident">aero_boot</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">x86_64</span>::{
-    <span class="ident">registers::control::Cr3</span>,
-    <span class="ident">structures::paging</span>::{<span class="ident">mapper::MapToError</span>, <span class="kw-2">*</span>},
-    <span class="ident">VirtAddr</span>,
-};
+
+<span class="kw">use</span> <span class="ident">x86_64::registers::control::Cr3</span>;
+<span class="kw">use</span> <span class="ident">x86_64::structures::paging</span>::{<span class="ident">mapper::MapToError</span>, <span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">frame::LockedFrameAllocator</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">PHYSICAL_MEMORY_OFFSET</span>};
-
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::linker::LinkerSymbol</span>;
-
-<span class="macro">const_unsafe!</span> {
-    <span class="kw">const</span> <span class="ident">KERNEL_PML4</span>: <span class="ident">VirtAddr</span> <span class="op">=</span> <span class="ident">VirtAddr::new_unsafe</span>(<span class="number">0xFFFF800000000000</span>);
-}
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span>;
 
 <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>: <span class="ident">LockedFrameAllocator</span> <span class="op">=</span> <span class="ident">LockedFrameAllocator::new_uninit</span>();
 
@@ -183,19 +157,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(
     <span class="ident">memory_regions</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">MemoryRegions</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">OffsetPageTable</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>, <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-        <span class="kw">static</span> <span class="ident">__kernel_start</span>: <span class="ident">LinkerSymbol</span>;
-        <span class="kw">static</span> <span class="ident">__kernel_end</span>: <span class="ident">LinkerSymbol</span>;
-    }
-
-    <span class="kw">let</span> <span class="ident">kernel_start</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">__kernel_start</span>.<span class="ident">virt_addr</span>() };
-    <span class="kw">let</span> <span class="ident">kernel_end</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">__kernel_end</span>.<span class="ident">virt_addr</span>() };
-
-    <span class="macro">assert_eq!</span>(<span class="ident">kernel_start</span>.<span class="ident">p4_index</span>(), <span class="ident">KERNEL_PML4</span>.<span class="ident">p4_index</span>());
-    <span class="macro">assert_eq!</span>(<span class="ident">kernel_end</span>.<span class="ident">p4_index</span>(), <span class="ident">KERNEL_PML4</span>.<span class="ident">p4_index</span>());
-
     <span class="kw">let</span> <span class="ident">active_level_4</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">active_level_4_table</span>() };
-
     <span class="kw">let</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">OffsetPageTable::new</span>(<span class="ident">active_level_4</span>, <span class="ident">PHYSICAL_MEMORY_OFFSET</span>) };
 
     <span class="kw">unsafe</span> {
