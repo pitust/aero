@@ -429,7 +429,7 @@
 <span class="doccomment">/// the provided entry exists in the given parent directory cache.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_dir_entry</span>(<span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dcache</span> <span class="op">=</span> <span class="ident">cache::dcache</span>();
-    <span class="kw">let</span> <span class="ident">cache_key</span> <span class="op">=</span> (<span class="ident">parent</span>.<span class="ident">cache_marker</span>, <span class="ident">name</span>.<span class="ident">clone</span>());
+    <span class="kw">let</span> <span class="ident">cache_key</span> <span class="op">=</span> (<span class="ident">parent</span>.<span class="ident">cache_marker</span>, <span class="ident">name</span>);
 
     <span class="ident">dcache</span>.<span class="ident">get</span>(<span class="ident">cache_key</span>)
 }
