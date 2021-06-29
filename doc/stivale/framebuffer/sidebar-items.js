@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FramebufferTag","The framebuffer info passed by the bootloader and based on the configuration in the stivale2 header"]]});

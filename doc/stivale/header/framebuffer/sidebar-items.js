@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["HeaderFramebufferTag","A stivale2 header framebuffer tag"]]});

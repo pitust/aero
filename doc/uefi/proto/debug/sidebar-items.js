@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["DebugSupport","The debugging support protocol allows debuggers to connect to a UEFI machine."],["ProcessorArch","The instruction set architecture of the running processor."]]});

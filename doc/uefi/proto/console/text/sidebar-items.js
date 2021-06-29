@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Color","Colors for the UEFI console."],["Key","A key read from the console (high-level version)"]],"struct":[["Input","Interface for text-based input devices."],["Output","Interface for text-based output devices."],["OutputMode","The text mode (resolution) of the output device."],["ScanCode","A keyboard scan code"]]});

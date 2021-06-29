@@ -120,8 +120,6 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
-<span id="123">123</span>
-<span id="124">124</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -144,7 +142,7 @@
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">frame</span>;
 
-<span class="kw">use</span> <span class="ident">aero_boot</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">stivale::memory</span>::{<span class="ident">MemoryMapEntryType</span>, <span class="ident">MemoryMapTag</span>};
 
 <span class="kw">use</span> <span class="ident">x86_64::registers::control::Cr3</span>;
 <span class="kw">use</span> <span class="ident">x86_64::structures::paging</span>::{<span class="ident">mapper::MapToError</span>, <span class="kw-2">*</span>};
@@ -169,7 +167,7 @@
 
 <span class="doccomment">/// Initialize paging.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(
-    <span class="ident">memory_regions</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">MemoryRegions</span>,
+    <span class="ident">memory_regions</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">MemoryMapTag</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">OffsetPageTable</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>, <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">active_level_4</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">active_level_4_table</span>() };
     <span class="kw">let</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">OffsetPageTable::new</span>(<span class="ident">active_level_4</span>, <span class="ident">PHYSICAL_MEMORY_OFFSET</span>) };
@@ -222,9 +220,7 @@
         .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">extra_flags</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">frame_type</span> {
-        <span class="ident">MemoryRegionType::UnknownBios</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">MemoryRegionType::UnknownUefi</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">PageTableFlags::WRITABLE</span>
-        }
+        <span class="ident">MemoryMapEntryType::Reserved</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PageTableFlags::WRITABLE</span>,
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
             <span class="string">&quot;Tried to memory map a device on a {:?} frame {:#X}&quot;</span>,
             <span class="ident">frame_type</span>,

@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Error","Possible errors returned by the API."]],"fn":[["decode","Decode an input UCS-2 string into a UTF-8 string."],["decode_with","Decode UCS-2 string to UTF-8 with a custom callback function."],["encode","Encodes an input UTF-8 string into a UCS-2 string."],["encode_with","Encode UTF-8 string to UCS-2 with a custom callback function."]]});
