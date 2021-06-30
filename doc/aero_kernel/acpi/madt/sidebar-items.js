@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["SIGNATURE",""],["TRAMPOLINE_VIRTUAL",""]],"enum":[["MadtEntry",""]],"static":[["TRAMPOLINE_BIN",""]],"struct":[["EntryHeader",""],["Madt",""],["MadtIntSrcOverride",""],["MadtIterator",""],["MadtLocalApic",""]]});
+initSidebarItems({"constant":[["SIGNATURE",""],["TRAMPOLINE_VIRTUAL",""]],"enum":[["MadtEntry",""]],"fn":[["smp_check_ap_flag",""],["smp_prepare_launch",""],["smp_prepare_trampoline",""]],"struct":[["EntryHeader",""],["Madt",""],["MadtIntSrcOverride",""],["MadtIterator",""],["MadtLocalApic",""]]});

@@ -258,14 +258,6 @@
 <span id="258">258</span>
 <span id="259">259</span>
 <span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -516,24 +508,16 @@ _______ _______ ______ _______    _______ ______
 }
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_ap_startup</span>(<span class="ident">cpu_id</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="macro">log::info!</span>(<span class="string">&quot;Starting CPU with id: {}&quot;</span>, <span class="ident">cpu_id</span>);
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_ap_startup</span>(<span class="ident">ap_id</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="macro">log::info!</span>(<span class="string">&quot;Starting CPU with id: {}&quot;</span>, <span class="ident">ap_id</span>);
+
+    <span class="ident">apic::mark_ap_ready</span>(<span class="bool-val">true</span>);
 
     <span class="kw">while</span> <span class="op">!</span><span class="ident">apic::is_bsp_ready</span>() {
         <span class="ident">interrupts::pause</span>();
     }
 
-    <span class="kw">unsafe</span> {
-        <span class="kw">loop</span> {
-            <span class="ident">interrupts::disable_interrupts</span>();
-
-            <span class="kw">if</span> <span class="ident">scheduler::reschedule</span>() {
-                <span class="ident">interrupts::enable_interrupts</span>();
-            } <span class="kw">else</span> {
-                <span class="ident">interrupts::enable_interrupts_and_halt</span>();
-            }
-        }
-    }
+    <span class="kw">loop</span> {}
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
