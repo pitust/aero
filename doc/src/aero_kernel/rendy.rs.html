@@ -336,7 +336,7 @@
 <span class="kw">use</span> <span class="ident">font8x8::UnicodeFonts</span>;
 
 <span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">mutex::Mutex</span>, <span class="ident">MutexGuard</span>, <span class="ident">Once</span>};
-<span class="kw">use</span> <span class="ident">stivale::framebuffer::FramebufferTag</span>;
+<span class="kw">use</span> <span class="ident">stivale::v2::StivaleFramebufferTag</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
@@ -603,17 +603,17 @@
     <span class="ident">get_debug_rendy</span>().<span class="ident">clear_screen</span>();
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">framebuffer_tag</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">FramebufferTag</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">framebuffer_tag</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleFramebufferTag</span>) {
     <span class="kw">let</span> <span class="ident">framebuffer_info</span> <span class="op">=</span> <span class="ident">FrameBufferInfo</span> {
         <span class="ident">byte_len</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">size</span>(),
-        <span class="ident">bytes_per_pixel</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">bpp</span>() <span class="kw">as</span> <span class="ident">usize</span>,
-        <span class="ident">horizontal_resolution</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">width</span>() <span class="kw">as</span> <span class="ident">usize</span>,
-        <span class="ident">vertical_resolution</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">height</span>() <span class="kw">as</span> <span class="ident">usize</span>,
+        <span class="ident">bytes_per_pixel</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">framebuffer_bpp</span> <span class="kw">as</span> <span class="ident">usize</span>,
+        <span class="ident">horizontal_resolution</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">framebuffer_width</span> <span class="kw">as</span> <span class="ident">usize</span>,
+        <span class="ident">vertical_resolution</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">framebuffer_height</span> <span class="kw">as</span> <span class="ident">usize</span>,
         <span class="ident">pixel_format</span>: <span class="ident">PixelFormat::BGR</span>,
-        <span class="ident">stride</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">pitch</span>() <span class="kw">as</span> <span class="ident">usize</span>,
+        <span class="ident">stride</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">framebuffer_pitch</span> <span class="kw">as</span> <span class="ident">usize</span>,
     };
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rendy</span> <span class="op">=</span> <span class="ident">DebugRendy::new</span>(<span class="ident">framebuffer_tag</span>.<span class="ident">start_address</span>() <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">framebuffer_info</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rendy</span> <span class="op">=</span> <span class="ident">DebugRendy::new</span>(<span class="ident">framebuffer_tag</span>.<span class="ident">framebuffer_addr</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">framebuffer_info</span>);
 
     <span class="ident">rendy</span>.<span class="ident">clear_screen</span>();
 

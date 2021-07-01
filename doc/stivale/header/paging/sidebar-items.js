@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Header5LevelPagingTag","A stivale2 header tag that asks the bootloader for 5-level paging, if supported"]]});

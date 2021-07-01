@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["FirmwareFlags",""],["FirmwareTag","The system firmware info tag passed by the bootloader"]]});

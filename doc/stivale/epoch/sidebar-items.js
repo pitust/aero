@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["EpochTag","The UNIX epoch info tag passed by the bootloader"]]});

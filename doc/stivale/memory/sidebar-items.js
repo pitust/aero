@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["MemoryMapEntryType","The type of the memory map entry"]],"struct":[["MemoryMapEntry","A memory region"],["MemoryMapIter","An iterator over all memory regions"],["MemoryMapTag","A memory map tag provided by the bootloader"]]});
