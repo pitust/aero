@@ -53,7 +53,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="macro">log::trace!</span>(<span class="string">&quot;Exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
-    <span class="ident">scheduler::exit_current_process</span>(<span class="ident">status</span>);
+    <span class="ident">scheduler::exit_current_task</span>(<span class="ident">status</span>);
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shutdown</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
