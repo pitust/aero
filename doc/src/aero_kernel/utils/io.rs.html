@@ -117,6 +117,23 @@
 <span id="117">117</span>
 <span id="118">118</span>
 <span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -157,6 +174,23 @@
 
 <span class="doccomment">/// Swap Target of BASE Address of GS (R/W).</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_KERNEL_GSBASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000102</span>;
+
+<span class="doccomment">/// x2APIC Spurious Interrupt Vector register (R/W)</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_SIVR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80f</span>;
+
+<span class="doccomment">/// x2APIC ID register (R/O) See X2APIC Specification.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_APICID</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x802</span>;
+
+<span class="doccomment">/// Error Status Register.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_ESR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x828</span>;
+
+<span class="doccomment">/// x2APIC Interrupt Command register (R/W)</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_ICR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x830</span>;
+
+<span class="doccomment">/// x2APIC End of Interrupt.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_EOI</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80b</span>;
+
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_LVT_ERROR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x837</span>;
 
 <span class="doccomment">/// Wrapper function to the `outb` assembly instruction used to do the</span>
 <span class="doccomment">/// low level port output.</span>

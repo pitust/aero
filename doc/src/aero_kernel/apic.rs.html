@@ -268,6 +268,48 @@
 <span id="268">268</span>
 <span id="269">269</span>
 <span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -372,50 +414,92 @@
 
     <span class="doccomment">/// Initialize the application processor.</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init_cpu</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="comment">// Enable local APIC; set spurious interrupt vector.</span>
-        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_SVR</span>, <span class="number">0x100</span> <span class="op">|</span> <span class="ident">APIC_SPURIOUS_VECTOR</span>);
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
+            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="comment">// Enable local APIC; set spurious interrupt vector.</span>
+                <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_SVR</span>, <span class="number">0x100</span> <span class="op">|</span> <span class="ident">APIC_SPURIOUS_VECTOR</span>);
 
-        <span class="comment">// Set up LVT (Local Vector Table) error.</span>
-        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_LVT_ERROR</span>, <span class="number">49</span>);
+                <span class="comment">// Set up LVT (Local Vector Table) error.</span>
+                <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_LVT_ERROR</span>, <span class="number">49</span>);
+            }
+
+            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="comment">// Enable X2APIC (Bit 10)</span>
+                <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_APIC_BASE</span>, <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_APIC_BASE</span>) <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">10</span>);
+
+                <span class="comment">// Set up LVT (Local Vector Table) error.</span>
+                <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_LVT_ERROR</span>, <span class="number">49</span>);
+
+                <span class="comment">// Enable local APIC; set spurious interrupt vector.</span>
+                <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_SIVR</span>, (<span class="number">0x100</span> <span class="op">|</span> <span class="ident">APIC_SPURIOUS_VECTOR</span>) <span class="kw">as</span> <span class="kw">_</span>);
+            }
+
+            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        }
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">bsp_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">read</span>(<span class="number">0x20</span>) }
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
+            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">read</span>(<span class="number">0x20</span>) },
+            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_APICID</span>) <span class="kw">as</span> <span class="kw">_</span> },
+            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">u32::MAX</span>,
+        }
     }
 
     <span class="doccomment">/// Get the error code of the lapic by reading the error status register.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_esr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ESR</span>, <span class="number">0x00</span>);
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
+            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ESR</span>, <span class="number">0x00</span>);
+                <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ESR</span>)
+            }
 
-        <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ESR</span>)
+            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_ESR</span>, <span class="number">0x00</span>);
+                <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ESR</span>) <span class="kw">as</span> <span class="kw">_</span>
+            }
+
+            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">u32::MAX</span>,
+        }
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">eoi</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_EOI</span>, <span class="number">0x00</span>)
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
+            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_EOI</span>, <span class="number">0x00</span>),
+            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_EOI</span>, <span class="number">0x00</span>),
+            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        }
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apic_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApicType</span> {
         <span class="self">self</span>.<span class="ident">apic_type</span>
     }
 
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_icr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u64</span>) {
-        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> {}
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
+            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">while</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> {}
 
-        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR1</span>, (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>);
-        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR0</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>);
+                <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR1</span>, (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>);
+                <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR0</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>);
 
-        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> {}
+                <span class="kw">while</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> {}
+            }
+
+            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>, <span class="ident">value</span>),
+            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        }
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">register</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="ident">intrinsics::volatile_load</span>((<span class="self">self</span>.<span class="ident">address</span> <span class="op">+</span> <span class="ident">register</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>)
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">register</span>: <span class="ident">u32</span>, <span class="ident">value</span>: <span class="ident">u32</span>) {
         <span class="ident">intrinsics::volatile_store</span>((<span class="self">self</span>.<span class="ident">address</span> <span class="op">+</span> <span class="ident">register</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>, <span class="ident">value</span>);
     }
