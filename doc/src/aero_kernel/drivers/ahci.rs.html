@@ -472,11 +472,6 @@
 <span id="472">472</span>
 <span id="473">473</span>
 <span id="474">474</span>
-<span id="475">475</span>
-<span id="476">476</span>
-<span id="477">477</span>
-<span id="478">478</span>
-<span id="479">479</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -504,12 +499,7 @@
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">FRAME_ALLOCATOR</span>};
 
-<span class="kw">use</span> <span class="ident">x86_64</span>::{
-    <span class="ident">structures::paging</span>::{
-        <span class="ident">FrameAllocator</span>, <span class="ident">Mapper</span>, <span class="ident">OffsetPageTable</span>, <span class="ident">Page</span>, <span class="ident">PageTableFlags</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size4KiB</span>,
-    },
-    <span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>,
-};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::pci</span>::{<span class="ident">Bar</span>, <span class="ident">PCIHeader</span>};
 

@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Frame",""]],"trait":[["FrameAllocator",""]]});

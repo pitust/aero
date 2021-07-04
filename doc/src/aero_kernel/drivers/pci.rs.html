@@ -607,8 +607,8 @@
     <span class="ident">utils::io</span>,
 };
 
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::OffsetPageTable</span>;
 <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
-<span class="kw">use</span> <span class="ident">x86_64::structures::paging::OffsetPageTable</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PCI_CONFIG_ADDRESS_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCF8</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PCI_CONFIG_DATA_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCFC</span>;

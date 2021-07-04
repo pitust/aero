@@ -127,11 +127,6 @@
 <span id="127">127</span>
 <span id="128">128</span>
 <span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -152,13 +147,8 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::FRAME_ALLOCATOR</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
-
-<span class="kw">use</span> <span class="ident">x86_64</span>::{
-    <span class="ident">structures::paging</span>::{<span class="ident">mapper::MapToError</span>, <span class="kw-2">*</span>},
-    <span class="ident">VirtAddr</span>,
-};
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Stack</span> {
     <span class="ident">stack_start</span>: <span class="ident">VirtAddr</span>,

@@ -159,7 +159,6 @@
 <span id="159">159</span>
 <span id="160">160</span>
 <span id="161">161</span>
-<span id="162">162</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -184,8 +183,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">paging</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pti</span>;
 
-<span class="kw">use</span> <span class="ident">x86_64::structures::paging::mapper::MapToError</span>;
-<span class="kw">use</span> <span class="ident">x86_64::structures::paging</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="self">self</span><span class="ident">::paging</span>::{<span class="ident">active_level_4_table</span>, <span class="ident">FRAME_ALLOCATOR</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span>;

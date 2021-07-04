@@ -120,6 +120,21 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -140,13 +155,22 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">frame</span>;
+<span class="kw">mod</span> <span class="ident">addr</span>;
+<span class="kw">mod</span> <span class="ident">frame</span>;
+<span class="kw">mod</span> <span class="ident">mapper</span>;
+<span class="kw">mod</span> <span class="ident">page</span>;
+<span class="kw">mod</span> <span class="ident">page_table</span>;
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::addr</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::frame</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::mapper::MapperFlush</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::mapper</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::page</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::page_table</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="ident">stivale_boot::v2</span>::{<span class="ident">StivaleMemoryMapEntryType</span>, <span class="ident">StivaleMemoryMapTag</span>};
 
-<span class="kw">use</span> <span class="ident">x86_64::registers::control::Cr3</span>;
-<span class="kw">use</span> <span class="ident">x86_64::structures::paging</span>::{<span class="ident">mapper::MapToError</span>, <span class="kw-2">*</span>};
-<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
+<span class="kw">use</span> <span class="ident">x86_64::registers::control</span>::{<span class="ident">Cr3</span>, <span class="ident">Cr4</span>, <span class="ident">Cr4Flags</span>};
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">frame::LockedFrameAllocator</span>;
 
@@ -163,6 +187,12 @@
     <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">page</span> }
     }
+}
+
+<span class="doccomment">/// Returns true if level 5 paging is supported by the CPU and is enabled in Cr4.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">level_5_paging_enabled</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="ident">Cr4::read</span>().<span class="ident">contains</span>(<span class="ident">Cr4Flags::L5_PAGING</span>)
 }
 
 <span class="doccomment">/// Initialize paging.</span>

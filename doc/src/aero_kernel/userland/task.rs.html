@@ -127,7 +127,7 @@
 <span class="kw">use</span> <span class="ident">core::cell::UnsafeCell</span>;
 <span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
 
-<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::VirtAddr</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::task::ArchTask</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fs::file_table::FileTable</span>;

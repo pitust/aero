@@ -183,7 +183,7 @@
 <span class="kw">use</span> <span class="ident">core::alloc::Layout</span>;
 <span class="kw">use</span> <span class="ident">core::ptr::Unique</span>;
 
-<span class="kw">use</span> <span class="ident">x86_64::VirtAddr</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::VirtAddr</span>;
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::gdt::TASK_STATE_SEGMENT</span>;
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::interrupts::IretRegisters</span>;
