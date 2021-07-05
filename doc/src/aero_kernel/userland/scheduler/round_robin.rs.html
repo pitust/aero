@@ -162,7 +162,6 @@
 <span id="162">162</span>
 <span id="163">163</span>
 <span id="164">164</span>
-<span id="165">165</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -247,12 +246,6 @@
             <span class="ident">queue</span>: <span class="ident">PerCpu::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TaskQueue::new</span>()),
         });
 
-        <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">queue</span>.<span class="ident">get</span>();
-
-        <span class="kw">unsafe</span> {
-            <span class="ident">CURRENT_PROCESS</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">queue</span>.<span class="ident">idle_process</span>.<span class="ident">clone</span>());
-        }
-
         <span class="ident">this</span>
     }
 }
@@ -262,6 +255,14 @@
         <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get_mut</span>();
 
         <span class="ident">queue</span>.<span class="ident">push_runnable</span>(<span class="ident">task</span>);
+    }
+
+    <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get</span>();
+
+        <span class="kw">unsafe</span> {
+            <span class="ident">CURRENT_PROCESS</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">queue</span>.<span class="ident">idle_process</span>.<span class="ident">clone</span>());
+        }
     }
 }
 
@@ -296,38 +297,35 @@
             .<span class="ident">clone</span>()
     };
 
-    <span class="kw">let</span> <span class="ident">new_task</span> <span class="op">=</span> {
-        <span class="ident">queue</span>
-            .<span class="ident">runnable</span>
-            .<span class="ident">pop_front</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;The scheduler&#39;s queue was empty&quot;</span>)
-    };
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">new_task</span>) <span class="op">=</span> <span class="ident">queue</span>.<span class="ident">runnable</span>.<span class="ident">pop_front</span>() {
+        <span class="comment">/*
+         * Check if the task id of the new task is the same as the new task. If thats
+         * the case keep running the task and return out.
+         */</span>
+        <span class="kw">if</span> <span class="ident">new_task</span>.<span class="ident">task_id</span> <span class="op">=</span><span class="op">=</span> <span class="ident">previous_task</span>.<span class="ident">task_id</span> {
+            <span class="kw">return</span> <span class="bool-val">false</span>;
+        }
 
-    <span class="comment">/*
-     * Check if the task id of the new task is the same as the new task. If thats
-     * the case keep running the task and return out.
-     */</span>
-    <span class="kw">if</span> <span class="ident">new_task</span>.<span class="ident">task_id</span> <span class="op">=</span><span class="op">=</span> <span class="ident">previous_task</span>.<span class="ident">task_id</span> {
-        <span class="kw">return</span> <span class="bool-val">false</span>;
+        <span class="comment">/*
+         * Now that we have passed all of the checks, its time to run the actual task. We first
+         * set the CURRENT_PROCESS static to the new task and then jump to ring 3. Leap of faith!
+         */</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">CURRENT_PROCESS</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">new_task</span>.<span class="ident">clone</span>());
+        }
+
+        <span class="kw">let</span> <span class="ident">previous_arch</span> <span class="op">=</span> <span class="ident">previous_task</span>.<span class="ident">arch_task_mut</span>();
+        <span class="kw">let</span> <span class="ident">new_arch</span> <span class="op">=</span> <span class="ident">new_task</span>.<span class="ident">arch_task_ref</span>();
+
+        <span class="kw">crate</span><span class="ident">::arch::task::arch_switch</span>(<span class="ident">previous_arch</span>, <span class="ident">new_arch</span>);
+
+        <span class="ident">mem::forget</span>(<span class="ident">previous_task</span>);
+        <span class="ident">mem::forget</span>(<span class="ident">new_task</span>);
+
+        <span class="bool-val">true</span>
+    } <span class="kw">else</span> {
+        <span class="bool-val">false</span>
     }
-
-    <span class="comment">/*
-     * Now that we have passed all of the checks, its time to run the actual task. We first
-     * set the CURRENT_PROCESS static to the new task and then jump to ring 3. Leap of faith!
-     */</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">CURRENT_PROCESS</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">new_task</span>.<span class="ident">clone</span>());
-    }
-
-    <span class="kw">let</span> <span class="ident">previous_arch</span> <span class="op">=</span> <span class="ident">previous_task</span>.<span class="ident">arch_task_mut</span>();
-    <span class="kw">let</span> <span class="ident">new_arch</span> <span class="op">=</span> <span class="ident">new_task</span>.<span class="ident">arch_task_ref</span>();
-
-    <span class="kw">crate</span><span class="ident">::arch::task::arch_switch</span>(<span class="ident">previous_arch</span>, <span class="ident">new_arch</span>);
-
-    <span class="ident">mem::forget</span>(<span class="ident">previous_task</span>);
-    <span class="ident">mem::forget</span>(<span class="ident">new_task</span>);
-
-    <span class="bool-val">true</span>
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aero_kernel" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>

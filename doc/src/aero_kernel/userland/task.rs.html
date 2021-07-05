@@ -152,9 +152,9 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TaskState</span> {
-    <span class="ident">Running</span>,
+    <span class="ident">Runnable</span>,
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Task</span> {
@@ -176,7 +176,7 @@
             <span class="ident">arch_task</span>: <span class="ident">UnsafeCell::new</span>(<span class="ident">ArchTask::new_idle</span>()),
             <span class="ident">file_table</span>: <span class="ident">FileTable::new</span>(),
             <span class="ident">task_id</span>: <span class="ident">TaskId::allocate</span>(),
-            <span class="ident">state</span>: <span class="ident">TaskState::Running</span>,
+            <span class="ident">state</span>: <span class="ident">TaskState::Runnable</span>,
 
             <span class="ident">link</span>: <span class="ident">Default::default</span>(),
         })
@@ -189,7 +189,7 @@
             <span class="ident">arch_task</span>: <span class="ident">UnsafeCell::new</span>(<span class="ident">ArchTask::new_kernel</span>(<span class="ident">entry_point</span>)),
             <span class="ident">task_id</span>: <span class="ident">TaskId::allocate</span>(),
             <span class="ident">file_table</span>: <span class="ident">FileTable::new</span>(),
-            <span class="ident">state</span>: <span class="ident">TaskState::Running</span>,
+            <span class="ident">state</span>: <span class="ident">TaskState::Runnable</span>,
 
             <span class="ident">link</span>: <span class="ident">Default::default</span>(),
         })
