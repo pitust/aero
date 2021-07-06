@@ -294,6 +294,11 @@
 <span id="294">294</span>
 <span id="295">295</span>
 <span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -337,6 +342,7 @@
     <span class="ident">extern_types</span>,
     <span class="ident">new_uninit</span>,
     <span class="ident">box_syntax</span>,
+    <span class="ident">const_fn_fn_ptr_basics</span>,
     <span class="ident">arc_new_cyclic</span>,
     <span class="ident">const_btree_new</span> <span class="comment">// TODO: Do not abuse nightly rust :D</span>
 )]</span>
@@ -356,6 +362,7 @@
 <span class="kw">mod</span> <span class="ident">fs</span>;
 <span class="kw">mod</span> <span class="ident">logger</span>;
 <span class="kw">mod</span> <span class="ident">mem</span>;
+<span class="kw">mod</span> <span class="ident">modules</span>;
 <span class="kw">mod</span> <span class="ident">rendy</span>;
 <span class="kw">mod</span> <span class="ident">syscall</span>;
 <span class="kw">mod</span> <span class="ident">tests</span>;
@@ -551,6 +558,9 @@ _______ _______ ______ _______    _______ ______
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main_thread</span>() {
+    <span class="ident">modules::init</span>();
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded kernel modules&quot;</span>);
+
     <span class="macro">prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ASCII_INTRO</span>);
 
     <span class="kw">loop</span> {}
