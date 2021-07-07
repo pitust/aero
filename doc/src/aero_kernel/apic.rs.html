@@ -303,13 +303,6 @@
 <span id="303">303</span>
 <span id="304">304</span>
 <span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -370,7 +363,7 @@
 <span class="kw">static</span> <span class="ident">AP_READY</span>: <span class="ident">AtomicBool</span> <span class="op">=</span> <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>);
 <span class="kw">static</span> <span class="ident">BSP_READY</span>: <span class="ident">AtomicBool</span> <span class="op">=</span> <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>);
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ApicType</span> {
     <span class="ident">Xapic</span>,
     <span class="ident">X2apic</span>,
@@ -478,20 +471,13 @@
         <span class="self">self</span>.<span class="ident">apic_type</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_icr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u64</span>) {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
-            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">while</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> {}
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_icr_xapic</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value_master</span>: <span class="ident">u32</span>, <span class="ident">value_slave</span>: <span class="ident">u32</span>) {
+        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR1</span>, <span class="ident">value_master</span>);
+        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR0</span>, <span class="ident">value_slave</span>);
+    }
 
-                <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR1</span>, (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>);
-                <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR0</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>);
-
-                <span class="kw">while</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span> {}
-            }
-
-            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>, <span class="ident">value</span>),
-            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> {}
-        }
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_icr_x2apic</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u64</span>) {
+        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>, <span class="ident">value</span>);
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>

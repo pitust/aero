@@ -111,7 +111,7 @@
 
     <span class="comment">/*
      * Iterate over the `kernel_modules` linker section containing pointers to module
-     * finalisation functions.
+     * initialization functions.
      */</span>
     <span class="kw">unsafe</span> {
         (<span class="ident">__kernel_modules_start</span>.<span class="ident">as_usize</span>()..<span class="ident">__kernel_modules_end</span>.<span class="ident">as_usize</span>())
