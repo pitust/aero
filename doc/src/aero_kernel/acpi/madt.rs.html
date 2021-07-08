@@ -235,6 +235,10 @@
 <span id="235">235</span>
 <span id="236">236</span>
 <span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -465,6 +469,10 @@
                         <span class="kw">return</span> <span class="prelude-val">None</span>;
                     }
                 };
+
+                <span class="kw">if</span> <span class="ident">header</span>.<span class="ident">length</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                    <span class="kw">return</span> <span class="prelude-val">None</span>;
+                }
 
                 <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">item</span>);
             }
