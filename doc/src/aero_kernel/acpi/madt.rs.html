@@ -236,9 +236,6 @@
 <span id="236">236</span>
 <span id="237">237</span>
 <span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -288,6 +285,7 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Madt</span> {
     <span class="ident">header</span>: <span class="ident">Sdt</span>,
     <span class="ident">local_apic_address</span>: <span class="ident">u32</span>,
@@ -402,7 +400,7 @@
     <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MadtIterator</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">MadtIterator</span> {
-                <span class="ident">current</span>: (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">add</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>()),
+                <span class="ident">current</span>: (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">add</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>()),
                 <span class="ident">limit</span>: (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="self">self</span>.<span class="ident">header</span>.<span class="ident">length</span> <span class="kw">as</span> <span class="ident">isize</span>),
             }
         }
@@ -469,10 +467,6 @@
                         <span class="kw">return</span> <span class="prelude-val">None</span>;
                     }
                 };
-
-                <span class="kw">if</span> <span class="ident">header</span>.<span class="ident">length</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-                    <span class="kw">return</span> <span class="prelude-val">None</span>;
-                }
 
                 <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">item</span>);
             }
