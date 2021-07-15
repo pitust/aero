@@ -207,7 +207,7 @@
 
     <span class="doccomment">/// Registers the provided task in the schedulers queue.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">tasks</span>.<span class="ident">register_task</span>(<span class="ident">task</span>.<span class="ident">task_id</span>, <span class="ident">task</span>.<span class="ident">clone</span>());
+        <span class="self">self</span>.<span class="ident">tasks</span>.<span class="ident">register_task</span>(<span class="ident">task</span>.<span class="ident">task_id</span>(), <span class="ident">task</span>.<span class="ident">clone</span>());
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">register_task</span>(<span class="ident">task</span>.<span class="ident">clone</span>());
     }
 }

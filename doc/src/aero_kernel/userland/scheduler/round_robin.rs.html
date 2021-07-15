@@ -219,7 +219,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">push_runnable</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">task</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>) {
         <span class="macro">debug_assert!</span>(<span class="ident">task</span>.<span class="ident">link</span>.<span class="ident">is_linked</span>() <span class="op">=</span><span class="op">=</span> <span class="bool-val">false</span>); <span class="comment">// Make sure the task is not already linked in the queue</span>
-        <span class="macro">debug_assert!</span>(<span class="ident">task</span>.<span class="ident">task_id</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">idle_process</span>.<span class="ident">task_id</span>); <span class="comment">// Make sure we are not adding the IDLE task in the queue</span>
+        <span class="macro">debug_assert!</span>(<span class="ident">task</span>.<span class="ident">task_id</span>() <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">idle_process</span>.<span class="ident">task_id</span>()); <span class="comment">// Make sure we are not adding the IDLE task in the queue</span>
 
         <span class="self">self</span>.<span class="ident">runnable</span>.<span class="ident">push_back</span>(<span class="ident">task</span>);
     }
@@ -302,7 +302,7 @@
          * Check if the task id of the new task is the same as the new task. If thats
          * the case keep running the task and return out.
          */</span>
-        <span class="kw">if</span> <span class="ident">new_task</span>.<span class="ident">task_id</span> <span class="op">=</span><span class="op">=</span> <span class="ident">previous_task</span>.<span class="ident">task_id</span> {
+        <span class="kw">if</span> <span class="ident">new_task</span>.<span class="ident">task_id</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">previous_task</span>.<span class="ident">task_id</span>() {
             <span class="kw">return</span> <span class="bool-val">false</span>;
         }
 
