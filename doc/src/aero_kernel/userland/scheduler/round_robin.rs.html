@@ -162,6 +162,15 @@
 <span id="162">162</span>
 <span id="163">163</span>
 <span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -262,6 +271,15 @@
 
         <span class="kw">unsafe</span> {
             <span class="ident">CURRENT_PROCESS</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">queue</span>.<span class="ident">idle_process</span>.<span class="ident">clone</span>());
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> {
+            <span class="ident">CURRENT_PROCESS</span>
+                .<span class="ident">as_ref</span>()
+                .<span class="ident">expect</span>(<span class="string">&quot;`current_task` was invoked before the current task was initialized&quot;</span>)
+                .<span class="ident">clone</span>()
         }
     }
 }

@@ -299,6 +299,7 @@
 <span id="299">299</span>
 <span id="300">300</span>
 <span id="301">301</span>
+<span id="302">302</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -562,6 +563,7 @@ _______ _______ ______ _______    _______ ______
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded kernel modules&quot;</span>);
 
     <span class="macro">prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ASCII_INTRO</span>);
+    <span class="ident">userland::run</span>();
 
     <span class="kw">loop</span> {}
 }

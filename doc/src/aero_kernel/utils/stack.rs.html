@@ -122,11 +122,6 @@
 <span id="122">122</span>
 <span id="123">123</span>
 <span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -148,7 +143,6 @@
  */</span>
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Stack</span> {
     <span class="ident">stack_start</span>: <span class="ident">VirtAddr</span>,
@@ -200,10 +194,6 @@
                 )
             }<span class="question-mark">?</span>
             .<span class="ident">flush</span>();
-        }
-
-        <span class="kw">unsafe</span> {
-            <span class="ident">memset</span>(<span class="ident">start_addr</span>.<span class="ident">as_mut_ptr</span>(), <span class="number">0x00</span>, <span class="ident">stack_size</span>);
         }
 
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {

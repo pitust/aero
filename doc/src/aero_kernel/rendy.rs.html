@@ -308,6 +308,9 @@
 <span id="308">308</span>
 <span id="309">309</span>
 <span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -613,7 +616,10 @@
         <span class="ident">stride</span>: <span class="ident">framebuffer_tag</span>.<span class="ident">framebuffer_pitch</span> <span class="kw">as</span> <span class="ident">usize</span>,
     };
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rendy</span> <span class="op">=</span> <span class="ident">DebugRendy::new</span>(<span class="ident">framebuffer_tag</span>.<span class="ident">framebuffer_addr</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">framebuffer_info</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rendy</span> <span class="op">=</span> <span class="ident">DebugRendy::new</span>(
+        <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">framebuffer_tag</span>.<span class="ident">framebuffer_addr</span> }.<span class="ident">as_u64</span>(),
+        <span class="ident">framebuffer_info</span>,
+    );
 
     <span class="ident">rendy</span>.<span class="ident">clear_screen</span>();
 
