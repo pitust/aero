@@ -236,6 +236,7 @@
 <span id="236">236</span>
 <span id="237">237</span>
 <span id="238">238</span>
+<span id="239">239</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -262,8 +263,9 @@
 <span class="kw">use</span> <span class="ident">core::sync::atomic::Ordering</span>;
 
 <span class="kw">use</span> <span class="ident">alloc::alloc::alloc_zeroed</span>;
-<span class="kw">use</span> <span class="ident">x86_64::structures::paging::mapper::MapToError</span>;
-<span class="kw">use</span> <span class="ident">x86_64::structures::paging</span>::<span class="kw-2">*</span>;
+
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">spin::RwLock</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic::ApicType</span>;
@@ -284,7 +286,9 @@
     <span class="kw">fn</span> <span class="ident">smp_check_ap_flag</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">IO_APICS</span>: <span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">IoApicHeader</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RwLock::new</span>(<span class="ident">Vec::new</span>());
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">ISOS</span>: <span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">MadtIntSrcOverride</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RwLock::new</span>(<span class="ident">Vec::new</span>());
+
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Madt</span> {
     <span class="ident">header</span>: <span class="ident">Sdt</span>,
@@ -293,7 +297,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Madt</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="self">self</span>) {
         <span class="macro">log::debug!</span>(<span class="string">&quot;Storing AP trampoline at 0x1000&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">page_index</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">smp_prepare_trampoline</span>() };
@@ -389,12 +393,10 @@
                     }
                 }
 
-                <span class="ident">MadtEntry::IoApic</span>(<span class="ident">io_apic</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">apic::init_io_apic</span>(<span class="ident">io_apic</span>),
-                <span class="ident">MadtEntry::IntSrcOverride</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+                <span class="ident">MadtEntry::IoApic</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">IO_APICS</span>.<span class="ident">write</span>().<span class="ident">push</span>(<span class="ident">e</span>),
+                <span class="ident">MadtEntry::IntSrcOverride</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ISOS</span>.<span class="ident">write</span>().<span class="ident">push</span>(<span class="ident">e</span>),
             }
         }
-
-        <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MadtIterator</span> {
@@ -423,12 +425,12 @@
 }
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">struct</span> <span class="ident">MadtIntSrcOverride</span> {
-    <span class="ident">header</span>: <span class="ident">EntryHeader</span>,
-    <span class="ident">bus</span>: <span class="ident">u8</span>,
-    <span class="ident">irq</span>: <span class="ident">u8</span>,
-    <span class="ident">global_system_interrupt</span>: <span class="ident">u32</span>,
-    <span class="ident">flags</span>: <span class="ident">u16</span>,
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MadtIntSrcOverride</span> {
+    <span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">EntryHeader</span>,
+    <span class="kw">pub</span> <span class="ident">bus</span>: <span class="ident">u8</span>,
+    <span class="kw">pub</span> <span class="ident">irq</span>: <span class="ident">u8</span>,
+    <span class="kw">pub</span> <span class="ident">global_system_interrupt</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span> <span class="ident">flags</span>: <span class="ident">u16</span>,
 }
 
 <span class="kw">enum</span> <span class="ident">MadtEntry</span> {

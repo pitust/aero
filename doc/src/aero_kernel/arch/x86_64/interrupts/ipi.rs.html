@@ -86,7 +86,7 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pit</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
         <span class="ident">apic::get_local_apic</span>().<span class="ident">eoi</span>();
 
-        <span class="ident">time::PIT</span>.<span class="ident">tick</span>();
+        <span class="ident">time::tick</span>();
     }
 );
 </pre></div>

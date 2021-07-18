@@ -76,9 +76,6 @@
 <span id="76">76</span>
 <span id="77">77</span>
 <span id="78">78</span>
-<span id="79">79</span>
-<span id="80">80</span>
-<span id="81">81</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -99,67 +96,64 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="doccomment">//! The PIT (Programmable Interval Timer) chip basically consists of an oscillator, a prescaler and 3 independent frequency dividers</span>
-<span class="doccomment">//! and it is used to create time intervals and calculate *estimate* time since epoch.</span>
+<span class="doccomment">//! The PIT (Programmable Interval Timer) chip basically consists of an oscillator,</span>
+<span class="doccomment">//! a prescaler and 3 independent frequency dividers and it is used to create time intervals</span>
+<span class="doccomment">//! and calculate *estimate* time since epoch.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/Programmable_Interval_Timer&gt;</span>
 
+<span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
+
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::userland::scheduler</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIT_DIVISOR</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1193180</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIT_BASE_FREQUENCY</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1193182</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DEFAULT_PIT_DIVISOR</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">65535</span>;
+<span class="kw">const</span> <span class="ident">PIT_FREQUENCY_HZ</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1000</span>;
+<span class="kw">const</span> <span class="ident">SCHED_TIMESLICE_MS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">5</span>;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PitDescriptor</span> {
-    <span class="ident">ticks_since_epoch</span>: <span class="ident">u64</span>,
-    <span class="ident">divisor</span>: <span class="ident">u64</span>,
-}
+<span class="kw">static</span> <span class="ident">SCHED_TICKS</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
+<span class="kw">static</span> <span class="ident">UPTIME_RAW</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
+<span class="kw">static</span> <span class="ident">UPTIME_SEC</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
+<span class="kw">static</span> <span class="ident">UNIX_EPOCH</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
 
-<span class="kw">impl</span> <span class="ident">PitDescriptor</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">ticks_since_epoch</span>: <span class="number">0</span>,
-            <span class="ident">divisor</span>: <span class="ident">DEFAULT_PIT_DIVISOR</span>,
-        }
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tick</span>() {
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">UPTIME_RAW</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Increment uptime raw ticks.</span>
+
+    <span class="kw">if</span> <span class="ident">value</span> <span class="op">%</span> <span class="ident">PIT_FREQUENCY_HZ</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="ident">UPTIME_SEC</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Increment uptime seconds</span>
+        <span class="ident">UNIX_EPOCH</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Increment unix epoch</span>
     }
 
-    <span class="doccomment">/// Increments ticks since epoch. This function is called on the PIT chip interrupt.</span>
-    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tick</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">ticks_since_epoch</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">get_frequency</span>();
-    }
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">SCHED_TICKS</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Increment scheduler ticks.</span>
 
-    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_frequency</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-        <span class="ident">PIT_BASE_FREQUENCY</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">divisor</span>
-    }
+    <span class="comment">// Check if the ticks are equal to the scheduler timeslice. If so, then</span>
+    <span class="comment">// reschedule.</span>
+    <span class="kw">if</span> <span class="ident">value</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SCHED_TIMESLICE_MS</span> {
+        <span class="ident">SCHED_TICKS</span>.<span class="ident">store</span>(<span class="number">0</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Reset the scheduler ticks counter.</span>
 
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_divisor</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">divisor</span>: <span class="ident">u64</span>) {
-        <span class="ident">io::outb</span>(<span class="number">0x40</span>, (<span class="ident">divisor</span> <span class="op">&amp;</span> <span class="number">0x00ff</span>) <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="ident">io::wait</span>();
-
-        <span class="ident">io::outb</span>(<span class="number">0x40</span>, ((<span class="ident">divisor</span> <span class="op">&amp;</span> <span class="number">0xff00</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="ident">io::wait</span>();
+        <span class="ident">scheduler::reschedule</span>();
+        <span class="kw">return</span>;
     }
 }
 
-<span class="doccomment">/// The PIT (Programmable Interval Timer)</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PIT</span>: <span class="ident">PitDescriptor</span> <span class="op">=</span> <span class="ident">PitDescriptor::new</span>();
-
-<span class="doccomment">/// Initialise the PIT chip.</span>
+<span class="doccomment">/// This function is responsible for initializing the PIT chip and setting</span>
+<span class="doccomment">/// up the IRQ.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
-    <span class="kw">unsafe</span> {
-        <span class="comment">/*
-         * At boot the PIT frequency divider is set to 0 which
-         * results in around 54.926 ms between ticks.
-         *
-         * We change the divider to 1193180 which will have around 1.00 ms
-         * between ticks to improve time accuracy.
-         */</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span> <span class="op">=</span> <span class="number">1193182</span> <span class="op">/</span> <span class="ident">PIT_FREQUENCY_HZ</span>;
 
-        <span class="ident">PIT</span>.<span class="ident">set_divisor</span>(<span class="ident">PIT_DIVISOR</span>);
+    <span class="kw">if</span> (<span class="number">1193182</span> <span class="op">%</span> <span class="ident">PIT_FREQUENCY_HZ</span>) <span class="op">&gt;</span> (<span class="ident">PIT_FREQUENCY_HZ</span> <span class="op">/</span> <span class="number">2</span>) {
+        <span class="ident">x</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
     }
+
+    <span class="kw">unsafe</span> {
+        <span class="ident">io::outb</span>(<span class="number">0x40</span>, (<span class="ident">x</span> <span class="op">&amp;</span> <span class="number">0x00ff</span>) <span class="kw">as</span> <span class="ident">u8</span>);
+        <span class="ident">io::wait</span>();
+
+        <span class="ident">io::outb</span>(<span class="number">0x40</span>, ((<span class="ident">x</span> <span class="op">&amp;</span> <span class="number">0xff00</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>);
+        <span class="ident">io::wait</span>();
+    }
+
+    <span class="ident">apic::io_apic_setup_legacy_irq</span>(<span class="number">0</span>, <span class="number">1</span>); <span class="comment">// Set up the IRQ.</span>
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

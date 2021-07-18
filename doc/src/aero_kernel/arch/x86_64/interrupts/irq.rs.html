@@ -81,7 +81,7 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">interrupt</span>, <span class="ident">interrupt_stack</span>};
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::interrupt</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::time</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -91,11 +91,11 @@
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::INTERRUPT_CONTROLLER</span>;
 
-<span class="macro">interrupt_stack!</span>(
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pit_stack</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) {
-        <span class="ident">time::PIT</span>.<span class="ident">tick</span>();
-
+<span class="macro">interrupt!</span>(
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pit_stack</span>() {
         <span class="ident">INTERRUPT_CONTROLLER</span>.<span class="ident">eoi</span>();
+
+        <span class="ident">time::tick</span>();
     }
 );
 

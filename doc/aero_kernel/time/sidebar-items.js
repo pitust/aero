@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["DEFAULT_PIT_DIVISOR",""],["PIT_BASE_FREQUENCY",""],["PIT_DIVISOR",""]],"fn":[["init","Initialise the PIT chip."]],"static":[["PIT","The PIT (Programmable Interval Timer)"]],"struct":[["PitDescriptor",""]]});
+initSidebarItems({"constant":[["PIT_FREQUENCY_HZ",""],["SCHED_TIMESLICE_MS",""]],"fn":[["init","This function is responsible for initializing the PIT chip and setting up the IRQ."],["tick",""]],"static":[["SCHED_TICKS",""],["UNIX_EPOCH",""],["UPTIME_RAW",""],["UPTIME_SEC",""]]});
