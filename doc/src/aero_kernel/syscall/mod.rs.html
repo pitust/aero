@@ -199,13 +199,6 @@
 <span id="199">199</span>
 <span id="200">200</span>
 <span id="201">201</span>
-<span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
-<span id="207">207</span>
-<span id="208">208</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -382,13 +375,6 @@
         <span class="string">&quot;swapgs\n&quot;</span>,
         <span class="string">&quot;iretq\n&quot;</span>,
     }
-}
-
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyscallFrame</span> {
-    <span class="kw">pub</span> <span class="ident">rflags</span>: <span class="ident">u64</span>,
-    <span class="kw">pub</span> <span class="ident">rip</span>: <span class="ident">u64</span>,
-    <span class="kw">pub</span> <span class="ident">rsp</span>: <span class="ident">u64</span>,
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {

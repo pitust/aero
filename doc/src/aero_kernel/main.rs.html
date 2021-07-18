@@ -512,6 +512,13 @@ _______ _______ ______ _______    _______ ______
     <span class="macro">log::info!</span>(<span class="string">&quot;Initialized kernel&quot;</span>);
 
     <span class="comment">/*
+     * Now that all of the essential initialization is done we are going to schedule
+     * the kernel main thread.
+     */</span>
+    <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Task::new_kernel</span>(<span class="ident">VirtAddr::new_unsafe</span>(<span class="ident">kernel_main_thread</span> <span class="kw">as</span> <span class="ident">u64</span>)) };
+    <span class="ident">scheduler::get_scheduler</span>().<span class="ident">register_task</span>(<span class="ident">init</span>);
+
+    <span class="comment">/*
      * NOTE: We need to enable interrupts after we have initialized TLS and GDT
      * as the PTI context switch functions depend on thread local globals.
      */</span>
@@ -519,15 +526,8 @@ _______ _______ ______ _______    _______ ______
         <span class="ident">interrupts::enable_interrupts</span>();
     }
 
-    <span class="comment">/*
-     * Now that all of the essential initialization is done we are going to schedule
-     * the kernel main thread.
-     */</span>
-    <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Task::new_kernel</span>(<span class="ident">VirtAddr::new_unsafe</span>(<span class="ident">kernel_main_thread</span> <span class="kw">as</span> <span class="ident">u64</span>)) };
-    <span class="ident">scheduler::get_scheduler</span>().<span class="ident">register_task</span>(<span class="ident">init</span>);
-
-    <span class="comment">// userland::run(&amp;mut offset_table).unwrap();</span>
-
+    <span class="comment">// Pre-scheduler init done. Now we are waiting for the main kernel</span>
+    <span class="comment">// thread to be scheduled.</span>
     <span class="kw">loop</span> {
         <span class="kw">unsafe</span> { <span class="ident">interrupts::halt</span>() }
     }

@@ -258,6 +258,16 @@
 <span id="258">258</span>
 <span id="259">259</span>
 <span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -509,14 +519,24 @@
 <span class="doccomment">/// This function is responsible for performing the inner task switch. Firstly it sets the</span>
 <span class="doccomment">/// new RSP in the TSS and then performes the actual context switch (saving the previous tasks</span>
 <span class="doccomment">/// state in its context and then switching to the new task).</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arch_switch</span>(<span class="ident">to</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ArchTask</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arch_task_spinup</span>(<span class="ident">to</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ArchTask</span>, <span class="ident">address_space_switch</span>: <span class="ident">bool</span>) {
     <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
         <span class="kw">fn</span> <span class="ident">task_spinup</span>(<span class="ident">context</span>: <span class="ident">u64</span>, <span class="ident">cr3</span>: <span class="ident">u64</span>);
     }
 
     <span class="kw">unsafe</span> {
-        <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">rsp</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">to</span>.<span class="ident">context_switch_rsp</span>.<span class="ident">as_u64</span>(); <span class="comment">// Set the stack pointer in the TSS.</span>
-        <span class="ident">task_spinup</span>((<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">to</span>.<span class="ident">context</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Context</span>) <span class="kw">as</span> <span class="ident">u64</span>, <span class="number">0x00</span>) <span class="comment">// Perform the context switch.</span>
+        <span class="comment">// Set the stack pointer in the TSS.</span>
+        <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">rsp</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">to</span>.<span class="ident">context_switch_rsp</span>.<span class="ident">as_u64</span>();
+
+        <span class="kw">if</span> <span class="ident">address_space_switch</span> {
+            <span class="kw">let</span> <span class="ident">cr3</span> <span class="op">=</span> <span class="ident">to</span>.<span class="ident">address_space</span>.<span class="ident">cr3</span>().<span class="ident">start_address</span>().<span class="ident">as_u64</span>();
+
+            <span class="comment">// Perform the context switch with the new address space.</span>
+            <span class="ident">task_spinup</span>((<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">to</span>.<span class="ident">context</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Context</span>) <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">cr3</span>)
+        } <span class="kw">else</span> {
+            <span class="comment">// Perform the context switch without switching the address space.</span>
+            <span class="ident">task_spinup</span>((<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">to</span>.<span class="ident">context</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Context</span>) <span class="kw">as</span> <span class="ident">u64</span>, <span class="number">0x00</span>)
+        }
     }
 }
 </pre></div>
