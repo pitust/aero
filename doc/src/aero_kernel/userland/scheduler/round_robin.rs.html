@@ -170,7 +170,6 @@
 <span id="170">170</span>
 <span id="171">171</span>
 <span id="172">172</span>
-<span id="173">173</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -332,10 +331,9 @@
             <span class="ident">CURRENT_PROCESS</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">new_task</span>.<span class="ident">clone</span>());
         }
 
-        <span class="kw">let</span> <span class="ident">previous_arch</span> <span class="op">=</span> <span class="ident">previous_task</span>.<span class="ident">arch_task_mut</span>();
-        <span class="kw">let</span> <span class="ident">new_arch</span> <span class="op">=</span> <span class="ident">new_task</span>.<span class="ident">arch_task_ref</span>();
+        <span class="kw">let</span> <span class="ident">new_arch</span> <span class="op">=</span> <span class="ident">new_task</span>.<span class="ident">arch_task_mut</span>();
 
-        <span class="kw">crate</span><span class="ident">::arch::task::arch_switch</span>(<span class="ident">previous_arch</span>, <span class="ident">new_arch</span>);
+        <span class="kw">crate</span><span class="ident">::arch::task::arch_switch</span>(<span class="ident">new_arch</span>);
 
         <span class="ident">mem::forget</span>(<span class="ident">previous_task</span>);
         <span class="ident">mem::forget</span>(<span class="ident">new_task</span>);
