@@ -357,13 +357,6 @@
 <span id="357">357</span>
 <span id="358">358</span>
 <span id="359">359</span>
-<span id="360">360</span>
-<span id="361">361</span>
-<span id="362">362</span>
-<span id="363">363</span>
-<span id="364">364</span>
-<span id="365">365</span>
-<span id="366">366</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -710,13 +703,6 @@
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">enable_interrupts</span>() {
     <span class="macro">asm!</span>(<span class="string">&quot;sti&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
-}
-
-<span class="doccomment">/// Enables interrupts and then halts the CPU.</span>
-<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">enable_interrupts_and_halt</span>() {
-    <span class="ident">enable_interrupts</span>();
-    <span class="ident">halt</span>();
 }
 
 <span class="doccomment">/// Wrapper function to the `pause` assembly instruction used to pause</span>
