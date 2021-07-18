@@ -128,6 +128,14 @@
 <span id="128">128</span>
 <span id="129">129</span>
 <span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -235,6 +243,14 @@
     }
 
     <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
+}
+
+<span class="doccomment">/// Force-unlocks the logger ring buffer to prevent a deadlock.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Saftey</span>
+<span class="doccomment">/// This method is not memory safe and should be only used when absolutely necessary.</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">force_unlock</span>() {
+    <span class="ident">LOG_RING_BUFFER</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">force_unlock</span>());
 }
 
 <span class="doccomment">/// Returns a mutable reference to the logging ring buffer.</span>
