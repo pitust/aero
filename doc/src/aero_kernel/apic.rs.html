@@ -439,6 +439,16 @@
 <span id="439">439</span>
 <span id="440">440</span>
 <span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -489,6 +499,9 @@
 
 <span class="doccomment">/// Interrupt Command Register (ICR). Read/write.</span>
 <span class="kw">const</span> <span class="ident">XAPIC_ICR1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x310</span>;
+
+<span class="doccomment">/// Task Priority Register (TPR). Read/write. Bits 31:8 are reserved.</span>
+<span class="kw">const</span> <span class="ident">XAPIC_TPR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x080</span>;
 
 <span class="kw">static</span> <span class="ident">LOCAL_APIC</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">LocalApic</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 <span class="kw">static</span> <span class="ident">BSP_APIC_ID</span>: <span class="ident">AtomicU64</span> <span class="op">=</span> <span class="ident">AtomicU64::new</span>(<span class="number">0xFFFF_FFFF_FFFF_FFFF</span>);
@@ -550,6 +563,9 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
             <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="comment">// Clear the task priority register to enable all interrupts.</span>
+                <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_TPR</span>, <span class="number">0x00</span>);
+
                 <span class="comment">// Enable local APIC; set spurious interrupt vector.</span>
                 <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_SVR</span>, <span class="number">0x100</span> <span class="op">|</span> <span class="ident">APIC_SPURIOUS_VECTOR</span>);
 
@@ -561,6 +577,9 @@
                 <span class="comment">// Enable X2APIC (Bit 10)</span>
                 <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_APIC_BASE</span>, <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_APIC_BASE</span>) <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">10</span>);
 
+                <span class="comment">// Clear the task priority register to enable all interrupts.</span>
+                <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_TPR</span>, <span class="number">0x00</span>);
+
                 <span class="comment">// Set up LVT (Local Vector Table) error.</span>
                 <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_LVT_ERROR</span>, <span class="number">49</span>);
 
@@ -568,6 +587,7 @@
                 <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_SIVR</span>, (<span class="number">0x100</span> <span class="op">|</span> <span class="ident">APIC_SPURIOUS_VECTOR</span>) <span class="kw">as</span> <span class="kw">_</span>);
             }
 
+            <span class="comment">// Do nothing for the case of the None APIC type.</span>
             <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> {}
         }
     }
@@ -589,7 +609,7 @@
                 <span class="comment">// the local APIC has not completed sending the last IPI.</span>
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">status</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> (<span class="number">1u32</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>);
 
-                <span class="kw">while</span> <span class="ident">status</span> <span class="op">&gt;</span> <span class="number">0</span> {
+                <span class="kw">while</span> <span class="ident">status</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
                     <span class="ident">status</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> (<span class="number">1u32</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>);
                 }
             }
@@ -600,10 +620,10 @@
                 <span class="comment">// Make the ICR delivery status is clear, indicating that the</span>
                 <span class="comment">// local APIC has completed sending any previous IPIs. If set to 1</span>
                 <span class="comment">// the local APIC has not completed sending the last IPI.</span>
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>) <span class="op">&amp;</span> (<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>);
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>) <span class="op">&amp;</span> (<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>);
 
-                <span class="kw">while</span> <span class="ident">status</span> <span class="op">&gt;</span> <span class="number">0</span> {
-                    <span class="ident">status</span> <span class="op">=</span> <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>) <span class="op">&amp;</span> (<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>);
+                <span class="kw">while</span> <span class="ident">status</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+                    <span class="ident">status</span> <span class="op">=</span> <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>) <span class="op">&amp;</span> (<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>);
                 }
             }
 

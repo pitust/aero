@@ -143,6 +143,9 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -200,6 +203,9 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_EOI</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80b</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_LVT_ERROR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x837</span>;
+
+<span class="doccomment">/// x2APIC Task Priority register (R/W)</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_TPR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x808</span>;
 
 <span class="doccomment">/// Wrapper function to the `outb` assembly instruction used to do the</span>
 <span class="doccomment">/// low level port output.</span>
