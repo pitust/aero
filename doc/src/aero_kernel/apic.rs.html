@@ -624,7 +624,7 @@
     }
 
     <span class="doccomment">/// The local APIC records errors detected during interrupt handling in the error status</span>
-    <span class="doccomment">/// register (ESR). This function returns the value stored in the error status register value</span>
+    <span class="doccomment">/// register (ESR). This function returns the value stored in the error status register</span>
     <span class="doccomment">/// of this instance.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_esr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
