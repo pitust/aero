@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["pit",""],["tlb",""],["wakeup",""]]});
+initSidebarItems({"fn":[["abort",""],["reschedule",""]]});

@@ -357,6 +357,19 @@
 <span id="357">357</span>
 <span id="358">358</span>
 <span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -388,6 +401,19 @@
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+
+<span class="kw">const</span> <span class="ident">PIC1_COMMAND</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x20</span>;
+<span class="kw">const</span> <span class="ident">PIC1_DATA</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x21</span>;
+
+<span class="kw">const</span> <span class="ident">PIC2_DATA</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xA1</span>;
+<span class="kw">const</span> <span class="ident">PIC2_COMMAND</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xA0</span>;
+
+<span class="kw">const</span> <span class="ident">PIC_EOI</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x20</span>;
+
+<span class="kw">const</span> <span class="ident">ICW1_INIT</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x10</span>;
+<span class="kw">const</span> <span class="ident">ICW1_READ_ISR</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x0B</span>;
+<span class="kw">const</span> <span class="ident">ICW1_ICW4</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
+<span class="kw">const</span> <span class="ident">ICW4_8086</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0x01</span>;
 
 <span class="macro">lazy_static::lazy_static!</span> {
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">PIC_CONTROLLER</span>: <span class="ident">PicController</span> <span class="op">=</span> <span class="ident">PicController::new</span>();
