@@ -437,18 +437,6 @@
 <span id="437">437</span>
 <span id="438">438</span>
 <span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
-<span id="446">446</span>
-<span id="447">447</span>
-<span id="448">448</span>
-<span id="449">449</span>
-<span id="450">450</span>
-<span id="451">451</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -605,26 +593,18 @@
                 <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR0</span>, <span class="ident">vec</span> <span class="kw">as</span> <span class="kw">_</span>);
 
                 <span class="comment">// Make the ICR delivery status is clear, indicating that the</span>
-                <span class="comment">// local APIC has completed sending any previous IPIs. If set to 1</span>
-                <span class="comment">// the local APIC has not completed sending the last IPI.</span>
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">status</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> (<span class="number">1u32</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>);
-
-                <span class="kw">while</span> <span class="ident">status</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-                    <span class="ident">status</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> (<span class="number">1u32</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>);
-                }
+                <span class="comment">// local APIC has completed sending the IPI. If set to 1 the</span>
+                <span class="comment">// local APIC has not completed sending the IPI.</span>
+                <span class="kw">while</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> (<span class="number">1u32</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>) <span class="op">&gt;</span> <span class="number">0</span> {}
             }
 
             <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>, <span class="ident">vec</span> <span class="kw">as</span> <span class="ident">u64</span> <span class="op">|</span> ((<span class="ident">cpu</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>));
 
                 <span class="comment">// Make the ICR delivery status is clear, indicating that the</span>
-                <span class="comment">// local APIC has completed sending any previous IPIs. If set to 1</span>
-                <span class="comment">// the local APIC has not completed sending the last IPI.</span>
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>) <span class="op">&amp;</span> (<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>);
-
-                <span class="kw">while</span> <span class="ident">status</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-                    <span class="ident">status</span> <span class="op">=</span> <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>) <span class="op">&amp;</span> (<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>);
-                }
+                <span class="comment">// local APIC has completed sending the IPI. If set to 1 the</span>
+                <span class="comment">// local APIC has not completed sending the IPI.</span>
+                <span class="kw">while</span> <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>) <span class="op">&amp;</span> (<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>) <span class="op">&gt;</span> <span class="number">0</span> {}
             }
 
             <span class="comment">// Do nothing for the case of the None APIC type.</span>
@@ -850,10 +830,6 @@
     }
 
     <span class="ident">io_apic_set_redirect</span>(<span class="ident">irq</span> <span class="op">+</span> <span class="number">0x20</span>, <span class="ident">irq</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="number">0</span>, <span class="ident">status</span>)
-}
-
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_ipi</span>() {
-    <span class="kw">unsafe</span> { <span class="ident">get_local_apic</span>().<span class="ident">send_ipi</span>(<span class="number">1</span>, <span class="number">0x40</span>) }
 }
 
 <span class="doccomment">/// Initialize the local apic.</span>

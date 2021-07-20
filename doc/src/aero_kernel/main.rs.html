@@ -284,8 +284,6 @@
 <span id="284">284</span>
 <span id="285">285</span>
 <span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -537,8 +535,6 @@ _______ _______ ______ _______    _______ ______
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main_thread</span>() {
-    <span class="ident">apic::init_ipi</span>();
-
     <span class="ident">modules::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded kernel modules&quot;</span>);
 
