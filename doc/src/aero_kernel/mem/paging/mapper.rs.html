@@ -1105,6 +1105,10 @@
 <span id="1105">1105</span>
 <span id="1106">1106</span>
 <span id="1107">1107</span>
+<span id="1108">1108</span>
+<span id="1109">1109</span>
+<span id="1110">1110</span>
+<span id="1111">1111</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -1415,7 +1419,11 @@
     <span class="doccomment">/// Flush the page from the TLB to ensure that the newest mapping is used.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="self">self</span>) {
-        <span class="ident">x86_64::instructions::tlb::flush</span>(<span class="ident">x86_64::VirtAddr::new</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>()));
+        <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>();
+
+        <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;invlpg [{}]&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">raw</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
+        }
     }
 }
 

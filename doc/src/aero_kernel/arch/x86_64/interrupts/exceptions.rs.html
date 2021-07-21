@@ -103,6 +103,19 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -123,11 +136,13 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::idt::PageFaultErrorCode</span>;
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::interrupt_error_stack</span>;
 
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::controlregs</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::PageFaultErrorCode</span>;
+
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::unwind</span>;
-<span class="kw">use</span> <span class="ident">x86_64::registers::control::Cr2</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::userland::scheduler</span>;
 
 <span class="kw">macro</span> <span class="ident">interrupt_exception</span>(<span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">message</span>:<span class="ident">expr</span>) {
     <span class="kw">super</span><span class="macro">::interrupt_error_stack!</span>(
@@ -185,18 +200,29 @@
 
 <span class="macro">interrupt_error_stack!</span>(
     <span class="kw">fn</span> <span class="ident">page_fault</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptErrorStack</span>) {
-        <span class="kw">let</span> <span class="ident">accessed_address</span> <span class="op">=</span> <span class="ident">Cr2::read</span>();
+        <span class="kw">let</span> <span class="ident">accessed_address</span> <span class="op">=</span> <span class="ident">controlregs::read_cr2</span>();
+        <span class="kw">let</span> <span class="ident">reason</span> <span class="op">=</span> <span class="ident">PageFaultErrorCode::from_bits_truncate</span>(<span class="ident">stack</span>.<span class="ident">code</span> <span class="kw">as</span> <span class="ident">u64</span>);
+
+        <span class="kw">if</span> <span class="ident">stack</span>.<span class="ident">stack</span>.<span class="ident">iret</span>.<span class="ident">is_user</span>() {
+            <span class="comment">// The page fault has triggred in user mode. Now we need to</span>
+            <span class="comment">// check if the page was mapped in the VM and if so, we will</span>
+            <span class="comment">// recover the page fault by allocating the page and mapping it (demand</span>
+            <span class="comment">// paging). If the page was not mapped, we will signal kill the task.</span>
+            <span class="kw">let</span> <span class="ident">signal</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>()
+                .<span class="ident">current_task</span>()
+                .<span class="ident">handle_page_fault</span>(<span class="ident">accessed_address</span>, <span class="ident">reason</span>);
+
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">signal</span> {
+                <span class="kw">return</span>;
+            }
+        }
 
         <span class="macro">log::error!</span>(
             <span class="string">&quot;EXCEPTION: Page Fault\n\nAccessed Address: {:?}\nError: {:?}\nStack: {:#x?}&quot;</span>,
             <span class="ident">accessed_address</span>,
-            <span class="ident">PageFaultErrorCode::from_bits_truncate</span>(<span class="ident">stack</span>.<span class="ident">code</span> <span class="kw">as</span> <span class="ident">u64</span>),
+            <span class="ident">reason</span>,
             <span class="ident">stack</span>.<span class="ident">stack</span>,
         );
-
-        <span class="kw">if</span> <span class="ident">stack</span>.<span class="ident">stack</span>.<span class="ident">iret</span>.<span class="ident">is_user</span>() {
-            <span class="kw">loop</span> {}
-        }
 
         <span class="ident">unwind::unwind_stack_trace</span>();
 
