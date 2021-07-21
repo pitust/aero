@@ -284,6 +284,10 @@
 <span id="284">284</span>
 <span id="285">285</span>
 <span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -324,6 +328,7 @@
     <span class="ident">decl_macro</span>,
     <span class="ident">global_asm</span>,
     <span class="ident">ptr_internals</span>,
+    <span class="ident">const_fn_trait_bound</span>,
     <span class="ident">extern_types</span>,
     <span class="ident">new_uninit</span>,
     <span class="ident">box_syntax</span>,
@@ -498,9 +503,6 @@ _______ _______ ______ _______    _______ ______
     <span class="ident">time::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PIT&quot;</span>);
 
-    <span class="ident">drivers::pci::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>);
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PCI driver&quot;</span>);
-
     <span class="ident">fs::init</span>().<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded filesystem&quot;</span>);
 
@@ -535,8 +537,14 @@ _______ _______ ______ _______    _______ ______
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main_thread</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">address_space</span> <span class="op">=</span> <span class="ident">mem::AddressSpace::this</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="ident">address_space</span>.<span class="ident">offset_page_table</span>();
+
     <span class="ident">modules::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded kernel modules&quot;</span>);
+
+    <span class="ident">drivers::pci::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PCI driver&quot;</span>);
 
     <span class="macro">prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ASCII_INTRO</span>);
     <span class="ident">userland::run</span>();

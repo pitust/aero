@@ -578,6 +578,35 @@
 <span id="578">578</span>
 <span id="579">579</span>
 <span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -600,18 +629,23 @@
 
 <span class="kw">use</span> <span class="ident">core::mem</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::drivers::ahci::AHCI</span>;
+<span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+
+<span class="kw">use</span> <span class="ident">spin::mutex::SpinMutex</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">acpi::mcfg</span>::{<span class="self">self</span>, <span class="ident">DeviceConfig</span>, <span class="ident">Mcfg</span>},
+    <span class="ident">mem::paging::OffsetPageTable</span>,
     <span class="ident">utils::io</span>,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::OffsetPageTable</span>;
 <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PCI_CONFIG_ADDRESS_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCF8</span>;
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PCI_CONFIG_DATA_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCFC</span>;
+<span class="kw">static</span> <span class="ident">PCI_TABLE</span>: <span class="ident">SpinMutex</span><span class="op">&lt;</span><span class="ident">PciTable</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">SpinMutex::new</span>(<span class="ident">PciTable::new</span>());
+
+<span class="kw">const</span> <span class="ident">PCI_CONFIG_ADDRESS_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCF8</span>;
+<span class="kw">const</span> <span class="ident">PCI_CONFIG_DATA_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCFC</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Bar</span> {
@@ -956,9 +990,9 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PCIHeader</span>(<span class="ident">u32</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PciHeader</span>(<span class="ident">u32</span>);
 
-<span class="kw">impl</span> <span class="ident">PCIHeader</span> {
+<span class="kw">impl</span> <span class="ident">PciHeader</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">bus</span>: <span class="ident">u8</span>, <span class="ident">device</span>: <span class="ident">u8</span>, <span class="ident">function</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
 
@@ -1017,6 +1051,7 @@
         <span class="ident">id</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">16</span>)
     }
 
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_interface_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="number">0x08</span>);
 
@@ -1091,6 +1126,34 @@
     }
 }
 
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PciDeviceHandle</span>: <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span> {
+    <span class="doccomment">/// Returns true if the PCI device driver handles the device with</span>
+    <span class="doccomment">/// the provided `vendor_id` and `device_id`.</span>
+    <span class="kw">fn</span> <span class="ident">handles</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">vendor_id</span>: <span class="ident">Vendor</span>, <span class="ident">device_id</span>: <span class="ident">DeviceType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+
+    <span class="doccomment">/// This function is responsible for initializing the device driver</span>
+    <span class="doccomment">/// and starting it.</span>
+    <span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">PciHeader</span>, <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>);
+}
+
+<span class="kw">struct</span> <span class="ident">PciDevice</span> {
+    <span class="ident">handle</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">PciDeviceHandle</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">struct</span> <span class="ident">PciTable</span> {
+    <span class="ident">inner</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PciDevice</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">PciTable</span> {
+    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">inner</span>: <span class="ident">Vec::new</span>() }
+    }
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_device_driver</span>(<span class="ident">handle</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">PciDeviceHandle</span><span class="op">&gt;</span>) {
+    <span class="ident">PCI_TABLE</span>.<span class="ident">lock</span>().<span class="ident">inner</span>.<span class="ident">push</span>(<span class="ident">PciDevice</span> { <span class="ident">handle</span> })
+}
+
 <span class="doccomment">/// Lookup and initialize all PCI devices.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) {
     <span class="comment">// Check if the MCFG table is avaliable.</span>
@@ -1120,14 +1183,14 @@
      */</span>
     <span class="kw">for</span> <span class="ident">bus</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">255</span> {
         <span class="kw">for</span> <span class="ident">device</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">32</span> {
-            <span class="kw">let</span> <span class="ident">function_count</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">PCIHeader::new</span>(<span class="ident">bus</span>, <span class="ident">device</span>, <span class="number">0x00</span>).<span class="ident">has_multiple_functions</span>() {
+            <span class="kw">let</span> <span class="ident">function_count</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">PciHeader::new</span>(<span class="ident">bus</span>, <span class="ident">device</span>, <span class="number">0x00</span>).<span class="ident">has_multiple_functions</span>() {
                 <span class="number">8</span>
             } <span class="kw">else</span> {
                 <span class="number">1</span>
             };
 
             <span class="kw">for</span> <span class="ident">function</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">function_count</span> {
-                <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="ident">PCIHeader::new</span>(<span class="ident">bus</span>, <span class="ident">device</span>, <span class="ident">function</span>);
+                <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="ident">PciHeader::new</span>(<span class="ident">bus</span>, <span class="ident">device</span>, <span class="ident">function</span>);
 
                 <span class="kw">unsafe</span> {
                     <span class="kw">if</span> <span class="ident">device</span>.<span class="ident">get_vendor_id</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0xFFFF</span> {
@@ -1141,18 +1204,13 @@
                         <span class="ident">device</span>.<span class="ident">get_vendor</span>()
                     );
 
-                    <span class="kw">match</span> <span class="ident">device</span>.<span class="ident">get_device</span>() {
-                        <span class="ident">DeviceType::SataController</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">device</span>.<span class="ident">get_interface_id</span>() {
-                            <span class="number">0x01</span> <span class="op">=</span><span class="op">&gt;</span> {
-                                <span class="comment">/*
-                                 * AHCI 1.0 Device
-                                 */</span>
-
-                                <span class="ident">AHCI::new</span>(<span class="ident">offset_table</span>, <span class="ident">device</span>);
-                            }
-                            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
-                        },
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
+                    <span class="kw">for</span> <span class="ident">driver</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PCI_TABLE</span>.<span class="ident">lock</span>().<span class="ident">inner</span> {
+                        <span class="kw">if</span> <span class="ident">driver</span>
+                            .<span class="ident">handle</span>
+                            .<span class="ident">handles</span>(<span class="ident">device</span>.<span class="ident">get_vendor</span>(), <span class="ident">device</span>.<span class="ident">get_device</span>())
+                        {
+                            <span class="ident">driver</span>.<span class="ident">handle</span>.<span class="ident">start</span>(<span class="kw-2">&amp;</span><span class="ident">device</span>, <span class="ident">offset_table</span>)
+                        }
                     }
                 }
             }

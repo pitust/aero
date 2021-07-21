@@ -404,74 +404,6 @@
 <span id="404">404</span>
 <span id="405">405</span>
 <span id="406">406</span>
-<span id="407">407</span>
-<span id="408">408</span>
-<span id="409">409</span>
-<span id="410">410</span>
-<span id="411">411</span>
-<span id="412">412</span>
-<span id="413">413</span>
-<span id="414">414</span>
-<span id="415">415</span>
-<span id="416">416</span>
-<span id="417">417</span>
-<span id="418">418</span>
-<span id="419">419</span>
-<span id="420">420</span>
-<span id="421">421</span>
-<span id="422">422</span>
-<span id="423">423</span>
-<span id="424">424</span>
-<span id="425">425</span>
-<span id="426">426</span>
-<span id="427">427</span>
-<span id="428">428</span>
-<span id="429">429</span>
-<span id="430">430</span>
-<span id="431">431</span>
-<span id="432">432</span>
-<span id="433">433</span>
-<span id="434">434</span>
-<span id="435">435</span>
-<span id="436">436</span>
-<span id="437">437</span>
-<span id="438">438</span>
-<span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
-<span id="446">446</span>
-<span id="447">447</span>
-<span id="448">448</span>
-<span id="449">449</span>
-<span id="450">450</span>
-<span id="451">451</span>
-<span id="452">452</span>
-<span id="453">453</span>
-<span id="454">454</span>
-<span id="455">455</span>
-<span id="456">456</span>
-<span id="457">457</span>
-<span id="458">458</span>
-<span id="459">459</span>
-<span id="460">460</span>
-<span id="461">461</span>
-<span id="462">462</span>
-<span id="463">463</span>
-<span id="464">464</span>
-<span id="465">465</span>
-<span id="466">466</span>
-<span id="467">467</span>
-<span id="468">468</span>
-<span id="469">469</span>
-<span id="470">470</span>
-<span id="471">471</span>
-<span id="472">472</span>
-<span id="473">473</span>
-<span id="474">474</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -491,462 +423,394 @@
  * You should have received a copy of the GNU General Public License
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unused</span>)]</span> <span class="comment">//FIXME: Modular kernel :D</span>
-<span class="kw">use</span> <span class="ident">core::mem</span>;
 
-<span class="kw">use</span> <span class="ident">core::mem::MaybeUninit</span>;
+<span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
+
+<span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
+<span class="kw">use</span> <span class="ident">spin::mutex::SpinMutex</span>;
+<span class="kw">use</span> <span class="ident">spin::Once</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::{<span class="ident">memory_map_device</span>, <span class="ident">FRAME_ALLOCATOR</span>};
-
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::VolatileCell</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::pci</span>::{<span class="ident">Bar</span>, <span class="ident">PCIHeader</span>};
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::pci</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
+<span class="kw">static</span> <span class="ident">DRIVER</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AhciDriver</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HBACapabilities</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">SXS_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>;
-        <span class="kw">const</span> <span class="ident">EMS_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>;
-        <span class="kw">const</span> <span class="ident">CCC_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
-        <span class="kw">const</span> <span class="ident">PS_CAPABLE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">13</span>;
-        <span class="kw">const</span> <span class="ident">SS_CAPABLE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>;
-        <span class="kw">const</span> <span class="ident">PIO_MULTI_DRQ_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">15</span>;
-        <span class="kw">const</span> <span class="ident">FBSS_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>;
-        <span class="kw">const</span> <span class="ident">PM_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">17</span>;
-        <span class="kw">const</span> <span class="ident">AHCI_ONLY</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">18</span>;
-        <span class="kw">const</span> <span class="ident">CLO_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>;
-        <span class="kw">const</span> <span class="ident">AL_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">25</span>;
-        <span class="kw">const</span> <span class="ident">ALP_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">26</span>;
-        <span class="kw">const</span> <span class="ident">SS_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">27</span>;
-        <span class="kw">const</span> <span class="ident">MPS_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>;
-        <span class="kw">const</span> <span class="ident">SNTF_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">29</span>;
-        <span class="kw">const</span> <span class="ident">NCQ_SUPPORT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">30</span>;
-        <span class="kw">const</span> <span class="ident">SUPPORTS_64_ADDRESSES</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>;
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">HbaEnclosureCtrl</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">STS_MR</span> <span class="op">=</span>      <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>;  <span class="comment">// Message Received</span>
+        <span class="kw">const</span> <span class="ident">CTL_TM</span> <span class="op">=</span>      <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>;  <span class="comment">// Transmit Message</span>
+        <span class="kw">const</span> <span class="ident">CTL_RST</span> <span class="op">=</span>     <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">9</span>;  <span class="comment">// Reset</span>
+        <span class="kw">const</span> <span class="ident">SUPP_LED</span> <span class="op">=</span>    <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>; <span class="comment">// LED Message Types</span>
+        <span class="kw">const</span> <span class="ident">SUPP_SAFTE</span> <span class="op">=</span>  <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">17</span>; <span class="comment">// SAF-TE Enclosure Management Messages</span>
+        <span class="kw">const</span> <span class="ident">SUPP_SES2</span> <span class="op">=</span>   <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">18</span>; <span class="comment">// SES-2 Enclosure Management Messages</span>
+        <span class="kw">const</span> <span class="ident">SUPP_SGPIO</span> <span class="op">=</span>  <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">19</span>; <span class="comment">// SGPIO Enclosure Management Messages</span>
+        <span class="kw">const</span> <span class="ident">ATTR_SMB</span> <span class="op">=</span>    <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>; <span class="comment">// Single Message Buffer</span>
+        <span class="kw">const</span> <span class="ident">ATTR_XMT</span> <span class="op">=</span>    <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">25</span>; <span class="comment">// Transmit Only</span>
+        <span class="kw">const</span> <span class="ident">ATTR_ALHD</span> <span class="op">=</span>   <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">26</span>; <span class="comment">// Activity LED Hardware Driven</span>
+        <span class="kw">const</span> <span class="ident">ATTR_PM</span> <span class="op">=</span>     <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">27</span>; <span class="comment">// Port Multiplier Support</span>
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GlobalHBAControl</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">HBA_RESET</span> <span class="op">=</span> <span class="number">1</span>;
-        <span class="kw">const</span> <span class="ident">INT_ENABLE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>;
-        <span class="kw">const</span> <span class="ident">MRSM</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;
-        <span class="kw">const</span> <span class="ident">AHCI_ENABLE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>;
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">HbaCapabilities2</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">BOH</span>   <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>; <span class="comment">// BIOS/OS Handoff</span>
+        <span class="kw">const</span> <span class="ident">NVMP</span>  <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>; <span class="comment">// NVMHCI Present</span>
+        <span class="kw">const</span> <span class="ident">APST</span>  <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>; <span class="comment">// Automatic Partial to Slumber Transitions</span>
+        <span class="kw">const</span> <span class="ident">SDS</span>   <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>; <span class="comment">// Supports Device Sleep</span>
+        <span class="kw">const</span> <span class="ident">SADM</span>  <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>; <span class="comment">// Supports Aggressive Device Sleep management</span>
+        <span class="kw">const</span> <span class="ident">DESO</span>  <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>; <span class="comment">// DevSleep Entrance from Slumber Only</span>
     }
 }
 
-<span class="kw">const</span> <span class="ident">SATA_SIG_ATAPI</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xEB140101</span>;
-<span class="kw">const</span> <span class="ident">SATA_SIG_ATA</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x00000101</span>;
-<span class="kw">const</span> <span class="ident">SATA_SIG_SEMB</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xC33C0101</span>;
-<span class="kw">const</span> <span class="ident">SATA_SIG_PM</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x96690101</span>;
-
-<span class="kw">const</span> <span class="ident">HBA_PORT_DEV_PRESENT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x3</span>;
-<span class="kw">const</span> <span class="ident">HBA_PORT_IPM_ACTIVE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x1</span>;
-
-<span class="kw">const</span> <span class="ident">HBA_PX_CMD_CR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x8000</span>;
-<span class="kw">const</span> <span class="ident">HBA_PX_CMD_FRE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x0010</span>;
-<span class="kw">const</span> <span class="ident">HBA_PX_CMD_ST</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x0001</span>;
-<span class="kw">const</span> <span class="ident">HBA_PX_CMD_FR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x4000</span>;
-
-<span class="kw">const</span> <span class="ident">ATA_DEV_BUSY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80</span>;
-<span class="kw">const</span> <span class="ident">ATA_DEV_DRQ</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x08</span>;
-<span class="kw">const</span> <span class="ident">ATA_CMD_READ_DMA_EX</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x25</span>;
-
-<span class="kw">const</span> <span class="ident">FIS_TYPE_REG_H2D</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x27</span>;
-<span class="kw">const</span> <span class="ident">HBA_PXIS_TFES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">30</span>;
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AHCIPortType</span> {
-    <span class="prelude-val">None</span>,
-    <span class="ident">SATA</span>,
-    <span class="ident">SEMB</span>,
-    <span class="ident">PM</span>,
-    <span class="ident">SATAPI</span>,
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">HbaBohc</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">BOS</span> <span class="op">=</span>     <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>; <span class="comment">// BIOS Owned Semaphore</span>
+        <span class="kw">const</span> <span class="ident">OOS</span> <span class="op">=</span>     <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>; <span class="comment">// OS Owned Semaphore</span>
+        <span class="kw">const</span> <span class="ident">SOOE</span> <span class="op">=</span>    <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>; <span class="comment">// SMI on OS Ownership Change Enable</span>
+        <span class="kw">const</span> <span class="ident">OOC</span> <span class="op">=</span>     <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>; <span class="comment">// OS Ownership Change</span>
+        <span class="kw">const</span> <span class="ident">BB</span> <span class="op">=</span>      <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>; <span class="comment">// BIOS Busy</span>
+    }
 }
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">struct</span> <span class="ident">HBAMemory</span> {
-    <span class="ident">host_capability</span>: <span class="ident">HBACapabilities</span>,
-    <span class="ident">global_host_control</span>: <span class="ident">GlobalHBAControl</span>,
-    <span class="ident">interrupt_status</span>: <span class="ident">u32</span>,
-    <span class="ident">ports_implemented</span>: <span class="ident">u32</span>,
-    <span class="ident">version</span>: <span class="ident">u32</span>,
-    <span class="ident">ccc_control</span>: <span class="ident">u32</span>,
-    <span class="ident">ccc_ports</span>: <span class="ident">u32</span>,
-    <span class="ident">enclosure_management_location</span>: <span class="ident">u32</span>,
-    <span class="ident">enclosure_management_control</span>: <span class="ident">u32</span>,
-    <span class="ident">host_capabilities_extended</span>: <span class="ident">u32</span>,
-    <span class="ident">bios_handoff_ctrl_sts</span>: <span class="ident">u32</span>,
-    <span class="ident">rsv0</span>: [<span class="ident">u8</span>; <span class="number">116</span>],
-    <span class="ident">vendor</span>: [<span class="ident">u8</span>; <span class="number">96</span>],
-    <span class="ident">ports</span>: [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">HBAPort</span><span class="op">&gt;</span>; <span class="number">32</span>],
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">HbaCapabilities</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">SXS</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>;  <span class="comment">// Supports External SATA</span>
+        <span class="kw">const</span> <span class="ident">EMS</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>;  <span class="comment">// Enclosure Management Supported</span>
+        <span class="kw">const</span> <span class="ident">CCCS</span>          <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;  <span class="comment">// Command Completion Coalescing Supported</span>
+        <span class="kw">const</span> <span class="ident">PSC</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">13</span>; <span class="comment">// Partial State Capable</span>
+        <span class="kw">const</span> <span class="ident">SSC</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>; <span class="comment">// Slumber State Capable</span>
+        <span class="kw">const</span> <span class="ident">PMD</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">15</span>; <span class="comment">// PIO Multiple DRQ Block</span>
+        <span class="kw">const</span> <span class="ident">FBSS</span>          <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>; <span class="comment">// FIS-based Switching Supported</span>
+        <span class="kw">const</span> <span class="ident">SPM</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">17</span>; <span class="comment">// Supports Port Multiplier</span>
+        <span class="kw">const</span> <span class="ident">SAM</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">18</span>; <span class="comment">// Supports AHCI mode only</span>
+        <span class="kw">const</span> <span class="ident">SCLO</span>          <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>; <span class="comment">// Supports Command List Override</span>
+        <span class="kw">const</span> <span class="ident">SAL</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">25</span>; <span class="comment">// Supports Activity LED</span>
+        <span class="kw">const</span> <span class="ident">SALP</span>          <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">26</span>; <span class="comment">// Supports Aggressive Link Power Mgmt</span>
+        <span class="kw">const</span> <span class="ident">SSS</span>           <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">27</span>; <span class="comment">// Supports Staggered Spin-up</span>
+        <span class="kw">const</span> <span class="ident">SMPS</span>          <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>; <span class="comment">// Supports Mechanical Presence Switch</span>
+        <span class="kw">const</span> <span class="ident">SSNTF</span>         <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">29</span>; <span class="comment">// Supports SNotification Register</span>
+        <span class="kw">const</span> <span class="ident">SNCQ</span>          <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">30</span>; <span class="comment">// Supports Native Command Queuing</span>
+        <span class="kw">const</span> <span class="ident">S64A</span>          <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>; <span class="comment">// Supports 64-bit Addressing</span>
+    }
 }
 
-<span class="kw">impl</span> <span class="ident">HBAMemory</span> {
-    <span class="doccomment">/// Get a HBA port at `idx`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_port</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">HBAPort</span> {
-        <span class="macro">assert!</span>(<span class="ident">idx</span> <span class="op">&lt;</span> <span class="number">32</span>, <span class="string">&quot;There are only 32 ports!&quot;</span>);
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">HbaHostCont</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">HR</span> <span class="op">=</span>   <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>;  <span class="comment">// HBA Reset</span>
+        <span class="kw">const</span> <span class="ident">IE</span> <span class="op">=</span>   <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>;  <span class="comment">// Interrupt Enable</span>
+        <span class="kw">const</span> <span class="ident">MRSM</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;  <span class="comment">// MSI Revert to Single Message</span>
+        <span class="kw">const</span> <span class="ident">AE</span> <span class="op">=</span>   <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>; <span class="comment">// AHCI Enable</span>
+    }
+}
 
-        <span class="kw">let</span> <span class="ident">bit</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ports_implemented</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">idx</span>;
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">HbaPortIS</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">DHRS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>; <span class="comment">// Device to Host Register FIS Interrupt</span>
+        <span class="kw">const</span> <span class="ident">PSS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>; <span class="comment">// PIO Setup FIS Interrupt</span>
+        <span class="kw">const</span> <span class="ident">DSS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>; <span class="comment">// DMA Setup FIS Interrupt</span>
+        <span class="kw">const</span> <span class="ident">SDBS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>; <span class="comment">// Set Device Bits Interrupt</span>
+        <span class="kw">const</span> <span class="ident">UFS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>; <span class="comment">// Unknown FIS Interrupt</span>
+        <span class="kw">const</span> <span class="ident">DPS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>; <span class="comment">// Descriptor Processed</span>
+        <span class="kw">const</span> <span class="ident">PCS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>; <span class="comment">// Port Connect Change Status</span>
+        <span class="kw">const</span> <span class="ident">DMPS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>; <span class="comment">// Device Mechanical Presence Status</span>
+        <span class="kw">const</span> <span class="ident">PRCS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">22</span>; <span class="comment">// PhyRdy Change Status</span>
+        <span class="kw">const</span> <span class="ident">IPMS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">23</span>; <span class="comment">// Incorrect Port Multiplier Status</span>
+        <span class="kw">const</span> <span class="ident">OFS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>; <span class="comment">// Overflow Status</span>
+        <span class="kw">const</span> <span class="ident">INFS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">26</span>; <span class="comment">// Interface Not-fatal Error Status</span>
+        <span class="kw">const</span> <span class="ident">IFS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">27</span>; <span class="comment">// Interface Fatal Error Status</span>
+        <span class="kw">const</span> <span class="ident">HBDS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>; <span class="comment">// Host Bus Data Error Status</span>
+        <span class="kw">const</span> <span class="ident">HBFS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">29</span>; <span class="comment">// Host Bus Fatal Error Status</span>
+        <span class="kw">const</span> <span class="ident">TFES</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">30</span>; <span class="comment">// Task File Error Status</span>
+        <span class="kw">const</span> <span class="ident">CPDS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>; <span class="comment">// Cold Port Detect Status</span>
+    }
+}
 
-        <span class="kw">if</span> <span class="ident">bit</span> <span class="op">&amp;</span> <span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ports</span>[<span class="ident">idx</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">as_mut_ptr</span>();
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">HbaPortIE</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">DHRE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>; <span class="comment">// Device to Host Register FIS Interrupt</span>
+        <span class="kw">const</span> <span class="ident">PSE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>; <span class="comment">// PIO Setup FIS Interrupt</span>
+        <span class="kw">const</span> <span class="ident">DSE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>; <span class="comment">// DMA Setup FIS Interrupt</span>
+        <span class="kw">const</span> <span class="ident">SDBE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>; <span class="comment">// Set Device Bits Interrupt</span>
+        <span class="kw">const</span> <span class="ident">UFE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>; <span class="comment">// Unknown FIS Interrupt</span>
+        <span class="kw">const</span> <span class="ident">DPE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>; <span class="comment">// Descriptor Processed</span>
+        <span class="kw">const</span> <span class="ident">PCE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>; <span class="comment">// Port Connect Change Status</span>
+        <span class="kw">const</span> <span class="ident">DMPE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>; <span class="comment">// Device Mechanical Presence Status</span>
+        <span class="kw">const</span> <span class="ident">PRCE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">22</span>; <span class="comment">// PhyRdy Change Status</span>
+        <span class="kw">const</span> <span class="ident">IPME</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">23</span>; <span class="comment">// Incorrect Port Multiplier Status</span>
+        <span class="kw">const</span> <span class="ident">OFE</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>; <span class="comment">// Overflow Status</span>
+        <span class="kw">const</span> <span class="ident">INFE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">26</span>; <span class="comment">// Interface Not-fatal Error Status</span>
+        <span class="kw">const</span> <span class="ident">IFE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">27</span>; <span class="comment">// Interface Fatal Error Status</span>
+        <span class="kw">const</span> <span class="ident">HBDE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>; <span class="comment">// Host Bus Data Error Status</span>
+        <span class="kw">const</span> <span class="ident">HBFE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">29</span>; <span class="comment">// Host Bus Fatal Error Status</span>
+        <span class="kw">const</span> <span class="ident">TFEE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">30</span>; <span class="comment">// Task File Error Status</span>
+        <span class="kw">const</span> <span class="ident">CPDE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">31</span>; <span class="comment">// Cold Port Detect Status</span>
+    }
+}
 
-            <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">ptr</span> }
-        } <span class="kw">else</span> {
-            <span class="macro">panic!</span>()
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">struct</span> <span class="ident">HbaPortCmd</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">ST</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>; <span class="comment">// Start</span>
+        <span class="kw">const</span> <span class="ident">SUD</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>; <span class="comment">// Spin-Up Device</span>
+        <span class="kw">const</span> <span class="ident">POD</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>; <span class="comment">// Power On Device</span>
+        <span class="kw">const</span> <span class="ident">CLO</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>; <span class="comment">// Command List Override</span>
+        <span class="kw">const</span> <span class="ident">FRE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>; <span class="comment">// FIS Receive Enable</span>
+        <span class="kw">const</span> <span class="ident">MPSS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">13</span>; <span class="comment">// Mechanical Presence Switch State</span>
+        <span class="kw">const</span> <span class="ident">FR</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>; <span class="comment">// FIS Receive Running</span>
+        <span class="kw">const</span> <span class="ident">CR</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">15</span>; <span class="comment">// Command List Running</span>
+        <span class="kw">const</span> <span class="ident">CPS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>; <span class="comment">// Cold Presence State</span>
+        <span class="kw">const</span> <span class="ident">PMA</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">17</span>; <span class="comment">// Port Multiplier Attached</span>
+        <span class="kw">const</span> <span class="ident">HPCP</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">18</span>; <span class="comment">// Hot Plug Capable Port</span>
+        <span class="kw">const</span> <span class="ident">MSPC</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">19</span>; <span class="comment">// Mechanical Presence Switch Attached to Port</span>
+        <span class="kw">const</span> <span class="ident">CPD</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">20</span>; <span class="comment">// Cold Presence Detection</span>
+        <span class="kw">const</span> <span class="ident">ESP</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">21</span>; <span class="comment">// External SATA Port</span>
+        <span class="kw">const</span> <span class="ident">FBSCP</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">22</span>; <span class="comment">// FIS-based Switching Capable Port</span>
+        <span class="kw">const</span> <span class="ident">APSTE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">23</span>; <span class="comment">// Automatic Partial to Slumber Transition Enabled</span>
+        <span class="kw">const</span> <span class="ident">ATAPI</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>; <span class="comment">// Device is ATAPI</span>
+        <span class="kw">const</span> <span class="ident">DLAE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">25</span>; <span class="comment">// Drive LED on ATAPI Enable</span>
+        <span class="kw">const</span> <span class="ident">ALPE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">26</span>; <span class="comment">// Aggressive Link Power Management Enable</span>
+        <span class="kw">const</span> <span class="ident">ASP</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">27</span>; <span class="comment">// Aggressive Slumber / Partial</span>
+    }
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HbaMemory</span> {
+    <span class="ident">host_capability</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaCapabilities</span><span class="op">&gt;</span>,
+    <span class="ident">global_host_control</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaHostCont</span><span class="op">&gt;</span>,
+    <span class="ident">interrupt_status</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">ports_implemented</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">version</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">ccc_control</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">ccc_ports</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">enclosure_management_location</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">enclosure_management_control</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaEnclosureCtrl</span><span class="op">&gt;</span>,
+    <span class="ident">host_capabilities_extended</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaCapabilities2</span><span class="op">&gt;</span>,
+    <span class="ident">bios_handoff_ctrl_sts</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaBohc</span><span class="op">&gt;</span>,
+    <span class="ident">_reserved</span>: [<span class="ident">u8</span>; <span class="number">0xa0</span> <span class="op">-</span> <span class="number">0x2c</span>],
+    <span class="ident">vendor</span>: [<span class="ident">u8</span>; <span class="number">0x100</span> <span class="op">-</span> <span class="number">0xa0</span>],
+}
+
+<span class="kw">enum</span> <span class="ident">HbaPortDd</span> {
+    <span class="prelude-val">None</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="ident">PresentNotE</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="ident">PresentAndE</span> <span class="op">=</span> <span class="number">3</span>,
+    <span class="ident">Offline</span> <span class="op">=</span> <span class="number">4</span>,
+}
+
+<span class="kw">enum</span> <span class="ident">HbaPortIpm</span> {
+    <span class="prelude-val">None</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="ident">Active</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="ident">Partial</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="ident">Slumber</span> <span class="op">=</span> <span class="number">6</span>,
+    <span class="ident">DevSleep</span> <span class="op">=</span> <span class="number">8</span>,
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="kw">struct</span> <span class="ident">HbaSataStatus</span>(<span class="ident">u64</span>);
+
+<span class="kw">impl</span> <span class="ident">HbaSataStatus</span> {
+    <span class="kw">fn</span> <span class="ident">device_detection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HbaPortDd</span> {
+        <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="op">=</span><span class="number">3</span>) {
+            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortDd::None</span>,
+            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortDd::PresentNotE</span>,
+            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortDd::PresentAndE</span>,
+            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortDd::Offline</span>,
+            <span class="ident">v</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Invalid HbaPortSstsRegDet {}&quot;</span>, <span class="ident">v</span>),
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">interface_power_management</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HbaPortIpm</span> {
+        <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_bits</span>(<span class="number">8</span>..<span class="op">=</span><span class="number">11</span>) {
+            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortIpm::None</span>,
+            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortIpm::Active</span>,
+            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortIpm::Partial</span>,
+            <span class="number">6</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortIpm::Slumber</span>,
+            <span class="number">8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HbaPortIpm::DevSleep</span>,
+            <span class="ident">v</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Invalid HbaPortSstsRegIpm {}&quot;</span>, <span class="ident">v</span>),
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">struct</span> <span class="ident">HBAPort</span> {
-    <span class="ident">command_list_base</span>: <span class="ident">u32</span>,
-    <span class="ident">command_list_base_upper</span>: <span class="ident">u32</span>,
-    <span class="ident">fis_base_address</span>: <span class="ident">u32</span>,
-    <span class="ident">fis_base_address_upper</span>: <span class="ident">u32</span>,
-    <span class="ident">interrupt_status</span>: <span class="ident">u32</span>,
-    <span class="ident">interrupt_enable</span>: <span class="ident">u32</span>,
-    <span class="ident">cmd_sts</span>: <span class="ident">u32</span>,
-    <span class="ident">rsv0</span>: <span class="ident">u32</span>,
-    <span class="ident">task_file_data</span>: <span class="ident">u32</span>,
-    <span class="ident">signature</span>: <span class="ident">u32</span>,
-    <span class="ident">sata_status</span>: <span class="ident">u32</span>,
-    <span class="ident">sata_control</span>: <span class="ident">u32</span>,
-    <span class="ident">sata_error</span>: <span class="ident">u32</span>,
-    <span class="ident">sata_active</span>: <span class="ident">u32</span>,
-    <span class="ident">command_issue</span>: <span class="ident">u32</span>,
-    <span class="ident">sata_notification</span>: <span class="ident">u32</span>,
-    <span class="ident">fis_switch_control</span>: <span class="ident">u32</span>,
-    <span class="ident">rsv1</span>: [<span class="ident">u32</span>; <span class="number">11</span>],
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">struct</span> <span class="ident">HbaPort</span> {
+    <span class="ident">clb</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">PhysAddr</span><span class="op">&gt;</span>,
+    <span class="ident">fb</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">PhysAddr</span><span class="op">&gt;</span>,
+    <span class="ident">is</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaPortIS</span><span class="op">&gt;</span>,
+    <span class="ident">ie</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaPortIE</span><span class="op">&gt;</span>,
+    <span class="ident">cmd</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaPortCmd</span><span class="op">&gt;</span>,
+    <span class="ident">_reserved</span>: <span class="ident">u32</span>,
+    <span class="ident">tfd</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">sig</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">ssts</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaSataStatus</span><span class="op">&gt;</span>,
+    <span class="ident">sctl</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">serr</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">sact</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">ci</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">sntf</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">fbs</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">devslp</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+    <span class="ident">_reserved_1</span>: [<span class="ident">u32</span>; <span class="number">10</span>],
     <span class="ident">vendor</span>: [<span class="ident">u32</span>; <span class="number">4</span>],
 }
 
-<span class="kw">impl</span> <span class="ident">HBAPort</span> {
-    <span class="kw">fn</span> <span class="ident">get_port_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AHCIPortType</span> {
-        <span class="kw">let</span> <span class="ident">ipm</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">sata_status</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="op">&amp;</span> <span class="number">0x0F</span>;
-        <span class="kw">let</span> <span class="ident">device_detection</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sata_status</span> <span class="op">&amp;</span> <span class="number">0x0F</span>;
+<span class="kw">impl</span> <span class="ident">HbaPort</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="self">self</span>.<span class="ident">stop_cmd</span>(); <span class="comment">// Stop the command engine before starting the port</span>
 
-        <span class="kw">if</span> <span class="ident">device_detection</span> <span class="op">!</span><span class="op">=</span> <span class="ident">HBA_PORT_DEV_PRESENT</span> {
-            <span class="kw">return</span> <span class="ident">AHCIPortType::None</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">ipm</span> <span class="op">!</span><span class="op">=</span> <span class="ident">HBA_PORT_IPM_ACTIVE</span> {
-            <span class="kw">return</span> <span class="ident">AHCIPortType::None</span>;
-        }
-
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">signature</span> {
-            <span class="ident">SATA_SIG_ATAPI</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::SATAPI</span>,
-            <span class="ident">SATA_SIG_ATA</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::SATA</span>,
-            <span class="ident">SATA_SIG_PM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::PM</span>,
-            <span class="ident">SATA_SIG_SEMB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::SEMB</span>,
-
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AHCIPortType::None</span>,
-        }
-    }
-}
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">struct</span> <span class="ident">HBACommandHeader</span> {
-    <span class="ident">command_fis_length</span>: <span class="ident">u8</span>,
-    <span class="ident">atapi</span>: <span class="ident">u8</span>,
-    <span class="ident">write</span>: <span class="ident">u8</span>,
-    <span class="ident">prefetchable</span>: <span class="ident">u8</span>,
-
-    <span class="ident">reset</span>: <span class="ident">u8</span>,
-    <span class="ident">bist</span>: <span class="ident">u8</span>,
-    <span class="ident">clear_busy</span>: <span class="ident">u8</span>,
-    <span class="ident">rsv0</span>: <span class="ident">u8</span>,
-    <span class="ident">port_multiplier</span>: <span class="ident">u8</span>,
-
-    <span class="ident">prdt_length</span>: <span class="ident">u16</span>,
-    <span class="ident">prdb_count</span>: <span class="ident">u32</span>,
-    <span class="ident">command_table_base_address</span>: <span class="ident">u32</span>,
-    <span class="ident">command_table_base_address_upper</span>: <span class="ident">u32</span>,
-    <span class="ident">reserved</span>: [<span class="ident">u32</span>; <span class="number">4</span>],
-}
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">struct</span> <span class="ident">FISRegisterH2D</span> {
-    <span class="ident">fis_type</span>: <span class="ident">u32</span>,
-
-    <span class="ident">port_multiplier</span>: <span class="ident">u32</span>,
-    <span class="ident">rsv0</span>: <span class="ident">u32</span>,
-    <span class="ident">command_control</span>: <span class="ident">u32</span>,
-
-    <span class="ident">command</span>: <span class="ident">u32</span>,
-    <span class="ident">feature_low</span>: <span class="ident">u32</span>,
-
-    <span class="ident">lba0</span>: <span class="ident">u32</span>,
-    <span class="ident">lba1</span>: <span class="ident">u32</span>,
-    <span class="ident">lba2</span>: <span class="ident">u32</span>,
-    <span class="ident">device_register</span>: <span class="ident">u32</span>,
-
-    <span class="ident">lba3</span>: <span class="ident">u32</span>,
-    <span class="ident">lba4</span>: <span class="ident">u32</span>,
-    <span class="ident">lba5</span>: <span class="ident">u32</span>,
-    <span class="ident">feature_high</span>: <span class="ident">u32</span>,
-
-    <span class="ident">count_low</span>: <span class="ident">u32</span>,
-    <span class="ident">count_high</span>: <span class="ident">u32</span>,
-    <span class="ident">iso_command_completion</span>: <span class="ident">u32</span>,
-    <span class="ident">control</span>: <span class="ident">u32</span>,
-
-    <span class="ident">reserved</span>: [<span class="ident">u32</span>; <span class="number">4</span>],
-}
-
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">struct</span> <span class="ident">HBAPRDTEntry</span> {
-    <span class="ident">data_base_address</span>: <span class="ident">u32</span>,
-    <span class="ident">data_base_address_upper</span>: <span class="ident">u32</span>,
-    <span class="ident">reserved</span>: <span class="ident">u32</span>,
-
-    <span class="ident">byte_count</span>: <span class="ident">u32</span>,
-    <span class="ident">reserved_2</span>: <span class="ident">u32</span>,
-    <span class="ident">interrupt_on_completion</span>: <span class="ident">u32</span>,
-}
-
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">align</span>(<span class="number">128</span>))]</span>
-<span class="kw">struct</span> <span class="ident">HBACommandTable</span> {
-    <span class="ident">command_fis</span>: [<span class="ident">u8</span>; <span class="number">64</span>],
-    <span class="ident">atapi_command</span>: [<span class="ident">u8</span>; <span class="number">16</span>],
-    <span class="ident">reserved</span>: [<span class="ident">u8</span>; <span class="number">48</span>],
-
-    <span class="ident">hba_prdt_entry</span>: [<span class="ident">HBAPRDTEntry</span>; <span class="number">8</span>],
-}
-
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Port</span> {
-    <span class="ident">hba_port</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">HBAPort</span>,
-    <span class="ident">port_type</span>: <span class="ident">AHCIPortType</span>,
-    <span class="ident">id</span>: <span class="ident">u32</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">Port</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">hba_port</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">HBAPort</span>, <span class="ident">port_type</span>: <span class="ident">AHCIPortType</span>, <span class="ident">id</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">hba_port</span>,
-            <span class="ident">port_type</span>,
-            <span class="ident">id</span>,
-        }
+        <span class="self">self</span>.<span class="ident">start_cmd</span>(); <span class="comment">// Start the command engine since...</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">configure</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) {
-        <span class="self">self</span>.<span class="ident">stop_command</span>();
-
-        <span class="kw">let</span> <span class="ident">mapped_clb</span> <span class="op">=</span> <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
-
-        <span class="ident">offset_table</span>
-            .<span class="ident">map_to</span>(
-                <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
-                <span class="ident">mapped_clb</span>,
-                <span class="ident">PageTableFlags::NO_CACHE</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
-            )
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">flush</span>();
-
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_list_base</span> <span class="op">=</span> <span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_list_base_upper</span> <span class="op">=</span> (<span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-
-        <span class="kw">let</span> <span class="ident">mapped_fis</span> <span class="op">=</span> <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
-
-        <span class="ident">offset_table</span>
-            .<span class="ident">map_to</span>(
-                <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">mapped_fis</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
-                <span class="ident">mapped_fis</span>,
-                <span class="ident">PageTableFlags::NO_CACHE</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
-            )
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">flush</span>();
-
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">fis_base_address</span> <span class="op">=</span> <span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">fis_base_address</span> <span class="op">=</span> (<span class="ident">mapped_clb</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-
-        <span class="kw">let</span> <span class="ident">hba_command_header</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_list_base</span> <span class="kw">as</span> <span class="ident">u64</span>
-            <span class="op">+</span> ((<span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_list_base_upper</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>))
-            <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HBACommandHeader</span>;
-
-        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">32</span> {
-            <span class="kw">let</span> <span class="ident">command_header</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">hba_command_header</span>.<span class="ident">offset</span>(<span class="ident">i</span>);
-
-            <span class="comment">// 8 prdt entries per command table.</span>
-            <span class="ident">command_header</span>.<span class="ident">prdt_length</span> <span class="op">=</span> <span class="number">8</span>;
-
-            <span class="kw">let</span> <span class="ident">command_table</span> <span class="op">=</span> <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>().<span class="ident">unwrap</span>();
-
-            <span class="ident">offset_table</span>
-                .<span class="ident">map_to</span>(
-                    <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">command_table</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())),
-                    <span class="ident">command_table</span>,
-                    <span class="ident">PageTableFlags::NO_CACHE</span>
-                        <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
-                        <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
-                        <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                    <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
-                )
-                .<span class="ident">unwrap</span>()
-                .<span class="ident">flush</span>();
-
-            <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">command_table</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>() <span class="op">+</span> ((<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>);
-
-            <span class="ident">command_header</span>.<span class="ident">command_table_base_address</span> <span class="op">=</span> <span class="ident">address</span> <span class="kw">as</span> <span class="ident">u32</span>;
-            <span class="ident">command_header</span>.<span class="ident">command_table_base_address_upper</span> <span class="op">=</span> (<span class="ident">address</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        }
-
-        <span class="self">self</span>.<span class="ident">start_command</span>();
-    }
-
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">u64</span>, <span class="ident">sector_count</span>: <span class="ident">u32</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spin</span> <span class="op">=</span> <span class="number">0</span>; <span class="comment">// Spin lock timeout counter.</span>
-
-        <span class="kw">while</span> (<span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">task_file_data</span> <span class="op">&amp;</span> (<span class="ident">ATA_DEV_BUSY</span> <span class="op">|</span> <span class="ident">ATA_DEV_DRQ</span>)) <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">spin</span> <span class="op">&lt;</span> <span class="number">1000000</span> {
-            <span class="ident">spin</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-        }
-
-        <span class="kw">if</span> <span class="ident">spin</span> <span class="op">=</span><span class="op">=</span> <span class="number">1000000</span> {
-            <span class="kw">return</span> <span class="bool-val">false</span>;
-        }
-
-        <span class="kw">let</span> <span class="ident">sector_low</span> <span class="op">=</span> <span class="ident">sector</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">let</span> <span class="ident">sector_hi</span> <span class="op">=</span> (<span class="ident">sector</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-
-        <span class="comment">// Clear the pending interrupt bits.</span>
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">interrupt_status</span> <span class="op">=</span> <span class="op">!</span><span class="number">0</span>;
-
-        <span class="kw">let</span> <span class="ident">command_header</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_list_base</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HBACommandHeader</span>) };
-
-        <span class="ident">command_header</span>.<span class="ident">command_fis_length</span> <span class="op">=</span>
-            (<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">FISRegisterH2D</span><span class="op">&gt;</span>() <span class="op">/</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()) <span class="kw">as</span> <span class="ident">u8</span>;
-        <span class="ident">command_header</span>.<span class="ident">write</span> <span class="op">=</span> <span class="number">0</span>; <span class="comment">// Set write to 0x00 as we are doing a read command.</span>
-        <span class="ident">command_header</span>.<span class="ident">prdt_length</span> <span class="op">=</span> <span class="number">1</span>;
-
-        <span class="kw">let</span> <span class="ident">command_table</span> <span class="op">=</span>
-            (<span class="ident">command_header</span>.<span class="ident">command_table_base_address</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HBACommandTable</span>;
-
-        <span class="kw">let</span> <span class="ident">command_table</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">command_table</span> };
-
-        <span class="ident">command_table</span>.<span class="ident">hba_prdt_entry</span>[<span class="number">0</span>].<span class="ident">data_base_address</span> <span class="op">=</span> <span class="ident">buffer</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="ident">command_table</span>.<span class="ident">hba_prdt_entry</span>[<span class="number">0</span>].<span class="ident">data_base_address_upper</span> <span class="op">=</span>
-            ((<span class="ident">buffer</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="ident">command_table</span>.<span class="ident">hba_prdt_entry</span>[<span class="number">0</span>].<span class="ident">byte_count</span> <span class="op">=</span> (<span class="ident">sector_count</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">9</span>) <span class="op">-</span> <span class="number">1</span>;
-        <span class="ident">command_table</span>.<span class="ident">hba_prdt_entry</span>[<span class="number">0</span>].<span class="ident">interrupt_on_completion</span> <span class="op">=</span> <span class="number">1</span>; <span class="comment">// TODO: Function on completion.</span>
-
-        <span class="kw">let</span> <span class="ident">command_fis_address</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="kw-2">&amp;</span><span class="ident">command_table</span>.<span class="ident">command_fis</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="kw">as</span> <span class="ident">usize</span> };
-        <span class="kw">let</span> <span class="ident">command_fis</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">command_fis_address</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">FISRegisterH2D</span>) };
-
-        <span class="ident">command_fis</span>.<span class="ident">fis_type</span> <span class="op">=</span> <span class="ident">FIS_TYPE_REG_H2D</span>;
-        <span class="ident">command_fis</span>.<span class="ident">command_control</span> <span class="op">=</span> <span class="number">1</span>;
-        <span class="ident">command_fis</span>.<span class="ident">command</span> <span class="op">=</span> <span class="ident">ATA_CMD_READ_DMA_EX</span>;
-
-        <span class="ident">command_fis</span>.<span class="ident">lba0</span> <span class="op">=</span> <span class="ident">sector_low</span>;
-        <span class="ident">command_fis</span>.<span class="ident">lba1</span> <span class="op">=</span> <span class="ident">sector_low</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>;
-        <span class="ident">command_fis</span>.<span class="ident">lba2</span> <span class="op">=</span> <span class="ident">sector_low</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>;
-
-        <span class="ident">command_fis</span>.<span class="ident">lba3</span> <span class="op">=</span> <span class="ident">sector_hi</span>;
-        <span class="ident">command_fis</span>.<span class="ident">lba4</span> <span class="op">=</span> <span class="ident">sector_hi</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>;
-        <span class="ident">command_fis</span>.<span class="ident">lba5</span> <span class="op">=</span> <span class="ident">sector_hi</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>;
-
-        <span class="ident">command_fis</span>.<span class="ident">device_register</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>; <span class="comment">// LBA mode</span>
-
-        <span class="ident">command_fis</span>.<span class="ident">count_low</span> <span class="op">=</span> <span class="ident">sector_count</span> <span class="op">&amp;</span> <span class="number">0xFF</span>;
-        <span class="ident">command_fis</span>.<span class="ident">count_high</span> <span class="op">=</span> (<span class="ident">sector_count</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="op">&amp;</span> <span class="number">0xFF</span>;
-
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_issue</span> <span class="op">=</span> <span class="number">0x1</span>;
-
-        <span class="kw">loop</span> {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">command_list_base</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="kw">break</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">interrupt_status</span> <span class="op">&amp;</span> <span class="ident">HBA_PXIS_TFES</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-                <span class="kw">return</span> <span class="bool-val">false</span>;
-            }
-        }
-
-        <span class="kw">return</span> <span class="bool-val">true</span>;
-    }
-
-    <span class="doccomment">/// Stop the command engine.</span>
-    <span class="kw">fn</span> <span class="ident">stop_command</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">&amp;=</span> <span class="op">!</span><span class="ident">HBA_PX_CMD_ST</span>;
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">&amp;=</span> <span class="op">!</span><span class="ident">HBA_PX_CMD_FRE</span>;
-
-        <span class="kw">loop</span> {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">&amp;</span> <span class="ident">HBA_PX_CMD_FR</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-                <span class="kw">continue</span>;
-            }
-
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">&amp;</span> <span class="ident">HBA_PX_CMD_CR</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-                <span class="kw">continue</span>;
-            }
-
-            <span class="kw">break</span>;
-        }
-    }
-
-    <span class="doccomment">/// Start the command engine.</span>
-    <span class="kw">fn</span> <span class="ident">start_command</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">&amp;</span> <span class="ident">HBA_PX_CMD_CR</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_cmd</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">get</span>().<span class="ident">contains</span>(<span class="ident">HbaPortCmd::CR</span>) {
             <span class="ident">interrupts::pause</span>();
         }
 
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">|</span><span class="op">=</span> <span class="ident">HBA_PX_CMD_FRE</span>;
-        <span class="self">self</span>.<span class="ident">hba_port</span>.<span class="ident">cmd_sts</span> <span class="op">|</span><span class="op">=</span> <span class="ident">HBA_PX_CMD_ST</span>;
+        <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">get</span>() <span class="op">|</span> (<span class="ident">HbaPortCmd::FRE</span> <span class="op">|</span> <span class="ident">HbaPortCmd::ST</span>);
+        <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">set</span>(<span class="ident">value</span>);
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stop_cmd</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">get</span>();
+        <span class="ident">cmd</span>.<span class="ident">remove</span>(<span class="ident">HbaPortCmd::FRE</span> <span class="op">|</span> <span class="ident">HbaPortCmd::ST</span>);
+
+        <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">set</span>(<span class="ident">cmd</span>);
+
+        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">get</span>().<span class="ident">intersects</span>(<span class="ident">HbaPortCmd::FR</span> <span class="op">|</span> <span class="ident">HbaPortCmd::CR</span>) {
+            <span class="ident">interrupts::pause</span>();
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">probe</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">port</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ssts</span>.<span class="ident">get</span>();
+
+        <span class="kw">let</span> <span class="ident">ipm</span> <span class="op">=</span> <span class="ident">status</span>.<span class="ident">interface_power_management</span>();
+        <span class="kw">let</span> <span class="ident">dd</span> <span class="op">=</span> <span class="ident">status</span>.<span class="ident">device_detection</span>();
+
+        <span class="kw">if</span> <span class="kw">let</span> (<span class="ident">HbaPortDd::PresentAndE</span>, <span class="ident">HbaPortIpm::Active</span>) <span class="op">=</span> (<span class="ident">dd</span>, <span class="ident">ipm</span>) {
+            <span class="macro">log::trace!</span>(<span class="string">&quot;Enabling AHCI port {}&quot;</span>, <span class="ident">port</span>);
+
+            <span class="self">self</span>.<span class="ident">start</span>(); <span class="comment">// Start the AHCI port...</span>
+            <span class="bool-val">true</span>
+        } <span class="kw">else</span> {
+            <span class="bool-val">false</span>
+        }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AHCI</span> {
-    <span class="ident">memory</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">HBAMemory</span>,
+<span class="kw">impl</span> <span class="ident">HbaMemory</span> {
+    <span class="kw">fn</span> <span class="ident">port_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">port</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HbaPort</span> {
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>((<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>).<span class="ident">offset</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HbaPort</span>).<span class="ident">offset</span>(<span class="ident">port</span> <span class="kw">as</span> <span class="ident">isize</span>) }
+    }
 }
 
-<span class="kw">impl</span> <span class="ident">AHCI</span> {
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>, <span class="ident">header</span>: <span class="ident">PCIHeader</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="macro">log::info!</span>(<span class="string">&quot;Loaded AHCI driver&quot;</span>);
+<span class="kw">struct</span> <span class="ident">AhciPort</span> {}
 
-        <span class="kw">let</span> <span class="ident">abar</span> <span class="op">=</span> <span class="ident">header</span>.<span class="ident">get_bar</span>(<span class="number">5</span>).<span class="ident">unwrap</span>();
+<span class="kw">struct</span> <span class="ident">AhciProtected</span> {
+    <span class="ident">ports</span>: [<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AhciPort</span><span class="op">&gt;</span><span class="op">&gt;</span>; <span class="number">32</span>],
+    <span class="ident">hba</span>: <span class="ident">VirtAddr</span>,
+}
 
-        <span class="kw">let</span> (<span class="ident">abar_address</span>, <span class="ident">abar_size</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">abar</span> {
+<span class="kw">impl</span> <span class="ident">AhciProtected</span> {
+    <span class="kw">fn</span> <span class="ident">hba_mem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HbaMemory</span> {
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="self">self</span>.<span class="ident">hba</span>.<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HbaMemory</span>) }
+    }
+
+    <span class="kw">fn</span> <span class="ident">start_hba</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">hba</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">hba_mem</span>();
+        <span class="kw">let</span> <span class="ident">current_flags</span> <span class="op">=</span> <span class="ident">hba</span>.<span class="ident">global_host_control</span>.<span class="ident">get</span>();
+
+        <span class="ident">hba</span>.<span class="ident">global_host_control</span>.<span class="ident">set</span>(<span class="ident">current_flags</span> <span class="op">|</span> <span class="ident">HbaHostCont::IE</span>); <span class="comment">// Enable Interrupts</span>
+
+        <span class="kw">let</span> <span class="ident">pi</span> <span class="op">=</span> <span class="ident">hba</span>.<span class="ident">ports_implemented</span>.<span class="ident">get</span>();
+
+        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">32</span> {
+            <span class="kw">if</span> <span class="ident">pi</span>.<span class="ident">get_bit</span>(<span class="ident">i</span>) {
+                <span class="kw">let</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">hba</span>.<span class="ident">port_mut</span>(<span class="ident">i</span>);
+
+                <span class="kw">if</span> <span class="ident">port</span>.<span class="ident">probe</span>(<span class="ident">i</span>) {}
+            }
+        }
+    }
+
+    <span class="doccomment">/// This function is responsible for initializing and starting the AHCI driver.</span>
+    <span class="kw">fn</span> <span class="ident">start_driver</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">PciHeader</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">abar</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">header</span>.<span class="ident">get_bar</span>(<span class="number">5</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to get ABAR&quot;</span>) };
+
+        <span class="kw">let</span> (<span class="ident">abar_address</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">abar</span> {
             <span class="ident">Bar::Memory32</span> { <span class="ident">address</span>, <span class="ident">size</span>, .. } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">address</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>),
             <span class="ident">Bar::Memory64</span> { <span class="ident">address</span>, <span class="ident">size</span>, .. } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">address</span>, <span class="ident">size</span>),
             <span class="ident">Bar::IO</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;ABAR is in port space o_O&quot;</span>),
         };
 
-        <span class="kw">let</span> <span class="ident">memory</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">abar_address</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HBAMemory</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">Self</span> { <span class="ident">memory</span> };
+        <span class="self">self</span>.<span class="ident">hba</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">abar_address</span> }; <span class="comment">// Update the HBA address.</span>
 
-        <span class="comment">// this.probe_ports(offset_table);</span>
+        <span class="self">self</span>.<span class="ident">start_hba</span>();
 
-        <span class="ident">this</span>
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="doccomment">/// Structure representing the ACHI driver.</span>
+<span class="kw">struct</span> <span class="ident">AhciDriver</span> {
+    <span class="ident">inner</span>: <span class="ident">SpinMutex</span><span class="op">&lt;</span><span class="ident">AhciProtected</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">PciDeviceHandle</span> <span class="kw">for</span> <span class="ident">AhciDriver</span> {
+    <span class="kw">fn</span> <span class="ident">handles</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">vendor_id</span>: <span class="ident">Vendor</span>, <span class="ident">device_id</span>: <span class="ident">DeviceType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">match</span> (<span class="ident">vendor_id</span>, <span class="ident">device_id</span>) {
+            (<span class="ident">Vendor::Intel</span>, <span class="ident">DeviceType::SataController</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+        }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">probe_ports</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) {
-        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">32</span> {
-            <span class="kw">if</span> (<span class="self">self</span>.<span class="ident">memory</span>.<span class="ident">ports_implemented</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">i</span>)) <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-                <span class="kw">let</span> <span class="ident">hba_port</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">memory</span>.<span class="ident">get_port</span>(<span class="ident">i</span>);
-                <span class="kw">let</span> <span class="ident">hba_port_type</span> <span class="op">=</span> <span class="ident">hba_port</span>.<span class="ident">get_port_type</span>();
+    <span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">PciHeader</span>, <span class="ident">_offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) {
+        <span class="macro">log::info!</span>(<span class="string">&quot;Starting AHCI driver...&quot;</span>);
 
-                <span class="kw">if</span> <span class="ident">hba_port_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AHCIPortType::SATA</span> <span class="op">|</span><span class="op">|</span> <span class="ident">hba_port_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AHCIPortType::SATAPI</span> {
-                    <span class="comment">// let mut buffer = [0u16; 256];</span>
+        <span class="comment">// Disable interrupts as we do not want to be interrupted durning</span>
+        <span class="comment">// the initialization of the AHCI driver.</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">interrupts::disable_interrupts</span>();
+        }
 
-                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">Port::new</span>(<span class="ident">hba_port</span>, <span class="ident">hba_port_type</span>, <span class="ident">i</span>);
+        <span class="ident">get_ahci</span>().<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">start_driver</span>(<span class="ident">header</span>).<span class="ident">unwrap</span>(); <span class="comment">// Start and initialize the AHCI controller.</span>
 
-                    <span class="ident">port</span>.<span class="ident">configure</span>(<span class="ident">offset_table</span>);
-                    <span class="comment">// port.read(0, 4, &amp;mut buffer);</span>
-                }
-            }
+        <span class="comment">// Now the AHCI driver is initialized, we can enable interrupts.</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">interrupts::enable_interrupts</span>();
         }
     }
 }
+
+<span class="doccomment">/// Returns a reference-counting pointer to the AHCI driver.</span>
+<span class="kw">fn</span> <span class="ident">get_ahci</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AhciDriver</span><span class="op">&gt;</span> {
+    <span class="ident">DRIVER</span>
+        .<span class="ident">get</span>()
+        .<span class="ident">expect</span>(<span class="string">&quot;Attempted to get the AHCI driver before it was initialized&quot;</span>)
+}
+
+<span class="doccomment">/// This function is responsible for initializing and running the AHCI driver.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ahci_init</span>() {
+    <span class="comment">// Initialize the AHCI driver instance.</span>
+    <span class="ident">DRIVER</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
+        <span class="kw">const</span> <span class="ident">EMPTY</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AhciPort</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>; <span class="comment">// To satisfy the Copy trait bound when the AHCI creating data.</span>
+
+        <span class="ident">Arc::new</span>(<span class="ident">AhciDriver</span> {
+            <span class="ident">inner</span>: <span class="ident">SpinMutex::new</span>(<span class="ident">AhciProtected</span> {
+                <span class="ident">ports</span>: [<span class="ident">EMPTY</span>; <span class="number">32</span>],    <span class="comment">// Initialize the AHCI ports to an empty slice.</span>
+                <span class="ident">hba</span>: <span class="ident">VirtAddr::zero</span>(), <span class="comment">// Initialize the AHCI HBA address to zero.</span>
+            }),
+        })
+    });
+
+    <span class="comment">// Now register the AHCI driver with the PCI subsystem.</span>
+    <span class="ident">register_device_driver</span>(<span class="ident">get_ahci</span>().<span class="ident">clone</span>());
+}
+
+<span class="kw">crate</span><span class="macro">::module_init!</span>(<span class="ident">ahci_init</span>);
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
