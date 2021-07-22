@@ -370,6 +370,14 @@
 <span id="370">370</span>
 <span id="371">371</span>
 <span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -401,6 +409,8 @@
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::controlregs</span>;
 
 <span class="kw">const</span> <span class="ident">PIC1_COMMAND</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x20</span>;
 <span class="kw">const</span> <span class="ident">PIC1_DATA</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0x21</span>;
@@ -729,6 +739,12 @@
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">enable_interrupts</span>() {
     <span class="macro">asm!</span>(<span class="string">&quot;sti&quot;</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>));
+}
+
+<span class="doccomment">/// Returns true if interrupts are enabled.</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_enabled</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="ident">controlregs::read_rflags</span>().<span class="ident">contains</span>(<span class="ident">controlregs::RFlags::INTERRUPT_FLAG</span>)
 }
 
 <span class="doccomment">/// Wrapper function to the `pause` assembly instruction used to pause</span>

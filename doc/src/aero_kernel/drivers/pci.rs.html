@@ -607,6 +607,20 @@
 <span id="607">607</span>
 <span id="608">608</span>
 <span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -1049,6 +1063,20 @@
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="number">0x00</span>);
 
         <span class="ident">id</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">16</span>)
+    }
+
+    <span class="doccomment">/// This function is responsible for enabling bus masterning on this device. This</span>
+    <span class="doccomment">/// allows the AHCI to perform DMA.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_bus_mastering</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="comment">// Read the Command Register from the device&#39;s PCI Configuration Space, set bit 2</span>
+        <span class="comment">// (bus mastering bit) and write the modified Command Register. Some BISOs do enable</span>
+        <span class="comment">// bus mastering by default so, we need to check for that.</span>
+        <span class="kw">let</span> <span class="ident">command</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">read</span>(<span class="number">0x04</span>) };
+
+        <span class="kw">if</span> (<span class="ident">command</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>)) <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">write</span>(<span class="number">0x04</span>, <span class="ident">command</span> <span class="op">|</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>)) }
+        }
     }
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
