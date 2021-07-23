@@ -18,7 +18,6 @@ sourcesIndex["raw_cpuid"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["rustc_demangle"] = {"name":"","files":["legacy.rs","lib.rs","v0.rs"]};
 sourcesIndex["scopeguard"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["spin"] = {"name":"","dirs":[{"name":"mutex","files":["spin.rs"]}],"files":["barrier.rs","lazy.rs","lib.rs","mutex.rs","once.rs","relax.rs","rwlock.rs"]};
-sourcesIndex["spinning_top"] = {"name":"","files":["lib.rs","spinlock.rs"]};
 sourcesIndex["stivale_boot"] = {"name":"","dirs":[{"name":"v1","files":["mod.rs","utils.rs"]},{"name":"v2","files":["header.rs","mod.rs","tag.rs","utils.rs"]}],"files":["lib.rs"]};
 sourcesIndex["xmas_elf"] = {"name":"","files":["dynamic.rs","hash.rs","header.rs","lib.rs","program.rs","sections.rs","symbol_table.rs"]};
 sourcesIndex["zero"] = {"name":"","files":["lib.rs"]};

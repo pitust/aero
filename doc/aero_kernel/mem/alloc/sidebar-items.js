@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["HEAP_SIZE",""],["HEAP_START",""]],"fn":[["alloc_error_handler",""],["init_heap","Initialize the heap."],["malloc",""],["malloc_align",""]]});
+initSidebarItems({"constant":[["HEAP_START",""]],"fn":[["alloc_error_handler",""],["init_heap","Initialize the heap at the [HEAP_START]."]],"struct":[["LockedHeap",""]]});
