@@ -170,6 +170,19 @@
 <span id="170">170</span>
 <span id="171">171</span>
 <span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -283,12 +296,25 @@
 
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">GlobalAlloc</span> <span class="kw">for</span> <span class="ident">LockedHeap</span> {
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
-        <span class="kw">let</span> <span class="ident">pointer</span> <span class="op">=</span> <span class="self">self</span>
-            .<span class="ident">allocate</span>(<span class="ident">layout</span>)
-            .<span class="ident">ok</span>()
-            .<span class="ident">map_or</span>(<span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="op">|</span><span class="ident">alloc</span><span class="op">|</span> <span class="ident">alloc</span>.<span class="ident">as_ptr</span>());
+        <span class="macro">debug_assert!</span>(<span class="ident">layout</span>.<span class="ident">align</span>().<span class="ident">is_power_of_two</span>());
 
-        <span class="ident">pointer</span>
+        <span class="comment">// Rounded up size is:</span>
+        <span class="comment">//   size_rounded_up = (size + align - 1) &amp; !(align - 1);</span>
+        <span class="comment">//</span>
+        <span class="comment">// We know from above that align != 0. If adding (align - 1)</span>
+        <span class="comment">// does not overflow, then rounding up will be fine.</span>
+        <span class="comment">//</span>
+        <span class="comment">// Conversely, &amp;-masking with !(align - 1) will subtract off</span>
+        <span class="comment">// only low-order-bits. Thus if overflow occurs with the sum,</span>
+        <span class="comment">// the &amp;-mask cannot subtract enough to undo that overflow.</span>
+        <span class="comment">//</span>
+        <span class="comment">// Above implies that checking for summation overflow is both</span>
+        <span class="comment">// necessary and sufficient.</span>
+        <span class="macro">debug_assert!</span>(<span class="ident">layout</span>.<span class="ident">size</span>() <span class="op">&lt;</span> <span class="ident">usize::MAX</span> <span class="op">-</span> (<span class="ident">layout</span>.<span class="ident">align</span>() <span class="op">-</span> <span class="number">1</span>));
+
+        <span class="self">self</span>.<span class="ident">allocate</span>(<span class="ident">layout</span>)
+            .<span class="ident">ok</span>()
+            .<span class="ident">map_or</span>(<span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="op">|</span><span class="ident">alloc</span><span class="op">|</span> <span class="ident">alloc</span>.<span class="ident">as_ptr</span>())
     }
 
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
