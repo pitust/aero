@@ -378,6 +378,9 @@
 <span id="378">378</span>
 <span id="379">379</span>
 <span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -627,6 +630,7 @@
                 <span class="comment">// Push the error code.</span>
                 <span class="string">&quot;push rax\n&quot;</span>,
 
+                <span class="string">&quot;call restore_kernel_fs_base\n&quot;</span>,
                 <span class="string">&quot;call map_pti\n&quot;</span>,
 
                 <span class="comment">// Call the inner interrupt handler implementation.</span>
@@ -672,6 +676,7 @@
                 <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::push_preserved!</span>(),
                 <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::push_fs!</span>(),
 
+                <span class="string">&quot;call restore_kernel_fs_base\n&quot;</span>,
                 <span class="string">&quot;call map_pti\n&quot;</span>,
 
                 <span class="string">&quot;mov rdi, rsp\n&quot;</span>,
@@ -705,6 +710,7 @@
 
                 <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::push_scratch!</span>(),
 
+                <span class="string">&quot;call restore_kernel_fs_base\n&quot;</span>,
                 <span class="string">&quot;call map_pti\n&quot;</span>,
 
                 <span class="string">&quot;mov rdi, rsp\n&quot;</span>,

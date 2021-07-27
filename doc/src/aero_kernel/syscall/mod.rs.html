@@ -327,7 +327,7 @@
         <span class="string">&quot;push QWORD PTR 6 * 8 + 3\n&quot;</span>, <span class="comment">// Push fake CS resembling `iret` stack frame.</span>
         <span class="string">&quot;push rcx\n&quot;</span>, <span class="comment">// Push userspace return pointer.</span>
 
-        <span class="string">&quot;call restore_kernel_tls\n&quot;</span>, <span class="comment">// Restore the kernel thread local storage.</span>
+        <span class="string">&quot;call restore_kernel_fs_base_locked\n&quot;</span>, <span class="comment">// Restore the kernel thread local storage.</span>
 
         <span class="string">&quot;push rax\n&quot;</span>,
         <span class="kw">crate</span><span class="macro">::prelude::push_scratch!</span>(),

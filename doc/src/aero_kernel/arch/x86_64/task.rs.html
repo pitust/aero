@@ -199,75 +199,6 @@
 <span id="199">199</span>
 <span id="200">200</span>
 <span id="201">201</span>
-<span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
-<span id="207">207</span>
-<span id="208">208</span>
-<span id="209">209</span>
-<span id="210">210</span>
-<span id="211">211</span>
-<span id="212">212</span>
-<span id="213">213</span>
-<span id="214">214</span>
-<span id="215">215</span>
-<span id="216">216</span>
-<span id="217">217</span>
-<span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
-<span id="234">234</span>
-<span id="235">235</span>
-<span id="236">236</span>
-<span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
-<span id="255">255</span>
-<span id="256">256</span>
-<span id="257">257</span>
-<span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -289,18 +220,15 @@
  */</span>
 
 <span class="kw">use</span> <span class="ident">alloc::alloc::alloc_zeroed</span>;
-<span class="kw">use</span> <span class="ident">xmas_elf::program::Type</span>;
-<span class="kw">use</span> <span class="ident">xmas_elf</span>::{<span class="ident">header</span>, <span class="ident">program</span>, <span class="ident">ElfFile</span>};
+<span class="kw">use</span> <span class="ident">xmas_elf</span>::{<span class="ident">header</span>, <span class="ident">ElfFile</span>};
 
 <span class="kw">use</span> <span class="ident">core::alloc::Layout</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::prelude</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::gdt</span>::{<span class="ident">Ring</span>, <span class="ident">TASK_STATE_SEGMENT</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::AddressSpace</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::stack::Stack</span>;
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
@@ -409,9 +337,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exec</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">executable</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="ident">header::sanity_check</span>(<span class="ident">executable</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed sanity check&quot;</span>); <span class="comment">// Sanity check the provided ELF executable</span>
 
-        <span class="kw">let</span> <span class="ident">raw_executable</span> <span class="op">=</span> <span class="ident">executable</span>.<span class="ident">input</span>.<span class="ident">as_ptr</span>();
-
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">address_space</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">rpl</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Ring::Ring0</span> {
+        <span class="kw">let</span> <span class="ident">address_space</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">rpl</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Ring::Ring0</span> {
             <span class="comment">// If the kernel task wants to execute an executable, then we have to</span>
             <span class="comment">// create a new address space for it as we cannot use the kernel&#39;s address space</span>
             <span class="comment">// here.</span>
@@ -425,92 +351,28 @@
             <span class="ident">AddressSpace::this</span>()
         };
 
-        <span class="comment">// Get the page map reference from the address space.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="ident">address_space</span>.<span class="ident">offset_page_table</span>();
-
-        <span class="kw">for</span> <span class="ident">header</span> <span class="kw">in</span> <span class="ident">executable</span>.<span class="ident">program_iter</span>() {
-            <span class="ident">program::sanity_check</span>(<span class="ident">header</span>, <span class="ident">executable</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed header sanity check&quot;</span>);
-
-            <span class="kw">let</span> <span class="ident">header_type</span> <span class="op">=</span> <span class="ident">header</span>
-                .<span class="ident">get_type</span>()
-                .<span class="ident">expect</span>(<span class="string">&quot;Failed to get program header type&quot;</span>);
-
-            <span class="kw">let</span> <span class="ident">header_flags</span> <span class="op">=</span> <span class="ident">header</span>.<span class="ident">flags</span>();
-
-            <span class="kw">if</span> <span class="ident">header_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Type::Load</span> {
-                <span class="kw">let</span> <span class="ident">page_range</span> <span class="op">=</span> {
-                    <span class="kw">let</span> <span class="ident">start_addr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">header</span>.<span class="ident">virtual_addr</span>());
-                    <span class="kw">let</span> <span class="ident">end_addr</span> <span class="op">=</span> <span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">header</span>.<span class="ident">mem_size</span>() <span class="op">-</span> <span class="number">1u64</span>;
-
-                    <span class="kw">let</span> <span class="ident">start_page</span>: <span class="ident">Page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">start_addr</span>);
-                    <span class="kw">let</span> <span class="ident">end_page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">end_addr</span>);
-
-                    <span class="ident">Page::range_inclusive</span>(<span class="ident">start_page</span>, <span class="ident">end_page</span>)
-                };
-
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags::PRESENT</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>
-                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>;
-
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">header_flags</span>.<span class="ident">is_execute</span>() {
-                    <span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">PageTableFlags::NO_EXECUTE</span>;
-                }
-
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addr</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-
-                <span class="kw">for</span> <span class="ident">page</span> <span class="kw">in</span> <span class="ident">page_range</span> {
-                    <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                        <span class="ident">FRAME_ALLOCATOR</span>
-                            .<span class="ident">allocate_frame</span>()
-                            .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>
-                    };
-
-                    <span class="kw">if</span> <span class="ident">addr</span>.<span class="ident">is_none</span>() {
-                        <span class="ident">addr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>());
-                    }
-
-                    <span class="kw">unsafe</span> { <span class="ident">offset_table</span>.<span class="ident">map_to</span>(<span class="ident">page</span>, <span class="ident">frame</span>, <span class="ident">flags</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>) }<span class="question-mark">?</span>
-                        .<span class="ident">flush</span>();
-                }
-
-                <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">unwrap</span>();
-
-                <span class="comment">// Segments need to be cleared to zero.</span>
-                <span class="kw">unsafe</span> {
-                    <span class="kw">let</span> <span class="ident">buffer</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> <span class="op">=</span> (<span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">addr</span>).<span class="ident">as_mut_ptr</span>();
-
-                    <span class="ident">memcpy</span>(
-                        <span class="ident">buffer</span>,
-                        <span class="ident">raw_executable</span>.<span class="ident">add</span>(<span class="ident">header</span>.<span class="ident">offset</span>() <span class="kw">as</span> <span class="ident">usize</span>),
-                        <span class="ident">header</span>.<span class="ident">file_size</span>() <span class="kw">as</span> <span class="ident">usize</span>,
-                    );
-                }
-            }
-        }
-
-        <span class="kw">let</span> <span class="ident">task_stack</span> <span class="op">=</span> {
-            <span class="comment">// 2 GiB is chosen arbitrarily (as programs are expected to fit below 2 GiB).</span>
-            <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">VirtAddr::new_unsafe</span>(<span class="number">0x8000_0000_0000</span>) };
-
-            <span class="comment">// Allocate the user stack (it&#39;s page aligned).</span>
-            <span class="ident">Stack::new_user_pinned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="ident">address</span>, <span class="number">0x64000</span>)<span class="question-mark">?</span>
-        };
-
         <span class="kw">unsafe</span> {
             <span class="comment">// Set the new stack pointer in TSS.</span>
-            <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">rsp</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">task_stack</span>.<span class="ident">stack_top</span>().<span class="ident">as_u64</span>();
         }
 
         <span class="ident">address_space</span>.<span class="ident">switch</span>(); <span class="comment">// Perform the address space switch</span>
+
+        <span class="self">self</span>.<span class="ident">context</span> <span class="op">=</span> <span class="ident">Context::default</span>();
         <span class="self">self</span>.<span class="ident">address_space</span> <span class="op">=</span> <span class="ident">address_space</span>; <span class="comment">// Update the address space reference</span>
 
         <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-            <span class="comment">// fn jump_userland_exec(stack: VirtAddr, rip: VirtAddr, rflags: u64);</span>
+            <span class="kw">fn</span> <span class="ident">jump_userland_exec</span>(<span class="ident">stack</span>: <span class="ident">VirtAddr</span>, <span class="ident">rip</span>: <span class="ident">VirtAddr</span>, <span class="ident">rflags</span>: <span class="ident">u64</span>);
         }
 
-        <span class="comment">// let entry_point = VirtAddr::new(executable.header.pt2.entry_point());</span>
+        <span class="kw">let</span> <span class="ident">entry_point</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">executable</span>.<span class="ident">header</span>.<span class="ident">pt2</span>.<span class="ident">entry_point</span>());
 
-        <span class="comment">// unsafe { jump_userland_exec(task_stack.stack_top(), entry_point, 1 &lt;&lt; 9) }</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">jump_userland_exec</span>(
+                <span class="ident">VirtAddr::new_unsafe</span>(<span class="number">0x8000_0000_0000</span> <span class="op">+</span> <span class="number">0x64000</span>),
+                <span class="ident">entry_point</span>,
+                <span class="number">0x200</span>,
+            );
+        }
 
         <span class="prelude-val">Ok</span>(())
     }

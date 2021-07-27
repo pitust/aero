@@ -132,45 +132,6 @@
 <span id="132">132</span>
 <span id="133">133</span>
 <span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
-<span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
-<span id="146">146</span>
-<span id="147">147</span>
-<span id="148">148</span>
-<span id="149">149</span>
-<span id="150">150</span>
-<span id="151">151</span>
-<span id="152">152</span>
-<span id="153">153</span>
-<span id="154">154</span>
-<span id="155">155</span>
-<span id="156">156</span>
-<span id="157">157</span>
-<span id="158">158</span>
-<span id="159">159</span>
-<span id="160">160</span>
-<span id="161">161</span>
-<span id="162">162</span>
-<span id="163">163</span>
-<span id="164">164</span>
-<span id="165">165</span>
-<span id="166">166</span>
-<span id="167">167</span>
-<span id="168">168</span>
-<span id="169">169</span>
-<span id="170">170</span>
-<span id="171">171</span>
-<span id="172">172</span>
-<span id="173">173</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -299,45 +260,6 @@
     <span class="comment">// SAFTEY: Safe to access thread local variables as at this point are accessible.</span>
     <span class="kw">unsafe</span> {
         <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">set_kernel_fs</span>(<span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">u64</span>);
-    }
-}
-
-<span class="macro">intel_fn!</span> {
-    <span class="doccomment">/**
-     * This function is responsible for restoring the kernel thread local
-     * storage. Since this function is called on every syscall, it needs to
-     * be implemented in assembly to avoid lots of rust checks comming in place.
-     *
-     * ## `#[allow(unused)]`
-     * Since this function is only invoked in assembly, we need to add the attribute
-     * `unused` as the [intel_fn] macro auto externs the functions for us.
-     *
-     * ## Saftey
-     * Needs to be called under locked conditions. Ie. You need to call `swapgs` before
-     * invoking this function.
-     */</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;asm&quot;</span> <span class="kw">fn</span> <span class="ident">restore_kernel_tls</span>() {
-        <span class="string">&quot;push rbx\n&quot;</span>,
-        <span class="string">&quot;push rdx\n&quot;</span>,
-        <span class="string">&quot;push rcx\n&quot;</span>,
-        <span class="string">&quot;push rax\n&quot;</span>,
-
-        <span class="string">&quot;mov rbx, QWORD PTR gs:[104]\n&quot;</span>, <span class="comment">// Offset into TSS holding kernel tls base the current cpu.</span>
-        <span class="string">&quot;mov ecx, 0xC0000100\n&quot;</span>, <span class="comment">// IA32_FS_BASE</span>
-
-        <span class="string">&quot;mov eax, ebx\n&quot;</span>,
-        <span class="string">&quot;shr rbx, 32\n&quot;</span>,
-        <span class="string">&quot;mov edx, ebx\n&quot;</span>,
-
-        <span class="string">&quot;wrmsr\n&quot;</span>,
-
-        <span class="string">&quot;pop rax\n&quot;</span>,
-        <span class="string">&quot;pop rcx\n&quot;</span>,
-        <span class="string">&quot;pop rdx\n&quot;</span>,
-        <span class="string">&quot;pop rbx\n&quot;</span>,
-
-        <span class="string">&quot;ret\n&quot;</span>,
     }
 }
 
