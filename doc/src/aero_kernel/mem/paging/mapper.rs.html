@@ -1109,6 +1109,7 @@
 <span id="1109">1109</span>
 <span id="1110">1110</span>
 <span id="1111">1111</span>
+<span id="1112">1112</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -1566,6 +1567,7 @@
         <span class="kw">if</span> <span class="op">!</span><span class="ident">p2</span>[<span class="ident">page</span>.<span class="ident">p2_index</span>()].<span class="ident">is_unused</span>() {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MapToError::PageAlreadyMapped</span>(<span class="ident">frame</span>));
         }
+
         <span class="ident">p2</span>[<span class="ident">page</span>.<span class="ident">p2_index</span>()].<span class="ident">set_addr</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>(), <span class="ident">flags</span> <span class="op">|</span> <span class="ident">PageTableFlags::HUGE_PAGE</span>);
 
         <span class="prelude-val">Ok</span>(<span class="ident">MapperFlush::new</span>(<span class="ident">page</span>))

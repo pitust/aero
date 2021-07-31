@@ -245,7 +245,7 @@
      * SAFTEY: The fs pointer and tcb offset are guaranteed to be correct.
      */</span>
     <span class="kw">unsafe</span> {
-        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_FS_BASE</span>, <span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">u64</span>);
+        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_FS_BASE</span>, <span class="ident">tcb_offset</span>);
 
         <span class="kw-2">*</span><span class="ident">tcb_ptr</span> <span class="op">=</span> <span class="ident">tcb_offset</span>;
     }
@@ -255,7 +255,7 @@
 
     <span class="comment">// SAFTEY: Safe to access thread local variables as at this point are accessible.</span>
     <span class="kw">unsafe</span> {
-        <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">set_kernel_fs</span>(<span class="ident">tcb_offset</span> <span class="kw">as</span> <span class="ident">u64</span>);
+        <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">set_kernel_fs</span>(<span class="ident">tcb_offset</span>);
     }
 }
 

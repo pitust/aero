@@ -116,6 +116,8 @@
 <span id="116">116</span>
 <span id="117">117</span>
 <span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -201,7 +203,7 @@
 <span class="macro">interrupt_error_stack!</span>(
     <span class="kw">fn</span> <span class="ident">page_fault</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptErrorStack</span>) {
         <span class="kw">let</span> <span class="ident">accessed_address</span> <span class="op">=</span> <span class="ident">controlregs::read_cr2</span>();
-        <span class="kw">let</span> <span class="ident">reason</span> <span class="op">=</span> <span class="ident">PageFaultErrorCode::from_bits_truncate</span>(<span class="ident">stack</span>.<span class="ident">code</span> <span class="kw">as</span> <span class="ident">u64</span>);
+        <span class="kw">let</span> <span class="ident">reason</span> <span class="op">=</span> <span class="ident">PageFaultErrorCode::from_bits_truncate</span>(<span class="ident">stack</span>.<span class="ident">code</span>);
 
         <span class="kw">if</span> <span class="ident">stack</span>.<span class="ident">stack</span>.<span class="ident">iret</span>.<span class="ident">is_user</span>() {
             <span class="comment">// The page fault has triggred in user mode. Now we need to</span>
@@ -212,8 +214,10 @@
                 .<span class="ident">current_task</span>()
                 .<span class="ident">handle_page_fault</span>(<span class="ident">accessed_address</span>, <span class="ident">reason</span>);
 
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">signal</span> {
+            <span class="kw">if</span> <span class="ident">signal</span> {
                 <span class="kw">return</span>;
+            } <span class="kw">else</span> {
+                <span class="macro">log::debug!</span>(<span class="string">&quot;SIGSEGV&quot;</span>);
             }
         }
 

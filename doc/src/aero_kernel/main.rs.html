@@ -297,6 +297,7 @@
 <span id="297">297</span>
 <span id="298">298</span>
 <span id="299">299</span>
+<span id="300">300</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -346,6 +347,7 @@
     <span class="ident">arc_new_cyclic</span>,
     <span class="ident">const_btree_new</span> <span class="comment">// TODO: Do not abuse nightly rust :D</span>
 )]</span>
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">trivial_numeric_casts</span>, <span class="ident">unused_allocation</span>)]</span>
 <span class="attribute">#![<span class="ident">test_runner</span>(<span class="kw">crate</span><span class="ident">::tests::test_runner</span>)]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">no_main</span>]</span>

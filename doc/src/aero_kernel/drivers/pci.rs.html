@@ -597,12 +597,6 @@
 <span id="597">597</span>
 <span id="598">598</span>
 <span id="599">599</span>
-<span id="600">600</span>
-<span id="601">601</span>
-<span id="602">602</span>
-<span id="603">603</span>
-<span id="604">604</span>
-<span id="605">605</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -1015,10 +1009,7 @@
         <span class="kw">let</span> <span class="ident">bus</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bus</span>() <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">device</span>() <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">function</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">u32</span>;
-
-        <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span>
-            ((<span class="ident">bus</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>) <span class="op">|</span> (<span class="ident">device</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">11</span>) <span class="op">|</span> (<span class="ident">func</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> (<span class="ident">offset</span> <span class="op">&amp;</span> <span class="number">0xFC</span>) <span class="op">|</span> <span class="number">0x80000000</span>) <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> (<span class="ident">bus</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>) <span class="op">|</span> (<span class="ident">device</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">11</span>) <span class="op">|</span> (<span class="ident">func</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> (<span class="ident">offset</span> <span class="op">&amp;</span> <span class="number">0xFC</span>) <span class="op">|</span> <span class="number">0x80000000</span>;
 
         <span class="ident">io::outl</span>(<span class="ident">PCI_CONFIG_ADDRESS_PORT</span>, <span class="ident">address</span>);
         <span class="ident">io::inl</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>)
@@ -1028,10 +1019,7 @@
         <span class="kw">let</span> <span class="ident">bus</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bus</span>() <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">device</span>() <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">function</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">u32</span>;
-
-        <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span>
-            ((<span class="ident">bus</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>) <span class="op">|</span> (<span class="ident">device</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">11</span>) <span class="op">|</span> (<span class="ident">func</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> (<span class="ident">offset</span> <span class="op">&amp;</span> <span class="number">0xFC</span>) <span class="op">|</span> <span class="number">0x80000000</span>) <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> (<span class="ident">bus</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>) <span class="op">|</span> (<span class="ident">device</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">11</span>) <span class="op">|</span> (<span class="ident">func</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> (<span class="ident">offset</span> <span class="op">&amp;</span> <span class="number">0xFC</span>) <span class="op">|</span> <span class="number">0x80000000</span>;
 
         <span class="ident">io::outl</span>(<span class="ident">PCI_CONFIG_ADDRESS_PORT</span>, <span class="ident">address</span>);
         <span class="ident">io::outl</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>, <span class="ident">value</span>);
