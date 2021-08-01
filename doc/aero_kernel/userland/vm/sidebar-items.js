@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Mapping",""],["Vm",""],["VmProtected",""]]});
+initSidebarItems({"struct":[["MMapFile",""],["Mapping",""],["Vm",""],["VmProtected",""]]});
