@@ -1639,7 +1639,7 @@
 
                 <span class="kw">if</span> <span class="ident">port</span>.<span class="ident">probe</span>(<span class="ident">i</span>) {
                     <span class="comment">// Get the address of the HBA port.</span>
-                    <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">VirtAddr::new_unsafe</span>(<span class="ident">port</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw">_</span>) };
+                    <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">port</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw">_</span>);
 
                     <span class="ident">drop</span>(<span class="ident">port</span>); <span class="comment">// Drop the reference to the port.</span>
                     <span class="ident">drop</span>(<span class="ident">hba</span>); <span class="comment">// Drop the reference to the HBA.</span>

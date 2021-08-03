@@ -130,6 +130,12 @@
 <span id="130">130</span>
 <span id="131">131</span>
 <span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -261,7 +267,13 @@
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">restore_user_tls</span>() {
-    <span class="macro">log::trace!</span>(<span class="string">&quot;Restoring user TLS...&quot;</span>);
+    <span class="macro">log::trace!</span>(<span class="string">&quot;restoring user TLS...&quot;</span>);
+
+    <span class="comment">// FIXME(Andy-Python-Programmer): Actual support for userland TLS. For now</span>
+    <span class="comment">// we sanitse the FS base to 0x00.</span>
+    <span class="kw">unsafe</span> {
+        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_FS_BASE</span>, <span class="number">0x00</span>);
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
