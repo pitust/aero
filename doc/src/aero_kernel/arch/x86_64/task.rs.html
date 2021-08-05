@@ -200,6 +200,8 @@
 <span id="200">200</span>
 <span id="201">201</span>
 <span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -360,6 +362,8 @@
             <span class="ident">MMapProt::PROT_WRITE</span> <span class="op">|</span> <span class="ident">MMapProt::PROT_READ</span>,
             <span class="ident">MMapFlags::MAP_FIXED</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_PRIVATE</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_ANONYOMUS</span>,
         );
+
+        <span class="ident">vm</span>.<span class="ident">log</span>();
 
         <span class="ident">address_space</span>.<span class="ident">switch</span>(); <span class="comment">// Perform the address space switch</span>
 
