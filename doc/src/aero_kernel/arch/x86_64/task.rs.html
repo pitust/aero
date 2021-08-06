@@ -355,11 +355,11 @@
             <span class="ident">AddressSpace::this</span>()
         };
 
-        <span class="comment">// MMAP the userland stack...</span>
+        <span class="comment">// mmap the userland stack...</span>
         <span class="ident">vm</span>.<span class="ident">mmap</span>(
             <span class="ident">VirtAddr::new</span>(<span class="number">0x8000_0000_0000</span> <span class="op">-</span> <span class="number">0x64000</span>),
             <span class="number">0x64000</span>,
-            <span class="ident">MMapProt::PROT_WRITE</span> <span class="op">|</span> <span class="ident">MMapProt::PROT_READ</span>,
+            <span class="ident">MMapProt::PROT_WRITE</span> <span class="op">|</span> <span class="ident">MMapProt::PROT_READ</span> <span class="op">|</span> <span class="ident">MMapProt::PROT_EXEC</span>,
             <span class="ident">MMapFlags::MAP_FIXED</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_PRIVATE</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_ANONYOMUS</span>,
         );
 
