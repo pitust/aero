@@ -131,10 +131,10 @@
 <span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">Once</span>};
 <span class="kw">use</span> <span class="ident">stivale_boot::v2</span>::{<span class="ident">StivaleMemoryMapEntryType</span>, <span class="ident">StivaleMemoryMapTag</span>};
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::mapper</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::page</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::mapper</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::page</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::addr::PhysAddr</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::addr::PhysAddr</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LockedFrameAllocator</span>(<span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">GlobalFrameAllocator</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 

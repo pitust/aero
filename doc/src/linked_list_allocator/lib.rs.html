@@ -330,7 +330,7 @@
     <span class="doccomment">/// given address is invalid.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">heap_bottom</span>: <span class="ident">usize</span>, <span class="ident">heap_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Heap</span> {
         <span class="kw">if</span> <span class="ident">heap_size</span> <span class="op">&lt;</span> <span class="ident">HoleList::min_size</span>() {
-            <span class="self">Self</span><span class="ident">::empty</span>()
+            <span class="ident"><span class="self">Self</span>::empty</span>()
         } <span class="kw">else</span> {
             <span class="ident">Heap</span> {
                 <span class="ident">bottom</span>: <span class="ident">heap_bottom</span>,

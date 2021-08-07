@@ -146,7 +146,7 @@
 <span id="146">146</span>
 <span id="147">147</span>
 </pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::StivaleStruct</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::StivaleStruct</span>;
 
 <span class="macro">macro_rules!</span> <span class="ident">make_header_tag</span> {
 	($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">expr</span>;) <span class="op">=</span><span class="op">&gt;</span> {

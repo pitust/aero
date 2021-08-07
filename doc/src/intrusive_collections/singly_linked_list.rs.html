@@ -1372,10 +1372,10 @@
 <span class="kw">use</span> <span class="ident">core::fmt</span>;
 <span class="kw">use</span> <span class="ident">core::ptr::NonNull</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::link_ops</span>::{<span class="self">self</span>, <span class="ident">DefaultLinkOps</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::pointer_ops::PointerOps</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::xor_linked_list::XorLinkedListOps</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::Adapter</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::link_ops</span>::{<span class="self">self</span>, <span class="ident">DefaultLinkOps</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::pointer_ops::PointerOps</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::xor_linked_list::XorLinkedListOps</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Adapter</span>;
 
 <span class="comment">// =============================================================================</span>
 <span class="comment">// SinglyLinkedListOps</span>
@@ -1387,13 +1387,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// An implementation of `next` must not panic.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>;
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Sets the &quot;next&quot; link pointer of `ptr`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// An implementation of `set_next` must not panic.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>);
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>);
 }
 
 <span class="comment">// =============================================================================</span>
@@ -1443,7 +1443,7 @@
 <span class="kw">impl</span> <span class="ident">DefaultLinkOps</span> <span class="kw">for</span> <span class="ident">Link</span> {
     <span class="kw">type</span> <span class="ident">Ops</span> <span class="op">=</span> <span class="ident">LinkOps</span>;
 
-    <span class="kw">const</span> <span class="ident">NEW</span>: <span class="self">Self</span><span class="ident">::Ops</span> <span class="op">=</span> <span class="ident">LinkOps</span>;
+    <span class="kw">const</span> <span class="ident">NEW</span>: <span class="ident"><span class="self">Self</span>::Ops</span> <span class="op">=</span> <span class="ident">LinkOps</span>;
 }
 
 <span class="comment">// An object containing a link can be sent to another thread if it is unlinked.</span>
@@ -1493,7 +1493,7 @@
     <span class="kw">type</span> <span class="ident">LinkPtr</span> <span class="op">=</span> <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">Link</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">acquire_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">acquire_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">is_linked</span>() {
             <span class="bool-val">false</span>
         } <span class="kw">else</span> {
@@ -1503,19 +1503,19 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">release_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">release_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) {
         <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">next</span>.<span class="ident">set</span>(<span class="ident">UNLINKED_MARKER</span>);
     }
 }
 
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">SinglyLinkedListOps</span> <span class="kw">for</span> <span class="ident">LinkOps</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">next</span>.<span class="ident">get</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
         <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">next</span>.<span class="ident">set</span>(<span class="ident">next</span>);
     }
 }
@@ -1524,9 +1524,9 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>,
-        <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span> {
+        <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>,
+        <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">packed</span> <span class="op">=</span> <span class="ident">ptr</span>
             .<span class="ident">as_ref</span>()
             .<span class="ident">next</span>
@@ -1541,9 +1541,9 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">prev</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>,
-        <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span> {
+        <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>,
+        <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">packed</span> <span class="op">=</span> <span class="ident">ptr</span>
             .<span class="ident">as_ref</span>()
             .<span class="ident">next</span>
@@ -1557,9 +1557,9 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>,
-        <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>,
-        <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>,
+        <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>,
+        <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
+        <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
     ) {
         <span class="kw">let</span> <span class="ident">new_packed</span> <span class="op">=</span> <span class="ident">prev</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>)
             <span class="op">^</span> <span class="ident">next</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
@@ -1571,9 +1571,9 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">replace_next_or_prev</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">ptr</span>: <span class="self">Self</span><span class="ident">::LinkPtr</span>,
-        <span class="ident">old</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>,
-        <span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>,
+        <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>,
+        <span class="ident">old</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
+        <span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
     ) {
         <span class="kw">let</span> <span class="ident">packed</span> <span class="op">=</span> <span class="ident">ptr</span>
             .<span class="ident">as_ref</span>()
@@ -1706,7 +1706,7 @@
     {
         <span class="kw">let</span> <span class="ident">raw_pointer</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get</span>()<span class="question-mark">?</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>;
         <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> {
-            <span class="kw">crate</span><span class="ident">::pointer_ops::clone_pointer_from_raw</span>(<span class="self">self</span>.<span class="ident">list</span>.<span class="ident">adapter</span>.<span class="ident">pointer_ops</span>(), <span class="ident">raw_pointer</span>)
+            <span class="ident"><span class="kw">crate</span>::pointer_ops::clone_pointer_from_raw</span>(<span class="self">self</span>.<span class="ident">list</span>.<span class="ident">adapter</span>.<span class="ident">pointer_ops</span>(), <span class="ident">raw_pointer</span>)
         })
     }
 

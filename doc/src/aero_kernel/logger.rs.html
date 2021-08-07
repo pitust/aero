@@ -153,12 +153,12 @@
 
 <span class="kw">use</span> <span class="ident">core::fmt::Write</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::rendy</span>::{<span class="ident">Color</span>, <span class="ident">ColorCode</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::rendy</span>::{<span class="ident">Color</span>, <span class="ident">ColorCode</span>};
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">Level</span>, <span class="ident">LevelFilter</span>, <span class="ident">Metadata</span>, <span class="ident">Record</span>};
 <span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>, <span class="ident">Once</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::rendy</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::buffer::RingBuffer</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::rendy</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::buffer::RingBuffer</span>;
 
 <span class="kw">const</span> <span class="ident">MAX_LOG_LEVEL_SPACE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">6</span>;
 <span class="kw">const</span> <span class="ident">DEFAULT_LOG_RING_BUFFER_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">256</span>;
@@ -186,13 +186,13 @@
             <span class="kw">let</span> <span class="ident">initialized</span> <span class="op">=</span> <span class="ident">rendy::is_initialized</span>();
 
             <span class="kw">macro</span> <span class="ident">log</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) {
-                <span class="kw">if</span> <span class="ident">initialized</span> { <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)); }
-                <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::serial_print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
+                <span class="kw">if</span> <span class="ident">initialized</span> { <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)); }
+                <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::serial_print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
             }
 
             <span class="kw">macro</span> <span class="ident">log_ln</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) {
-                <span class="kw">if</span> <span class="ident">initialized</span> { <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)); }
-                <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::prelude::serial_println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
+                <span class="kw">if</span> <span class="ident">initialized</span> { <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)); }
+                <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::serial_println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
             }
 
             <span class="comment">/*

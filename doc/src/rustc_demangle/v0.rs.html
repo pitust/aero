@@ -2625,7 +2625,7 @@
                     <span class="self">self</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;::&quot;</span>)<span class="question-mark">?</span>;
                 }
                 <span class="self">self</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;&lt;&quot;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.<span class="ident">print_sep_list</span>(<span class="self">Self</span><span class="ident">::print_generic_arg</span>, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.<span class="ident">print_sep_list</span>(<span class="ident"><span class="self">Self</span>::print_generic_arg</span>, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;&gt;&quot;</span>)<span class="question-mark">?</span>;
             }
             <span class="string">b&#39;B&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -2697,7 +2697,7 @@
             }
             <span class="string">b&#39;T&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;(&quot;</span>)<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">print_sep_list</span>(<span class="self">Self</span><span class="ident">::print_type</span>, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">print_sep_list</span>(<span class="ident"><span class="self">Self</span>::print_type</span>, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
                 <span class="kw">if</span> <span class="ident">count</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
                     <span class="self">self</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;,&quot;</span>)<span class="question-mark">?</span>;
                 }
@@ -2739,7 +2739,7 @@
                 }
 
                 <span class="ident">this</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;fn(&quot;</span>)<span class="question-mark">?</span>;
-                <span class="ident">this</span>.<span class="ident">print_sep_list</span>(<span class="self">Self</span><span class="ident">::print_type</span>, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
+                <span class="ident">this</span>.<span class="ident">print_sep_list</span>(<span class="ident"><span class="self">Self</span>::print_type</span>, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
                 <span class="ident">this</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;)&quot;</span>)<span class="question-mark">?</span>;
 
                 <span class="kw">if</span> <span class="ident">this</span>.<span class="ident">eat</span>(<span class="string">b&#39;u&#39;</span>) {
@@ -2754,7 +2754,7 @@
             <span class="string">b&#39;D&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;dyn &quot;</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">in_binder</span>(<span class="op">|</span><span class="ident">this</span><span class="op">|</span> {
-                    <span class="ident">this</span>.<span class="ident">print_sep_list</span>(<span class="self">Self</span><span class="ident">::print_dyn_trait</span>, <span class="string">&quot; + &quot;</span>)<span class="question-mark">?</span>;
+                    <span class="ident">this</span>.<span class="ident">print_sep_list</span>(<span class="ident"><span class="self">Self</span>::print_dyn_trait</span>, <span class="string">&quot; + &quot;</span>)<span class="question-mark">?</span>;
                     <span class="prelude-val">Ok</span>(())
                 })<span class="question-mark">?</span>;
 
@@ -2792,7 +2792,7 @@
         } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">eat</span>(<span class="string">b&#39;I&#39;</span>) {
             <span class="self">self</span>.<span class="ident">print_path</span>(<span class="bool-val">false</span>)<span class="question-mark">?</span>;
             <span class="self">self</span>.<span class="ident">out</span>.<span class="ident">write_str</span>(<span class="string">&quot;&lt;&quot;</span>)<span class="question-mark">?</span>;
-            <span class="self">self</span>.<span class="ident">print_sep_list</span>(<span class="self">Self</span><span class="ident">::print_generic_arg</span>, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
+            <span class="self">self</span>.<span class="ident">print_sep_list</span>(<span class="ident"><span class="self">Self</span>::print_generic_arg</span>, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">print_path</span>(<span class="bool-val">false</span>)<span class="question-mark">?</span>;

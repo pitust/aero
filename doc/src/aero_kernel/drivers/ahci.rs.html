@@ -897,11 +897,11 @@
 <span class="kw">use</span> <span class="ident">spin::mutex::SpinMutex</span>;
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils</span>::{<span class="ident">IrqGuard</span>, <span class="ident">VolatileCell</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::interrupts</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{<span class="ident">IrqGuard</span>, <span class="ident">VolatileCell</span>};
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::pci</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::pci</span>::<span class="kw-2">*</span>;
 
 <span class="kw">static</span> <span class="ident">DRIVER</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AhciDriver</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 
@@ -1114,7 +1114,7 @@
         <span class="kw">for</span> <span class="ident">buffer</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">iter</span>() {
             <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">remaning</span>, <span class="number">0x2000</span>);
 
-            <span class="kw">let</span> <span class="ident">buffer_address</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">buffer</span>.<span class="ident">start</span>.<span class="ident">as_u64</span>() };
+            <span class="kw">let</span> <span class="ident">buffer_address</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">buffer</span>.<span class="ident">start</span>.<span class="ident">as_u64</span>() };
             <span class="kw">let</span> <span class="ident">buffer_pointer</span> <span class="op">=</span> <span class="ident">buffer_address</span>.<span class="ident">as_ptr</span>();
             <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">core::slice::from_raw_parts</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">buffer_pointer</span>, <span class="ident">count</span>) };
 
@@ -1346,7 +1346,7 @@
     <span class="kw">fn</span> <span class="ident">cmd_header_at</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HbaCmdHeader</span> {
         <span class="comment">// Since the CLB holds the physical address, we make the address mapped</span>
         <span class="comment">// before reading it.</span>
-        <span class="kw">let</span> <span class="ident">clb_mapped</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">clb</span>.<span class="ident">get</span>().<span class="ident">as_u64</span>() };
+        <span class="kw">let</span> <span class="ident">clb_mapped</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">clb</span>.<span class="ident">get</span>().<span class="ident">as_u64</span>() };
         <span class="comment">// Get the address of the command header at `index`.</span>
         <span class="kw">let</span> <span class="ident">clb_addr</span> <span class="op">=</span> <span class="ident">clb_mapped</span> <span class="op">+</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HbaCmdHeader</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="ident">index</span>;
 
@@ -1456,7 +1456,7 @@
         <span class="ident">header</span>.<span class="ident">prdtl</span>.<span class="ident">set</span>(<span class="ident">length</span> <span class="kw">as</span> <span class="kw">_</span>); <span class="comment">// Update the number of PRD entries.</span>
 
         <span class="kw">let</span> <span class="ident">command_table_addr</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">header</span>.<span class="ident">ctb</span>.<span class="ident">get</span>().<span class="ident">as_u64</span>() };
+            <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">header</span>.<span class="ident">ctb</span>.<span class="ident">get</span>().<span class="ident">as_u64</span>() };
 
         <span class="kw">let</span> <span class="ident">command_table</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">command_table_addr</span>).<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">HbaCmdTbl</span><span class="op">&gt;</span>() };
 
@@ -1673,7 +1673,7 @@
             <span class="ident">Bar::IO</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;ABAR is in port space o_O&quot;</span>),
         };
 
-        <span class="self">self</span>.<span class="ident">hba</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">abar_address</span> }; <span class="comment">// Update the HBA address.</span>
+        <span class="self">self</span>.<span class="ident">hba</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">abar_address</span> }; <span class="comment">// Update the HBA address.</span>
 
         <span class="self">self</span>.<span class="ident">start_hba</span>();
         <span class="self">self</span>.<span class="ident">enable_interrupts</span>(<span class="ident">header</span>);
@@ -1742,7 +1742,7 @@
     <span class="ident">register_device_driver</span>(<span class="ident">get_ahci</span>().<span class="ident">clone</span>());
 }
 
-<span class="kw">crate</span><span class="macro">::module_init!</span>(<span class="ident">ahci_init</span>);
+<span class="macro">crate::module_init!</span>(<span class="ident">ahci_init</span>);
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>

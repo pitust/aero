@@ -480,7 +480,7 @@
 <span class="kw">use</span> <span class="ident">core::fmt</span>;
 <span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="ident">Add</span>, <span class="ident">AddAssign</span>, <span class="ident">Sub</span>, <span class="ident">SubAssign</span>};
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::page_table</span>::{<span class="ident">PageOffset</span>, <span class="ident">PageTableIndex</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::page_table</span>::{<span class="ident">PageOffset</span>, <span class="ident">PageTableIndex</span>};
 <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 
 <span class="doccomment">/// A 64-bit virtual memory address.</span>
@@ -654,7 +654,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">VirtAddr::new</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">rhs</span>)
     }
 }
@@ -670,7 +670,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="self">self</span> <span class="op">+</span> <span class="ident">rhs</span> <span class="kw">as</span> <span class="ident">u64</span>
     }
 }
@@ -686,7 +686,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">VirtAddr::new</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">checked_sub</span>(<span class="ident">rhs</span>).<span class="ident">unwrap</span>())
     }
 }
@@ -702,7 +702,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="self">self</span> <span class="op">-</span> <span class="ident">rhs</span> <span class="kw">as</span> <span class="ident">u64</span>
     }
 }
@@ -718,7 +718,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">VirtAddr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VirtAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">u64</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="self">self</span>.<span class="ident">as_u64</span>().<span class="ident">checked_sub</span>(<span class="ident">rhs</span>.<span class="ident">as_u64</span>()).<span class="ident">unwrap</span>()
     }
 }
@@ -818,7 +818,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">PhysAddr::new</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">rhs</span>)
     }
 }
@@ -834,7 +834,7 @@
 <span class="kw">impl</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="self">self</span> <span class="op">+</span> <span class="ident">rhs</span> <span class="kw">as</span> <span class="ident">u64</span>
     }
 }
@@ -850,7 +850,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">PhysAddr::new</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">checked_sub</span>(<span class="ident">rhs</span>).<span class="ident">unwrap</span>())
     }
 }
@@ -866,7 +866,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="self">self</span> <span class="op">-</span> <span class="ident">rhs</span> <span class="kw">as</span> <span class="ident">u64</span>
     }
 }
@@ -882,7 +882,7 @@
 <span class="kw">impl</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">PhysAddr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysAddr</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">u64</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PhysAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PhysAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="self">self</span>.<span class="ident">as_u64</span>().<span class="ident">checked_sub</span>(<span class="ident">rhs</span>.<span class="ident">as_u64</span>()).<span class="ident">unwrap</span>()
     }
 }

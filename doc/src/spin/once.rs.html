@@ -750,7 +750,7 @@
         }
     }
 }
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::status</span>::{<span class="ident">Status</span>, <span class="ident">AtomicStatus</span>};
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::status</span>::{<span class="ident">Status</span>, <span class="ident">AtomicStatus</span>};
 
 <span class="kw">use</span> <span class="ident">core::hint::unreachable_unchecked</span> <span class="kw">as</span> <span class="ident">unreachable</span>;
 
@@ -943,7 +943,7 @@
 
     <span class="doccomment">/// Creates a new [`Once`].</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>{
-        <span class="self">Self</span><span class="ident">::INIT</span>
+        <span class="ident"><span class="self">Self</span>::INIT</span>
     }
 
     <span class="doccomment">/// Creates a new initialized [`Once`].</span>
@@ -1052,7 +1052,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">data</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::initialized</span>(<span class="ident">data</span>)
+        <span class="ident"><span class="self">Self</span>::initialized</span>(<span class="ident">data</span>)
     }
 }
 

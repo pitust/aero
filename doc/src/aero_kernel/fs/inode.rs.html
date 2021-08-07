@@ -252,11 +252,11 @@
 <span class="kw">use</span> <span class="ident">spin::mutex::spin::SpinMutex</span>;
 <span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">Once</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::Downcastable</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Downcastable</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::cache</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::cache</span>::{<span class="ident">DirCacheItem</span>, <span class="ident">INodeCacheItem</span>};
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::devfs::DevINode</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>::{<span class="ident">DirCacheItem</span>, <span class="ident">INodeCacheItem</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::devfs::DevINode</span>;
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FileSystem</span>, <span class="ident">FileSystemError</span>, <span class="prelude-ty">Result</span>};
 
 <span class="kw">static</span> <span class="ident">DIR_CACHE_MARKER</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0x00</span>);
@@ -343,7 +343,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">FileContents</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::Content</span>(<span class="ident">SpinMutex::new</span>(<span class="ident">Vec::new</span>()))
+        <span class="ident"><span class="self">Self</span>::Content</span>(<span class="ident">SpinMutex::new</span>(<span class="ident">Vec::new</span>()))
     }
 }
 
@@ -356,7 +356,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">FileType</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::File</span>
+        <span class="ident"><span class="self">Self</span>::File</span>
     }
 }
 

@@ -165,11 +165,11 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">consts</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">syscall</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::syscall</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syscall</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span> {
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::consts</span>::<span class="kw-2">*</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::syscall</span>::<span class="kw-2">*</span>;
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::consts</span>::<span class="kw-2">*</span>;
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syscall</span>::<span class="kw-2">*</span>;
 
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">AeroSyscallError</span>, <span class="ident">AeroSyscallResult</span>};
 }

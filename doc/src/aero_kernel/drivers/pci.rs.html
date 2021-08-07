@@ -622,9 +622,9 @@
 
 <span class="kw">use</span> <span class="ident">spin::mutex::SpinMutex</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::acpi::mcfg</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging::OffsetPageTable</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::acpi::mcfg</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging::OffsetPageTable</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
 
 <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 
@@ -967,11 +967,11 @@
 <span class="kw">impl</span> <span class="ident">Vendor</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">id</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">id</span> {
-            <span class="number">0x8086</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Intel</span>,
-            <span class="number">0x1022</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::AMD</span>,
-            <span class="number">0x10DE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::NVIDIA</span>,
-            <span class="number">0x1234</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Qemu</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Unknown</span>(<span class="ident">id</span>),
+            <span class="number">0x8086</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Intel</span>,
+            <span class="number">0x1022</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::AMD</span>,
+            <span class="number">0x10DE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::NVIDIA</span>,
+            <span class="number">0x1234</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Qemu</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Unknown</span>(<span class="ident">id</span>),
         }
     }
 }

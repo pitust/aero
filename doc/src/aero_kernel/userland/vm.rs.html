@@ -515,29 +515,6 @@
 <span id="515">515</span>
 <span id="516">516</span>
 <span id="517">517</span>
-<span id="518">518</span>
-<span id="519">519</span>
-<span id="520">520</span>
-<span id="521">521</span>
-<span id="522">522</span>
-<span id="523">523</span>
-<span id="524">524</span>
-<span id="525">525</span>
-<span id="526">526</span>
-<span id="527">527</span>
-<span id="528">528</span>
-<span id="529">529</span>
-<span id="530">530</span>
-<span id="531">531</span>
-<span id="532">532</span>
-<span id="533">533</span>
-<span id="534">534</span>
-<span id="535">535</span>
-<span id="536">536</span>
-<span id="537">537</span>
-<span id="538">538</span>
-<span id="539">539</span>
-<span id="540">540</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -563,13 +540,13 @@
 <span class="kw">use</span> <span class="ident">alloc::collections::linked_list::CursorMut</span>;
 <span class="kw">use</span> <span class="ident">alloc::collections::LinkedList</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::AddressSpace</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::AddressSpace</span>;
 
 <span class="kw">use</span> <span class="ident">spin::Mutex</span>;
 <span class="kw">use</span> <span class="ident">xmas_elf::ElfFile</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::USERLAND_SHELL</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::USERLAND_SHELL</span>;
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">MMapProt</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PageTableFlags</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">MMapProt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -615,6 +592,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Mapping</span> {
+    <span class="doccomment">/// Handler routine for private anonymous pages. Since its an annonymous page is not</span>
+    <span class="doccomment">/// backed by a file, we have to alloctate a frame and map it at the faulted address.</span>
     <span class="kw">fn</span> <span class="ident">handle_pf_private_anon</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
@@ -656,12 +635,15 @@
 
             <span class="self">self</span>.<span class="ident">handle_cow</span>(<span class="ident">offset_table</span>, <span class="ident">addr_aligned</span>)
         } <span class="kw">else</span> {
-            <span class="macro">log::error!</span>(<span class="string">&quot;mmap present page read failed&quot;</span>);
+            <span class="macro">log::error!</span>(<span class="string">&quot;    - present page read failed&quot;</span>);
 
             <span class="bool-val">false</span>
         }
     }
 
+    <span class="doccomment">/// Handler routine for pages backed by a file. This function will allocate a frame and</span>
+    <span class="doccomment">/// read a page-sized amount from the disk into the allocated frame. Then it maps</span>
+    <span class="doccomment">/// the allocated frame at the faulted address.</span>
     <span class="kw">fn</span> <span class="ident">handle_pf_private_file</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
@@ -669,74 +651,43 @@
         <span class="ident">address</span>: <span class="ident">VirtAddr</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">mmap_file</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">file</span>.<span class="ident">as_mut</span>() {
-            <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">address</span>.<span class="ident">align_down</span>(<span class="ident">Size4KiB::SIZE</span>);
-            <span class="kw">let</span> <span class="ident">address_offset</span> <span class="op">=</span> <span class="ident">address</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">start_addr</span>;
+            <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">align_down</span>(
+                (<span class="ident">address</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">start_addr</span>) <span class="op">+</span> <span class="ident">mmap_file</span>.<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">u64</span>,
+                <span class="ident">Size4KiB::SIZE</span>,
+            );
 
-            <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">Size4KiB::SIZE</span>, <span class="ident">mmap_file</span>.<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span> <span class="op">-</span> <span class="ident">address_offset</span>);
+            <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">address</span>.<span class="ident">align_down</span>(<span class="ident">Size4KiB::SIZE</span>);
+            <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">Size4KiB::SIZE</span>, <span class="ident">mmap_file</span>.<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>);
 
             <span class="kw">if</span> <span class="op">!</span><span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::CAUSED_BY_WRITE</span>)
                 <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::PROTECTION_VIOLATION</span>)
             {
-                <span class="kw">if</span> <span class="ident">size</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Size4KiB::SIZE</span> {
-                    <span class="comment">// We are just trying to read the page which is not present so, we will</span>
-                    <span class="comment">// make it avaliable.</span>
-                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>
-                        <span class="op">|</span> <span class="ident">PageTableFlags::PRESENT</span>
-                        <span class="op">|</span> <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">into</span>();
+                <span class="comment">// We are writing to private file mapping so copy the content of the page.</span>
+                <span class="macro">log::trace!</span>(<span class="string">&quot;    - private file R: {:?}..{:?}&quot;</span>, <span class="ident">address</span>, <span class="ident">address</span> <span class="op">+</span> <span class="ident">size</span>);
 
-                    <span class="ident">flags</span>.<span class="ident">remove</span>(<span class="ident">PageTableFlags::WRITABLE</span>);
+                <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
+                    .<span class="ident">expect</span>(<span class="string">&quot;failed to allocate frame for a private file read&quot;</span>);
 
-                    <span class="macro">log::trace!</span>(<span class="string">&quot;    - private file R: {:?}..{:?}&quot;</span>, <span class="ident">address</span>, <span class="ident">address</span> <span class="op">+</span> <span class="ident">size</span>);
-
-                    <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
-                        .<span class="ident">expect</span>(<span class="string">&quot;failed to allocate frame for a private file read&quot;</span>);
-
-                    <span class="kw">unsafe</span> {
-                        <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
-                            <span class="ident">Page::containing_address</span>(<span class="ident">address</span>),
-                            <span class="ident">frame</span>,
-                            <span class="ident">flags</span>,
-                            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
-                        )
-                    }
-                    .<span class="ident">expect</span>(<span class="string">&quot;failed to map allocated frame for private file read&quot;</span>)
-                    .<span class="ident">flush</span>();
-
-                    <span class="kw">unsafe</span> {
-                        (<span class="ident">mmap_file</span>.<span class="ident">file</span>.<span class="ident">as_ptr</span>())
-                            .<span class="ident">add</span>(<span class="ident">mmap_file</span>.<span class="ident">offset</span>)
-                            .<span class="ident">copy_to</span>(<span class="ident">address</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(), <span class="ident">size</span> <span class="kw">as</span> <span class="ident">usize</span>);
-                    }
-                } <span class="kw">else</span> {
-                    <span class="macro">log::trace!</span>(
-                        <span class="string">&quot;    - private file COR: {:?}..{:?}&quot;</span>,
-                        <span class="ident">address</span>,
-                        <span class="ident">address</span> <span class="op">+</span> <span class="ident">size</span>
+                <span class="kw">unsafe</span> {
+                    (<span class="ident">mmap_file</span>.<span class="ident">file</span>.<span class="ident">as_ptr</span>()).<span class="ident">add</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">copy_to</span>(
+                        (<span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())
+                            .<span class="ident">as_mut_ptr</span>(),
+                        <span class="ident">size</span> <span class="kw">as</span> <span class="ident">usize</span>,
                     );
-
-                    <span class="comment">// We are writing to private file mapping so copy the content of the page.</span>
-                    <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
-                        .<span class="ident">expect</span>(<span class="string">&quot;failed to allocate frame for a private file read&quot;</span>);
-
-                    <span class="kw">unsafe</span> {
-                        <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
-                            <span class="ident">Page::containing_address</span>(<span class="ident">address</span>),
-                            <span class="ident">frame</span>,
-                            <span class="ident">PageTableFlags::PRESENT</span>
-                                <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>
-                                <span class="op">|</span> <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">into</span>(),
-                            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
-                        )
-                    }
-                    .<span class="ident">expect</span>(<span class="string">&quot;failed to map allocated frame for private file read&quot;</span>)
-                    .<span class="ident">flush</span>();
-
-                    <span class="kw">unsafe</span> {
-                        (<span class="ident">mmap_file</span>.<span class="ident">file</span>.<span class="ident">as_ptr</span>())
-                            .<span class="ident">add</span>(<span class="ident">mmap_file</span>.<span class="ident">offset</span>)
-                            .<span class="ident">copy_to</span>(<span class="ident">address</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(), <span class="ident">size</span> <span class="kw">as</span> <span class="ident">usize</span>);
-                    }
                 }
+
+                <span class="kw">unsafe</span> {
+                    <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
+                        <span class="ident">Page::containing_address</span>(<span class="ident">address</span>),
+                        <span class="ident">frame</span>,
+                        <span class="ident">PageTableFlags::PRESENT</span>
+                            <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>
+                            <span class="op">|</span> <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">into</span>(),
+                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
+                    )
+                }
+                .<span class="ident">expect</span>(<span class="string">&quot;failed to map allocated frame for private file read&quot;</span>)
+                .<span class="ident">flush</span>();
 
                 <span class="bool-val">true</span>
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::CAUSED_BY_WRITE</span>)
@@ -750,6 +701,8 @@
                 <span class="macro">log::trace!</span>(<span class="string">&quot;    - private file COW: {:?}&quot;</span>, <span class="ident">address</span>);
                 <span class="macro">unimplemented!</span>()
             } <span class="kw">else</span> {
+                <span class="macro">log::error!</span>(<span class="string">&quot;    - present page read failed&quot;</span>);
+
                 <span class="bool-val">false</span>
             }
         } <span class="kw">else</span> {
@@ -757,6 +710,10 @@
         }
     }
 
+    <span class="doccomment">/// Handler routine for a COW (Copy-On-Write) pages. A COW page is shared between multiple processes</span>
+    <span class="doccomment">/// until a write occurs after which a private copy is made for the writing process. A COW page</span>
+    <span class="doccomment">/// is recognised because the VMA for the region is marked writable even though the individual page</span>
+    <span class="doccomment">/// table entry is not.</span>
     <span class="kw">fn</span> <span class="ident">handle_cow</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>, <span class="ident">address</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">TranslateResult::Mapped</span> {
             <span class="ident">frame</span>: <span class="kw">_</span>,
@@ -1036,12 +993,9 @@
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">mappings</span>.<span class="ident">clear</span>()
     }
 
-    <span class="doccomment">/// This function is responsible for handling a page fault which</span>
-    <span class="doccomment">/// occured in userland by looking up the memory mappings requested</span>
-    <span class="doccomment">/// by the userland process, and if the accessed address was a requested</span>
-    <span class="doccomment">/// mapping it will map the page in the process&#39; address space (on demand</span>
-    <span class="doccomment">/// paging). If the accessed address was not a requested mapping, it will</span>
-    <span class="doccomment">/// return false and the process will be signal exited.</span>
+    <span class="doccomment">/// This function is responsible for handling page faults occured in</span>
+    <span class="doccomment">/// user mode. It determines the address, the reason of the page fault</span>
+    <span class="doccomment">/// and then passes it off to one of the appropriate page fault handlers.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">handle_page_fault</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,

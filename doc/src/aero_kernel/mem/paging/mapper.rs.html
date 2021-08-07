@@ -1546,7 +1546,7 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">page_table</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">PageTable</span>, <span class="ident">page_table_frame_mapping</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">page_table</span>,
-            <span class="ident">level_5_paging_enabled</span>: <span class="kw">super</span><span class="ident">::level_5_paging_enabled</span>(),
+            <span class="ident">level_5_paging_enabled</span>: <span class="ident"><span class="kw">super</span>::level_5_paging_enabled</span>(),
             <span class="ident">page_table_walker</span>: <span class="ident">PageTableWalker::new</span>(<span class="ident">page_table_frame_mapping</span>),
         }
     }

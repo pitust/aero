@@ -104,9 +104,9 @@
 
 <span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::apic</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::userland::scheduler</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::apic</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
 
 <span class="kw">const</span> <span class="ident">PIT_FREQUENCY_HZ</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1000</span>;
 <span class="kw">const</span> <span class="ident">SCHED_TIMESLICE_MS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">5</span>;

@@ -248,13 +248,13 @@
 
 <span class="kw">use</span> <span class="ident">spin::RwLock</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::downcast</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::downcast</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::cache</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::cache</span>::{<span class="ident">CachedINode</span>, <span class="ident">DirCacheItem</span>, <span class="ident">INodeCacheItem</span>, <span class="ident">INodeCacheWeakItem</span>};
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::devfs::DevINode</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::inode</span>::{<span class="ident">DirEntry</span>, <span class="ident">FileType</span>, <span class="ident">INodeInterface</span>};
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::inode</span>::{<span class="ident">FileContents</span>, <span class="ident">Metadata</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>::{<span class="ident">CachedINode</span>, <span class="ident">DirCacheItem</span>, <span class="ident">INodeCacheItem</span>, <span class="ident">INodeCacheWeakItem</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::devfs::DevINode</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::inode</span>::{<span class="ident">DirEntry</span>, <span class="ident">FileType</span>, <span class="ident">INodeInterface</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::inode</span>::{<span class="ident">FileContents</span>, <span class="ident">Metadata</span>};
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FileSystem</span>, <span class="ident">FileSystemError</span>, <span class="prelude-ty">Result</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>

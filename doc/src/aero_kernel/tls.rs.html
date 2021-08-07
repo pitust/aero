@@ -172,9 +172,9 @@
 
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::gdt::TASK_STATE_SEGMENT</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::linker::LinkerSymbol</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::gdt::TASK_STATE_SEGMENT</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::linker::LinkerSymbol</span>;
 
 <span class="kw">static</span> <span class="ident">THREAD_LOCAL_STORAGE</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">ThreadLocalStorage</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 

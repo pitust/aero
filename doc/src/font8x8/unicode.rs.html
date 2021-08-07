@@ -139,15 +139,15 @@
 <span id="139">139</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Unicode support for 8x8 fonts.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::basic</span>::{<span class="ident">BasicFonts</span>, <span class="ident">BASIC_UNICODE</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::block</span>::{<span class="ident">BlockFonts</span>, <span class="ident">BLOCK_UNICODE</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::box_chars</span>::{<span class="ident">BoxFonts</span>, <span class="ident">BOX_UNICODE</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::greek</span>::{<span class="ident">GreekFonts</span>, <span class="ident">GREEK_UNICODE</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::hiragana</span>::{<span class="ident">HiraganaFonts</span>, <span class="ident">HIRAGANA_UNICODE</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::latin</span>::{<span class="ident">LatinFonts</span>, <span class="ident">LATIN_UNICODE</span>};
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::legacy::NOTHING_TO_DISPLAY</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::misc</span>::{<span class="ident">MiscFonts</span>, <span class="ident">MISC_UNICODE</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span><span class="ident">::sga</span>::{<span class="ident">SgaFonts</span>, <span class="ident">SGA_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::basic</span>::{<span class="ident">BasicFonts</span>, <span class="ident">BASIC_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::block</span>::{<span class="ident">BlockFonts</span>, <span class="ident">BLOCK_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::box_chars</span>::{<span class="ident">BoxFonts</span>, <span class="ident">BOX_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::greek</span>::{<span class="ident">GreekFonts</span>, <span class="ident">GREEK_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::hiragana</span>::{<span class="ident">HiraganaFonts</span>, <span class="ident">HIRAGANA_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::latin</span>::{<span class="ident">LatinFonts</span>, <span class="ident">LATIN_UNICODE</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::legacy::NOTHING_TO_DISPLAY</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::misc</span>::{<span class="ident">MiscFonts</span>, <span class="ident">MISC_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::sga</span>::{<span class="ident">SgaFonts</span>, <span class="ident">SGA_UNICODE</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">string::FromUtf16Error</span>};
 

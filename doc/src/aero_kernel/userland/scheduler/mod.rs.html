@@ -157,10 +157,10 @@
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 <span class="kw">use</span> <span class="ident">xmas_elf::ElfFile</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::Downcastable</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Downcastable</span>;
 
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::round_robin::RoundRobin</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::task</span>::{<span class="ident">Task</span>, <span class="ident">TaskId</span>};
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::round_robin::RoundRobin</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::task</span>::{<span class="ident">Task</span>, <span class="ident">TaskId</span>};
 
 <span class="kw">static</span> <span class="ident">SCHEDULER</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Scheduler</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 

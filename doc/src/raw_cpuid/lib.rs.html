@@ -5223,7 +5223,7 @@
 
 <span class="doccomment">/// Uses Rust&#39;s `cpuid` function from the `arch` module.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">native_cpuid</span> {
-    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::CpuIdResult</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::CpuIdResult</span>;
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86&quot;</span>, <span class="ident">not</span>(<span class="ident">target_env</span> <span class="op">=</span> <span class="string">&quot;sgx&quot;</span>), <span class="ident">target_feature</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>))]</span>
     <span class="kw">use</span> <span class="ident">core::arch::x86</span> <span class="kw">as</span> <span class="ident">arch</span>;
@@ -5233,7 +5233,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cpuid_count</span>(<span class="ident">a</span>: <span class="ident">u32</span>, <span class="ident">c</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CpuIdResult</span> {
         <span class="comment">// Safety: CPUID is supported on all x86_64 CPUs and all x86 CPUs with</span>
         <span class="comment">// SSE, but not by SGX.</span>
-        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span><span class="ident">::arch::__cpuid_count</span>(<span class="ident">a</span>, <span class="ident">c</span>) };
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="self">self</span>::arch::__cpuid_count</span>(<span class="ident">a</span>, <span class="ident">c</span>) };
 
         <span class="ident">CpuIdResult</span> {
             <span class="ident">eax</span>: <span class="ident">result</span>.<span class="ident">eax</span>,
@@ -5265,11 +5265,11 @@
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">cpuid</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eax</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::native_cpuid::cpuid_count</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eax</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">0</span>)
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::native_cpuid::cpuid_count</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eax</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">0</span>)
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eax</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ecx</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::native_cpuid::cpuid_count</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eax</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ecx</span> <span class="kw">as</span> <span class="ident">u32</span>)
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::native_cpuid::cpuid_count</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eax</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ecx</span> <span class="kw">as</span> <span class="ident">u32</span>)
     };
 }
 
@@ -5461,7 +5461,7 @@
 <span class="kw">impl</span> <span class="ident">CpuId</span> {
     <span class="doccomment">/// Return new CpuId struct.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::default</span>()
+        <span class="ident"><span class="self">Self</span>::default</span>()
     }
 
     <span class="doccomment">/// Return new CpuId struct with custom reader function.</span>

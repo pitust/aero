@@ -49,27 +49,11 @@
 <span id="49">49</span>
 <span id="50">50</span>
 <span id="51">51</span>
-<span id="52">52</span>
-<span id="53">53</span>
-<span id="54">54</span>
-<span id="55">55</span>
-<span id="56">56</span>
-<span id="57">57</span>
-<span id="58">58</span>
-<span id="59">59</span>
-<span id="60">60</span>
-<span id="61">61</span>
-<span id="62">62</span>
-<span id="63">63</span>
-<span id="64">64</span>
 </pre><pre class="rust">
-<span class="kw">use</span> <span class="ident">raw_cpuid::CpuId</span>;
-<span class="kw">use</span> <span class="ident">spin::Once</span>;
-
 <span class="kw">macro</span> <span class="ident">define_syscall_fns</span>($(<span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sys_fn</span>:<span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">ident</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">b</span>:<span class="ident">ident</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">c</span>:<span class="ident">ident</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">d</span>:<span class="ident">ident</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">ident</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">ident</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>;)<span class="op">+</span>) {
     $(
         <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sys_fn</span>(<span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>: <span class="ident">usize</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">b</span>: <span class="ident">usize</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">c</span>: <span class="ident">usize</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">d</span>: <span class="ident">usize</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>: <span class="ident">usize</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>: <span class="ident">usize</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-            <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::syscall::supports_syscall_sysret</span>() {
+            <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::syscall::supports_syscall_sysret</span>() {
                 <span class="macro">asm!</span>(
                     <span class="string">&quot;syscall&quot;</span>,
                     <span class="ident">inout</span>(<span class="string">&quot;rax&quot;</span>) <span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>,
@@ -107,25 +91,15 @@
 <span class="doccomment">/// the `sysret` instruction.</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supports_syscall_sysret</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-    <span class="macro">cfg_if::cfg_if!</span>(
-        <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span> {
-            <span class="kw">static</span> <span class="ident">CACHE</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>(); <span class="comment">// Cache the result of `cpuid` feature info.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
+    {
+        <span class="bool-val">true</span>
+    }
 
-            <span class="kw">return</span> <span class="kw-2">*</span><span class="ident">CACHE</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">function_info</span> <span class="op">=</span> <span class="ident">CpuId::new</span>()
-                    .<span class="ident">get_extended_function_info</span>()
-                    .<span class="ident">expect</span>(<span class="string">&quot;Failed to retrieve CPU function info&quot;</span>);
-
-                <span class="ident">function_info</span>.<span class="ident">has_syscall_sysret</span>()
-            });
-        } <span class="kw">else</span> {
-            <span class="comment">/*
-             * We are sure if the target pointer width is not 64 then syscall instruction is
-             * not supported.
-             */</span>
-            <span class="kw">return</span> <span class="bool-val">false</span>;
-        }
-    );
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>))]</span>
+    {
+        <span class="bool-val">false</span>
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_syscall" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

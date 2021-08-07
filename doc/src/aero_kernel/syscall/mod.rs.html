@@ -182,10 +182,10 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">process</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">time</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts::interrupt_stack</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch</span>::{<span class="ident">gdt::GdtEntryType</span>, <span class="ident">interrupts</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::interrupts::interrupt_stack</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch</span>::{<span class="ident">gdt::GdtEntryType</span>, <span class="ident">interrupts</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">struct</span> <span class="ident">SyscallFrame</span> {

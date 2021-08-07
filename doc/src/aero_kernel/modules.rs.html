@@ -73,7 +73,7 @@
 <span class="doccomment">//! aero_kernel::module_exit!(hello_exit);</span>
 <span class="doccomment">//! ```</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::linker::LinkerSymbol</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::linker::LinkerSymbol</span>;
 
 <span class="doccomment">/// Inner helper function to make sure the function provided to the [module_init] macro</span>
 <span class="doccomment">/// has a valid function signature. This function returns the passed module init function as</span>
@@ -95,8 +95,8 @@
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">init_function</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">used</span>]</span>
         <span class="attribute">#[<span class="ident">link_section</span> <span class="op">=</span> <span class="string">&quot;.kernel_modules.init&quot;</span>]</span>
-        <span class="kw">static</span> <span class="ident">__MODULE_INIT</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::modules::ModuleInit</span> <span class="op">=</span>
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::modules::make_module_init</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">init_function</span>);
+        <span class="kw">static</span> <span class="ident">__MODULE_INIT</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::modules::ModuleInit</span> <span class="op">=</span>
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::modules::make_module_init</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">init_function</span>);
     };
 }
 

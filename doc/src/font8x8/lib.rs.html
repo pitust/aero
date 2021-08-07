@@ -123,33 +123,33 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">unicode</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::basic</span>::{<span class="ident">BASIC_FONTS</span>, <span class="ident">BASIC_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::basic</span>::{<span class="ident">BASIC_FONTS</span>, <span class="ident">BASIC_UNICODE</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::latin</span>::{<span class="ident">LATIN_FONTS</span>, <span class="ident">LATIN_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::latin</span>::{<span class="ident">LATIN_FONTS</span>, <span class="ident">LATIN_UNICODE</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::greek</span>::{<span class="ident">GREEK_FONTS</span>, <span class="ident">GREEK_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::greek</span>::{<span class="ident">GREEK_FONTS</span>, <span class="ident">GREEK_UNICODE</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::block</span>::{<span class="ident">BLOCK_FONTS</span>, <span class="ident">BLOCK_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::block</span>::{<span class="ident">BLOCK_FONTS</span>, <span class="ident">BLOCK_UNICODE</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::box_chars</span>::{<span class="ident">BOX_FONTS</span>, <span class="ident">BOX_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::box_chars</span>::{<span class="ident">BOX_FONTS</span>, <span class="ident">BOX_UNICODE</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::hiragana</span>::{<span class="ident">HIRAGANA_FONTS</span>, <span class="ident">HIRAGANA_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::hiragana</span>::{<span class="ident">HIRAGANA_FONTS</span>, <span class="ident">HIRAGANA_UNICODE</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::misc</span>::{<span class="ident">MISC_FONTS</span>, <span class="ident">MISC_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::misc</span>::{<span class="ident">MISC_FONTS</span>, <span class="ident">MISC_UNICODE</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sga</span>::{<span class="ident">SGA_FONTS</span>, <span class="ident">SGA_UNICODE</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sga</span>::{<span class="ident">SGA_FONTS</span>, <span class="ident">SGA_UNICODE</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::unicode::FromUtf16Error</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::unicode::FromUtf16Error</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::unicode</span>::{<span class="ident">FontUnicode</span>, <span class="ident">UnicodeFonts</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::unicode</span>::{<span class="ident">FontUnicode</span>, <span class="ident">UnicodeFonts</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">core</span> {

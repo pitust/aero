@@ -210,11 +210,11 @@
 <span class="kw">use</span> <span class="ident">linked_list_allocator</span>::{<span class="ident">align_up</span>, <span class="ident">Heap</span>};
 <span class="kw">use</span> <span class="ident">spin::Mutex</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::paging</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::AERO_SYSTEM_ALLOCATOR</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AERO_SYSTEM_ALLOCATOR</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::paging::FRAME_ALLOCATOR</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::AddressSpace</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::paging::FRAME_ALLOCATOR</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::AddressSpace</span>;
 
 <span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xfffffe8000000000</span>;
 

@@ -81,15 +81,15 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::interrupt</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::time</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::io</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::interrupt</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::time</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">apic</span>,
     <span class="ident">drivers</span>::{<span class="ident">keyboard</span>, <span class="ident">mouse</span>},
 };
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::INTERRUPT_CONTROLLER</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::INTERRUPT_CONTROLLER</span>;
 
 <span class="macro">interrupt!</span>(
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pit_stack</span>() {

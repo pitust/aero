@@ -468,8 +468,8 @@
 
 <span class="doccomment">//! Abstractions for default-sized and huge virtual memory pages.</span>
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::addr</span>::{<span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::page_table::PageTableIndex</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::addr</span>::{<span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::page_table::PageTableIndex</span>;
 
 <span class="kw">use</span> <span class="ident">core::fmt</span>;
 <span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
@@ -598,7 +598,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">Page::containing_address</span>(<span class="self">self</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="ident">rhs</span> <span class="op">*</span> <span class="ident">S::SIZE</span>)
     }
 }
@@ -613,7 +613,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">Page::containing_address</span>(<span class="self">self</span>.<span class="ident">start_address</span>() <span class="op">-</span> <span class="ident">rhs</span> <span class="op">*</span> <span class="ident">S::SIZE</span>)
     }
 }
@@ -628,7 +628,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">u64</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         (<span class="self">self</span>.<span class="ident">start_address</span> <span class="op">-</span> <span class="ident">rhs</span>.<span class="ident">start_address</span>) <span class="op">/</span> <span class="ident">S::SIZE</span>
     }
 }
@@ -647,7 +647,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">end</span> {
             <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">start</span>;
             <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
@@ -681,7 +681,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">end</span> {
             <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">start</span>;
             <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
@@ -760,7 +760,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Add</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">PhysFrame::containing_address</span>(<span class="self">self</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="ident">rhs</span> <span class="op">*</span> <span class="ident">S::SIZE</span>)
     }
 }
@@ -775,7 +775,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">PhysFrame::containing_address</span>(<span class="self">self</span>.<span class="ident">start_address</span>() <span class="op">-</span> <span class="ident">rhs</span> <span class="op">*</span> <span class="ident">S::SIZE</span>)
     }
 }
@@ -790,7 +790,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> <span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">u64</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         (<span class="self">self</span>.<span class="ident">start_address</span> <span class="op">-</span> <span class="ident">rhs</span>.<span class="ident">start_address</span>) <span class="op">/</span> <span class="ident">S::SIZE</span>
     }
 }
@@ -809,7 +809,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">end</span> {
             <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">start</span>;
             <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
@@ -843,7 +843,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">start</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">end</span> {
             <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">start</span>;
             <span class="self">self</span>.<span class="ident">start</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;

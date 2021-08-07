@@ -376,7 +376,7 @@
 <span class="kw">use</span> <span class="ident">core::mem</span>::{<span class="ident">align_of</span>, <span class="ident">size_of</span>};
 <span class="kw">use</span> <span class="ident">core::ptr::NonNull</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::align_up</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::align_up</span>;
 
 <span class="doccomment">/// A sorted list of holes. It uses the the holes itself to store its nodes.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HoleList</span> {
@@ -416,7 +416,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The pointer to `hole_addr` is automatically aligned.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">hole_addr</span>: <span class="ident">usize</span>, <span class="ident">hole_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HoleList</span> {
-        <span class="macro">assert_eq!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>(), <span class="self">Self</span><span class="ident">::min_size</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>(), <span class="ident"><span class="self">Self</span>::min_size</span>());
 
         <span class="kw">let</span> <span class="ident">aligned_hole_addr</span> <span class="op">=</span> <span class="ident">align_up</span>(<span class="ident">hole_addr</span>, <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>());
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">aligned_hole_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Hole</span>;
@@ -443,8 +443,8 @@
     <span class="doccomment">/// themselves, so calling this function manually is not necessary.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_layout</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Layout</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">layout</span>.<span class="ident">size</span>();
-        <span class="kw">if</span> <span class="ident">size</span> <span class="op">&lt;</span> <span class="self">Self</span><span class="ident">::min_size</span>() {
-            <span class="ident">size</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::min_size</span>();
+        <span class="kw">if</span> <span class="ident">size</span> <span class="op">&lt;</span> <span class="ident"><span class="self">Self</span>::min_size</span>() {
+            <span class="ident">size</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::min_size</span>();
         }
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">align_up</span>(<span class="ident">size</span>, <span class="ident">mem::align_of</span>::<span class="op">&lt;</span><span class="ident">Hole</span><span class="op">&gt;</span>());
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::from_size_align</span>(<span class="ident">size</span>, <span class="ident">layout</span>.<span class="ident">align</span>()).<span class="ident">unwrap</span>();
@@ -463,7 +463,7 @@
     <span class="doccomment">/// This function uses the “first fit” strategy, so it uses the first hole that is big</span>
     <span class="doccomment">/// enough. Thus the runtime is in O(n) but it should be reasonably fast for small allocations.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocate_first_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">Layout</span>), ()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">aligned_layout</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::align_layout</span>(<span class="ident">layout</span>);
+        <span class="kw">let</span> <span class="ident">aligned_layout</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::align_layout</span>(<span class="ident">layout</span>);
 
         <span class="ident">allocate_first_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">first</span>, <span class="ident">aligned_layout</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">allocation</span><span class="op">|</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">padding</span>) <span class="op">=</span> <span class="ident">allocation</span>.<span class="ident">front_padding</span> {
@@ -493,7 +493,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`allocate_first_fit`]: HoleList::allocate_first_fit</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">deallocate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Layout</span> {
-        <span class="kw">let</span> <span class="ident">aligned_layout</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::align_layout</span>(<span class="ident">layout</span>);
+        <span class="kw">let</span> <span class="ident">aligned_layout</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::align_layout</span>(<span class="ident">layout</span>);
         <span class="ident">deallocate</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">first</span>,
             <span class="ident">ptr</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>,

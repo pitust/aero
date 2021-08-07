@@ -270,7 +270,7 @@
 
 <span class="kw">use</span> <span class="ident">core::mem::size_of</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::gdt::SegmentSelector</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::gdt::SegmentSelector</span>;
 
 <span class="macro">bitflags::bitflags!</span> {
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IDTFlags</span>: <span class="ident">u8</span> {
@@ -403,48 +403,48 @@
 <span class="doccomment">/// Initialize the IDT.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
     <span class="kw">unsafe</span> {
-        <span class="ident">IDT</span>[<span class="number">0</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::divide_by_zero</span>);
-        <span class="ident">IDT</span>[<span class="number">1</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::debug</span>);
-        <span class="ident">IDT</span>[<span class="number">2</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::non_maskable</span>);
-        <span class="ident">IDT</span>[<span class="number">3</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::breakpoint</span>);
-        <span class="ident">IDT</span>[<span class="number">4</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::overflow</span>);
-        <span class="ident">IDT</span>[<span class="number">5</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::bound_range</span>);
-        <span class="ident">IDT</span>[<span class="number">6</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::invalid_opcode</span>);
-        <span class="ident">IDT</span>[<span class="number">7</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::device_not_available</span>);
-        <span class="ident">IDT</span>[<span class="number">8</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::double_fault</span>);
+        <span class="ident">IDT</span>[<span class="number">0</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::divide_by_zero</span>);
+        <span class="ident">IDT</span>[<span class="number">1</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::debug</span>);
+        <span class="ident">IDT</span>[<span class="number">2</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::non_maskable</span>);
+        <span class="ident">IDT</span>[<span class="number">3</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::breakpoint</span>);
+        <span class="ident">IDT</span>[<span class="number">4</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::overflow</span>);
+        <span class="ident">IDT</span>[<span class="number">5</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::bound_range</span>);
+        <span class="ident">IDT</span>[<span class="number">6</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::invalid_opcode</span>);
+        <span class="ident">IDT</span>[<span class="number">7</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::device_not_available</span>);
+        <span class="ident">IDT</span>[<span class="number">8</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::double_fault</span>);
 
         <span class="comment">// IDT[9] is reserved.</span>
 
-        <span class="ident">IDT</span>[<span class="number">10</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::invalid_tss</span>);
-        <span class="ident">IDT</span>[<span class="number">11</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::segment_not_present</span>);
-        <span class="ident">IDT</span>[<span class="number">12</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::stack_segment</span>);
-        <span class="ident">IDT</span>[<span class="number">13</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::protection</span>);
+        <span class="ident">IDT</span>[<span class="number">10</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::invalid_tss</span>);
+        <span class="ident">IDT</span>[<span class="number">11</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::segment_not_present</span>);
+        <span class="ident">IDT</span>[<span class="number">12</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::stack_segment</span>);
+        <span class="ident">IDT</span>[<span class="number">13</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::protection</span>);
 
         <span class="ident">IDT</span>[<span class="number">14</span>].<span class="ident">set_flags</span>(<span class="ident">IDTFlags::PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags::RING_0</span> <span class="op">|</span> <span class="ident">IDTFlags::INTERRUPT</span>);
-        <span class="ident">IDT</span>[<span class="number">14</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="kw">super</span><span class="ident">::exceptions::page_fault</span> <span class="kw">as</span> <span class="ident">usize</span>);
+        <span class="ident">IDT</span>[<span class="number">14</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="ident"><span class="kw">super</span>::exceptions::page_fault</span> <span class="kw">as</span> <span class="ident">usize</span>);
 
         <span class="comment">// IDT[15] is reserved.</span>
-        <span class="ident">IDT</span>[<span class="number">16</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::fpu_fault</span>);
-        <span class="ident">IDT</span>[<span class="number">17</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::alignment_check</span>);
-        <span class="ident">IDT</span>[<span class="number">18</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::machine_check</span>);
-        <span class="ident">IDT</span>[<span class="number">19</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::simd</span>);
-        <span class="ident">IDT</span>[<span class="number">20</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::virtualization</span>);
+        <span class="ident">IDT</span>[<span class="number">16</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::fpu_fault</span>);
+        <span class="ident">IDT</span>[<span class="number">17</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::alignment_check</span>);
+        <span class="ident">IDT</span>[<span class="number">18</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::machine_check</span>);
+        <span class="ident">IDT</span>[<span class="number">19</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::simd</span>);
+        <span class="ident">IDT</span>[<span class="number">20</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::virtualization</span>);
 
         <span class="comment">// IDT[21..29] are reserved.</span>
-        <span class="ident">IDT</span>[<span class="number">30</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::exceptions::security</span>);
+        <span class="ident">IDT</span>[<span class="number">30</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::exceptions::security</span>);
 
         <span class="comment">// Set up the IRQs.</span>
-        <span class="ident">IDT</span>[<span class="number">32</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::pit_stack</span>);
-        <span class="ident">IDT</span>[<span class="number">33</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::keyboard</span>);
-        <span class="ident">IDT</span>[<span class="number">44</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::mouse</span>);
+        <span class="ident">IDT</span>[<span class="number">32</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::irq::pit_stack</span>);
+        <span class="ident">IDT</span>[<span class="number">33</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::irq::keyboard</span>);
+        <span class="ident">IDT</span>[<span class="number">44</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::irq::mouse</span>);
 
-        <span class="ident">IDT</span>[<span class="number">49</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::irq::lapic_error</span>);
+        <span class="ident">IDT</span>[<span class="number">49</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::irq::lapic_error</span>);
 
         <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_flags</span>(<span class="ident">IDTFlags::PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags::RING_3</span> <span class="op">|</span> <span class="ident">IDTFlags::INTERRUPT</span>);
-        <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="kw">crate</span><span class="ident">::syscall::syscall_interrupt_handler</span> <span class="kw">as</span> <span class="ident">usize</span>);
+        <span class="ident">IDT</span>[<span class="number">0x80</span>].<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="ident"><span class="kw">crate</span>::syscall::syscall_interrupt_handler</span> <span class="kw">as</span> <span class="ident">usize</span>);
 
-        <span class="ident">IDT</span>[<span class="ident">IPI_ABORT</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::ipi::abort</span>);
-        <span class="ident">IDT</span>[<span class="ident">IPI_RESCHEDULE</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">set_function</span>(<span class="kw">super</span><span class="ident">::ipi::reschedule</span>);
+        <span class="ident">IDT</span>[<span class="ident">IPI_ABORT</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::ipi::abort</span>);
+        <span class="ident">IDT</span>[<span class="ident">IPI_RESCHEDULE</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">set_function</span>(<span class="ident"><span class="kw">super</span>::ipi::reschedule</span>);
 
         <span class="kw">let</span> <span class="ident">idt_descriptor</span> <span class="op">=</span> <span class="ident">IdtDescriptor::new</span>(
             ((<span class="ident">IDT</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">IdtEntry</span><span class="op">&gt;</span>()) <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
@@ -459,9 +459,9 @@
          * This means that the controller will never be initialized as an IRQ interrupt requires
          * the controller to be initialized.
          */</span>
-        <span class="ident">lazy_static::initialize</span>(<span class="kw-2">&amp;</span><span class="kw">super</span><span class="ident">::INTERRUPT_CONTROLLER</span>);
-        <span class="ident">lazy_static::initialize</span>(<span class="kw-2">&amp;</span><span class="kw">super</span><span class="ident">::PIC_CONTROLLER</span>);
-        <span class="ident">lazy_static::initialize</span>(<span class="kw-2">&amp;</span><span class="kw">super</span><span class="ident">::APIC_CONTROLLER</span>);
+        <span class="ident">lazy_static::initialize</span>(<span class="kw-2">&amp;</span><span class="ident"><span class="kw">super</span>::INTERRUPT_CONTROLLER</span>);
+        <span class="ident">lazy_static::initialize</span>(<span class="kw-2">&amp;</span><span class="ident"><span class="kw">super</span>::PIC_CONTROLLER</span>);
+        <span class="ident">lazy_static::initialize</span>(<span class="kw-2">&amp;</span><span class="ident"><span class="kw">super</span>::APIC_CONTROLLER</span>);
     }
 }
 

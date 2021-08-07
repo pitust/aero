@@ -230,9 +230,9 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">mem::paging</span>::<span class="kw-2">*</span>, <span class="ident">userland::vm::Vm</span>};
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::gdt</span>::{<span class="ident">Ring</span>, <span class="ident">TASK_STATE_SEGMENT</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::gdt</span>::{<span class="ident">Ring</span>, <span class="ident">TASK_STATE_SEGMENT</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::AddressSpace</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::AddressSpace</span>;
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>

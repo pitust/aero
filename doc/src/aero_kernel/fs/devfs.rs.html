@@ -209,12 +209,12 @@
 
 <span class="kw">use</span> <span class="ident">spin::RwLock</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fs::lookup_path</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fs::Path</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::lookup_path</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::Path</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::cache::DirCacheItem</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::ramfs::RamFs</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::FileSystemError</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache::DirCacheItem</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::ramfs::RamFs</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::FileSystemError</span>;
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FileSystem</span>, <span class="prelude-ty">Result</span>, <span class="ident">MOUNT_MANAGER</span>};
 
 <span class="macro">lazy_static::lazy_static!</span> {

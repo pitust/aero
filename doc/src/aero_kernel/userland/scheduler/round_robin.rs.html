@@ -182,12 +182,12 @@
 
 <span class="kw">use</span> <span class="ident">intrusive_collections::LinkedList</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch::interrupts::IPI_RESCHEDULE</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::userland::task</span>::{<span class="ident">Task</span>, <span class="ident">TaskAdapter</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils</span>::{<span class="ident">downcast</span>, <span class="ident">PerCpu</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::interrupts::IPI_RESCHEDULE</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::task</span>::{<span class="ident">Task</span>, <span class="ident">TaskAdapter</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{<span class="ident">downcast</span>, <span class="ident">PerCpu</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">apic</span>, <span class="ident">arch</span>};
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::SchedulerInterface</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::SchedulerInterface</span>;
 
 <span class="attribute">#[<span class="ident">thread_local</span>]</span>
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">CURRENT_PROCESS</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
@@ -291,7 +291,7 @@
         <span class="ident">apic::get_local_apic</span>().<span class="ident">send_ipi</span>(<span class="number">1</span>, <span class="ident">IPI_RESCHEDULE</span>);
     }
 
-    <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::get_scheduler</span>();
+    <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::get_scheduler</span>();
     <span class="kw">let</span> <span class="ident">round_robin</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RoundRobin</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">downcast</span>(<span class="kw-2">&amp;</span><span class="ident">scheduler</span>.<span class="ident">inner</span>);
     <span class="kw">let</span> <span class="ident">scheduler_ref</span> <span class="op">=</span> <span class="ident">round_robin</span>.<span class="ident">expect</span>(<span class="string">&quot;Failed to downcast the scheduler&quot;</span>);
 
