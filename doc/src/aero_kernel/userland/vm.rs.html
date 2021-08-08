@@ -515,6 +515,16 @@
 <span id="515">515</span>
 <span id="516">516</span>
 <span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -552,9 +562,12 @@
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">MMapProt</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">PageTableFlags::empty</span>();
 
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">e</span>.<span class="ident">contains</span>(<span class="ident">MMapProt::PROT_EXEC</span>) {
-            <span class="ident">res</span>.<span class="ident">insert</span>(<span class="ident">PageTableFlags::NO_EXECUTE</span>);
-        }
+        <span class="comment">// FIXME(Andy-Python-Programmer): Add the the NX flag if the protocol</span>
+        <span class="comment">// does not need to be executable.</span>
+        <span class="comment">//</span>
+        <span class="comment">// if !e.contains(MMapProt::PROT_EXEC) {</span>
+        <span class="comment">//     res.insert(PageTableFlags::NO_EXECUTE);</span>
+        <span class="comment">// }</span>
 
         <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">contains</span>(<span class="ident">MMapProt::PROT_WRITE</span>) {
             <span class="ident">res</span>.<span class="ident">insert</span>(<span class="ident">PageTableFlags::WRITABLE</span>);
@@ -657,39 +670,53 @@
             );
 
             <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">address</span>.<span class="ident">align_down</span>(<span class="ident">Size4KiB::SIZE</span>);
-            <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">Size4KiB::SIZE</span>, <span class="ident">mmap_file</span>.<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>);
+            <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(
+                <span class="ident">Size4KiB::SIZE</span>,
+                <span class="ident">mmap_file</span>.<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span> <span class="op">-</span> (<span class="ident">address</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">start_addr</span>),
+            );
 
             <span class="kw">if</span> <span class="op">!</span><span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::CAUSED_BY_WRITE</span>)
                 <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::PROTECTION_VIOLATION</span>)
             {
                 <span class="comment">// We are writing to private file mapping so copy the content of the page.</span>
-                <span class="macro">log::trace!</span>(<span class="string">&quot;    - private file R: {:?}..{:?}&quot;</span>, <span class="ident">address</span>, <span class="ident">address</span> <span class="op">+</span> <span class="ident">size</span>);
+                <span class="macro">log::trace!</span>(
+                    <span class="string">&quot;    - private file R: {:?}..{:?} (offset={:#x})&quot;</span>,
+                    <span class="ident">address</span>,
+                    <span class="ident">address</span> <span class="op">+</span> <span class="ident">size</span>,
+                    <span class="ident">offset</span>
+                );
 
                 <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
                     .<span class="ident">expect</span>(<span class="string">&quot;failed to allocate frame for a private file read&quot;</span>);
 
                 <span class="kw">unsafe</span> {
-                    (<span class="ident">mmap_file</span>.<span class="ident">file</span>.<span class="ident">as_ptr</span>()).<span class="ident">add</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">copy_to</span>(
+                    (<span class="ident">mmap_file</span>.<span class="ident">file</span>.<span class="ident">as_ptr</span>()).<span class="ident">offset</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">isize</span>).<span class="ident">copy_to</span>(
                         (<span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">frame</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>())
                             .<span class="ident">as_mut_ptr</span>(),
                         <span class="ident">size</span> <span class="kw">as</span> <span class="ident">usize</span>,
                     );
                 }
 
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags::PRESENT</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>
+                    <span class="op">|</span> <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">into</span>();
+
+                <span class="comment">// We want to remove the writable flag since, we want to share the page table</span>
+                <span class="comment">// entry with other processes or threads until it tries to write to the same page</span>
+                <span class="comment">// and the mapping is marked as writable, in that case we will copy the page table</span>
+                <span class="comment">// entry.</span>
+                <span class="ident">flags</span>.<span class="ident">remove</span>(<span class="ident">PageTableFlags::WRITABLE</span>);
+
                 <span class="kw">unsafe</span> {
                     <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
                         <span class="ident">Page::containing_address</span>(<span class="ident">address</span>),
                         <span class="ident">frame</span>,
-                        <span class="ident">PageTableFlags::PRESENT</span>
-                            <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>
-                            <span class="op">|</span> <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">into</span>(),
+                        <span class="ident">flags</span>,
                         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
                     )
                 }
                 .<span class="ident">expect</span>(<span class="string">&quot;failed to map allocated frame for private file read&quot;</span>)
                 .<span class="ident">flush</span>();
-
-                <span class="bool-val">true</span>
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::CAUSED_BY_WRITE</span>)
                 <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::PROTECTION_VIOLATION</span>)
             {
@@ -700,11 +727,9 @@
             {
                 <span class="macro">log::trace!</span>(<span class="string">&quot;    - private file COW: {:?}&quot;</span>, <span class="ident">address</span>);
                 <span class="macro">unimplemented!</span>()
-            } <span class="kw">else</span> {
-                <span class="macro">log::error!</span>(<span class="string">&quot;    - present page read failed&quot;</span>);
-
-                <span class="bool-val">false</span>
             }
+
+            <span class="bool-val">true</span>
         } <span class="kw">else</span> {
             <span class="bool-val">false</span>
         }
@@ -715,15 +740,10 @@
     <span class="doccomment">/// is recognised because the VMA for the region is marked writable even though the individual page</span>
     <span class="doccomment">/// table entry is not.</span>
     <span class="kw">fn</span> <span class="ident">handle_cow</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>, <span class="ident">address</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">TranslateResult::Mapped</span> {
-            <span class="ident">frame</span>: <span class="kw">_</span>,
-            <span class="ident">offset</span>: <span class="kw">_</span>,
-            <span class="ident">flags</span>: <span class="kw">_</span>,
-        } <span class="op">=</span> <span class="ident">offset_table</span>.<span class="ident">translate</span>(<span class="ident">address</span>)
-        {
+        <span class="kw">if</span> <span class="ident">offset_table</span>.<span class="ident">translate_addr</span>(<span class="ident">address</span>).<span class="ident">is_some</span>() {
+            <span class="comment">// This page is not shared with anyone, so just make it writable.</span>
             <span class="kw">let</span> <span class="ident">page</span>: <span class="ident">Page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">address</span>);
 
-            <span class="comment">// This page is not shared with anyone, so just make it writable.</span>
             <span class="kw">unsafe</span> {
                 <span class="ident">offset_table</span>
                     .<span class="ident">update_flags</span>(

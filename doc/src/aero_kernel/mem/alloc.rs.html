@@ -243,7 +243,7 @@
 
             <span class="comment">// Check if our heap has not increased beyond the maximum allowed size.</span>
             <span class="kw">if</span> <span class="ident">heap_top</span> <span class="op">+</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="ident">max_mem</span> {
-                <span class="macro">panic!</span>(<span class="string">&quot;The heap size has increased more then 128GiB&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">&quot;The heap size has increased more then {}&quot;</span>, <span class="ident">max_mem</span>)
             }
 
             <span class="comment">// Else we just have to extend the heap.</span>

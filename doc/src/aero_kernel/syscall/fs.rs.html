@@ -44,14 +44,6 @@
 <span id="44">44</span>
 <span id="45">45</span>
 <span id="46">46</span>
-<span id="47">47</span>
-<span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
-<span id="51">51</span>
-<span id="52">52</span>
-<span id="53">53</span>
-<span id="54">54</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -76,9 +68,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">fs::Path</span>, <span class="ident">utils::validate_str</span>};
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="macro">log::trace!</span>(<span class="string">&quot;SYS_WRITE (fd={:#x}, buf={:#x}, len={:#x})&quot;</span>, <span class="ident">fd</span>, <span class="ident">buf</span>, <span class="ident">len</span>);
-
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">_fd</span>: <span class="ident">usize</span>, <span class="ident">_buf</span>: <span class="ident">usize</span>, <span class="ident">_len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="comment">// let current_task = scheduler::active_task_ref();</span>
 
     <span class="comment">// mem::drop(scheduler);</span>
@@ -91,15 +81,9 @@
     <span class="prelude-val">Ok</span>(<span class="number">0</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">path</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>, <span class="ident">mode</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="macro">log::trace!</span>(
-        <span class="string">&quot;SYS_OPEN (path={:#x}, len={:#x}, mode={:#x})&quot;</span>,
-        <span class="ident">path</span>,
-        <span class="ident">len</span>,
-        <span class="ident">mode</span>
-    );
-
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">_fd</span>: <span class="ident">usize</span>, <span class="ident">path</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>, <span class="ident">_mode</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">len</span>) {
+        <span class="macro">log::debug!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">path</span>);
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path</span>);
 
         <span class="prelude-val">Ok</span>(<span class="number">0</span>)
