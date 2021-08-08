@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["controlregs",""],["gdt","The GDT contains entries telling the CPU about memory segments."],["interrupts",""],["task",""]]});
+initSidebarItems({"fn":[["init_cpu",""]],"mod":[["controlregs",""],["gdt","The GDT contains entries telling the CPU about memory segments."],["interrupts",""],["task",""]]});
