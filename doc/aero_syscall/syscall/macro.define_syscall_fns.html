@@ -2,8 +2,10 @@
 <span class="kw">macro</span> <span class="ident">define_syscall_fns</span>($(<span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sys_fn</span> :
    <span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span> : <span class="ident">ident</span>
          $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">b</span> : <span class="ident">ident</span>
-           $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">c</span> : <span class="ident">ident</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">d</span> : <span class="ident">ident</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span> : <span class="ident">ident</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span> : <span class="ident">ident</span>) <span class="question-mark">?</span>) <span class="question-mark">?</span>)
-             <span class="question-mark">?</span>) <span class="question-mark">?</span>) <span class="question-mark">?</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> ;) <span class="op">+</span>) {
+           $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">c</span> : <span class="ident">ident</span>
+             $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">d</span> : <span class="ident">ident</span>
+               $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span> : <span class="ident">ident</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span> : <span class="ident">ident</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">g</span> : <span class="ident">ident</span>) <span class="question-mark">?</span>) <span class="question-mark">?</span>) <span class="question-mark">?</span>) <span class="question-mark">?</span>) <span class="question-mark">?</span>) <span class="question-mark">?</span>)
+   <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> ;) <span class="op">+</span>) {
     ...
 }</pre></div>
 </div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_syscall" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

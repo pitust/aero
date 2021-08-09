@@ -141,6 +141,8 @@
 <span id="141">141</span>
 <span id="142">142</span>
 <span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -222,7 +224,8 @@
     <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">rsi</span> <span class="kw">as</span> <span class="ident">usize</span>;
     <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">rdx</span> <span class="kw">as</span> <span class="ident">usize</span>;
     <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">r10</span> <span class="kw">as</span> <span class="ident">usize</span>;
-    <span class="comment">// let f = scratch.r8;</span>
+    <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">r8</span> <span class="kw">as</span> <span class="ident">usize</span>;
+    <span class="kw">let</span> <span class="ident">g</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">r9</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
     <span class="kw">match</span> <span class="ident">a</span> {
         <span class="ident">SYS_EXIT</span> <span class="op">=</span><span class="op">&gt;</span> {}
@@ -235,6 +238,7 @@
         <span class="ident">SYS_OPEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::open</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>),
         <span class="ident">SYS_WRITE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::write</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
         <span class="ident">SYS_FORK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::fork</span>(),
+        <span class="ident">SYS_MMAP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::mmap</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>, <span class="ident">g</span>),
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">log::error!</span>(<span class="string">&quot;Invalid syscall: {:#x}&quot;</span>, <span class="ident">a</span>);
 

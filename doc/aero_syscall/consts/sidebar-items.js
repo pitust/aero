@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["SYS_CLOSE",""],["SYS_EXIT",""],["SYS_FORK",""],["SYS_OPEN",""],["SYS_READ",""],["SYS_REBOOT",""],["SYS_SHUTDOWN",""],["SYS_WRITE",""]],"macro":[["define_syscall_ids",""]]});
+initSidebarItems({"constant":[["SYS_CLOSE",""],["SYS_EXIT",""],["SYS_FORK",""],["SYS_MMAP",""],["SYS_OPEN",""],["SYS_READ",""],["SYS_REBOOT",""],["SYS_SHUTDOWN",""],["SYS_WRITE",""]],"macro":[["define_syscall_ids",""]]});
