@@ -204,6 +204,8 @@
 <span id="204">204</span>
 <span id="205">205</span>
 <span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -327,6 +329,7 @@
     <span class="ident">NotSupported</span>,
     <span class="ident">EntryExists</span>,
     <span class="ident">EntryNotFound</span>,
+    <span class="ident">Busy</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FileSystemError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AeroSyscallError</span> {
@@ -335,6 +338,7 @@
             <span class="ident">FileSystemError::NotSupported</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AeroSyscallError::EACCES</span>,
             <span class="ident">FileSystemError::EntryExists</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AeroSyscallError::EEXIST</span>,
             <span class="ident">FileSystemError::EntryNotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AeroSyscallError::ENOENT</span>,
+            <span class="ident">FileSystemError::Busy</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AeroSyscallError::EBUSY</span>,
         }
     }
 }

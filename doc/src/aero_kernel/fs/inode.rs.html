@@ -222,6 +222,20 @@
 <span id="222">222</span>
 <span id="223">223</span>
 <span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -243,6 +257,8 @@
  */</span>
 
 <span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
+
+<span class="kw">use</span> <span class="ident">aero_syscall::OpenFlags</span>;
 
 <span class="kw">use</span> <span class="ident">alloc::string::String</span>;
 <span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
@@ -303,6 +319,10 @@
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
+    <span class="kw">fn</span> <span class="ident">open</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_flags</span>: <span class="ident">OpenFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(())
+    }
+
     <span class="doccomment">/// Returns a weak reference to the filesystem that this inode belongs to.</span>
     <span class="kw">fn</span> <span class="ident">weak_filesystem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">None</span>
@@ -323,6 +343,14 @@
     <span class="doccomment">/// The length of the children&#39;s map of the inode. Set to `0x00` if the inode</span>
     <span class="doccomment">/// has no children and if the file type of the inode is *not* a directory.</span>
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">children_len</span>: <span class="ident">usize</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Metadata</span> {
+    <span class="doccomment">/// Returns true if the file type of the inode is a directory.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_directory</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">file_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">FileType::Directory</span>
+    }
 }
 
 <span class="doccomment">/// Enum representing the inner contents of a file. The file contents depend on the</span>
