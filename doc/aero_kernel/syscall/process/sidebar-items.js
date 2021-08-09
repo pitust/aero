@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["exit",""],["shutdown",""]]});
+initSidebarItems({"fn":[["exit",""],["fork",""],["shutdown",""]]});

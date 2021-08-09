@@ -13,6 +13,7 @@
 <span id="13">13</span>
 <span id="14">14</span>
 <span id="15">15</span>
+<span id="16">16</span>
 </pre><pre class="rust">
 <span class="kw">macro</span> <span class="ident">define_syscall_ids</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">expr</span>;)<span class="kw-2">*</span>) {
     $(
@@ -27,6 +28,7 @@
     <span class="ident">SYS_CLOSE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">3</span>;
     <span class="ident">SYS_SHUTDOWN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">10</span>;
     <span class="ident">SYS_EXIT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">60</span>;
+    <span class="ident">SYS_FORK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">61</span>;
     <span class="ident">SYS_REBOOT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">169</span>;
 );
 </pre></div>

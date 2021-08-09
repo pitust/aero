@@ -143,6 +143,9 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -163,16 +166,11 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">use</span> <span class="ident">aero_syscall::OpenFlags</span>;
-
 <span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
 <span class="kw">use</span> <span class="ident">xmas_elf::ElfFile</span>;
 
 <span class="kw">use</span> <span class="ident">core::cell::UnsafeCell</span>;
 <span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
-
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::cache::DirCacheItem</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
 
@@ -247,6 +245,14 @@
 
             <span class="ident">link</span>: <span class="ident">Default::default</span>(),
         })
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fork</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">_arch_task</span> <span class="op">=</span> <span class="ident">UnsafeCell::new</span>(
+            <span class="self">self</span>.<span class="ident">arch_task_mut</span>()
+                .<span class="ident">fork</span>()
+                .<span class="ident">expect</span>(<span class="string">&quot;failed to fork arch task&quot;</span>),
+        );
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>

@@ -371,6 +371,19 @@
 <span id="371">371</span>
 <span id="372">372</span>
 <span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -398,6 +411,7 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::addr::PhysAddr</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::page</span>::{<span class="ident">PageSize</span>, <span class="ident">PhysFrame</span>, <span class="ident">Size4KiB</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::MapToError</span>;
 
 <span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
 
@@ -577,7 +591,7 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PageTable</span> {
-    <span class="ident">entries</span>: [<span class="ident">PageTableEntry</span>; <span class="ident">ENTRY_COUNT</span>],
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">entries</span>: [<span class="ident">PageTableEntry</span>; <span class="ident">ENTRY_COUNT</span>],
 }
 
 <span class="kw">impl</span> <span class="ident">PageTable</span> {
@@ -596,6 +610,18 @@
         <span class="kw">for</span> <span class="ident">entry</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">iter_mut</span>() {
             <span class="ident">entry</span>.<span class="ident">set_unused</span>();
         }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_entries_mut</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">flags</span>: <span class="ident">PageTableFlags</span>,
+        <span class="kw-2">mut</span> <span class="ident">fun</span>: <span class="kw">impl</span> <span class="ident">FnMut</span>(<span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PageTableEntry</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">entries</span>
+            .<span class="ident">iter_mut</span>()
+            .<span class="ident">enumerate</span>()
+            .<span class="ident">filter</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">e</span>)<span class="op">|</span> <span class="ident">e</span>.<span class="ident">flags</span>().<span class="ident">contains</span>(<span class="ident">flags</span>))
+            .<span class="ident">try_for_each</span>(<span class="op">|</span>(<span class="ident">idx</span>, <span class="ident">e</span>)<span class="op">|</span> <span class="ident">fun</span>(<span class="ident">idx</span>, <span class="ident">e</span>))
     }
 }
 
