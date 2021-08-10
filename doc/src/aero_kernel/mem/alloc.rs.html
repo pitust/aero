@@ -172,17 +172,6 @@
 <span id="172">172</span>
 <span id="173">173</span>
 <span id="174">174</span>
-<span id="175">175</span>
-<span id="176">176</span>
-<span id="177">177</span>
-<span id="178">178</span>
-<span id="179">179</span>
-<span id="180">180</span>
-<span id="181">181</span>
-<span id="182">182</span>
-<span id="183">183</span>
-<span id="184">184</span>
-<span id="185">185</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -216,7 +205,8 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::paging::FRAME_ALLOCATOR</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::AddressSpace</span>;
 
-<span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xfffffe8000000000</span>;
+<span class="kw">const</span> <span class="ident">HEAP_MAX_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">128</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>;
+<span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xFFFFFFFF80200000</span> <span class="op">-</span> <span class="ident">HEAP_MAX_SIZE</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LockedHeap</span>(<span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Heap</span><span class="op">&gt;</span>);
 
@@ -239,7 +229,7 @@
             <span class="kw">let</span> <span class="ident">heap_top</span> <span class="op">=</span> <span class="ident">heap</span>.<span class="ident">top</span>();
             <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">align_up</span>(<span class="ident">layout</span>.<span class="ident">size</span>(), <span class="number">0x1000</span>);
 
-            <span class="kw">let</span> <span class="ident">max_mem</span> <span class="op">=</span> <span class="ident">HEAP_START</span> <span class="op">+</span> (<span class="number">128</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>) <span class="kw">as</span> <span class="ident">usize</span>;
+            <span class="kw">let</span> <span class="ident">max_mem</span> <span class="op">=</span> <span class="ident">HEAP_START</span> <span class="op">+</span> <span class="ident">HEAP_MAX_SIZE</span>;
 
             <span class="comment">// Check if our heap has not increased beyond the maximum allowed size.</span>
             <span class="kw">if</span> <span class="ident">heap_top</span> <span class="op">+</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="ident">max_mem</span> {
@@ -335,33 +325,21 @@
 
 <span class="doccomment">/// Initialize the heap at the [HEAP_START].</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">page_range</span> <span class="op">=</span> {
-        <span class="kw">let</span> <span class="ident">heap_start</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">HEAP_START</span> <span class="kw">as</span> <span class="ident">u64</span>);
-        <span class="kw">let</span> <span class="ident">heap_end</span> <span class="op">=</span> <span class="ident">heap_start</span> <span class="op">+</span> <span class="number">4096u64</span> <span class="op">-</span> <span class="number">1u64</span>;
-
-        <span class="kw">let</span> <span class="ident">heap_start_page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">heap_start</span>);
-        <span class="kw">let</span> <span class="ident">heap_end_page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">heap_end</span>);
-
-        <span class="ident">Page::range_inclusive</span>(<span class="ident">heap_start_page</span>, <span class="ident">heap_end_page</span>)
+    <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+        <span class="ident">FRAME_ALLOCATOR</span>
+            .<span class="ident">allocate_frame</span>()
+            .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>
     };
 
-    <span class="kw">for</span> <span class="ident">page</span> <span class="kw">in</span> <span class="ident">page_range</span> {
-        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">FRAME_ALLOCATOR</span>
-                .<span class="ident">allocate_frame</span>()
-                .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>
-        };
-
-        <span class="kw">unsafe</span> {
-            <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
-                <span class="ident">page</span>,
-                <span class="ident">frame</span>,
-                <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
-            )
-        }<span class="question-mark">?</span>
-        .<span class="ident">flush</span>();
-    }
+    <span class="kw">unsafe</span> {
+        <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
+            <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">HEAP_START</span> <span class="kw">as</span> <span class="kw">_</span>)),
+            <span class="ident">frame</span>,
+            <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
+        )
+    }<span class="question-mark">?</span>
+    .<span class="ident">flush</span>();
 
     <span class="kw">unsafe</span> {
         <span class="ident">AERO_SYSTEM_ALLOCATOR</span>.<span class="ident">init</span>(<span class="ident">HEAP_START</span>, <span class="number">4096</span>);
