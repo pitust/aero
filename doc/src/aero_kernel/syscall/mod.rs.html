@@ -143,6 +143,8 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -190,31 +192,33 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
 
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">struct</span> <span class="ident">SyscallFrame</span> {
-    <span class="ident">rflags</span>: <span class="ident">u64</span>,
-    <span class="ident">rip</span>: <span class="ident">u64</span>,
-    <span class="ident">rsp</span>: <span class="ident">u64</span>,
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyscallFrame</span> {
+    <span class="kw">pub</span> <span class="ident">rflags</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rip</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rsp</span>: <span class="ident">u64</span>,
 }
 
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">struct</span> <span class="ident">RegistersFrame</span> {
-    <span class="ident">cr2</span>: <span class="ident">u64</span>,
-    <span class="ident">rax</span>: <span class="ident">u64</span>,
-    <span class="ident">rbx</span>: <span class="ident">u64</span>,
-    <span class="ident">rcx</span>: <span class="ident">u64</span>,
-    <span class="ident">rdx</span>: <span class="ident">u64</span>,
-    <span class="ident">rsi</span>: <span class="ident">u64</span>,
-    <span class="ident">rdi</span>: <span class="ident">u64</span>,
-    <span class="ident">rbp</span>: <span class="ident">u64</span>,
-    <span class="ident">r8</span>: <span class="ident">u64</span>,
-    <span class="ident">r9</span>: <span class="ident">u64</span>,
-    <span class="ident">r10</span>: <span class="ident">u64</span>,
-    <span class="ident">r11</span>: <span class="ident">u64</span>,
-    <span class="ident">r12</span>: <span class="ident">u64</span>,
-    <span class="ident">r13</span>: <span class="ident">u64</span>,
-    <span class="ident">r14</span>: <span class="ident">u64</span>,
-    <span class="ident">r15</span>: <span class="ident">u64</span>,
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RegistersFrame</span> {
+    <span class="kw">pub</span> <span class="ident">cr2</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rax</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rbx</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rcx</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rdx</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rsi</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rdi</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">rbp</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r8</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r9</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r10</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r11</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r12</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r13</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r14</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">r15</span>: <span class="ident">u64</span>,
 }
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>

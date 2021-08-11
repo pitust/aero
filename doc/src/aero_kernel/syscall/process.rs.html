@@ -66,6 +66,8 @@
 <span id="66">66</span>
 <span id="67">67</span>
 <span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -97,9 +99,11 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fork</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AeroSyscallResult</span> {
-    <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>().<span class="ident">fork</span>();
+    <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>();
+    <span class="kw">let</span> <span class="ident">forked</span> <span class="op">=</span> <span class="ident">scheduler</span>.<span class="ident">current_task</span>().<span class="ident">fork</span>();
 
-    <span class="prelude-val">Ok</span>(<span class="number">0</span>)
+    <span class="ident">scheduler</span>.<span class="ident">register_task</span>(<span class="ident">forked</span>.<span class="ident">clone</span>());
+    <span class="prelude-val">Ok</span>(<span class="ident">forked</span>.<span class="ident">task_id</span>().<span class="ident">as_usize</span>())
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap</span>(
