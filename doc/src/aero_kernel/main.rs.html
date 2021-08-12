@@ -287,7 +287,6 @@
 <span id="287">287</span>
 <span id="288">288</span>
 <span id="289">289</span>
-<span id="290">290</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -518,7 +517,7 @@
      * Now that all of the essential initialization is done we are going to schedule
      * the kernel main thread.
      */</span>
-    <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="ident">Task::new_kernel</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">kernel_main_thread</span> <span class="kw">as</span> <span class="ident">u64</span>));
+    <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="ident">Task::new_kernel</span>(<span class="ident">kernel_main_thread</span>, <span class="bool-val">true</span>);
     <span class="ident">scheduler::get_scheduler</span>().<span class="ident">register_task</span>(<span class="ident">init</span>);
 
     <span class="comment">/*
@@ -536,8 +535,7 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main_thread</span>() {
+<span class="kw">fn</span> <span class="ident">kernel_main_thread</span>() {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">address_space</span> <span class="op">=</span> <span class="ident">mem::AddressSpace::this</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="ident">address_space</span>.<span class="ident">offset_page_table</span>();
 

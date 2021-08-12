@@ -109,7 +109,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
 
 <span class="kw">const</span> <span class="ident">PIT_FREQUENCY_HZ</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1000</span>;
-<span class="kw">const</span> <span class="ident">SCHED_TIMESLICE_MS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">5</span>;
+<span class="kw">const</span> <span class="ident">SCHED_TIMESLICE_MS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">15</span>;
 
 <span class="kw">static</span> <span class="ident">SCHED_TICKS</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
 <span class="kw">static</span> <span class="ident">UPTIME_RAW</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
@@ -131,7 +131,7 @@
     <span class="kw">if</span> <span class="ident">value</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SCHED_TIMESLICE_MS</span> {
         <span class="ident">SCHED_TICKS</span>.<span class="ident">store</span>(<span class="number">0</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Reset the scheduler ticks counter.</span>
 
-        <span class="ident">scheduler::reschedule</span>();
+        <span class="ident">scheduler::get_scheduler</span>().<span class="ident">inner</span>.<span class="ident">preempt</span>();
         <span class="kw">return</span>;
     }
 }

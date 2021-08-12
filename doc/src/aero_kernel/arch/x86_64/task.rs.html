@@ -235,10 +235,6 @@
 <span id="235">235</span>
 <span id="236">236</span>
 <span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -259,24 +255,21 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">use</span> <span class="ident">aero_syscall</span>::{<span class="ident">MMapFlags</span>, <span class="ident">MMapProt</span>};
 <span class="kw">use</span> <span class="ident">alloc::alloc::alloc_zeroed</span>;
+
+<span class="kw">use</span> <span class="ident">aero_syscall</span>::{<span class="ident">MMapFlags</span>, <span class="ident">MMapProt</span>};
 <span class="kw">use</span> <span class="ident">xmas_elf</span>::{<span class="ident">header</span>, <span class="ident">ElfFile</span>};
 
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">alloc::Layout</span>, <span class="ident">ptr::Unique</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">mem::paging</span>::<span class="kw-2">*</span>,
-    <span class="ident">syscall</span>::{<span class="ident">RegistersFrame</span>, <span class="ident">SyscallFrame</span>},
-    <span class="ident">userland::vm::Vm</span>,
-    <span class="ident">utils::StackHelper</span>,
-};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syscall</span>::{<span class="ident">RegistersFrame</span>, <span class="ident">SyscallFrame</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::vm::Vm</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::StackHelper</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::{
-    <span class="ident">controlregs</span>,
-    <span class="ident">gdt</span>::{<span class="ident">Ring</span>, <span class="ident">TASK_STATE_SEGMENT</span>},
-    <span class="ident">interrupts::IretRegisters</span>,
-};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::controlregs</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::gdt</span>::{<span class="ident">Ring</span>, <span class="ident">TASK_STATE_SEGMENT</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::interrupts::IretRegisters</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::AddressSpace</span>;
 
@@ -323,7 +316,7 @@
 
     <span class="doccomment">/// Allocates a new kernel task pointing at the provided entry point address. This function</span>
     <span class="doccomment">/// is responsible for creating the kernel task and setting up the context switch stack itself.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_kernel</span>(<span class="ident">entry_point</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_kernel</span>(<span class="ident">entry_point</span>: <span class="ident">VirtAddr</span>, <span class="ident">enable_interrupts</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">task_stack</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::from_size_align_unchecked</span>(<span class="number">4096</span> <span class="op">*</span> <span class="number">16</span>, <span class="number">0x1000</span>);
             <span class="ident">alloc_zeroed</span>(<span class="ident">layout</span>).<span class="ident">add</span>(<span class="ident">layout</span>.<span class="ident">size</span>())
@@ -338,19 +331,19 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack_ptr</span> <span class="op">=</span> <span class="ident">task_stack</span> <span class="kw">as</span> <span class="ident">u64</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stack_ptr</span>);
 
-        <span class="kw">let</span> <span class="ident">kernel_task_frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">stack</span>.<span class="ident">next</span>::<span class="op">&lt;</span><span class="ident">KernelTaskFrame</span><span class="op">&gt;</span>() };
+        <span class="kw">let</span> <span class="ident">kernel_task_frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">stack</span>.<span class="ident">offset</span>::<span class="op">&lt;</span><span class="ident">KernelTaskFrame</span><span class="op">&gt;</span>() };
 
         <span class="ident">kernel_task_frame</span>.<span class="ident">iret</span>.<span class="ident">ss</span> <span class="op">=</span> <span class="number">0x10</span>; <span class="comment">// kernel stack segment</span>
         <span class="ident">kernel_task_frame</span>.<span class="ident">iret</span>.<span class="ident">cs</span> <span class="op">=</span> <span class="number">0x08</span>; <span class="comment">// kernel code segment</span>
         <span class="ident">kernel_task_frame</span>.<span class="ident">iret</span>.<span class="ident">rip</span> <span class="op">=</span> <span class="ident">entry_point</span>.<span class="ident">as_u64</span>();
         <span class="ident">kernel_task_frame</span>.<span class="ident">iret</span>.<span class="ident">rsp</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">task_stack</span>.<span class="ident">sub</span>(<span class="number">8</span>) <span class="kw">as</span> <span class="ident">u64</span> };
-        <span class="ident">kernel_task_frame</span>.<span class="ident">iret</span>.<span class="ident">rflags</span> <span class="op">=</span> <span class="number">0x200</span>;
+        <span class="ident">kernel_task_frame</span>.<span class="ident">iret</span>.<span class="ident">rflags</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">enable_interrupts</span> { <span class="number">0x200</span> } <span class="kw">else</span> { <span class="number">0x00</span> };
 
         <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
             <span class="kw">fn</span> <span class="ident">iretq_init</span>();
         }
 
-        <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">stack</span>.<span class="ident">next</span>::<span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>() };
+        <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">stack</span>.<span class="ident">offset</span>::<span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>() };
 
         <span class="kw-2">*</span><span class="ident">context</span> <span class="op">=</span> <span class="ident">Context::default</span>();
         <span class="ident">context</span>.<span class="ident">rip</span> <span class="op">=</span> <span class="ident">iretq_init</span> <span class="kw">as</span> <span class="ident">u64</span>;
@@ -388,21 +381,20 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_stack_ptr</span> <span class="op">=</span> <span class="ident">switch_stack</span> <span class="kw">as</span> <span class="ident">u64</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">new_stack_ptr</span>);
 
-        <span class="comment">// Get the syscall frame from the current task and copy it over to the</span>
-        <span class="comment">// fork task.</span>
-        <span class="kw">let</span> <span class="ident">syscall_frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">new_stack</span>.<span class="ident">next</span>::<span class="op">&lt;</span><span class="ident">SyscallFrame</span><span class="op">&gt;</span>() };
-        <span class="kw">let</span> <span class="ident">old_syscall_frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">old_stack</span>.<span class="ident">next</span>::<span class="op">&lt;</span><span class="ident">SyscallFrame</span><span class="op">&gt;</span>() };
+        <span class="kw">unsafe</span> {
+            <span class="comment">// Get the syscall frame and registers frame from the current task and copy it over</span>
+            <span class="comment">// to the fork task.</span>
+            <span class="kw-2">*</span><span class="ident">new_stack</span>.<span class="ident">offset</span>::<span class="op">&lt;</span><span class="ident">SyscallFrame</span><span class="op">&gt;</span>() <span class="op">=</span> <span class="kw-2">*</span><span class="ident">old_stack</span>.<span class="ident">offset</span>::<span class="op">&lt;</span><span class="ident">SyscallFrame</span><span class="op">&gt;</span>();
 
-        <span class="kw-2">*</span><span class="ident">syscall_frame</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">old_syscall_frame</span>;
+            <span class="kw">let</span> <span class="ident">registers_frame</span> <span class="op">=</span> <span class="ident">new_stack</span>.<span class="ident">offset</span>::<span class="op">&lt;</span><span class="ident">RegistersFrame</span><span class="op">&gt;</span>();
+            <span class="kw">let</span> <span class="ident">old_registers_frame</span> <span class="op">=</span> <span class="ident">old_stack</span>.<span class="ident">offset</span>::<span class="op">&lt;</span><span class="ident">RegistersFrame</span><span class="op">&gt;</span>();
 
-        <span class="comment">// We have to do the same thing with the registers frame, oh well...</span>
-        <span class="kw">let</span> <span class="ident">registers_frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">new_stack</span>.<span class="ident">next</span>::<span class="op">&lt;</span><span class="ident">RegistersFrame</span><span class="op">&gt;</span>() };
-        <span class="kw">let</span> <span class="ident">old_registers_frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">old_stack</span>.<span class="ident">next</span>::<span class="op">&lt;</span><span class="ident">RegistersFrame</span><span class="op">&gt;</span>() };
+            <span class="kw-2">*</span><span class="ident">registers_frame</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">old_registers_frame</span>;
+            <span class="ident">registers_frame</span>.<span class="ident">rax</span> <span class="op">=</span> <span class="number">0x00</span>; <span class="comment">// Set the syscall result to 0</span>
+        }
 
-        <span class="kw-2">*</span><span class="ident">registers_frame</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">old_registers_frame</span>;
-        <span class="ident">registers_frame</span>.<span class="ident">rax</span> <span class="op">=</span> <span class="number">0x00</span>;
-
-        <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">new_stack</span>.<span class="ident">next</span>::<span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>() };
+        <span class="comment">// Prepare the trampoline...</span>
+        <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">new_stack</span>.<span class="ident">offset</span>::<span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>() };
 
         <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
             <span class="kw">fn</span> <span class="ident">sysret_fork_init</span>();
@@ -441,7 +433,7 @@
         <span class="ident">vm</span>.<span class="ident">mmap</span>(
             <span class="ident">VirtAddr::new</span>(<span class="number">0x8000_0000_0000</span> <span class="op">-</span> <span class="number">0x64000</span>),
             <span class="number">0x64000</span>,
-            <span class="ident">MMapProt::PROT_WRITE</span> <span class="op">|</span> <span class="ident">MMapProt::PROT_READ</span> <span class="op">|</span> <span class="ident">MMapProt::PROT_EXEC</span>,
+            <span class="ident">MMapProt::PROT_WRITE</span> <span class="op">|</span> <span class="ident">MMapProt::PROT_READ</span>,
             <span class="ident">MMapFlags::MAP_FIXED</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_PRIVATE</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_ANONYOMUS</span>,
         );
 

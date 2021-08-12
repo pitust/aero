@@ -121,10 +121,6 @@
 <span id="121">121</span>
 <span id="122">122</span>
 <span id="123">123</span>
-<span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -148,9 +144,6 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;round-robin&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">round_robin</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;round-robin&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">round_robin</span>::{<span class="ident">exit_current_task</span>, <span class="ident">reschedule</span>};
-
 <span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
 
 <span class="kw">use</span> <span class="ident">spin::mutex::spin::SpinMutex</span>;
@@ -170,11 +163,16 @@
     <span class="doccomment">/// Register the provided task into the task scheduler queue.</span>
     <span class="kw">fn</span> <span class="ident">register_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>);
 
-    <span class="doccomment">/// Initialize the scheduler variables for this CPU.</span>
-    <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
-
     <span class="doccomment">/// Get a reference-counting pointer to the current task.</span>
     <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>;
+
+    <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+
+    <span class="doccomment">/// Yields execution to another task.</span>
+    <span class="kw">fn</span> <span class="ident">preempt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+
+    <span class="doccomment">/// Exits the current task.</span>
+    <span class="kw">fn</span> <span class="ident">exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">status</span>: <span class="ident">isize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>;
 }
 
 <span class="doccomment">/// Container or a transparent struct containing a hashmap of all of the taskes</span>
@@ -203,7 +201,7 @@
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Scheduler</span> {
     <span class="ident">tasks</span>: <span class="ident">TaskContainer</span>,
-    <span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SchedulerInterface</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SchedulerInterface</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Scheduler</span> {
@@ -216,11 +214,6 @@
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;round-robin&quot;</span>)]</span>
             <span class="ident">inner</span>: <span class="ident">RoundRobin::new</span>(),
         }
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">init</span>();
     }
 
     <span class="doccomment">/// Registers the provided task in the schedulers queue.</span>
@@ -250,8 +243,7 @@
 <span class="doccomment">/// Initialize the scheduler.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
-    <span class="ident">SCHEDULER</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Scheduler::new</span>());
-    <span class="ident">get_scheduler</span>().<span class="ident">init</span>(); <span class="comment">// Initialize the scheduler variables for the BSP</span>
+    <span class="ident">SCHEDULER</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Scheduler::new</span>()).<span class="ident">inner</span>.<span class="ident">init</span>();
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aero_kernel" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
