@@ -189,6 +189,7 @@
 <span id="189">189</span>
 <span id="190">190</span>
 <span id="191">191</span>
+<span id="192">192</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -266,10 +267,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Task</span> {
     <span class="ident">arch_task</span>: <span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">ArchTask</span><span class="op">&gt;</span>,
     <span class="ident">task_id</span>: <span class="ident">TaskId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">vm</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Vm</span><span class="op">&gt;</span>,
+    <span class="ident">state</span>: <span class="ident">AtomicU8</span>,
 
+    <span class="kw">pub</span> <span class="ident">vm</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Vm</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">file_table</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileTable</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">state</span>: <span class="ident">AtomicU8</span>,
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">link</span>: <span class="ident">intrusive_collections::LinkedListLink</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">exit_status</span>: <span class="ident">AtomicIsize</span>,
@@ -360,6 +361,7 @@
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">arch_task</span>.<span class="ident">get</span>()) }
     }
 
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">update_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="ident">TaskState</span>) {
         <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">store</span>(<span class="ident">state</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Ordering::SeqCst</span>);
     }

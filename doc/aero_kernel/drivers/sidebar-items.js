@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["hello_init",""]],"mod":[["ahci",""],["keyboard",""],["mouse",""],["pci",""],["uart_16550",""]],"static":[["__MODULE_INIT",""]]});
+initSidebarItems({"mod":[["ahci",""],["keyboard",""],["mouse",""],["pci",""],["uart_16550",""]]});
