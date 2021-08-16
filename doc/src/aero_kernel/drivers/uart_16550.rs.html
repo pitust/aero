@@ -154,8 +154,6 @@
 <span id="154">154</span>
 <span id="155">155</span>
 <span id="156">156</span>
-<span id="157">157</span>
-<span id="158">158</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -176,11 +174,13 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::fmt::Write</span>;
 
-<span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>, <span class="ident">Once</span>};
+<span class="kw">use</span> <span class="ident">spin::Once</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Mutex</span>;
 
 <span class="kw">static</span> <span class="ident">COM_1</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">SerialPort</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 
@@ -284,13 +284,6 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_com_1</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">SerialPort</span><span class="op">&gt;</span> {
-    <span class="ident">COM_1</span>
-        .<span class="ident">get</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;Attempted to get a reference to the COM 1 port before it was initialized&quot;</span>)
-        .<span class="ident">lock</span>()
-}
-
 <span class="doccomment">/// Initialize the serial ports if avaliable.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
     <span class="kw">unsafe</span> {
@@ -311,9 +304,12 @@
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">_serial_print</span>(<span class="ident">args</span>: <span class="ident">fmt::Arguments</span>) {
-    <span class="ident">get_com_1</span>()
-        .<span class="ident">write_fmt</span>(<span class="ident">args</span>)
-        .<span class="ident">expect</span>(<span class="string">&quot;Failed to write to the COM1 port&quot;</span>);
+    <span class="ident">COM_1</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> {
+        <span class="comment">//</span>
+        <span class="ident">c</span>.<span class="ident">lock_irq</span>()
+            .<span class="ident">write_fmt</span>(<span class="ident">args</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;failed to write to COM1&quot;</span>)
+    });
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>

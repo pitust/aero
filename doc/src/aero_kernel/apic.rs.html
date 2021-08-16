@@ -437,6 +437,8 @@
 <span id="437">437</span>
 <span id="438">438</span>
 <span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -462,7 +464,9 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging::VirtAddr</span>;
 <span class="kw">use</span> <span class="ident">raw_cpuid</span>::{<span class="ident">CpuId</span>, <span class="ident">FeatureInfo</span>};
-<span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>, <span class="ident">Once</span>};
+<span class="kw">use</span> <span class="ident">spin::Once</span>;
+
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{<span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::acpi::madt</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;

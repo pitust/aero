@@ -108,6 +108,8 @@
 <span id="108">108</span>
 <span id="109">109</span>
 <span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -128,13 +130,15 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="kw">use</span> <span class="ident">spin</span>::{<span class="ident">Mutex</span>, <span class="ident">Once</span>};
+<span class="kw">use</span> <span class="ident">spin::Once</span>;
 <span class="kw">use</span> <span class="ident">stivale_boot::v2</span>::{<span class="ident">StivaleMemoryMapEntryType</span>, <span class="ident">StivaleMemoryMapTag</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::mapper</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::page</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::addr::PhysAddr</span>;
+
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Mutex</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LockedFrameAllocator</span>(<span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">GlobalFrameAllocator</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 

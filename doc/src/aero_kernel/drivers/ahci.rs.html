@@ -862,14 +862,6 @@
 <span id="862">862</span>
 <span id="863">863</span>
 <span id="864">864</span>
-<span id="865">865</span>
-<span id="866">866</span>
-<span id="867">867</span>
-<span id="868">868</span>
-<span id="869">869</span>
-<span id="870">870</span>
-<span id="871">871</span>
-<span id="872">872</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -894,12 +886,11 @@
 
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
-<span class="kw">use</span> <span class="ident">spin::mutex::SpinMutex</span>;
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::interrupts</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{<span class="ident">IrqGuard</span>, <span class="ident">VolatileCell</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{<span class="ident">IrqGuard</span>, <span class="ident">Mutex</span>, <span class="ident">VolatileCell</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::pci</span>::<span class="kw-2">*</span>;
 
@@ -1570,7 +1561,7 @@
 }
 
 <span class="kw">struct</span> <span class="ident">AhciPort</span> {
-    <span class="ident">inner</span>: <span class="ident">SpinMutex</span><span class="op">&lt;</span><span class="ident">AhciPortProtected</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">AhciPortProtected</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">AhciPort</span> {
@@ -1579,7 +1570,7 @@
         <span class="kw">const</span> <span class="ident">EMPTY</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AhciCommand</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
         <span class="self">Self</span> {
-            <span class="ident">inner</span>: <span class="ident">SpinMutex::new</span>(<span class="ident">AhciPortProtected</span> {
+            <span class="ident">inner</span>: <span class="ident">Mutex::new</span>(<span class="ident">AhciPortProtected</span> {
                 <span class="ident">address</span>,
                 <span class="ident">cmds</span>: [<span class="ident">EMPTY</span>; <span class="number">32</span>],
                 <span class="ident">free_cmds</span>: <span class="number">32</span>,
@@ -1684,7 +1675,7 @@
 
 <span class="doccomment">/// Structure representing the ACHI driver.</span>
 <span class="kw">struct</span> <span class="ident">AhciDriver</span> {
-    <span class="ident">inner</span>: <span class="ident">SpinMutex</span><span class="op">&lt;</span><span class="ident">AhciProtected</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">AhciProtected</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PciDeviceHandle</span> <span class="kw">for</span> <span class="ident">AhciDriver</span> {
@@ -1699,14 +1690,7 @@
     <span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">PciHeader</span>, <span class="ident">_offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) {
         <span class="macro">log::info!</span>(<span class="string">&quot;Starting AHCI driver...&quot;</span>);
 
-        <span class="comment">// Disable interrupts as we do not want to be interrupted durning</span>
-        <span class="comment">// the initialization of the AHCI driver.</span>
-        <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">IrqGuard::new</span>();
-
-        <span class="ident">get_ahci</span>().<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">start_driver</span>(<span class="ident">header</span>).<span class="ident">unwrap</span>(); <span class="comment">// Start and initialize the AHCI controller.</span>
-
-        <span class="comment">// Now the AHCI driver is initialized, we drop the IRQ lock.</span>
-        <span class="ident">core::mem::drop</span>(<span class="ident">lock</span>);
+        <span class="ident">get_ahci</span>().<span class="ident">inner</span>.<span class="ident">lock_irq</span>().<span class="ident">start_driver</span>(<span class="ident">header</span>).<span class="ident">unwrap</span>(); <span class="comment">// Start and initialize the AHCI controller.</span>
 
         <span class="comment">// Temporary testing...</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">port</span>) <span class="op">=</span> <span class="ident">get_ahci</span>().<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">ports</span>[<span class="number">0</span>].<span class="ident">clone</span>() {
@@ -1731,7 +1715,7 @@
         <span class="kw">const</span> <span class="ident">EMPTY</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AhciPort</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>; <span class="comment">// To satisfy the Copy trait bound when the AHCI creating data.</span>
 
         <span class="ident">Arc::new</span>(<span class="ident">AhciDriver</span> {
-            <span class="ident">inner</span>: <span class="ident">SpinMutex::new</span>(<span class="ident">AhciProtected</span> {
+            <span class="ident">inner</span>: <span class="ident">Mutex::new</span>(<span class="ident">AhciProtected</span> {
                 <span class="ident">ports</span>: [<span class="ident">EMPTY</span>; <span class="number">32</span>],    <span class="comment">// Initialize the AHCI ports to an empty slice.</span>
                 <span class="ident">hba</span>: <span class="ident">VirtAddr::zero</span>(), <span class="comment">// Initialize the AHCI HBA address to zero.</span>
             }),

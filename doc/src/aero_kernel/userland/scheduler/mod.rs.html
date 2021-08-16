@@ -121,6 +121,7 @@
 <span id="121">121</span>
 <span id="122">122</span>
 <span id="123">123</span>
+<span id="124">124</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -146,7 +147,8 @@
 
 <span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
 
-<span class="kw">use</span> <span class="ident">spin::mutex::spin::SpinMutex</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Mutex</span>;
+
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 <span class="kw">use</span> <span class="ident">xmas_elf::ElfFile</span>;
 
@@ -180,13 +182,13 @@
 <span class="doccomment">/// of `ProcessId` and a value of a reference-counting pointer</span>
 <span class="doccomment">/// to the task or task.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
-<span class="kw">struct</span> <span class="ident">TaskContainer</span>(<span class="ident">SpinMutex</span><span class="op">&lt;</span><span class="ident">hashbrown::HashMap</span><span class="op">&lt;</span><span class="ident">TaskId</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>);
+<span class="kw">struct</span> <span class="ident">TaskContainer</span>(<span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">hashbrown::HashMap</span><span class="op">&lt;</span><span class="ident">TaskId</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span> <span class="ident">TaskContainer</span> {
     <span class="doccomment">/// Creates a new task container with no taskes by default.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">SpinMutex::new</span>(<span class="ident">hashbrown::HashMap::new</span>()))
+        <span class="self">Self</span>(<span class="ident">Mutex::new</span>(<span class="ident">hashbrown::HashMap::new</span>()))
     }
 
     <span class="doccomment">/// Registers the provided `task` in the task container.</span>

@@ -286,8 +286,6 @@
 <span id="286">286</span>
 <span id="287">287</span>
 <span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -522,10 +520,6 @@
     <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="ident">Task::new_kernel</span>(<span class="ident">kernel_main_thread</span>, <span class="bool-val">true</span>);
     <span class="ident">scheduler::get_scheduler</span>().<span class="ident">register_task</span>(<span class="ident">init</span>);
 
-    <span class="comment">/*
-     * NOTE: We need to enable interrupts after we have initialized TLS and GDT
-     * as the PTI context switch functions depend on thread local globals.
-     */</span>
     <span class="kw">unsafe</span> {
         <span class="ident">interrupts::enable_interrupts</span>();
     }
@@ -549,7 +543,9 @@
 
     <span class="ident">userland::run</span>();
 
-    <span class="kw">loop</span> {}
+    <span class="kw">loop</span> {
+        <span class="kw">unsafe</span> { <span class="ident">interrupts::halt</span>() }
+    }
 }
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>

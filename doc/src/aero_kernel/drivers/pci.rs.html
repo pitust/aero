@@ -620,7 +620,7 @@
 <span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
-<span class="kw">use</span> <span class="ident">spin::mutex::SpinMutex</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Mutex</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::acpi::mcfg</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging::OffsetPageTable</span>;
@@ -628,7 +628,7 @@
 
 <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 
-<span class="kw">static</span> <span class="ident">PCI_TABLE</span>: <span class="ident">SpinMutex</span><span class="op">&lt;</span><span class="ident">PciTable</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">SpinMutex::new</span>(<span class="ident">PciTable::new</span>());
+<span class="kw">static</span> <span class="ident">PCI_TABLE</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">PciTable</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Mutex::new</span>(<span class="ident">PciTable::new</span>());
 
 <span class="kw">const</span> <span class="ident">PCI_CONFIG_ADDRESS_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCF8</span>;
 <span class="kw">const</span> <span class="ident">PCI_CONFIG_DATA_PORT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0xCFC</span>;
