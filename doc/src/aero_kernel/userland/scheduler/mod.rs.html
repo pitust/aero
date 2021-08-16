@@ -122,6 +122,8 @@
 <span id="122">122</span>
 <span id="123">123</span>
 <span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -169,6 +171,8 @@
     <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>;
 
     <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+    <span class="kw">fn</span> <span class="ident">await_io</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+    <span class="kw">fn</span> <span class="ident">wake_up</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>);
 
     <span class="doccomment">/// Yields execution to another task.</span>
     <span class="kw">fn</span> <span class="ident">preempt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);

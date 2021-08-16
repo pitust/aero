@@ -190,6 +190,10 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -252,6 +256,7 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TaskState</span> {
     <span class="ident">Runnable</span>,
     <span class="ident">Zombie</span>,
+    <span class="ident">AwaitingIo</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TaskState</span> {
@@ -259,6 +264,7 @@
         <span class="kw">match</span> <span class="ident">x</span> {
             <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TaskState::Runnable</span>,
             <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TaskState::Zombie</span>,
+            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TaskState::AwaitingIo</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;invalid task state&quot;</span>),
         }
     }
@@ -379,6 +385,8 @@
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">into_zombie</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
 }
+
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">Task</span> {}
 
 <span class="comment">// Create a new intrustive adapter for the [Task] struct as the tasks are stored as a linked</span>
 <span class="comment">// list in the scheduler.</span>

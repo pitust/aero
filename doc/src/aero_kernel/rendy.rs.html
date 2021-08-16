@@ -306,11 +306,6 @@
 <span id="306">306</span>
 <span id="307">307</span>
 <span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -518,6 +513,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_code</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">ColorCode</span>) {
         <span class="self">self</span>.<span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>;
     }
@@ -586,12 +582,6 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">_print</span>(<span class="ident">args</span>: <span class="ident">fmt::Arguments</span>) {
     <span class="ident">DEBUG_RENDY</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">lock_irq</span>().<span class="ident">write_fmt</span>(<span class="ident">args</span>));
-}
-
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_code</span>(<span class="ident">color_code</span>: <span class="ident">ColorCode</span>) {
-    <span class="ident">DEBUG_RENDY</span>
-        .<span class="ident">get</span>()
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">lock_irq</span>().<span class="ident">set_color_code</span>(<span class="ident">color_code</span>));
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_screen</span>() {

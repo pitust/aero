@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["open",""],["write",""]]});
+initSidebarItems({"fn":[["open",""],["read",""],["write",""]]});

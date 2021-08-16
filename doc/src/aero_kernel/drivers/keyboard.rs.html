@@ -348,6 +348,9 @@
 <span id="348">348</span>
 <span id="349">349</span>
 <span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -376,12 +379,12 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Mutex</span>;
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">KeyboardListner</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">KeyboardListener</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
     <span class="kw">fn</span> <span class="ident">on_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">KeyCode</span>, <span class="ident">released</span>: <span class="ident">bool</span>);
 }
 
 <span class="kw">static</span> <span class="ident">PS2_KEYBOARD_STATE</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Ps2KeyboardState</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Mutex::new</span>(<span class="ident">Ps2KeyboardState::new</span>());
-<span class="kw">static</span> <span class="ident">KEYBOARD_LISTNER</span>: <span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw">dyn</span> <span class="ident">KeyboardListner</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RwLock::new</span>(<span class="ident">Vec::new</span>());
+<span class="kw">static</span> <span class="ident">KEYBOARD_LISTNER</span>: <span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw">dyn</span> <span class="ident">KeyboardListener</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RwLock::new</span>(<span class="ident">Vec::new</span>());
 
 <span class="kw">struct</span> <span class="ident">Ps2KeyboardState</span> {
     <span class="ident">special</span>: <span class="ident">bool</span>,
@@ -534,7 +537,7 @@
         <span class="number">0xF0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PS2_KEYBOARD_STATE</span>.<span class="ident">lock</span>().<span class="ident">released</span> <span class="op">=</span> <span class="bool-val">true</span>,
 
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">PS2_KEYBOARD_STATE</span>.<span class="ident">lock</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">PS2_KEYBOARD_STATE</span>.<span class="ident">lock</span>();
             <span class="kw">let</span> <span class="ident">released</span> <span class="op">=</span> <span class="ident">lock</span>.<span class="ident">released</span>;
             <span class="kw">let</span> <span class="ident">keycode</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">lock</span>.<span class="ident">special</span> {
                 <span class="kw">match</span> <span class="ident">scancode</span> {
@@ -649,6 +652,9 @@
                 }
             };
 
+            <span class="ident">lock</span>.<span class="ident">special</span> <span class="op">=</span> <span class="bool-val">false</span>;
+            <span class="ident">lock</span>.<span class="ident">released</span> <span class="op">=</span> <span class="bool-val">false</span>;
+
             <span class="ident">core::mem::drop</span>(<span class="ident">lock</span>);
 
             <span class="kw">for</span> <span class="ident">listener</span> <span class="kw">in</span> <span class="ident">KEYBOARD_LISTNER</span>.<span class="ident">read</span>().<span class="ident">iter</span>() {
@@ -694,7 +700,7 @@
     <span class="ident">apic::io_apic_setup_legacy_irq</span>(<span class="number">1</span>, <span class="number">1</span>);
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_keyboard_listner</span>(<span class="ident">listner</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw">dyn</span> <span class="ident">KeyboardListner</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_keyboard_listener</span>(<span class="ident">listner</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw">dyn</span> <span class="ident">KeyboardListener</span>) {
     <span class="ident">KEYBOARD_LISTNER</span>.<span class="ident">write</span>().<span class="ident">push</span>(<span class="ident">listner</span>)
 }
 
