@@ -265,6 +265,8 @@
 <span id="265">265</span>
 <span id="266">266</span>
 <span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -291,7 +293,9 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::task</span>::{<span class="ident">Task</span>, <span class="ident">TaskAdapter</span>, <span class="ident">TaskState</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{<span class="ident">downcast</span>, <span class="ident">IrqGuard</span>, <span class="ident">PerCpu</span>};
+
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync::IrqGuard</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{<span class="ident">downcast</span>, <span class="ident">PerCpu</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::SchedulerInterface</span>;
 

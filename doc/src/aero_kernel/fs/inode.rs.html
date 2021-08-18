@@ -237,6 +237,7 @@
 <span id="237">237</span>
 <span id="238">238</span>
 <span id="239">239</span>
+<span id="240">240</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -268,7 +269,8 @@
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{<span class="ident">Downcastable</span>, <span class="ident">Mutex</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync::Mutex</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Downcastable</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>::{<span class="ident">DirCacheItem</span>, <span class="ident">INodeCacheItem</span>};

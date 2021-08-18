@@ -138,7 +138,7 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::addr::PhysAddr</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::Mutex</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync::Mutex</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LockedFrameAllocator</span>(<span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">GlobalFrameAllocator</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
