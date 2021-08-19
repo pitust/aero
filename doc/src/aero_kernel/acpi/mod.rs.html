@@ -152,6 +152,10 @@
 <span id="152">152</span>
 <span id="153">153</span>
 <span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
 </pre><pre class="rust">
 <span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
@@ -178,6 +182,8 @@
 <span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/ACPI&gt;</span>
 
 <span class="kw">use</span> <span class="ident">core::mem</span>;
+
+<span class="kw">use</span> <span class="ident">aml::AmlContext</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::{<span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
 
@@ -306,6 +312,8 @@
 
     <span class="macro">init_table!</span>(<span class="ident">fadt::SIGNATURE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Fadt</span>);
     <span class="macro">init_table!</span>(<span class="ident">hpet::SIGNATURE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Hpet</span>);
+
+    <span class="comment">// let aml_context = AmlContext::new(Box);</span>
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
