@@ -2,12 +2,11 @@
 the kernel functionality at runtime. When a kernel module is no longer needed,
 it can be unloaded. Most of the device drivers are used in the form of kernel modules.</p>
 <h2 id="example" class="section-header"><a href="#example">Example</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">fn</span> <span class="ident">hello_init</span>() {}
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">hello_init</span>() {}
 <span class="kw">fn</span> <span class="ident">hello_exit</span>() {}
 
 <span class="macro">aero_kernel::module_init!</span>(<span class="ident">hello_init</span>);
-<span class="macro">aero_kernel::module_exit!</span>(<span class="ident">hello_exit</span>);</pre></div>
+<span class="macro">aero_kernel::module_exit!</span>(<span class="ident">hello_exit</span>);</code></pre></div>
 </div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <div class="item-table"><div class="item-left module-item"><a class="struct" href="struct.ModuleInit.html" title="aero_kernel::modules::ModuleInit struct">ModuleInit</a></div><div class="item-right docblock-short"><p>Inner helper structure holding the module init function as a void pointer. This struct
 is required as we cannot directly store a pointer in the static as it needs to implement

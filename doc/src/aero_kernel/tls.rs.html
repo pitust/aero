@@ -134,8 +134,11 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
-</pre><pre class="rust">
-<span class="comment">/*
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+</pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
  * This file is part of The Aero Project.
@@ -171,6 +174,7 @@
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::gdt::TASK_STATE_SEGMENT</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::io</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::linker::LinkerSymbol</span>;
 
@@ -265,13 +269,16 @@
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">restore_user_tls</span>() {
-    <span class="comment">// FIXME(Andy-Python-Programmer): Actual support for userland TLS. For now</span>
-    <span class="comment">// we sanitse the FS base to 0x00.</span>
     <span class="kw">unsafe</span> {
-        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_FS_BASE</span>, <span class="number">0x00</span>);
+        <span class="kw">let</span> <span class="ident">base</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>()
+            .<span class="ident">current_task</span>()
+            .<span class="ident">arch_task_mut</span>()
+            .<span class="ident">get_fs_base</span>();
+
+        <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_FS_BASE</span>, <span class="ident">base</span>.<span class="ident">as_u64</span>());
     }
 }
-</pre></div>
+</code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

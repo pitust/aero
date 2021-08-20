@@ -7,21 +7,19 @@ induce a collision.</p>
 <p>aHash uses the hardware AES instruction on x86 processors to provide a keyed hash function.
 aHash is not a cryptographically secure hash.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">ahash</span>::{<span class="ident">AHasher</span>, <span class="ident">RandomState</span>};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">ahash</span>::{<span class="ident">AHasher</span>, <span class="ident">RandomState</span>};
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span>, <span class="ident">RandomState</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::default</span>();
-<span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">12</span>, <span class="number">34</span>);</pre></div>
+<span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">12</span>, <span class="number">34</span>);</code></pre></div>
 <p>For convinence wrappers called <code>AHashMap</code> and <code>AHashSet</code> are also provided.
 These to the same thing with slightly less typing.</p>
 
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
-<span class="kw">use</span> <span class="ident">ahash::AHashMap</span>;
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">ahash::AHashMap</span>;
 
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">AHashMap</span><span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">AHashMap::with_capacity</span>(<span class="number">4</span>);
 <span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">12</span>, <span class="number">34</span>);
-<span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">56</span>, <span class="number">78</span>);</pre></div>
+<span class="ident">map</span>.<span class="ident">insert</span>(<span class="number">56</span>, <span class="number">78</span>);</code></pre></div>
 </div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <div class="item-table"><div class="item-left module-item"><a class="struct" href="struct.AHasher.html" title="ahash::AHasher struct">AHasher</a></div><div class="item-right docblock-short"><p>A <code>Hasher</code> for hashing an arbitrary stream of bytes.</p>
 </div><div class="item-left module-item"><a class="struct" href="struct.RandomState.html" title="ahash::RandomState struct">RandomState</a></div><div class="item-right docblock-short"><p>Provides a <a href="std::hash::Hasher">Hasher</a> factory. This is typically used (e.g. by <a href="std::collections::HashMap">HashMap</a>) to create

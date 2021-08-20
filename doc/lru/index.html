@@ -2,8 +2,7 @@
 and <code>pop</code> operations, all of which are O(1). This crate was heavily influenced
 by the <a href="https://doc.rust-lang.org/0.12.0/std/collections/lru_cache/struct.LruCache.html">LRU Cache implementation in an earlier version of Rust’s std::collections crate</a>.</p>
 <h2 id="example" class="section-header"><a href="#example">Example</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">lru</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">lru</span>;
 
 <span class="kw">use</span> <span class="ident">lru::LruCache</span>;
 
@@ -29,7 +28,7 @@ by the <a href="https://doc.rust-lang.org/0.12.0/std/collections/lru_cache/struc
         }
 
         <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">cache</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="string">&quot;banana&quot;</span>).<span class="ident">unwrap</span>(), <span class="number">6</span>);
-}</pre></div>
+}</code></pre></div>
 </div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <div class="item-table"><div class="item-left module-item"><a class="struct" href="struct.Iter.html" title="lru::Iter struct">Iter</a></div><div class="item-right docblock-short"><p>An iterator over the entries of a <code>LruCache</code>.</p>
 </div><div class="item-left module-item"><a class="struct" href="struct.IterMut.html" title="lru::IterMut struct">IterMut</a></div><div class="item-right docblock-short"><p>An iterator over mutables entries of a <code>LruCache</code>.</p>

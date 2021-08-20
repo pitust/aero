@@ -8,8 +8,7 @@ instead keep track of a set of <em>objects</em>. Such collections are called
 intrusive because they requires explicit support in objects to allow them to
 be inserted into a collection.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">intrusive_collections::intrusive_adapter</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">intrusive_collections::intrusive_adapter</span>;
 <span class="kw">use</span> <span class="ident">intrusive_collections</span>::{<span class="ident">LinkedList</span>, <span class="ident">LinkedListLink</span>};
 <span class="kw">use</span> <span class="ident">std::cell::Cell</span>;
 
@@ -57,7 +56,7 @@ be inserted into a collection.</p>
 
 <span class="comment">// Dropping the collection will automatically free b and c by</span>
 <span class="comment">// transforming them back into Box&lt;Test&gt; and dropping them.</span>
-<span class="ident">drop</span>(<span class="ident">list</span>);</pre></div>
+<span class="ident">drop</span>(<span class="ident">list</span>);</code></pre></div>
 <h1 id="links-and-adapters" class="section-header"><a href="#links-and-adapters">Links and adapters</a></h1>
 <p>Intrusive collections track objects through links which are embedded within
 the objects themselves. It also allows a single object to be part of
@@ -71,8 +70,7 @@ most cases you do not need to write an implementation manually: the
 which allows a key to be extracted from an object. This key is then used to
 keep all elements in the tree in ascending order.</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">intrusive_collections::intrusive_adapter</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">intrusive_collections::intrusive_adapter</span>;
 <span class="kw">use</span> <span class="ident">intrusive_collections</span>::{<span class="ident">SinglyLinkedListLink</span>, <span class="ident">SinglyLinkedList</span>};
 <span class="kw">use</span> <span class="ident">intrusive_collections</span>::{<span class="ident">LinkedListLink</span>, <span class="ident">LinkedList</span>};
 <span class="kw">use</span> <span class="ident">intrusive_collections</span>::{<span class="ident">XorLinkedList</span>, <span class="ident">XorLinkedListLink</span>};
@@ -107,7 +105,7 @@ keep all elements in the tree in ascending order.</p>
 <span class="ident">a</span>.<span class="ident">push_front</span>(<span class="ident">test</span>.<span class="ident">clone</span>());
 <span class="ident">b</span>.<span class="ident">push_front</span>(<span class="ident">test</span>.<span class="ident">clone</span>());
 <span class="ident">c</span>.<span class="ident">push_front</span>(<span class="ident">test</span>.<span class="ident">clone</span>());
-<span class="ident">d</span>.<span class="ident">insert</span>(<span class="ident">test</span>);</pre></div>
+<span class="ident">d</span>.<span class="ident">insert</span>(<span class="ident">test</span>);</code></pre></div>
 <h1 id="cursors" class="section-header"><a href="#cursors">Cursors</a></h1>
 <p>Intrusive collections are manipulated using cursors. A cursor is similar to
 an iterator, except that it can freely seek back-and-forth, and can safely
@@ -126,8 +124,7 @@ of them at a time.</p>
 mutated safely while it is being iterated on. For example, here is a
 function which removes all values within a given range from a <code>RBTree</code>:</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">intrusive_collections::intrusive_adapter</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">intrusive_collections::intrusive_adapter</span>;
 <span class="kw">use</span> <span class="ident">intrusive_collections</span>::{<span class="ident">RBTreeLink</span>, <span class="ident">RBTree</span>, <span class="ident">KeyAdapter</span>, <span class="ident">Bound</span>};
 
 <span class="kw">struct</span> <span class="ident">Element</span> {
@@ -152,15 +149,14 @@ function which removes all values within a given range from a <code>RBTree</code
         <span class="comment">// element.</span>
         <span class="ident">cursor</span>.<span class="ident">remove</span>();
     }
-}</pre></div>
+}</code></pre></div>
 <h1 id="scoped-collections" class="section-header"><a href="#scoped-collections">Scoped collections</a></h1>
 <p>Instead of taking ownership of objects inserted into them, intrusive
 collections can also work with borrowed values. This works by using
 lifetimes and the borrow checker to ensure that any objects inserted into an
 intrusive collection will outlive the collection itself.</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">intrusive_collections::intrusive_adapter</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">intrusive_collections::intrusive_adapter</span>;
 <span class="kw">use</span> <span class="ident">intrusive_collections</span>::{<span class="ident">LinkedListLink</span>, <span class="ident">LinkedList</span>};
 <span class="kw">use</span> <span class="ident">typed_arena::Arena</span>;
 <span class="kw">use</span> <span class="ident">std::cell::Cell</span>;
@@ -218,7 +214,7 @@ intrusive collection will outlive the collection itself.</p>
 <span class="comment">// Since these are shared references, any changes in the values are reflected in</span>
 <span class="comment">// the list.</span>
 <span class="ident">a</span>.<span class="ident">value</span>.<span class="ident">set</span>(<span class="number">7</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">list2</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">value</span>.<span class="ident">get</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(), [<span class="number">7</span>, <span class="number">5</span>, <span class="number">6</span>]);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">list2</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">value</span>.<span class="ident">get</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(), [<span class="number">7</span>, <span class="number">5</span>, <span class="number">6</span>]);</code></pre></div>
 <h1 id="safety" class="section-header"><a href="#safety">Safety</a></h1>
 <p>While it is possible to use intrusive collections without any unsafe code,
 this crate also exposes a few unsafe features.</p>

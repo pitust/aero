@@ -7,8 +7,7 @@ if it doesn’t look like a mangled symbol name.</p>
 modifier (<code>#</code>) can be used to format the symbol name without the
 trailing hash value.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">rustc_demangle::demangle</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">rustc_demangle::demangle</span>;
 
 <span class="macro">assert_eq!</span>(<span class="ident">demangle</span>(<span class="string">&quot;_ZN4testE&quot;</span>).<span class="ident">to_string</span>(), <span class="string">&quot;test&quot;</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">demangle</span>(<span class="string">&quot;_ZN3foo3barE&quot;</span>).<span class="ident">to_string</span>(), <span class="string">&quot;foo::bar&quot;</span>);
@@ -16,7 +15,7 @@ trailing hash value.</p>
 <span class="comment">// With hash</span>
 <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">demangle</span>(<span class="string">&quot;_ZN3foo17h05af221e174051e9E&quot;</span>)), <span class="string">&quot;foo::h05af221e174051e9&quot;</span>);
 <span class="comment">// Without hash</span>
-<span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">&quot;{:#}&quot;</span>, <span class="ident">demangle</span>(<span class="string">&quot;_ZN3foo17h05af221e174051e9E&quot;</span>)), <span class="string">&quot;foo&quot;</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">&quot;{:#}&quot;</span>, <span class="ident">demangle</span>(<span class="string">&quot;_ZN3foo17h05af221e174051e9E&quot;</span>)), <span class="string">&quot;foo&quot;</span>);</code></pre></div>
 </div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <div class="item-table"><div class="item-left module-item"><a class="struct" href="struct.Demangle.html" title="rustc_demangle::Demangle struct">Demangle</a></div><div class="item-right docblock-short"><p>Representation of a demangled symbol name.</p>
 </div><div class="item-left module-item"><a class="struct" href="struct.TryDemangleError.html" title="rustc_demangle::TryDemangleError struct">TryDemangleError</a></div><div class="item-right docblock-short"><p>Error returned from the <code>try_demangle</code> function below when demangling fails.</p>

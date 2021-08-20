@@ -2,8 +2,7 @@
 external dependencies. The implementation closely resembles the Intel CPUID
 manual description. The library works with no_std.</p>
 <h2 id="example" class="section-header"><a href="#example">Example</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">raw_cpuid::CpuId</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">raw_cpuid::CpuId</span>;
 <span class="kw">let</span> <span class="ident">cpuid</span> <span class="op">=</span> <span class="ident">CpuId::new</span>();
 
 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">vf</span>) <span class="op">=</span> <span class="ident">cpuid</span>.<span class="ident">get_vendor_info</span>() {
@@ -22,7 +21,7 @@ manual description. The library works with no_std.</p>
     }
 } <span class="kw">else</span> {
     <span class="macro">println!</span>(<span class="string">&quot;No cache parameter information available&quot;</span>)
-}</pre></div>
+}</code></pre></div>
 <h1 id="platform-support" class="section-header"><a href="#platform-support">Platform support</a></h1>
 <p>CPU vendors may choose to not support certain functions/leafs in cpuid or
 only support them partially. We highlight this with the following emojis
