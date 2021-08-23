@@ -288,6 +288,8 @@
 <span id="288">288</span>
 <span id="289">289</span>
 <span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -423,15 +425,19 @@
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleStruct</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="kw">let</span> <span class="ident">mmap_tag</span> <span class="op">=</span> <span class="ident">boot_info</span>
         .<span class="ident">memory_map</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;Aero requires the bootloader to provide a non-null memory map tag&quot;</span>);
+        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provide a non-null memory map tag&quot;</span>);
 
     <span class="kw">let</span> <span class="ident">rsdp_tag</span> <span class="op">=</span> <span class="ident">boot_info</span>
         .<span class="ident">rsdp</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;Aero requires the bootloader to provided a non-null rsdp tag&quot;</span>);
+        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provided a non-null rsdp tag&quot;</span>);
 
     <span class="kw">let</span> <span class="ident">framebuffer_tag</span> <span class="op">=</span> <span class="ident">boot_info</span>
         .<span class="ident">framebuffer</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;Aero requires the bootloader to provide a non-null framebuffer tag&quot;</span>);
+        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provide a non-null framebuffer tag&quot;</span>);
+
+    <span class="kw">let</span> <span class="ident">modules_tag</span> <span class="op">=</span> <span class="ident">boot_info</span>
+        .<span class="ident">modules</span>()
+        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provide a non-null modules tag&quot;</span>);
 
     <span class="kw">let</span> <span class="ident">rsdp_address</span> <span class="op">=</span> <span class="ident">PhysAddr::new</span>(<span class="ident">rsdp_tag</span>.<span class="ident">rsdp</span>);
 
@@ -498,13 +504,13 @@
     <span class="ident">arch::gdt::init</span>(<span class="ident">stack_top_addr</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
 
-    <span class="ident">acpi::init</span>(<span class="ident">rsdp_address</span>, <span class="kw">unsafe</span> { <span class="ident">PHYSICAL_MEMORY_OFFSET</span> });
+    <span class="ident">acpi::init</span>(<span class="ident">rsdp_address</span>).<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
 
     <span class="ident">time::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PIT&quot;</span>);
 
-    <span class="ident">fs::init</span>().<span class="ident">unwrap</span>();
+    <span class="ident">fs::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="ident">modules_tag</span>).<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded filesystem&quot;</span>);
 
     <span class="ident">userland::init</span>();
@@ -535,8 +541,6 @@
 <span class="kw">fn</span> <span class="ident">kernel_main_thread</span>() {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">address_space</span> <span class="op">=</span> <span class="ident">mem::AddressSpace::this</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="ident">address_space</span>.<span class="ident">offset_page_table</span>();
-
-    <span class="ident">drivers::pci::pre_init</span>();
 
     <span class="ident">modules::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded kernel modules&quot;</span>);
