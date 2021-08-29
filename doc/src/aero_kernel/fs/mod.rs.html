@@ -304,13 +304,6 @@
 <span id="304">304</span>
 <span id="305">305</span>
 <span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -535,7 +528,7 @@
     <span class="ident">ROOT_DIR</span>.<span class="ident">get</span>().<span class="ident">expect</span>(<span class="string">&quot;How&#39;s this possible?&quot;</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>, <span class="ident">modules</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleModuleTag</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">modules</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleModuleTag</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">cache::init</span>();
 
     <span class="kw">let</span> <span class="ident">filesystem</span> <span class="op">=</span> <span class="ident">RamFs::new</span>();
@@ -553,18 +546,26 @@
                 <span class="ident">module</span>.<span class="ident">size</span>()
             );
 
-            <span class="kw">let</span> <span class="ident">start_address</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">module</span>.<span class="ident">start</span> };
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ustar_header</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">start_address</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">UstarHeader</span><span class="op">&gt;</span>() };
+            <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+                <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">module</span>.<span class="ident">start</span>;
+                <span class="ident">core::slice::from_raw_parts</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">addr</span>.<span class="ident">as_ptr</span>(), <span class="ident">module</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">usize</span>)
+            };
 
-            <span class="kw">loop</span> {
-                <span class="comment">// The magic can either end with a ASCII space character or a NULL byte so,</span>
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">archive_index</span> <span class="op">=</span> <span class="number">0</span>;
+
+            <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">header</span>) <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">get</span>(<span class="ident">archive_index</span>..).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
+                <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">s</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UstarHeader</span>) };
+
+                <span class="comment">// NOTE: The magic can either end with a ASCII space character or a NULL byte so,</span>
                 <span class="comment">// we check the first 5 bits of the magic instead.</span>
-                <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="ident">ustar_header</span>.<span class="ident">magic</span>[<span class="number">0</span>..<span class="number">5</span>] <span class="op">!</span><span class="op">=</span> <span class="string">b&quot;ustar&quot;</span> {
-                    <span class="kw">break</span>;
+                <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="ident">header</span>.<span class="ident">magic</span>[<span class="number">0</span>..<span class="number">5</span>] <span class="op">!</span><span class="op">=</span> <span class="string">b&quot;ustar&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="number">512</span> {
+                    <span class="prelude-val">None</span>
+                } <span class="kw">else</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">header</span>)
                 }
-
-                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">core::str::from_utf8_unchecked</span>(<span class="kw-2">&amp;</span><span class="ident">ustar_header</span>.<span class="ident">name</span>) };
-                <span class="kw">let</span> <span class="ident">file_type</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ustar_header</span>.<span class="ident">typeflag</span>[<span class="number">0</span>] {
+            }) {
+                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">core::str::from_utf8_unchecked</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>.<span class="ident">name</span>) };
+                <span class="kw">let</span> <span class="ident">file_type</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">header</span>.<span class="ident">typeflag</span>[<span class="number">0</span>] {
                     <span class="number">0x30</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::File</span>),
                     <span class="number">0x31</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::HardLink</span>),
                     <span class="number">0x32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::SymLink</span>),
@@ -576,7 +577,7 @@
                 }<span class="question-mark">?</span>;
 
                 <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">usize::from_str_radix</span>(
-                    <span class="kw">unsafe</span> { <span class="ident">core::str::from_utf8_unchecked</span>(<span class="kw-2">&amp;</span><span class="ident">ustar_header</span>.<span class="ident">size</span>) },
+                    <span class="kw">unsafe</span> { <span class="ident">core::str::from_utf8_unchecked</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>.<span class="ident">size</span>) },
                     <span class="number">8</span>,
                 )
                 .<span class="ident">unwrap_or</span>(<span class="number">0</span>);
@@ -593,23 +594,8 @@
                     <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
                 }
 
-                <span class="comment">// Free the memory allocated for the ustar header.</span>
-                <span class="kw">let</span> <span class="ident">pointer</span> <span class="op">=</span> <span class="ident">ustar_header</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UstarHeader</span>;
-                <span class="kw">let</span> <span class="ident">offset_h</span> <span class="op">=</span> <span class="number">0x200</span> <span class="op">+</span> <span class="ident">align_up</span>(<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="number">512</span>) <span class="kw">as</span> <span class="ident">usize</span>;
-
-                <span class="kw">let</span> <span class="ident">page_offset</span> <span class="op">=</span>
-                    <span class="kw">unsafe</span> { <span class="ident">pointer</span> <span class="kw">as</span> <span class="ident">u64</span> <span class="op">-</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span>.<span class="ident">as_u64</span>() };
-
-                <span class="kw">let</span> <span class="ident">page</span>: <span class="ident">Page</span><span class="op">&lt;</span><span class="ident">Size2MiB</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">page_offset</span>));
-
-                <span class="ident">offset_table</span>
-                    .<span class="ident">unmap</span>(<span class="ident">page</span>)
-                    .<span class="ident">expect</span>(<span class="string">&quot;failed to unmap bootloader allocated memory for ustar header&quot;</span>)
-                    .<span class="number">1</span>
-                    .<span class="ident">flush</span>();
-
-                <span class="comment">// Update ustar header&#39;s pointer offset to the new offset.</span>
-                <span class="ident">ustar_header</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">pointer</span>.<span class="ident">add</span>(<span class="ident">offset_h</span>) };
+                <span class="comment">// TODO: Free the memory allocated for the ustar header.</span>
+                <span class="ident">archive_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">0x200</span> <span class="op">+</span> <span class="ident">align_up</span>(<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="number">512</span>) <span class="kw">as</span> <span class="ident">usize</span>;
             }
         }
     }

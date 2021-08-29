@@ -290,6 +290,9 @@
 <span id="290">290</span>
 <span id="291">291</span>
 <span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -480,9 +483,6 @@
     <span class="ident">arch::gdt::init_boot</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded bootstrap GDT&quot;</span>);
 
-    <span class="ident">interrupts::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded IDT&quot;</span>);
-
     <span class="ident">drivers::mouse::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PS/2 driver&quot;</span>);
 
@@ -504,13 +504,16 @@
     <span class="ident">arch::gdt::init</span>(<span class="ident">stack_top_addr</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
 
+    <span class="ident">interrupts::init</span>();
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded IDT&quot;</span>);
+
     <span class="ident">acpi::init</span>(<span class="ident">rsdp_address</span>).<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
 
     <span class="ident">time::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PIT&quot;</span>);
 
-    <span class="ident">fs::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>, <span class="ident">modules_tag</span>).<span class="ident">unwrap</span>();
+    <span class="ident">fs::init</span>(<span class="ident">modules_tag</span>).<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded filesystem&quot;</span>);
 
     <span class="ident">userland::init</span>();
@@ -557,13 +560,16 @@
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_ap_startup</span>(<span class="ident">ap_id</span>: <span class="ident">u64</span>, <span class="ident">stack_top_addr</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="macro">log::debug!</span>(<span class="string">&quot;Booting CPU {}&quot;</span>, <span class="ident">ap_id</span>);
+    <span class="macro">log::debug!</span>(<span class="string">&quot;booting CPU {}&quot;</span>, <span class="ident">ap_id</span>);
+
+    <span class="ident">arch::gdt::init_boot</span>();
+    <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: loaded boot GDT&quot;</span>, <span class="ident">ap_id</span>);
 
     <span class="ident">tls::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: Loaded TLS&quot;</span>, <span class="ident">ap_id</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: loaded TLS&quot;</span>, <span class="ident">ap_id</span>);
 
     <span class="ident">arch::gdt::init</span>(<span class="ident">stack_top_addr</span>);
-    <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: Loaded GDT&quot;</span>, <span class="ident">ap_id</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: loaded GDT&quot;</span>, <span class="ident">ap_id</span>);
 
     <span class="kw">unsafe</span> {
         <span class="ident">CPU_ID</span> <span class="op">=</span> <span class="ident">ap_id</span>; <span class="comment">// Set the local cpu id global to the AP id provided in the AP bootinfo</span>

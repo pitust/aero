@@ -1,1 +1,1 @@
-initSidebarItems({"trait":[["BitArray",""],["BitField","A generic trait which provides methods for extracting and setting specific bits or ranges of bits."]]});
+initSidebarItems({"macro":[["bitfield_numeric_impl","An internal macro used for implementing BitField on the standard integral types."]],"trait":[["BitArray",""],["BitField","A generic trait which provides methods for extracting and setting specific bits or ranges of bits."]]});
