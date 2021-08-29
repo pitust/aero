@@ -218,6 +218,8 @@
 <span id="218">218</span>
 <span id="219">219</span>
 <span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -413,12 +415,14 @@
     }
 }
 
-<span class="doccomment">/// Clears the inode cache. This function is mostly called when cleanup is required. For example</span>
-<span class="doccomment">/// on a reboot or shutdown.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_inode_cache</span>() {
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cache</span>) <span class="op">=</span> <span class="ident">INODE_CACHE</span>.<span class="ident">get</span>() {
-        <span class="ident">cache</span>.<span class="ident">clear</span>();
-    }
+    <span class="ident">INODE_CACHE</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">cache</span><span class="op">|</span> <span class="ident">cache</span>.<span class="ident">clear</span>());
+}
+
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_dir_cache</span>() {
+    <span class="ident">DIR_CACHE</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">cache</span><span class="op">|</span> <span class="ident">cache</span>.<span class="ident">clear</span>());
 }
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">icache</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">INodeCache</span><span class="op">&gt;</span> {

@@ -148,6 +148,11 @@
 <span id="148">148</span>
 <span id="149">149</span>
 <span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -167,7 +172,7 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="doccomment">//! System Calls are used to call a kernel service from user land.</span>
+<span class="doccomment">//! System Calls are used to call a kernel service from userland.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! | %rax   | Name                    |</span>
 <span class="doccomment">//! |--------|-------------------------|</span>
@@ -175,9 +180,14 @@
 <span class="doccomment">//! | 1      | write                   |</span>
 <span class="doccomment">//! | 2      | open                    |</span>
 <span class="doccomment">//! | 3      | close                   |</span>
-<span class="doccomment">//! | 60     | exit                    |</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! **Notes**: &lt;https://wiki.osdev.org/System_Calls&gt;</span>
+<span class="doccomment">//! | 4      | shutdown                |</span>
+<span class="doccomment">//! | 5      | exit                    |</span>
+<span class="doccomment">//! | 6      | fork                    |</span>
+<span class="doccomment">//! | 7      | reboot                  |</span>
+<span class="doccomment">//! | 8      | mmap                    |</span>
+<span class="doccomment">//! | 9      | munmap                  |</span>
+<span class="doccomment">//! | 10     | arch_prctl              |</span>
+<span class="doccomment">//! | 11     | get_dents               |</span>
 
 <span class="kw">use</span> <span class="ident">aero_syscall::prelude</span>::<span class="kw-2">*</span>;
 
@@ -248,9 +258,9 @@
         <span class="ident">SYS_MMAP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::mmap</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>, <span class="ident">g</span>),
         <span class="ident">SYS_ARCH_PRCTL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::arch_prctl</span>(<span class="ident">b</span>, <span class="ident">c</span>),
         <span class="ident">SYS_MUNMAP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::munmap</span>(<span class="ident">b</span>, <span class="ident">c</span>),
+        <span class="ident">SYS_GETDENTS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::getdents</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="macro">log::error!</span>(<span class="string">&quot;Invalid syscall: {:#x}&quot;</span>, <span class="ident">a</span>);
-
+            <span class="macro">log::error!</span>(<span class="string">&quot;invalid syscall: {:#x}&quot;</span>, <span class="ident">a</span>);
             <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::ENOSYS</span>)
         }
     };

@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["open",""],["read",""],["write",""]]});
+initSidebarItems({"fn":[["getdents",""],["open",""],["read",""],["write",""]]});
