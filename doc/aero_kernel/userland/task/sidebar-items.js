@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["TaskState",""]],"struct":[["Task",""],["TaskAdapter",""],["TaskId",""]]});
+initSidebarItems({"enum":[["TaskState",""]],"struct":[["Cwd",""],["Task",""],["TaskAdapter",""],["TaskId",""]]});
