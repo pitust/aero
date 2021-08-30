@@ -271,7 +271,7 @@
 <span class="kw">use</span> <span class="ident">core::cell::UnsafeCell</span>;
 <span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicIsize</span>, <span class="ident">AtomicU8</span>, <span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::cache::DirCacheItem</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::cache</span>::{<span class="ident">DirCacheImpl</span>, <span class="ident">DirCacheItem</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>::{<span class="self">self</span>, <span class="ident">FileSystem</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
 
@@ -465,7 +465,7 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_cwd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-        <span class="self">self</span>.<span class="ident">cwd</span>.<span class="ident">read</span>().<span class="ident">inode</span>.<span class="ident">name</span>()
+        <span class="self">self</span>.<span class="ident">cwd</span>.<span class="ident">read</span>().<span class="ident">inode</span>.<span class="ident">absolute_path_str</span>()
     }
 
     <span class="doccomment">/// Returns the task ID that was allocated for this task.</span>
