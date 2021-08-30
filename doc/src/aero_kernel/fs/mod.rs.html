@@ -306,6 +306,7 @@
 <span id="306">306</span>
 <span id="307">307</span>
 <span id="308">308</span>
+<span id="309">309</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -388,6 +389,7 @@
         <span class="kw">let</span> <span class="ident">current_data</span> <span class="op">=</span> <span class="ident">directory</span>.<span class="ident">data</span>.<span class="ident">lock</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">root_data</span> <span class="op">=</span> <span class="ident">root_dir</span>.<span class="ident">data</span>.<span class="ident">lock</span>();
 
+        <span class="ident">root_data</span>.<span class="ident">name</span> <span class="op">=</span> <span class="ident">current_data</span>.<span class="ident">name</span>.<span class="ident">clone</span>();
         <span class="ident">root_data</span>.<span class="ident">parent</span> <span class="op">=</span> <span class="ident">current_data</span>.<span class="ident">parent</span>.<span class="ident">clone</span>();
 
         <span class="ident">mem::drop</span>(<span class="ident">root_data</span>);

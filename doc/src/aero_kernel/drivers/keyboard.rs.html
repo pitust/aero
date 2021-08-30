@@ -668,7 +668,7 @@
     <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">PS2_KEYBOARD_STATE</span>.<span class="ident">lock_irq</span>();
 
     <span class="kw">unsafe</span> {
-        <span class="ident">io::outb</span>(<span class="number">0x60</span>, <span class="number">0xF4</span>); <span class="comment">// command: disable scanning</span>
+        <span class="ident">io::outb</span>(<span class="number">0x60</span>, <span class="number">0xF5</span>); <span class="comment">// command: disable scanning</span>
 
         <span class="kw">if</span> <span class="ident">io::inb</span>(<span class="number">0x60</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0xFA</span> {
             <span class="macro">log::warn!</span>(<span class="string">&quot;ps2: disable scanning failed, no ACK&quot;</span>);

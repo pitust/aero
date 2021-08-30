@@ -268,6 +268,7 @@
 <span id="268">268</span>
 <span id="269">269</span>
 <span id="270">270</span>
+<span id="271">271</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -454,6 +455,7 @@
     <span class="ident">inode</span>: <span class="ident">INodeCacheItem</span>,
 }
 
+<span class="doccomment">/// A directory entry is basically the mapping of filename to its inode.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DirEntry</span> {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">data</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">DirProtectedData</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">filesystem</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span>,

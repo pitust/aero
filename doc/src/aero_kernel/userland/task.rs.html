@@ -236,6 +236,14 @@
 <span id="236">236</span>
 <span id="237">237</span>
 <span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -464,6 +472,14 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">task_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TaskId</span> {
         <span class="self">self</span>.<span class="ident">task_id</span>
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_cwd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cwd</span>: <span class="ident">DirCacheItem</span>) {
+        <span class="kw">let</span> <span class="ident">filesystem</span> <span class="op">=</span> <span class="ident">cwd</span>.<span class="ident">inode</span>().<span class="ident">weak_filesystem</span>().<span class="ident">unwrap</span>().<span class="ident">upgrade</span>().<span class="ident">unwrap</span>();
+
+        <span class="self">self</span>.<span class="ident">cwd</span>.<span class="ident">write</span>().<span class="ident">inode</span> <span class="op">=</span> <span class="ident">cwd</span>;
+        <span class="self">self</span>.<span class="ident">cwd</span>.<span class="ident">write</span>().<span class="ident">filesystem</span> <span class="op">=</span> <span class="ident">filesystem</span>;
     }
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">into_zombie</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
