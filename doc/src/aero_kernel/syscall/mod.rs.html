@@ -155,6 +155,7 @@
 <span id="155">155</span>
 <span id="156">156</span>
 <span id="157">157</span>
+<span id="158">158</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -256,6 +257,7 @@
         <span class="ident">SYS_EXIT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::exit</span>(<span class="ident">b</span>),
         <span class="ident">SYS_SHUTDOWN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::shutdown</span>(),
         <span class="ident">SYS_OPEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::open</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>),
+        <span class="ident">SYS_CLOSE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::close</span>(<span class="ident">b</span>),
         <span class="ident">SYS_WRITE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::write</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
         <span class="ident">SYS_FORK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::fork</span>(),
         <span class="ident">SYS_MMAP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::mmap</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>, <span class="ident">g</span>),

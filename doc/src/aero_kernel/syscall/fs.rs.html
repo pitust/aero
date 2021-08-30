@@ -112,6 +112,20 @@
 <span id="112">112</span>
 <span id="113">113</span>
 <span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -211,6 +225,20 @@
 
     <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice_mut</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">handle</span>.<span class="ident">get_dents</span>(<span class="ident">buffer</span>)<span class="question-mark">?</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close</span>(<span class="ident">fd</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>()
+        .<span class="ident">current_task</span>()
+        .<span class="ident">file_table</span>
+        .<span class="ident">close_file</span>(<span class="ident">fd</span>);
+
+    <span class="kw">if</span> <span class="ident">res</span> {
+        <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
+    } <span class="kw">else</span> {
+        <span class="comment">// FD isn&#39;t a valid open file descriptor.</span>
+        <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::EBADFD</span>)
+    }
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getcwd</span>(<span class="ident">buffer</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
