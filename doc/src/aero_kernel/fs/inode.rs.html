@@ -266,6 +266,8 @@
 <span id="266">266</span>
 <span id="267">267</span>
 <span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -353,6 +355,8 @@
     <span class="kw">fn</span> <span class="ident">open</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_flags</span>: <span class="ident">OpenFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(())
     }
+
+    <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_flags</span>: <span class="ident">OpenFlags</span>) {}
 
     <span class="kw">fn</span> <span class="ident">dirent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
