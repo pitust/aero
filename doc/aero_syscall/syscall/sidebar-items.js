@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["supports_syscall_sysret","Returns true if the current CPU supports the `syscall` and the `sysret` instruction."],["syscall0",""],["syscall1",""],["syscall2",""],["syscall3",""],["syscall4",""],["syscall5",""],["syscall6",""]],"macro":[["define_syscall_fns",""]]});
+initSidebarItems({"fn":[["supports_syscall_sysret","Returns true if the current CPU supports the `syscall` and the `sysret` instruction."],["syscall0",""],["syscall1",""],["syscall2",""],["syscall3",""],["syscall4",""],["syscall5",""],["syscall6",""]]});
