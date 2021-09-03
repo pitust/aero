@@ -138,7 +138,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="macro">log::trace!</span>(<span class="string">&quot;Exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
+    <span class="macro">log::trace!</span>(<span class="string">&quot;exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
     <span class="ident">scheduler::get_scheduler</span>().<span class="ident">inner</span>.<span class="ident">exit</span>(<span class="ident">status</span> <span class="kw">as</span> <span class="ident">isize</span>);
 }
 

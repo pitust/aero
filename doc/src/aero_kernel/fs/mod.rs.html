@@ -303,26 +303,6 @@
 <span id="303">303</span>
 <span id="304">304</span>
 <span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -350,7 +330,6 @@
 <span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
 <span class="kw">use</span> <span class="ident">stivale_boot::v2::StivaleModuleTag</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync::Mutex</span>;
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
@@ -442,7 +421,7 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">FileSystemError</span> {
     <span class="ident">NotSupported</span>,
     <span class="ident">EntryExists</span>,
@@ -482,24 +461,29 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_path</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">path</span>.<span class="ident">is_absolute</span>() {
-        <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>().<span class="ident">get_cwd_dirent</span>()
-    } <span class="kw">else</span> {
-        <span class="ident">root_dir</span>().<span class="ident">clone</span>()
-    };
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LookupMode</span> {
+    <span class="prelude-val">None</span>,
+    <span class="doccomment">/// Creates the file if it does not exist.</span>
+    <span class="ident">Create</span>,
+}
 
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_path_with</span>(
+    <span class="kw-2">mut</span> <span class="ident">cwd</span>: <span class="ident">DirCacheItem</span>,
+    <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
+    <span class="ident">mode</span>: <span class="ident">LookupMode</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
     <span class="comment">// Iterate and resolve each component. For example `a`, `b`, and `c` in `a/b/c`.</span>
-    <span class="kw">for</span> <span class="ident">component</span> <span class="kw">in</span> <span class="ident">path</span>.<span class="ident">components</span>() {
+    <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">component</span>) <span class="kw">in</span> <span class="ident">path</span>.<span class="ident">components</span>().<span class="ident">enumerate</span>() {
         <span class="kw">match</span> <span class="ident">component</span> {
             <span class="comment">// Handle some special cases that might occur in a relative path.</span>
             <span class="string">&quot;.&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
             <span class="string">&quot;..&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">current</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">data</span>.<span class="ident">lock</span>();
+                <span class="kw">let</span> <span class="ident">current</span> <span class="op">=</span> <span class="ident">cwd</span>.<span class="ident">data</span>.<span class="ident">lock</span>();
 
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parent</span>) <span class="op">=</span> <span class="ident">current</span>.<span class="ident">parent</span>.<span class="ident">clone</span>() {
                     <span class="ident">core::mem::drop</span>(<span class="ident">current</span>); <span class="comment">// drop the data lock.</span>
-                    <span class="ident">result</span> <span class="op">=</span> <span class="ident">parent</span>;
+                    <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">parent</span>;
                 }
 
                 <span class="comment">// Else the entry does not have a parent, ie. the current entry is the root aand</span>
@@ -509,58 +493,46 @@
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// After we have resolved all of the special cases that might occur in a path, now</span>
                 <span class="comment">// we have to resolve the directory entry itself. For example `a` in `./a/`.</span>
-                <span class="kw">let</span> <span class="ident">cache_entry</span> <span class="op">=</span> <span class="ident">inode::fetch_dir_entry</span>(<span class="ident">result</span>.<span class="ident">clone</span>(), <span class="ident">String::from</span>(<span class="ident">component</span>));
+                <span class="kw">let</span> <span class="ident">cache_entry</span> <span class="op">=</span> <span class="ident">inode::fetch_dir_entry</span>(<span class="ident">cwd</span>.<span class="ident">clone</span>(), <span class="ident">String::from</span>(<span class="ident">component</span>));
 
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">entry</span>) <span class="op">=</span> <span class="ident">cache_entry</span> {
-                    <span class="ident">result</span> <span class="op">=</span> <span class="ident">entry</span>;
+                    <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">entry</span>;
                 } <span class="kw">else</span> {
-                    <span class="ident">result</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">inode</span>().<span class="ident">lookup</span>(<span class="ident">result</span>.<span class="ident">clone</span>(), <span class="ident">component</span>)<span class="question-mark">?</span>;
+                    <span class="kw">match</span> <span class="ident">cwd</span>.<span class="ident">inode</span>().<span class="ident">lookup</span>(<span class="ident">cwd</span>.<span class="ident">clone</span>(), <span class="ident">component</span>) {
+                        <span class="prelude-val">Ok</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">entry</span>,
+
+                        <span class="prelude-val">Err</span>(<span class="ident">err</span>)
+                            <span class="kw">if</span> <span class="ident">err</span> <span class="op">=</span><span class="op">=</span> <span class="ident">FileSystemError::EntryNotFound</span>
+                                <span class="op">&amp;&amp;</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="ident">path</span>.<span class="ident">components</span>().<span class="ident">count</span>() <span class="op">-</span> <span class="number">1</span>
+                                <span class="op">&amp;&amp;</span> <span class="ident">mode</span> <span class="op">=</span><span class="op">=</span> <span class="ident">LookupMode::Create</span> <span class="op">=</span><span class="op">&gt;</span>
+                        {
+                            <span class="ident">cwd</span>.<span class="ident">inode</span>().<span class="ident">touch</span>(<span class="ident">cwd</span>.<span class="ident">clone</span>(), <span class="ident">component</span>)<span class="question-mark">?</span>;
+                        }
+
+                        <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                    }
                 }
 
-                <span class="kw">if</span> <span class="ident">result</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>.<span class="ident">file_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">FileType::Directory</span> {
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">mount_point</span>) <span class="op">=</span> <span class="ident">MOUNT_MANAGER</span>.<span class="ident">find_mount</span>(<span class="ident">result</span>.<span class="ident">clone</span>()) {
-                        <span class="ident">result</span> <span class="op">=</span> <span class="ident">mount_point</span>.<span class="ident">root_entry</span>;
+                <span class="kw">if</span> <span class="ident">cwd</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>.<span class="ident">file_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">FileType::Directory</span> {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">mount_point</span>) <span class="op">=</span> <span class="ident">MOUNT_MANAGER</span>.<span class="ident">find_mount</span>(<span class="ident">cwd</span>.<span class="ident">clone</span>()) {
+                        <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">mount_point</span>.<span class="ident">root_entry</span>;
                     }
                 }
             }
         }
     }
 
-    <span class="prelude-val">Ok</span>(<span class="ident">result</span>)
+    <span class="prelude-val">Ok</span>(<span class="ident">cwd</span>)
 }
 
-<span class="doccomment">/// Representation of the header of an entry in an archive.</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">struct</span> <span class="ident">UstarHeader</span> {
-    <span class="ident">name</span>: [<span class="ident">u8</span>; <span class="number">100</span>],
-    <span class="ident">mode</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
-    <span class="ident">uid</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
-    <span class="ident">gid</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
-    <span class="ident">size</span>: [<span class="ident">u8</span>; <span class="number">12</span>],
-    <span class="ident">mtime</span>: [<span class="ident">u8</span>; <span class="number">12</span>],
-    <span class="ident">cksum</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
-    <span class="ident">typeflag</span>: [<span class="ident">u8</span>; <span class="number">1</span>],
-    <span class="ident">linkname</span>: [<span class="ident">u8</span>; <span class="number">100</span>],
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_path</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">path</span>.<span class="ident">is_absolute</span>() {
+        <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>().<span class="ident">get_cwd_dirent</span>()
+    } <span class="kw">else</span> {
+        <span class="ident">root_dir</span>().<span class="ident">clone</span>()
+    };
 
-    <span class="comment">/* USTAR format */</span>
-    <span class="ident">magic</span>: [<span class="ident">u8</span>; <span class="number">6</span>],
-    <span class="ident">version</span>: [<span class="ident">u8</span>; <span class="number">2</span>],
-    <span class="ident">uname</span>: [<span class="ident">u8</span>; <span class="number">32</span>],
-    <span class="ident">gname</span>: [<span class="ident">u8</span>; <span class="number">32</span>],
-    <span class="ident">dev_major</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
-    <span class="ident">dev_minor</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
-    <span class="ident">prefix</span>: [<span class="ident">u8</span>; <span class="number">155</span>],
-}
-
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u8</span>)]</span>
-<span class="kw">enum</span> <span class="ident">UstarFileType</span> {
-    <span class="ident">File</span> <span class="op">=</span> <span class="number">0x30</span>,
-    <span class="ident">HardLink</span> <span class="op">=</span> <span class="number">0x31</span>,
-    <span class="ident">SymLink</span> <span class="op">=</span> <span class="number">0x32</span>,
-    <span class="ident">CharDevice</span> <span class="op">=</span> <span class="number">0x33</span>,
-    <span class="ident">BlockDevice</span> <span class="op">=</span> <span class="number">0x34</span>,
-    <span class="ident">Directory</span> <span class="op">=</span> <span class="number">0x35</span>,
-    <span class="ident">Fifo</span> <span class="op">=</span> <span class="number">0x36</span>,
+    <span class="ident">lookup_path_with</span>(<span class="ident">cwd</span>, <span class="ident">path</span>, <span class="ident">LookupMode::None</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">root_dir</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">DirCacheItem</span> {
@@ -590,51 +562,39 @@
                 <span class="ident">core::slice::from_raw_parts</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">addr</span>.<span class="ident">as_ptr</span>(), <span class="ident">module</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">usize</span>)
             };
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">archive_index</span> <span class="op">=</span> <span class="number">0</span>;
+            <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">cpio::CpioNewcReader::new</span>(<span class="ident">stream</span>);
 
-            <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">header</span>) <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">get</span>(<span class="ident">archive_index</span>..).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">s</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UstarHeader</span>) };
+            <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">reader</span> {
+                <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">or</span>(<span class="prelude-val">Err</span>(<span class="ident">FileSystemError::EntryNotFound</span>))<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">item</span>.<span class="ident">name</span>);
 
-                <span class="comment">// NOTE: The magic can either end with a ASCII space character or a NULL byte so,</span>
-                <span class="comment">// we check the first 5 bits of the magic instead.</span>
-                <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="ident">header</span>.<span class="ident">magic</span>[<span class="number">0</span>..<span class="number">5</span>] <span class="op">!</span><span class="op">=</span> <span class="string">b&quot;ustar&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="number">512</span> {
-                    <span class="prelude-val">None</span>
-                } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">header</span>)
+                <span class="kw">let</span> <span class="ident">is_directory</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">metadata</span>.<span class="ident">mode</span> <span class="op">&amp;</span> <span class="number">0o170000</span> <span class="op">=</span><span class="op">=</span> <span class="number">0o040000</span>;
+                <span class="kw">let</span> <span class="ident">is_file</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">metadata</span>.<span class="ident">mode</span> <span class="op">&amp;</span> <span class="number">0o170000</span> <span class="op">=</span><span class="op">=</span> <span class="number">0o100000</span>;
+
+                <span class="kw">if</span> <span class="ident">item</span>.<span class="ident">name</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;.&quot;</span> {
+                    <span class="comment">// We do not want to create the root directory. Oh well since, its</span>
+                    <span class="comment">// already created :^)</span>
+                    <span class="kw">continue</span>;
                 }
-            }) {
-                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">core::str::from_utf8_unchecked</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>.<span class="ident">name</span>) };
-                <span class="kw">let</span> <span class="ident">file_type</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">header</span>.<span class="ident">typeflag</span>[<span class="number">0</span>] {
-                    <span class="number">0x30</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::File</span>),
-                    <span class="number">0x31</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::HardLink</span>),
-                    <span class="number">0x32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::SymLink</span>),
-                    <span class="number">0x33</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::CharDevice</span>),
-                    <span class="number">0x34</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::BlockDevice</span>),
-                    <span class="number">0x35</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::Directory</span>),
-                    <span class="number">0x36</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UstarFileType::Fifo</span>),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>),
-                }<span class="question-mark">?</span>;
 
-                <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">usize::from_str_radix</span>(
-                    <span class="kw">unsafe</span> { <span class="ident">core::str::from_utf8_unchecked</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>.<span class="ident">size</span>) },
-                    <span class="number">8</span>,
-                )
-                .<span class="ident">unwrap_or</span>(<span class="number">0</span>);
+                <span class="comment">// This is a directory.</span>
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">root</span> <span class="op">=</span> <span class="ident">root_dir</span>().<span class="ident">clone</span>();
 
-                <span class="kw">match</span> <span class="ident">file_type</span> {
-                    <span class="ident">UstarFileType::File</span> <span class="op">=</span><span class="op">&gt;</span> {}
-                    <span class="ident">UstarFileType::Directory</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="comment">// The root directory is automatically created in the constructor of the filesystem.</span>
-                        <span class="kw">if</span> <span class="ident">path</span> <span class="op">!</span><span class="op">=</span> <span class="string">&quot;./&quot;</span> {
-                            <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+                <span class="kw">if</span> <span class="ident">is_directory</span> {
+                    <span class="kw">for</span> <span class="ident">component</span> <span class="kw">in</span> <span class="ident">path</span>.<span class="ident">components</span>() {
+                        <span class="kw">match</span> <span class="ident">root</span>.<span class="ident">inode</span>().<span class="ident">lookup</span>(<span class="ident">root</span>.<span class="ident">clone</span>(), <span class="ident">component</span>) {
+                            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span> <span class="op">=</span><span class="op">=</span> <span class="ident">FileSystemError::EntryNotFound</span> <span class="op">=</span><span class="op">&gt;</span> {
+                                <span class="ident">root</span>.<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="ident">component</span>)<span class="question-mark">?</span>;
+                                <span class="ident">root</span> <span class="op">=</span> <span class="ident">root</span>.<span class="ident">inode</span>().<span class="ident">lookup</span>(<span class="ident">root</span>.<span class="ident">clone</span>(), <span class="ident">component</span>)<span class="question-mark">?</span>;
+                            }
+
+                            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                            <span class="prelude-val">Ok</span>(<span class="ident">res</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">root</span> <span class="op">=</span> <span class="ident">res</span>,
                         }
                     }
-
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
+                } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">is_file</span> {
+                    <span class="ident">lookup_path_with</span>(<span class="ident">root</span>, <span class="ident">path</span>, <span class="ident">LookupMode::Create</span>)<span class="question-mark">?</span>;
                 }
-
-                <span class="comment">// TODO: Free the memory allocated for the ustar header.</span>
-                <span class="ident">archive_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">0x200</span> <span class="op">+</span> <span class="ident">align_up</span>(<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="number">512</span>) <span class="kw">as</span> <span class="ident">usize</span>;
             }
         }
     }

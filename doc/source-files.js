@@ -7,6 +7,7 @@ sourcesIndex["bit_field"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["bitflags"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["byteorder"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["cfg_if"] = {"name":"","files":["lib.rs"]};
+sourcesIndex["cpio"] = {"name":"","files":["lib.rs"]};
 sourcesIndex["font8x8"] = {"name":"","files":["basic.rs","block.rs","box.rs","greek.rs","hiragana.rs","latin.rs","legacy.rs","lib.rs","misc.rs","sga.rs","unicode.rs"]};
 sourcesIndex["hashbrown"] = {"name":"","dirs":[{"name":"external_trait_impls","files":["mod.rs"]},{"name":"raw","files":["alloc.rs","bitmask.rs","generic.rs","mod.rs"]}],"files":["lib.rs","macros.rs","map.rs","scopeguard.rs","set.rs"]};
 sourcesIndex["intrusive_collections"] = {"name":"","files":["adapter.rs","key_adapter.rs","lib.rs","link_ops.rs","linked_list.rs","pointer_ops.rs","rbtree.rs","singly_linked_list.rs","unchecked_option.rs","unsafe_ref.rs","xor_linked_list.rs"]};
