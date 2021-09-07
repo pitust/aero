@@ -180,26 +180,6 @@
 <span id="180">180</span>
 <span id="181">181</span>
 <span id="182">182</span>
-<span id="183">183</span>
-<span id="184">184</span>
-<span id="185">185</span>
-<span id="186">186</span>
-<span id="187">187</span>
-<span id="188">188</span>
-<span id="189">189</span>
-<span id="190">190</span>
-<span id="191">191</span>
-<span id="192">192</span>
-<span id="193">193</span>
-<span id="194">194</span>
-<span id="195">195</span>
-<span id="196">196</span>
-<span id="197">197</span>
-<span id="198">198</span>
-<span id="199">199</span>
-<span id="200">200</span>
-<span id="201">201</span>
-<span id="202">202</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -219,112 +199,92 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
-<span class="comment">// use core::mem;</span>
 <span class="kw">use</span> <span class="ident">core::panic::PanicInfo</span>;
 
-<span class="comment">// use xmas_elf::sections::{SectionData, ShType};</span>
-<span class="comment">// use xmas_elf::symbol_table::Entry;</span>
-<span class="comment">// use xmas_elf::ElfFile;</span>
+<span class="kw">use</span> <span class="ident">xmas_elf::sections</span>::{<span class="ident">SectionData</span>, <span class="ident">ShType</span>};
+<span class="kw">use</span> <span class="ident">xmas_elf::symbol_table::Entry</span>;
+<span class="kw">use</span> <span class="ident">xmas_elf::ElfFile</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">logger</span>, <span class="ident">rendy</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::interrupts</span>;
-<span class="comment">// use crate::PHYSICAL_MEMORY_OFFSET;</span>
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwind_stack_trace</span>() {
-    <span class="comment">// let unwind_info = UNWIND_INFO</span>
-    <span class="comment">//     .get()</span>
-    <span class="comment">//     .expect(&quot;Failed to retrieve the unwind information&quot;);</span>
+    <span class="kw">let</span> <span class="ident">unwind_info</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::UNWIND_INFO</span>
+        .<span class="ident">get</span>()
+        .<span class="ident">expect</span>(<span class="string">&quot;failed to retrieve the unwind information&quot;</span>);
 
-    <span class="comment">// let kernel_slice: &amp;[u8] = unsafe {</span>
-    <span class="comment">//     core::slice::from_raw_parts(</span>
-    <span class="comment">//         (unwind_info.kernel_base + PHYSICAL_MEMORY_OFFSET.as_u64()).as_ptr(),</span>
-    <span class="comment">//         unwind_info.kernel_size,</span>
-    <span class="comment">//     )</span>
-    <span class="comment">// };</span>
+    <span class="kw">let</span> <span class="ident">kernel_slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="kw">unsafe</span> {
+        <span class="ident">core::slice::from_raw_parts</span>(
+            (<span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">unwind_info</span>.<span class="ident">kernel_start</span>).<span class="ident">as_ptr</span>(),
+            <span class="ident">unwind_info</span>.<span class="ident">kernel_size</span> <span class="kw">as</span> <span class="ident">usize</span>,
+        )
+    };
 
-    <span class="comment">// let kernel_elf = ElfFile::new(kernel_slice).expect(&quot;Invalid kernel slice&quot;);</span>
-    <span class="comment">// let mut symbol_table = None;</span>
+    <span class="kw">let</span> <span class="ident">kernel_elf</span> <span class="op">=</span> <span class="ident">ElfFile::new</span>(<span class="ident">kernel_slice</span>).<span class="ident">expect</span>(<span class="string">&quot;Invalid kernel slice&quot;</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">symbol_table</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
-    <span class="comment">// for section in kernel_elf.section_iter() {</span>
-    <span class="comment">//     if section.get_type() == Ok(ShType::SymTab) {</span>
-    <span class="comment">//         let section_data = section</span>
-    <span class="comment">//             .get_data(&amp;kernel_elf)</span>
-    <span class="comment">//             .expect(&quot;Failed to get kernel section data information&quot;);</span>
+    <span class="kw">for</span> <span class="ident">section</span> <span class="kw">in</span> <span class="ident">kernel_elf</span>.<span class="ident">section_iter</span>() {
+        <span class="kw">if</span> <span class="ident">section</span>.<span class="ident">get_type</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Ok</span>(<span class="ident">ShType::SymTab</span>) {
+            <span class="kw">let</span> <span class="ident">section_data</span> <span class="op">=</span> <span class="ident">section</span>
+                .<span class="ident">get_data</span>(<span class="kw-2">&amp;</span><span class="ident">kernel_elf</span>)
+                .<span class="ident">expect</span>(<span class="string">&quot;Failed to get kernel section data information&quot;</span>);
 
-    <span class="comment">//         if let SectionData::SymbolTable64(symtab) = section_data {</span>
-    <span class="comment">//             symbol_table = Some(symtab);</span>
-    <span class="comment">//         }</span>
-    <span class="comment">//     }</span>
-    <span class="comment">// }</span>
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">SectionData::SymbolTable64</span>(<span class="ident">symtab</span>) <span class="op">=</span> <span class="ident">section_data</span> {
+                <span class="ident">symbol_table</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">symtab</span>);
+            }
+        }
+    }
 
-    <span class="comment">// let symbol_table = symbol_table.unwrap();</span>
+    <span class="kw">let</span> <span class="ident">symbol_table</span> <span class="op">=</span> <span class="ident">symbol_table</span>.<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rbp</span>: <span class="ident">usize</span>;
 
-    <span class="comment">// let mut rbp: usize;</span>
+    <span class="kw">unsafe</span> {
+        <span class="macro">asm!</span>(<span class="string">&quot;mov {}, rbp&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">rbp</span>);
+    }
 
-    <span class="comment">// unsafe {</span>
-    <span class="comment">//     asm!(&quot;mov {}, rbp&quot;, out(reg) rbp);</span>
-    <span class="comment">// }</span>
+    <span class="comment">// Make sure the RBP is not NULL. If it is then we cannot do the stack unwinding/tracing</span>
+    <span class="comment">// as no frame pointers were emmited in this build. This should only occur if you</span>
+    <span class="comment">// set the field `eliminate-frame-pointer` in the target file to true or manually resetting</span>
+    <span class="comment">// the RBP to prevent backtrace to avoid address leaks (for example when jumping to userland).</span>
+    <span class="comment">// If thats the case we return (resumes the parent function).</span>
+    <span class="kw">if</span> <span class="ident">rbp</span> <span class="op">=</span><span class="op">=</span> <span class="number">0x00</span> {
+        <span class="macro">log::trace!</span>(<span class="string">&quot;&lt;empty backtrace&gt;&quot;</span>);
+        <span class="kw">return</span>;
+    }
 
-    <span class="comment">// /*</span>
-    <span class="comment">//  * Make sure rbp is not NULL. If it is then we cannot do the stack unwinding/tracing</span>
-    <span class="comment">//  * as no frame pointers were emmited in this build. This should only occur if you</span>
-    <span class="comment">//  * set the field `eliminate-frame-pointer` in the target file to true. If thats the case</span>
-    <span class="comment">//  * we return (resumes the parent function).</span>
-    <span class="comment">//  */</span>
-    <span class="comment">// if rbp == 0 {</span>
-    <span class="comment">//     log::error!(&quot;Frame pointers were not emmited in this build&quot;);</span>
-    <span class="comment">//     log::error!(&quot;Unable to unwind the stack&quot;);</span>
+    <span class="macro">log::trace!</span>(<span class="string">&quot;{:━^80}&quot;</span>, <span class="string">&quot; BACKTRACE &quot;</span>);
 
-    <span class="comment">//     return;</span>
-    <span class="comment">// }</span>
+    <span class="kw">for</span> <span class="ident">depth</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">64</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rip_rbp</span>) <span class="op">=</span> <span class="ident">rbp</span>.<span class="ident">checked_add</span>(<span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()) {
+            <span class="kw">let</span> <span class="ident">rip</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="ident">rip_rbp</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">usize</span>) };
 
-    <span class="comment">// log::error!(&quot;Stack backtrace:&quot;);</span>
+            <span class="kw">if</span> <span class="ident">rip</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                <span class="kw">break</span>;
+            }
 
-    <span class="comment">// let mut depth = 0;</span>
+            <span class="kw">unsafe</span> {
+                <span class="ident">rbp</span> <span class="op">=</span> <span class="kw-2">*</span>(<span class="ident">rbp</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">usize</span>);
+            }
 
-    <span class="comment">// /*</span>
-    <span class="comment">//  * The iteration goes up till the maximum of 64 frames.</span>
-    <span class="comment">//  */</span>
-    <span class="comment">// for _ in 0..64 {</span>
-    <span class="comment">//     if let Some(rip_rbp) = rbp.checked_add(mem::size_of::&lt;usize&gt;()) {</span>
-    <span class="comment">//         let rip = unsafe { *(rip_rbp as *const usize) };</span>
+            <span class="kw">for</span> <span class="ident">data</span> <span class="kw">in</span> <span class="ident">symbol_table</span> {
+                <span class="kw">let</span> <span class="ident">st_value</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">value</span>() <span class="kw">as</span> <span class="ident">usize</span>;
+                <span class="kw">let</span> <span class="ident">st_size</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">usize</span>;
 
-    <span class="comment">//         /*</span>
-    <span class="comment">//          * Check if the RIP register is 0 and that means that we are done with the</span>
-    <span class="comment">//          * stack trace so break out of the loop.</span>
-    <span class="comment">//          */</span>
-    <span class="comment">//         if rip == 0 {</span>
-    <span class="comment">//             break;</span>
-    <span class="comment">//         }</span>
+                <span class="kw">if</span> <span class="ident">rip</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">st_value</span> <span class="op">&amp;&amp;</span> <span class="ident">rip</span> <span class="op">&lt;</span> (<span class="ident">st_value</span> <span class="op">+</span> <span class="ident">st_size</span>) {
+                    <span class="kw">let</span> <span class="ident">mangled_name</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">get_name</span>(<span class="kw-2">&amp;</span><span class="ident">kernel_elf</span>).<span class="ident">unwrap_or</span>(<span class="string">&quot;&lt;unknown&gt;&quot;</span>);
+                    <span class="kw">let</span> <span class="ident">demangled_name</span> <span class="op">=</span> <span class="ident">rustc_demangle::demangle</span>(<span class="ident">mangled_name</span>);
 
-    <span class="comment">//         unsafe {</span>
-    <span class="comment">//             rbp = *(rbp as *const usize);</span>
-    <span class="comment">//         }</span>
-
-    <span class="comment">//         for data in symbol_table {</span>
-    <span class="comment">//             let st_value = data.value() as usize;</span>
-    <span class="comment">//             let st_size = data.size() as usize;</span>
-
-    <span class="comment">//             if rip &gt;= st_value &amp;&amp; rip &lt; (st_value + st_size) {</span>
-    <span class="comment">//                 let mangled_name = data.get_name(&amp;kernel_elf).expect(&quot;Oh No!&quot;);</span>
-    <span class="comment">//                 let demangled_name = rustc_demangle::demangle(mangled_name);</span>
-
-    <span class="comment">//                 log::error!(&quot;\t{}:    {:#x} - {}&quot;, depth, rip, demangled_name);</span>
-    <span class="comment">//             }</span>
-    <span class="comment">//         }</span>
-
-    <span class="comment">//         depth += 1;</span>
-    <span class="comment">//     } else {</span>
-    <span class="comment">//         /*</span>
-    <span class="comment">//          * If the checked addition fails that means the RBP has overflowed. So just break</span>
-    <span class="comment">//          * out.</span>
-    <span class="comment">//          */</span>
-    <span class="comment">//         log::error!(&quot;RBP overflowed =&gt; {:#x}&quot;, rbp);</span>
-
-    <span class="comment">//         break;</span>
-    <span class="comment">//     }</span>
-    <span class="comment">// }</span>
+                    <span class="comment">// 1. Print the frame index</span>
+                    <span class="macro">log::trace!</span>(<span class="string">&quot;{:&gt;2}: 0x{:016x} - {}&quot;</span>, <span class="ident">depth</span>, <span class="ident">rip</span>, <span class="ident">demangled_name</span>);
+                    <span class="macro">log::trace!</span>(<span class="string">&quot;    at &lt;unknown&gt;&quot;</span>);
+                }
+            }
+        } <span class="kw">else</span> {
+            <span class="comment">// RBP has been overflowed...</span>
+            <span class="kw">break</span>;
+        }
+    }
 }
 
 <span class="attribute">#[<span class="ident">panic_handler</span>]</span>
