@@ -243,7 +243,7 @@
                 <span class="kw">let</span> <span class="ident">heap_start</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">heap_top</span> <span class="kw">as</span> <span class="kw">_</span>);
                 <span class="kw">let</span> <span class="ident">heap_end</span> <span class="op">=</span> <span class="ident">heap_start</span> <span class="op">+</span> <span class="ident">size</span> <span class="op">-</span> <span class="number">1u64</span>;
 
-                <span class="kw">let</span> <span class="ident">heap_start_page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">heap_start</span>);
+                <span class="kw">let</span> <span class="ident">heap_start_page</span>: <span class="ident">Page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">heap_start</span>);
                 <span class="kw">let</span> <span class="ident">heap_end_page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">heap_end</span>);
 
                 <span class="ident">Page::range_inclusive</span>(<span class="ident">heap_start_page</span>, <span class="ident">heap_end_page</span>)

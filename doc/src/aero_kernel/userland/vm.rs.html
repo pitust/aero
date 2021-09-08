@@ -844,7 +844,7 @@
                 <span class="ident">addr_aligned</span> <span class="op">+</span> <span class="ident">Size4KiB::SIZE</span>
             );
 
-            <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
+            <span class="kw">let</span> <span class="ident">frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
                 .<span class="ident">expect</span>(<span class="string">&quot;Failed to allocate frame for userland mapping&quot;</span>);
 
             <span class="kw">unsafe</span> {
@@ -908,7 +908,7 @@
                     <span class="ident">offset</span>
                 );
 
-                <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
+                <span class="kw">let</span> <span class="ident">frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
                     .<span class="ident">expect</span>(<span class="string">&quot;failed to allocate frame for a private file read&quot;</span>);
 
                 <span class="kw">unsafe</span> {

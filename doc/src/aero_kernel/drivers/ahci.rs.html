@@ -864,6 +864,108 @@
 <span id="864">864</span>
 <span id="865">865</span>
 <span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -889,10 +991,9 @@
 <span class="kw">use</span> <span class="ident">bit_field::BitField</span>;
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::interrupts</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>::{<span class="ident">paging</span>::<span class="kw-2">*</span>, <span class="ident">AddressSpace</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync</span>::{<span class="ident">IrqGuard</span>, <span class="ident">Mutex</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync::Mutex</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::VolatileCell</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::pci</span>::<span class="kw-2">*</span>;
@@ -1037,13 +1138,22 @@
 }
 
 <span class="macro">bitflags::bitflags!</span> {
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HbaCmdHeaderFlags</span>: <span class="ident">u16</span> {
+    <span class="kw">struct</span> <span class="ident">HbaCmdHeaderFlags</span>: <span class="ident">u16</span> {
         <span class="kw">const</span> <span class="ident">A</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>; <span class="comment">// ATAPI</span>
         <span class="kw">const</span> <span class="ident">W</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>; <span class="comment">// Write</span>
         <span class="kw">const</span> <span class="ident">P</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>; <span class="comment">// Prefetchable</span>
         <span class="kw">const</span> <span class="ident">R</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>; <span class="comment">// Reset</span>
         <span class="kw">const</span> <span class="ident">B</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">9</span>; <span class="comment">// Bist</span>
         <span class="kw">const</span> <span class="ident">C</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">10</span>; <span class="comment">// Clear Busy upon R_OK</span>
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">HbaCmdHeaderFlags</span> {
+    <span class="doccomment">/// Sets the length of the command FIS. The HBA uses this field to know the</span>
+    <span class="doccomment">/// length of the FIS it shall send to the device.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">set_command_fis_size</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
+        <span class="self">self</span>.<span class="ident">bits</span>.<span class="ident">set_bits</span>(<span class="number">0</span>..<span class="op">=</span><span class="number">4</span>, <span class="ident">size</span> <span class="kw">as</span> <span class="kw">_</span>);
     }
 }
 
@@ -1079,8 +1189,8 @@
             <span class="kw">let</span> <span class="ident">huge</span> <span class="op">=</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="number">0x1000</span>; <span class="comment">// Check if we want to allocate a huge page?</span>
             <span class="kw">let</span> <span class="ident">data_size</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">size</span>, <span class="number">0x2000</span>);
 
-            <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
-                .<span class="ident">expect</span>(<span class="string">&quot;Failed to allocate frame for DMA request&quot;</span>);
+            <span class="kw">let</span> <span class="ident">frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
+                .<span class="ident">expect</span>(<span class="string">&quot;failed to allocate frame for DMA request&quot;</span>);
 
             <span class="ident">buffer</span>.<span class="ident">push</span>(<span class="ident">DmaBuffer</span> {
                 <span class="ident">start</span>: <span class="ident">frame</span>.<span class="ident">start_address</span>(),
@@ -1141,7 +1251,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u8</span>)]</span>
 <span class="kw">enum</span> <span class="ident">AtaCommand</span> {
     <span class="ident">AtaCommandWriteDma</span> <span class="op">=</span> <span class="number">0xCA</span>,
@@ -1191,7 +1301,7 @@
 }
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HbaMemory</span> {
+<span class="kw">struct</span> <span class="ident">HbaMemory</span> {
     <span class="ident">host_capability</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaCapabilities</span><span class="op">&gt;</span>,
     <span class="ident">global_host_control</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">HbaHostCont</span><span class="op">&gt;</span>,
     <span class="ident">interrupt_status</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
@@ -1208,7 +1318,7 @@
 }
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FisRegH2D</span> {
+<span class="kw">struct</span> <span class="ident">FisRegH2D</span> {
     <span class="ident">fis_type</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">FisType</span><span class="op">&gt;</span>,
     <span class="ident">flags</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="ident">command</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">AtaCommand</span><span class="op">&gt;</span>,
@@ -1231,8 +1341,28 @@
     <span class="ident">_reserved</span>: [<span class="ident">u8</span>; <span class="number">4</span>],
 }
 
+<span class="kw">impl</span> <span class="ident">FisRegH2D</span> {
+    <span class="kw">fn</span> <span class="ident">set_lba</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">lba</span>: <span class="ident">usize</span>) {
+        <span class="macro">debug_assert!</span>(<span class="ident">lba</span> <span class="op">&lt;</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">48</span>, <span class="string">&quot;LBA is limited to 48 bits&quot;</span>);
+
+        <span class="self">self</span>.<span class="ident">lba0</span>.<span class="ident">set</span>(<span class="ident">lba</span> <span class="kw">as</span> <span class="kw">_</span>);
+        <span class="self">self</span>.<span class="ident">lba1</span>.<span class="ident">set</span>((<span class="ident">lba</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="kw">as</span> <span class="kw">_</span>);
+        <span class="self">self</span>.<span class="ident">lba2</span>.<span class="ident">set</span>((<span class="ident">lba</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="kw">_</span>);
+        <span class="self">self</span>.<span class="ident">lba3</span>.<span class="ident">set</span>((<span class="ident">lba</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>) <span class="kw">as</span> <span class="kw">_</span>);
+        <span class="self">self</span>.<span class="ident">lba4</span>.<span class="ident">set</span>((<span class="ident">lba</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="kw">_</span>);
+        <span class="self">self</span>.<span class="ident">lba5</span>.<span class="ident">set</span>((<span class="ident">lba</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">40</span>) <span class="kw">as</span> <span class="kw">_</span>);
+    }
+
+    <span class="kw">fn</span> <span class="ident">set_command</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">yes</span>: <span class="ident">bool</span>) {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">old_flags</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">get</span>();
+        <span class="ident">old_flags</span>.<span class="ident">set_bit</span>(<span class="number">7</span>, <span class="ident">yes</span>);
+
+        <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">set</span>(<span class="ident">old_flags</span>);
+    }
+}
+
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HbaCmdTbl</span> {
+<span class="kw">struct</span> <span class="ident">HbaCmdTbl</span> {
     <span class="ident">cfis</span>: [<span class="ident">u8</span>; <span class="number">64</span>],
     <span class="ident">acmd</span>: [<span class="ident">u8</span>; <span class="number">16</span>],
     <span class="ident">_reserved</span>: [<span class="ident">u8</span>; <span class="number">48</span>],
@@ -1251,15 +1381,38 @@
 }
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HbaPrdtEntry</span> {
+<span class="kw">struct</span> <span class="ident">HbaPrdtEntry</span> {
     <span class="ident">dba</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">PhysAddr</span><span class="op">&gt;</span>,
     <span class="ident">_reserved</span>: <span class="ident">u32</span>,
     <span class="ident">flags</span>: <span class="ident">VolatileCell</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
 }
 
+<span class="kw">impl</span> <span class="ident">HbaPrdtEntry</span> {
+    <span class="doccomment">/// Sets the data byte count that indicates the length in bytes of the data block.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">set_data_byte_count</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">old_flags</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">get</span>();
+        <span class="ident">old_flags</span>.<span class="ident">set_bits</span>(<span class="number">0</span>..<span class="number">21</span>, <span class="ident">count</span> <span class="kw">as</span> <span class="kw">_</span>);
+
+        <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">set</span>(<span class="ident">old_flags</span>);
+    }
+
+    <span class="doccomment">/// Sets the interrupt on completion bit which indicates that hardware should</span>
+    <span class="doccomment">/// assert an interrupt when the data block for this entry has transferred. The</span>
+    <span class="doccomment">/// HBA shall set the PxIS.DPS bit after completing the data transfer and if enabled,</span>
+    <span class="doccomment">/// generate an interrupt.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">set_interrupt_on_completion</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">yes</span>: <span class="ident">bool</span>) {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">old_flags</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">get</span>();
+        <span class="ident">old_flags</span>.<span class="ident">set_bit</span>(<span class="number">31</span>, <span class="ident">yes</span>);
+
+        <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">set</span>(<span class="ident">old_flags</span>);
+    }
+}
+
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u8</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">FisType</span> {
+<span class="kw">enum</span> <span class="ident">FisType</span> {
     <span class="ident">RegH2D</span> <span class="op">=</span> <span class="number">0x27</span>,
 }
 
@@ -1345,46 +1498,71 @@
         <span class="kw">let</span> <span class="ident">clb_addr</span> <span class="op">=</span> <span class="ident">clb_mapped</span> <span class="op">+</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HbaCmdHeader</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="ident">index</span>;
 
         <span class="comment">// Cast it as [`HbaCmdHeader`] and return a mutable reference to it.</span>
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">clb_addr</span>).<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">HbaCmdHeader</span><span class="op">&gt;</span>() }
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">clb_addr</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">HbaCmdHeader</span><span class="op">&gt;</span>()) }
     }
 
     <span class="doccomment">/// This function is responsible for allocating space for command lists,</span>
     <span class="doccomment">/// tables, etc.. for a given this instance of HBA port.</span>
-    <span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">stop_cmd</span>(); <span class="comment">// Stop the command engine before starting the port</span>
 
-        <span class="comment">// Allocate area for for the command list.</span>
-        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
-            .<span class="ident">expect</span>(<span class="string">&quot;Failed to allocate space for the command list&quot;</span>);
+        <span class="comment">/*
+         * size = sizeof(CTB) * 32 == 4KiB * 2 (so we need to allocate
+         * two 4KiB size frames).
+         *
+         * We cannot directly allocate a huge page for the command list, because then
+         * we will end up wasting 0x1fe000 KiB of memory.
+         *
+         * TODO(Andy-Python-Programmer): We should find a chunk of memory that is the size of
+         * 2 contiguous 4KiB sized frames. We should also make the current frame allocator (which
+         * is a bump allocator) to be a buddy allocator instead which will be a much smarter approach
+         * to this issue since, it keeps track of so called &quot;buddies&quot; of different sizes. Which then
+         * we can have a buddy sized 2KiB :^).
+         */</span>
+        <span class="kw">let</span> <span class="ident">frame_low</span>: <span class="ident">PhysFrame</span> <span class="op">=</span>
+            <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }.<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>;
 
-        <span class="self">self</span>.<span class="ident">clb</span>.<span class="ident">set</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>());
+        <span class="kw">let</span> <span class="ident">frame_high</span>: <span class="ident">PhysFrame</span> <span class="op">=</span>
+            <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }.<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>;
 
-        <span class="comment">// Allocate area for FISs.</span>
-        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
-            .<span class="ident">expect</span>(<span class="string">&quot;Failed to allocate space for the FISs&quot;</span>);
+        <span class="kw">let</span> <span class="ident">low_page</span>: <span class="ident">Page</span> <span class="op">=</span>
+            <span class="ident">Page::containing_address</span>(<span class="ident"><span class="kw">crate</span>::IO_VIRTUAL_BASE</span> <span class="op">+</span> <span class="ident">frame_low</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>());
 
-        <span class="comment">// Set the address that received FISes will be copied to.</span>
-        <span class="self">self</span>.<span class="ident">fb</span>.<span class="ident">set</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>());
+        <span class="kw">let</span> <span class="ident">high_page</span>: <span class="ident">Page</span> <span class="op">=</span>
+            <span class="ident">Page::containing_address</span>(<span class="ident"><span class="kw">crate</span>::IO_VIRTUAL_BASE</span> <span class="op">+</span> <span class="ident">frame_high</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>());
+
+        <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags::PRESENT</span>
+            <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>
+            <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
+            <span class="op">|</span> <span class="ident">PageTableFlags::NO_CACHE</span>;
+
+        <span class="kw">unsafe</span> { <span class="ident">offset_table</span>.<span class="ident">map_to</span>(<span class="ident">low_page</span>, <span class="ident">frame_low</span>, <span class="ident">flags</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>) }<span class="question-mark">?</span>.<span class="ident">flush</span>();
+        <span class="kw">unsafe</span> { <span class="ident">offset_table</span>.<span class="ident">map_to</span>(<span class="ident">high_page</span>, <span class="ident">frame_high</span>, <span class="ident">flags</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>) }<span class="question-mark">?</span>.<span class="ident">flush</span>();
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">32</span> {
-            <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
-                .<span class="ident">expect</span>(<span class="string">&quot;Here is a nickel kid, go and buy your self a real computer&quot;</span>);
-
             <span class="kw">let</span> <span class="ident">command_header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd_header_at</span>(<span class="ident">i</span>);
 
             <span class="comment">// 8 prdt entries per command table</span>
             <span class="comment">// 256 bytes per command table, 64 + 16 + 48 + 16 * 8</span>
             <span class="ident">command_header</span>.<span class="ident">prdtl</span>.<span class="ident">set</span>(<span class="number">8</span>);
             <span class="ident">command_header</span>.<span class="ident">prdbc</span>.<span class="ident">set</span>(<span class="number">0</span>);
-            <span class="ident">command_header</span>.<span class="ident">ctb</span>.<span class="ident">set</span>(<span class="ident">frame</span>.<span class="ident">start_address</span>());
+
+            <span class="kw">if</span> <span class="ident">i</span> <span class="op">&lt;</span> <span class="number">16</span> {
+                <span class="ident">command_header</span>.<span class="ident">ctb</span>.<span class="ident">set</span>(<span class="ident">frame_low</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="number">256</span> <span class="op">*</span> <span class="ident">i</span>);
+            } <span class="kw">else</span> {
+                <span class="ident">command_header</span>.<span class="ident">ctb</span>.<span class="ident">set</span>(<span class="ident">frame_high</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="number">256</span> <span class="op">*</span> <span class="ident">i</span>);
+            }
         }
 
+        <span class="self">self</span>.<span class="ident">ie</span>.<span class="ident">set</span>(<span class="ident">HbaPortIE::all</span>());
         <span class="self">self</span>.<span class="ident">start_cmd</span>(); <span class="comment">// Start the command engine...</span>
+
+        <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">fn</span> <span class="ident">start_cmd</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">while</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">get</span>().<span class="ident">contains</span>(<span class="ident">HbaPortCmd::CR</span>) {
-            <span class="ident">interrupts::pause</span>();
+            <span class="ident">core::hint::spin_loop</span>();
         }
 
         <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">get</span>() <span class="op">|</span> (<span class="ident">HbaPortCmd::FRE</span> <span class="op">|</span> <span class="ident">HbaPortCmd::ST</span>);
@@ -1398,11 +1576,15 @@
         <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">set</span>(<span class="ident">cmd</span>);
 
         <span class="kw">while</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">get</span>().<span class="ident">intersects</span>(<span class="ident">HbaPortCmd::FR</span> <span class="op">|</span> <span class="ident">HbaPortCmd::CR</span>) {
-            <span class="ident">interrupts::pause</span>();
+            <span class="ident">core::hint::spin_loop</span>();
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">probe</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">port</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">probe</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
+        <span class="ident">port</span>: <span class="ident">usize</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ssts</span>.<span class="ident">get</span>();
 
         <span class="kw">let</span> <span class="ident">ipm</span> <span class="op">=</span> <span class="ident">status</span>.<span class="ident">interface_power_management</span>();
@@ -1411,13 +1593,13 @@
         <span class="comment">// Check if the port is active and is present. If thats the case</span>
         <span class="comment">// we can start the AHCI port.</span>
         <span class="kw">if</span> <span class="kw">let</span> (<span class="ident">HbaPortDd::PresentAndE</span>, <span class="ident">HbaPortIpm::Active</span>) <span class="op">=</span> (<span class="ident">dd</span>, <span class="ident">ipm</span>) {
-            <span class="macro">log::trace!</span>(<span class="string">&quot;Enabling AHCI port {}&quot;</span>, <span class="ident">port</span>);
+            <span class="macro">log::trace!</span>(<span class="string">&quot;enabling AHCI port {}&quot;</span>, <span class="ident">port</span>);
 
-            <span class="self">self</span>.<span class="ident">start</span>();
-            <span class="bool-val">true</span>
+            <span class="self">self</span>.<span class="ident">start</span>(<span class="ident">offset_table</span>)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)
         } <span class="kw">else</span> {
             <span class="comment">// Else we can&#39;t enable the port.</span>
-            <span class="bool-val">false</span>
+            <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>)
         }
     }
 
@@ -1432,6 +1614,8 @@
         <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd_header_at</span>(<span class="ident">slot</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">header</span>.<span class="ident">flags</span>.<span class="ident">get</span>();
 
+        <span class="ident">header</span>.<span class="ident">_reserved</span>.<span class="ident">fill</span>(<span class="number">00</span>);
+
         <span class="kw">if</span> <span class="ident">command</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AtaCommand::AtaCommandWriteDmaExt</span> <span class="op">|</span><span class="op">|</span> <span class="ident">command</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AtaCommand::AtaCommandWriteDma</span>
         {
             <span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">HbaCmdHeaderFlags::W</span>); <span class="comment">// If its a write command add the write flag.</span>
@@ -1440,59 +1624,60 @@
         }
 
         <span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">HbaCmdHeaderFlags::P</span> <span class="op">|</span> <span class="ident">HbaCmdHeaderFlags::C</span>);
-        <span class="ident">flags</span>
-            .<span class="ident">bits</span>
-            .<span class="ident">set_bits</span>(<span class="number">0</span>..<span class="op">=</span><span class="number">4</span>, (<span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">FisRegH2D</span><span class="op">&gt;</span>() <span class="op">/</span> <span class="number">4</span>) <span class="kw">as</span> <span class="ident">u16</span>);
+        <span class="ident">flags</span>.<span class="ident">set_command_fis_size</span>(<span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">FisRegH2D</span><span class="op">&gt;</span>() <span class="op">/</span> <span class="number">4</span>);
 
         <span class="ident">header</span>.<span class="ident">flags</span>.<span class="ident">set</span>(<span class="ident">flags</span>); <span class="comment">// Update command header flags.</span>
 
         <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> ((<span class="ident">count</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">4</span>) <span class="op">+</span> <span class="number">1</span>;
         <span class="ident">header</span>.<span class="ident">prdtl</span>.<span class="ident">set</span>(<span class="ident">length</span> <span class="kw">as</span> <span class="kw">_</span>); <span class="comment">// Update the number of PRD entries.</span>
 
-        <span class="kw">let</span> <span class="ident">command_table_addr</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">header</span>.<span class="ident">ctb</span>.<span class="ident">get</span>().<span class="ident">as_u64</span>() };
-
+        <span class="kw">let</span> <span class="ident">command_table_addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::IO_VIRTUAL_BASE</span> <span class="op">+</span> <span class="ident">header</span>.<span class="ident">ctb</span>.<span class="ident">get</span>().<span class="ident">as_u64</span>();
         <span class="kw">let</span> <span class="ident">command_table</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">command_table_addr</span>).<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">HbaCmdTbl</span><span class="op">&gt;</span>() };
 
         <span class="kw">for</span> <span class="ident">pri</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">length</span> {
             <span class="kw">let</span> <span class="ident">prdt</span> <span class="op">=</span> <span class="ident">command_table</span>.<span class="ident">prdt_entry_mut</span>(<span class="ident">pri</span>);
 
             <span class="ident">prdt</span>.<span class="ident">dba</span>.<span class="ident">set</span>(<span class="ident">buffer</span>[<span class="ident">pri</span>].<span class="ident">start</span>);
-            <span class="ident">prdt</span>.<span class="ident">flags</span>.<span class="ident">set</span>(
-                <span class="kw-2">*</span><span class="ident">prdt</span>
-                    .<span class="ident">flags</span>
-                    .<span class="ident">get</span>()
-                    .<span class="ident">set_bits</span>(<span class="number">0</span>..<span class="op">=</span><span class="number">21</span>, (<span class="ident">buffer</span>[<span class="ident">pri</span>].<span class="ident">data_size</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="kw">_</span>),
-            );
-
-            <span class="comment">// TODO: Set interrupt on completion...</span>
+            <span class="ident">prdt</span>.<span class="ident">set_data_byte_count</span>(<span class="ident">buffer</span>[<span class="ident">pri</span>].<span class="ident">data_size</span> <span class="op">-</span> <span class="number">1</span>);
+            <span class="ident">prdt</span>.<span class="ident">set_interrupt_on_completion</span>(<span class="ident">pri</span> <span class="op">=</span><span class="op">=</span> <span class="ident">length</span> <span class="op">-</span> <span class="number">1</span>);
         }
 
         <span class="kw">let</span> <span class="ident">fis</span> <span class="op">=</span> <span class="ident">command_table</span>.<span class="ident">cfis_as_h2d_mut</span>();
 
-        <span class="ident">fis</span>.<span class="ident">fis_type</span>.<span class="ident">set</span>(<span class="ident">FisType::RegH2D</span>);
-        <span class="ident">fis</span>.<span class="ident">flags</span>.<span class="ident">set</span>(<span class="number">0x00</span>);
+        <span class="ident">fis</span>.<span class="ident">control</span>.<span class="ident">set</span>(<span class="number">0x00</span>);
+        <span class="ident">fis</span>.<span class="ident">icc</span>.<span class="ident">set</span>(<span class="number">0x00</span>);
         <span class="ident">fis</span>.<span class="ident">featurel</span>.<span class="ident">set</span>(<span class="number">0x00</span>);
         <span class="ident">fis</span>.<span class="ident">featureh</span>.<span class="ident">set</span>(<span class="number">0x00</span>);
-        <span class="ident">fis</span>.<span class="ident">lba0</span>.<span class="ident">set</span>(<span class="ident">sector</span> <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="ident">fis</span>.<span class="ident">lba1</span>.<span class="ident">set</span>((<span class="ident">sector</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="ident">fis</span>.<span class="ident">lba2</span>.<span class="ident">set</span>((<span class="ident">sector</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="ident">fis</span>.<span class="ident">lba3</span>.<span class="ident">set</span>((<span class="ident">sector</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>) <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="ident">fis</span>.<span class="ident">lba4</span>.<span class="ident">set</span>((<span class="ident">sector</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="ident">fis</span>.<span class="ident">lba5</span>.<span class="ident">set</span>((<span class="ident">sector</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">40</span>) <span class="kw">as</span> <span class="ident">u8</span>);
-        <span class="ident">fis</span>.<span class="ident">device</span>.<span class="ident">set</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>);
-        <span class="ident">fis</span>.<span class="ident">count</span>.<span class="ident">set</span>(<span class="ident">count</span> <span class="kw">as</span> <span class="kw">_</span>);
-        <span class="ident">fis</span>.<span class="ident">icc</span>.<span class="ident">set</span>(<span class="number">0x00</span>);
-        <span class="ident">fis</span>.<span class="ident">control</span>.<span class="ident">set</span>(<span class="number">0x00</span>);
+        <span class="ident">fis</span>.<span class="ident">_reserved</span>.<span class="ident">fill</span>(<span class="number">0x00</span>);
 
-        <span class="ident">fis</span>.<span class="ident">flags</span>.<span class="ident">set</span>(<span class="kw-2">*</span><span class="ident">fis</span>.<span class="ident">flags</span>.<span class="ident">get</span>().<span class="ident">set_bit</span>(<span class="number">7</span>, <span class="bool-val">true</span>));
+        <span class="ident">fis</span>.<span class="ident">fis_type</span>.<span class="ident">set</span>(<span class="ident">FisType::RegH2D</span>);
+        <span class="ident">fis</span>.<span class="ident">device</span>.<span class="ident">set</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>);
+        <span class="ident">fis</span>.<span class="ident">command</span>.<span class="ident">set</span>(<span class="ident">command</span>);
+        <span class="ident">fis</span>.<span class="ident">count</span>.<span class="ident">set</span>(<span class="ident">count</span> <span class="kw">as</span> <span class="kw">_</span>);
+
+        <span class="ident">fis</span>.<span class="ident">set_lba</span>(<span class="ident">sector</span>);
+        <span class="ident">fis</span>.<span class="ident">set_command</span>(<span class="bool-val">true</span>);
 
         <span class="comment">// Issue the command!</span>
         <span class="self">self</span>.<span class="ident">ci</span>.<span class="ident">set</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">slot</span>);
 
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spin</span> <span class="op">=</span> <span class="number">100</span>;
+
+        <span class="comment">// Make sure the port is not busy.</span>
+        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">tfd</span>.<span class="ident">get</span>() <span class="op">&amp;</span> <span class="number">0x80</span> <span class="op">|</span> <span class="number">0x08</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">spin</span> <span class="op">&gt;</span> <span class="number">0</span> {
+            <span class="ident">core::hint::spin_loop</span>();
+            <span class="ident">spin</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
+        }
+
+        <span class="kw">if</span> <span class="ident">spin</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="macro">log::warn!</span>(<span class="string">&quot;ahci: port hung&quot;</span>);
+            <span class="kw">return</span>;
+        }
+
         <span class="comment">// Wait for the command to complete.</span>
-        <span class="kw">loop</span> {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">ci</span>.<span class="ident">get</span>() <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">slot</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">ci</span>.<span class="ident">get</span>() <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">slot</span>) <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>.<span class="ident">get</span>().<span class="ident">contains</span>(<span class="ident">HbaPortIS::TFES</span>) {
+                <span class="macro">log::warn!</span>(<span class="string">&quot;ahci: disk error (serr={:#x})&quot;</span>, <span class="self">self</span>.<span class="ident">serr</span>.<span class="ident">get</span>());
                 <span class="kw">break</span>;
             }
         }
@@ -1586,8 +1771,6 @@
 
         <span class="comment">// Run request and wait for it to complete.</span>
         <span class="kw">while</span> <span class="ident">offset</span> <span class="op">&lt;</span> <span class="ident">request</span>.<span class="ident">count</span> {
-            <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">IrqGuard::new</span>(); <span class="comment">// We do not want to be interrupted while running the request.</span>
-
             <span class="ident">offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">run_request</span>(<span class="ident">request</span>.<span class="ident">clone</span>(), <span class="ident">offset</span>);
         }
 
@@ -1619,7 +1802,10 @@
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="self">self</span>.<span class="ident">hba</span>.<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HbaMemory</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">start_hba</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">start_hba</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hba</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">hba_mem</span>();
         <span class="kw">let</span> <span class="ident">current_flags</span> <span class="op">=</span> <span class="ident">hba</span>.<span class="ident">global_host_control</span>.<span class="ident">get</span>();
 
@@ -1631,7 +1817,7 @@
             <span class="kw">if</span> <span class="ident">pi</span>.<span class="ident">get_bit</span>(<span class="ident">i</span>) {
                 <span class="kw">let</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">hba</span>.<span class="ident">port_mut</span>(<span class="ident">i</span>);
 
-                <span class="kw">if</span> <span class="ident">port</span>.<span class="ident">probe</span>(<span class="ident">i</span>) {
+                <span class="kw">if</span> <span class="ident">port</span>.<span class="ident">probe</span>(<span class="ident">offset_table</span>, <span class="ident">i</span>)<span class="question-mark">?</span> {
                     <span class="comment">// Get the address of the HBA port.</span>
                     <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">port</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw">_</span>);
 
@@ -1649,6 +1835,8 @@
                 }
             }
         }
+
+        <span class="prelude-val">Ok</span>(())
     }
 
     <span class="doccomment">/// This function is responsible for enabling bus mastering and add AHCI</span>
@@ -1659,6 +1847,9 @@
 
     <span class="doccomment">/// This function is responsible for initializing and starting the AHCI driver.</span>
     <span class="kw">fn</span> <span class="ident">start_driver</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">PciHeader</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">address_space</span> <span class="op">=</span> <span class="ident">AddressSpace::this</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="ident">address_space</span>.<span class="ident">offset_page_table</span>();
+
         <span class="kw">let</span> <span class="ident">abar</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">header</span>.<span class="ident">get_bar</span>(<span class="number">5</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to get ABAR&quot;</span>) };
 
         <span class="kw">let</span> (<span class="ident">abar_address</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">abar</span> {
@@ -1667,9 +1858,22 @@
             <span class="ident">Bar::IO</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;ABAR is in port space o_O&quot;</span>),
         };
 
-        <span class="self">self</span>.<span class="ident">hba</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">abar_address</span> }; <span class="comment">// Update the HBA address.</span>
+        <span class="self">self</span>.<span class="ident">hba</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::IO_VIRTUAL_BASE</span> <span class="op">+</span> <span class="ident">abar_address</span>; <span class="comment">// Update the HBA address.</span>
 
-        <span class="self">self</span>.<span class="ident">start_hba</span>();
+        <span class="kw">unsafe</span> {
+            <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
+                <span class="ident">Page::containing_address</span>(<span class="self">self</span>.<span class="ident">hba</span>),
+                <span class="ident">PhysFrame::containing_address</span>(<span class="ident">PhysAddr::new</span>(<span class="ident">abar_address</span>)),
+                <span class="ident">PageTableFlags::PRESENT</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::NO_CACHE</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>
+                    <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>,
+                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
+            )
+        }<span class="question-mark">?</span>
+        .<span class="ident">flush</span>();
+
+        <span class="self">self</span>.<span class="ident">start_hba</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">enable_interrupts</span>(<span class="ident">header</span>);
 
         <span class="prelude-val">Ok</span>(())
@@ -1697,8 +1901,8 @@
 
         <span class="comment">// Temporary testing...</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">port</span>) <span class="op">=</span> <span class="ident">get_ahci</span>().<span class="ident">inner</span>.<span class="ident">lock</span>().<span class="ident">ports</span>[<span class="number">0</span>].<span class="ident">clone</span>() {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">512</span>];
-            <span class="ident">port</span>.<span class="ident">read</span>(<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>);
+            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0u8</span>; <span class="number">512</span>];
+            <span class="ident">port</span>.<span class="ident">read</span>(<span class="number">0</span>, <span class="ident">buffer</span>);
             <span class="macro">log::info!</span>(<span class="string">&quot;Read sector 0: {:?}&quot;</span>, <span class="ident">buffer</span>);
         }
     }
