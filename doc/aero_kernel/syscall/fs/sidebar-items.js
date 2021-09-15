@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["chdir",""],["close",""],["getcwd",""],["getdents",""],["open",""],["read",""],["write",""]]});
+initSidebarItems({"fn":[["chdir",""],["close",""],["getcwd",""],["getdents",""],["mkdir",""],["open",""],["read",""],["write",""]]});

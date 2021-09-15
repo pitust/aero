@@ -528,17 +528,17 @@
     <span class="ident">mem::alloc::init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded heap&quot;</span>);
 
-    <span class="ident">tls::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded TLS&quot;</span>);
-
-    <span class="ident">arch::gdt::init</span>(<span class="ident">stack_top_addr</span>);
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
-
     <span class="ident">interrupts::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded IDT&quot;</span>);
 
     <span class="ident">acpi::init</span>(<span class="ident">rsdp_address</span>).<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
+
+    <span class="ident">tls::init</span>();
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded TLS&quot;</span>);
+
+    <span class="ident">arch::gdt::init</span>(<span class="ident">stack_top_addr</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
 
     <span class="ident">time::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PIT&quot;</span>);
