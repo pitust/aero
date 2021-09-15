@@ -146,6 +146,38 @@
 <span id="146">146</span>
 <span id="147">147</span>
 <span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -207,18 +239,19 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_TPR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x808</span>;
 
 <span class="doccomment">/// Wrapper function to the `outb` assembly instruction used to do the</span>
-<span class="doccomment">/// low level port output.</span>
+<span class="doccomment">/// 8-bit low level port output.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">outb</span>(<span class="ident">port</span>: <span class="ident">u16</span>, <span class="ident">value</span>: <span class="ident">u8</span>) {
     <span class="macro">asm!</span>(
        <span class="string">&quot;out dx, al&quot;</span>,
        <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
        <span class="kw">in</span>(<span class="string">&quot;al&quot;</span>) <span class="ident">value</span>,
+       <span class="ident">options</span>(<span class="ident">preserves_flags</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>)
     );
 }
 
 <span class="doccomment">/// Wrapper function to the `inb` assembly instruction used to do the</span>
-<span class="doccomment">/// low level port input.</span>
+<span class="doccomment">/// 8-bit low level port input.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inb</span>(<span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
     <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">u8</span>;
@@ -227,9 +260,22 @@
         <span class="string">&quot;in al, dx&quot;</span>,
         <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
         <span class="ident">out</span>(<span class="string">&quot;al&quot;</span>) <span class="ident">ret</span>,
+        <span class="ident">options</span>(<span class="ident">preserves_flags</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>)
     );
 
     <span class="ident">ret</span>
+}
+
+<span class="doccomment">/// Wrapper function to the `outw` assembly instruction used to do the</span>
+<span class="doccomment">/// 16-bit low level port output.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">outw</span>(<span class="ident">port</span>: <span class="ident">u16</span>, <span class="ident">value</span>: <span class="ident">u16</span>) {
+    <span class="macro">asm!</span>(
+        <span class="string">&quot;out dx, eax&quot;</span>,
+        <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
+        <span class="kw">in</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">value</span>,
+        <span class="ident">options</span>(<span class="ident">preserves_flags</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>)
+    );
 }
 
 <span class="doccomment">/// Wrapper function to the `outl` assembly instruction used to do the</span>
@@ -240,11 +286,12 @@
         <span class="string">&quot;out dx, eax&quot;</span>,
         <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
         <span class="kw">in</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">value</span>,
+        <span class="ident">options</span>(<span class="ident">preserves_flags</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>)
     );
 }
 
 <span class="doccomment">/// Wrapper function to the `inl` assembly instruction used to do the</span>
-<span class="doccomment">/// low level port input.</span>
+<span class="doccomment">/// 32-bit low level port input.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inl</span>(<span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">u32</span>;
@@ -253,6 +300,23 @@
         <span class="string">&quot;in eax, dx&quot;</span>,
         <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
         <span class="ident">out</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">ret</span>,
+        <span class="ident">options</span>(<span class="ident">preserves_flags</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>)
+    );
+
+    <span class="ident">ret</span>
+}
+
+<span class="doccomment">/// Wrapper function to the `inw` assembly instruction used to do the</span>
+<span class="doccomment">/// 16-bit low level port input.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inw</span>(<span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">u16</span>;
+
+    <span class="macro">asm!</span>(
+        <span class="string">&quot;in eax, dx&quot;</span>,
+        <span class="ident">out</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">ret</span>,
+        <span class="kw">in</span>(<span class="string">&quot;dx&quot;</span>) <span class="ident">port</span>,
+        <span class="ident">options</span>(<span class="ident">preserves_flags</span>, <span class="ident">nomem</span>, <span class="ident">nostack</span>)
     );
 
     <span class="ident">ret</span>
