@@ -184,6 +184,11 @@
 <span id="184">184</span>
 <span id="185">185</span>
 <span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -212,7 +217,7 @@
 
 <span class="kw">use</span> <span class="ident">spin::RwLock</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache::DirCacheItem</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>::{<span class="ident">DirCacheItem</span>, <span class="ident">INodeCacheItem</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::FileSystemError</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FileHandle</span> {
@@ -250,6 +255,11 @@
         <span class="self">self</span>.<span class="ident">offset</span>.<span class="ident">fetch_add</span>(<span class="ident">new_offset</span>, <span class="ident">Ordering::SeqCst</span>);
 
         <span class="prelude-val">Ok</span>(<span class="ident">new_offset</span>)
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">INodeCacheItem</span> {
+        <span class="self">self</span>.<span class="ident">inode</span>.<span class="ident">inode</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_dents</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
