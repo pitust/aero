@@ -172,6 +172,12 @@
 <span id="172">172</span>
 <span id="173">173</span>
 <span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -222,7 +228,10 @@
     <span class="doccomment">/// Returns a pointer to newly-allocated memory, or null to indicate</span>
     <span class="doccomment">/// allocation failure.</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">heap</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">lock</span>();
+        <span class="comment">// SAFETY: We we need to be careful to not cause a deadlock as the interrupt</span>
+        <span class="comment">// handlers utilize the heap and might interrupt an in-progress allocation. So, we</span>
+        <span class="comment">// lock the interrupts during the allocation.</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">heap</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">lock_irq</span>();
 
         <span class="ident">heap</span>.<span class="ident">allocate_first_fit</span>(<span class="ident">layout</span>).<span class="ident">or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">heap_top</span> <span class="op">=</span> <span class="ident">heap</span>.<span class="ident">top</span>();
@@ -307,8 +316,11 @@
     }
 
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
+        <span class="comment">// SAFETY: We we need to be careful to not cause a deadlock as the interrupt</span>
+        <span class="comment">// handlers utilize the heap and might interrupt an in-progress de-allocation. So, we</span>
+        <span class="comment">// lock the interrupts during the de-allocation.</span>
         <span class="self">self</span>.<span class="number">0</span>
-            .<span class="ident">lock</span>()
+            .<span class="ident">lock_irq</span>()
             .<span class="ident">deallocate</span>(<span class="ident">NonNull::new_unchecked</span>(<span class="ident">ptr</span>), <span class="ident">layout</span>)
     }
 }
