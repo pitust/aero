@@ -113,6 +113,9 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -134,6 +137,7 @@
 
 <span class="kw">use</span> <span class="ident">aero_syscall</span>::{<span class="ident">AeroSyscallError</span>, <span class="ident">MMapFlags</span>, <span class="ident">MMapProt</span>};
 
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging::VirtAddr</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
 
@@ -222,8 +226,10 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shutdown</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="ident"><span class="kw">crate</span>::fs::cache::clear_inode_cache</span>();
-    <span class="ident"><span class="kw">crate</span>::fs::cache::clear_dir_cache</span>();
+    <span class="ident">fs::cache::dcache</span>().<span class="ident">log</span>();
+
+    <span class="ident">fs::cache::clear_inode_cache</span>();
+    <span class="ident">fs::cache::clear_dir_cache</span>();
 
     <span class="comment">// TODO</span>
     <span class="kw">loop</span> {}

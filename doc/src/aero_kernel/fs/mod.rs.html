@@ -278,63 +278,6 @@
 <span id="278">278</span>
 <span id="279">279</span>
 <span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
-<span id="328">328</span>
-<span id="329">329</span>
-<span id="330">330</span>
-<span id="331">331</span>
-<span id="332">332</span>
-<span id="333">333</span>
-<span id="334">334</span>
-<span id="335">335</span>
-<span id="336">336</span>
-<span id="337">337</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -502,13 +445,8 @@
     }
 
     <span class="doccomment">/// Helper function that returns the parent path and the base name</span>
-    <span class="doccomment">/// of the path. Returns [`None`] if the path terminates in a root</span>
-    <span class="doccomment">/// prefix.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parent_and_basename</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>)<span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;/&quot;</span> {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
-        }
-
+    <span class="doccomment">/// of the path.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parent_and_basename</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">slash_index</span>) <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">rfind</span>(<span class="string">&#39;/&#39;</span>) {
             <span class="kw">let</span> <span class="ident">parent_dir</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">slash_index</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="ident">Path::new</span>(<span class="string">&quot;/&quot;</span>)
@@ -517,10 +455,10 @@
             };
 
             <span class="kw">let</span> <span class="ident">basename</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[(<span class="ident">slash_index</span> <span class="op">+</span> <span class="number">1</span>)..];
-            <span class="prelude-val">Some</span>((<span class="ident">parent_dir</span>, <span class="ident">basename</span>))
+            (<span class="ident">parent_dir</span>, <span class="ident">basename</span>)
         } <span class="kw">else</span> {
             <span class="comment">// A relative path without any slashes.</span>
-            <span class="prelude-val">Some</span>((<span class="ident">Path::new</span>(<span class="string">&quot;&quot;</span>), <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>))
+            (<span class="ident">Path::new</span>(<span class="string">&quot;&quot;</span>), <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>)
         }
     }
 }
@@ -603,65 +541,13 @@
     <span class="ident">ROOT_DIR</span>.<span class="ident">get</span>().<span class="ident">expect</span>(<span class="string">&quot;How&#39;s this possible?&quot;</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">modules</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleModuleTag</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">cache::init</span>();
 
     <span class="kw">let</span> <span class="ident">filesystem</span> <span class="op">=</span> <span class="ident">RamFs::new</span>();
 
     <span class="ident">ROOT_FS</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">filesystem</span>.<span class="ident">clone</span>());
     <span class="ident">ROOT_DIR</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">filesystem</span>.<span class="ident">root_dir</span>().<span class="ident">clone</span>());
-
-    <span class="kw">for</span> <span class="ident">module</span> <span class="kw">in</span> <span class="ident">modules</span>.<span class="ident">iter</span>() {
-        <span class="comment">// Note: Loading initramfs may be slower if running with legacy BIOS since it loads</span>
-        <span class="comment">// the archive in 64K chunks and has to switch back to real mode each time.</span>
-        <span class="kw">if</span> <span class="ident">module</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;initramfs&quot;</span> {
-            <span class="macro">log::info!</span>(
-                <span class="string">&quot;initramfs: unpacking at (address={:#x}, size={:#x})...&quot;</span>,
-                <span class="ident">module</span>.<span class="ident">start</span>,
-                <span class="ident">module</span>.<span class="ident">size</span>()
-            );
-
-            <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">module</span>.<span class="ident">start</span>;
-                <span class="ident">core::slice::from_raw_parts</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">addr</span>.<span class="ident">as_ptr</span>(), <span class="ident">module</span>.<span class="ident">size</span>() <span class="kw">as</span> <span class="ident">usize</span>)
-            };
-
-            <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">cpio::CpioNewcReader::new</span>(<span class="ident">stream</span>);
-
-            <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">reader</span> {
-                <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">or</span>(<span class="prelude-val">Err</span>(<span class="ident">FileSystemError::EntryNotFound</span>))<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">item</span>.<span class="ident">name</span>);
-
-                <span class="kw">let</span> <span class="ident">is_directory</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">metadata</span>.<span class="ident">mode</span> <span class="op">&amp;</span> <span class="number">0o170000</span> <span class="op">=</span><span class="op">=</span> <span class="number">0o040000</span>;
-                <span class="kw">let</span> <span class="ident">is_file</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">metadata</span>.<span class="ident">mode</span> <span class="op">&amp;</span> <span class="number">0o170000</span> <span class="op">=</span><span class="op">=</span> <span class="number">0o100000</span>;
-
-                <span class="kw">if</span> <span class="ident">item</span>.<span class="ident">name</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;.&quot;</span> {
-                    <span class="comment">// We do not want to create the root directory. Oh well since, its</span>
-                    <span class="comment">// already created :^)</span>
-                    <span class="kw">continue</span>;
-                }
-
-                <span class="comment">// This is a directory.</span>
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">root</span> <span class="op">=</span> <span class="ident">root_dir</span>().<span class="ident">clone</span>();
-
-                <span class="kw">if</span> <span class="ident">is_directory</span> {
-                    <span class="kw">for</span> <span class="ident">component</span> <span class="kw">in</span> <span class="ident">path</span>.<span class="ident">components</span>() {
-                        <span class="kw">match</span> <span class="ident">root</span>.<span class="ident">inode</span>().<span class="ident">lookup</span>(<span class="ident">root</span>.<span class="ident">clone</span>(), <span class="ident">component</span>) {
-                            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span> <span class="op">=</span><span class="op">=</span> <span class="ident">FileSystemError::EntryNotFound</span> <span class="op">=</span><span class="op">&gt;</span> {
-                                <span class="ident">root</span>.<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="ident">component</span>)<span class="question-mark">?</span>;
-                                <span class="ident">root</span> <span class="op">=</span> <span class="ident">root</span>.<span class="ident">inode</span>().<span class="ident">lookup</span>(<span class="ident">root</span>.<span class="ident">clone</span>(), <span class="ident">component</span>)<span class="question-mark">?</span>;
-                            }
-
-                            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
-                            <span class="prelude-val">Ok</span>(<span class="ident">res</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">root</span> <span class="op">=</span> <span class="ident">res</span>,
-                        }
-                    }
-                } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">is_file</span> {
-                    <span class="ident">lookup_path_with</span>(<span class="ident">root</span>, <span class="ident">path</span>, <span class="ident">LookupMode::Create</span>)<span class="question-mark">?</span>;
-                }
-            }
-        }
-    }
 
     <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;dev&quot;</span>)<span class="question-mark">?</span>;
     <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;home&quot;</span>)<span class="question-mark">?</span>;

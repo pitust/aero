@@ -304,10 +304,6 @@
 <span id="304">304</span>
 <span id="305">305</span>
 <span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -457,10 +453,6 @@
         .<span class="ident">framebuffer</span>()
         .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provide a non-null framebuffer tag&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">modules_tag</span> <span class="op">=</span> <span class="ident">boot_info</span>
-        .<span class="ident">modules</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provide a non-null modules tag&quot;</span>);
-
     <span class="kw">let</span> <span class="ident">kernel_info</span> <span class="op">=</span> <span class="ident">boot_info</span>
         .<span class="ident">kernel_file_v2</span>()
         .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provode a non-null kernel info V2 tag&quot;</span>);
@@ -543,7 +535,7 @@
     <span class="ident">time::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PIT&quot;</span>);
 
-    <span class="ident">fs::init</span>(<span class="ident">modules_tag</span>).<span class="ident">unwrap</span>();
+    <span class="ident">fs::init</span>().<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;Loaded filesystem&quot;</span>);
 
     <span class="ident">userland::init</span>();

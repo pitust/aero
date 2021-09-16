@@ -330,7 +330,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::downcast</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync::Mutex</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>::{<span class="self">self</span>, <span class="ident">CacheWeak</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::cache</span>::{<span class="ident">CachedINode</span>, <span class="ident">DirCacheItem</span>, <span class="ident">INodeCacheItem</span>, <span class="ident">INodeCacheWeakItem</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::devfs::DevINode</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::inode</span>::{<span class="ident">DirEntry</span>, <span class="ident">FileType</span>, <span class="ident">INodeInterface</span>};
@@ -396,7 +396,7 @@
             .<span class="ident">expect</span>(<span class="string">&quot;Failed to downcast cached inode on creation&quot;</span>)
             .<span class="ident">init</span>(
                 <span class="kw-2">&amp;</span><span class="ident">this</span>.<span class="ident">node</span>,
-                <span class="kw-2">&amp;</span><span class="ident">Arc::downgrade</span>(<span class="kw-2">&amp;</span><span class="ident">inode_cached</span>),
+                <span class="kw-2">&amp;</span><span class="ident">inode_cached</span>.<span class="ident">downgrade</span>(),
                 <span class="kw-2">&amp;</span><span class="ident">this</span>.<span class="ident">filesystem</span>,
                 <span class="ident">file_type</span>,
             );
@@ -564,8 +564,8 @@
         <span class="ident">downcast</span>::<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">INodeInterface</span>, <span class="ident">LockedRamINode</span><span class="op">&gt;</span>(<span class="ident">root_cached</span>.<span class="ident">inner</span>())
             .<span class="ident">expect</span>(<span class="string">&quot;cannot downcast inode to ram inode&quot;</span>)
             .<span class="ident">init</span>(
-                <span class="kw-2">&amp;</span><span class="ident">Arc::downgrade</span>(<span class="kw-2">&amp;</span><span class="ident">ramfs</span>.<span class="ident">root_inode</span>),
-                <span class="kw-2">&amp;</span><span class="ident">Arc::downgrade</span>(<span class="kw-2">&amp;</span><span class="ident">root_cached</span>),
+                <span class="kw-2">&amp;</span><span class="ident">ramfs</span>.<span class="ident">root_inode</span>.<span class="ident">downgrade</span>(),
+                <span class="op">&amp;&amp;</span><span class="ident">root_cached</span>.<span class="ident">downgrade</span>(),
                 <span class="kw-2">&amp;</span><span class="ident">Arc::downgrade</span>(<span class="kw-2">&amp;</span><span class="ident">ramfs</span>),
                 <span class="ident">FileType::Directory</span>,
             );
@@ -575,8 +575,8 @@
 
     <span class="kw">fn</span> <span class="ident">allocate_inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_type</span>: <span class="ident">FileType</span>, <span class="ident">contents</span>: <span class="ident">FileContents</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">LockedRamINode</span><span class="op">&gt;</span> {
         <span class="ident">Arc::new</span>(<span class="ident">LockedRamINode::new</span>(<span class="ident">RamINode</span> {
-            <span class="ident">parent</span>: <span class="ident">Weak::default</span>(),
-            <span class="ident">node</span>: <span class="ident">Weak::default</span>(),
+            <span class="ident">parent</span>: <span class="ident">CacheWeak::new</span>(),
+            <span class="ident">node</span>: <span class="ident">CacheWeak::new</span>(),
             <span class="ident">filesystem</span>: <span class="ident">Weak::default</span>(),
             <span class="ident">children</span>: <span class="ident">BTreeMap::new</span>(),
             <span class="ident">id</span>: <span class="self">self</span>.<span class="ident">next_id</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::SeqCst</span>),

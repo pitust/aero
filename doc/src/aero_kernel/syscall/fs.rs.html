@@ -187,6 +187,24 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -324,7 +342,7 @@
     <span class="comment">// to the current working directory of the calling task, as is done by mkdir() for a</span>
     <span class="comment">// relative pathname).</span>
     <span class="kw">let</span> (<span class="ident">parent_inode</span>, <span class="ident">child</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">is_absolute</span>() {
-        <span class="kw">let</span> (<span class="ident">path</span>, <span class="ident">child</span>) <span class="op">=</span> <span class="ident">path</span>.<span class="ident">parent_and_basename</span>().<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EEXIST</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> (<span class="ident">path</span>, <span class="ident">child</span>) <span class="op">=</span> <span class="ident">path</span>.<span class="ident">parent_and_basename</span>();
         (<span class="ident">fs::lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>.<span class="ident">inode</span>(), <span class="ident">child</span>)
     } <span class="kw">else</span> {
         <span class="comment">// If pathname is relative and fd is the special value AT_FDCWD, then</span>
@@ -361,6 +379,24 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mkdir</span>(<span class="ident">path</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="ident">mkdirat</span>(<span class="ident">aero_syscall::AT_FDCWD</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">path</span>, <span class="ident">size</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rmdir</span>(<span class="ident">path</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path_str</span>);
+
+    <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">child</span>) <span class="op">=</span> <span class="ident">path</span>.<span class="ident">parent_and_basename</span>();
+    <span class="kw">let</span> <span class="ident">inode</span> <span class="op">=</span> <span class="ident">fs::lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+
+    <span class="kw">if</span> <span class="op">!</span><span class="ident">inode</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>.<span class="ident">is_directory</span>() {
+        <span class="comment">// ENOTDIR: A component used as a directory in pathname, is not in fact,</span>
+        <span class="comment">// a directory.</span>
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::ENOTDIR</span>);
+    }
+
+    <span class="ident">inode</span>.<span class="ident">inode</span>().<span class="ident">rmdir</span>(<span class="ident">child</span>)<span class="question-mark">?</span>;
+    <span class="ident">inode</span>.<span class="ident">drop_from_cache</span>();
+    <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getcwd</span>(<span class="ident">buffer</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
