@@ -189,121 +189,6 @@
 <span id="189">189</span>
 <span id="190">190</span>
 <span id="191">191</span>
-<span id="192">192</span>
-<span id="193">193</span>
-<span id="194">194</span>
-<span id="195">195</span>
-<span id="196">196</span>
-<span id="197">197</span>
-<span id="198">198</span>
-<span id="199">199</span>
-<span id="200">200</span>
-<span id="201">201</span>
-<span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
-<span id="207">207</span>
-<span id="208">208</span>
-<span id="209">209</span>
-<span id="210">210</span>
-<span id="211">211</span>
-<span id="212">212</span>
-<span id="213">213</span>
-<span id="214">214</span>
-<span id="215">215</span>
-<span id="216">216</span>
-<span id="217">217</span>
-<span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
-<span id="234">234</span>
-<span id="235">235</span>
-<span id="236">236</span>
-<span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
-<span id="255">255</span>
-<span id="256">256</span>
-<span id="257">257</span>
-<span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -388,7 +273,7 @@
 <span class="kw">use</span> <span class="ident">stivale_boot::v2</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="self">self</span>::mem::alloc::LockedHeap</span>;
-<span class="kw">use</span> <span class="ident"><span class="self">self</span>::mem::paging</span>::{<span class="ident">PhysAddr</span>, <span class="ident">VirtAddr</span>};
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::mem::paging::VirtAddr</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="self">self</span>::arch::interrupts</span>;
 <span class="kw">use</span> <span class="ident"><span class="self">self</span>::userland::scheduler</span>;
@@ -399,72 +284,14 @@
 <span class="kw">static</span> <span class="ident">AERO_SYSTEM_ALLOCATOR</span>: <span class="ident">LockedHeap</span> <span class="op">=</span> <span class="ident">LockedHeap::new_uninit</span>();
 
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PHYSICAL_MEMORY_OFFSET</span>: <span class="ident">VirtAddr</span> <span class="op">=</span> <span class="ident">VirtAddr::zero</span>();
-
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">align</span>(<span class="number">4096</span>))]</span>
-<span class="kw">struct</span> <span class="ident">P2Align12</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">T</span>);
-
-<span class="kw">const</span> <span class="ident">STACK_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4096</span> <span class="op">*</span> <span class="number">16</span>;
-
 <span class="kw">static</span> <span class="ident">UNWIND_INFO</span>: <span class="ident">spin::Once</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">StivaleKernelFileV2Tag</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">spin::Once::new</span>();
 
-<span class="doccomment">/// We need to tell the stivale bootloader where we want our stack to be.</span>
-<span class="doccomment">/// We are going to allocate our stack as an uninitialised array in .bss.</span>
-<span class="kw">static</span> <span class="ident">STACK</span>: <span class="ident">P2Align12</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="ident">STACK_SIZE</span>]<span class="op">&gt;</span> <span class="op">=</span> <span class="ident">P2Align12</span>([<span class="number">0</span>; <span class="ident">STACK_SIZE</span>]);
-
-<span class="doccomment">/// We are now going to define a framebuffer header tag. This tag tells the bootloader that</span>
-<span class="doccomment">/// we want a graphical framebuffer instead of a CGA-compatible text mode. Omitting this tag will</span>
-<span class="doccomment">/// make the bootloader default to text mode, if available.</span>
-<span class="kw">static</span> <span class="ident">FRAMEBUFFER_TAG</span>: <span class="ident">StivaleFramebufferHeaderTag</span> <span class="op">=</span> <span class="ident">StivaleFramebufferHeaderTag::new</span>()
-    .<span class="ident">framebuffer_bpp</span>(<span class="number">24</span>)
-    .<span class="ident">next</span>((<span class="kw-2">&amp;</span><span class="ident">PAGING_TAG</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Stivale5LevelPagingHeaderTag</span>).<span class="ident">cast</span>());
-
-<span class="doccomment">/// We are now going to define a level 5 paging header tag. This tag tells the bootloader to</span>
-<span class="doccomment">/// enable the LEVEL_5_PAGING bit in the Cr4 register. This is not possible to implement in the kernel</span>
-<span class="doccomment">/// as we can only enable it in protected mode.</span>
-<span class="kw">static</span> <span class="ident">PAGING_TAG</span>: <span class="ident">Stivale5LevelPagingHeaderTag</span> <span class="op">=</span> <span class="ident">Stivale5LevelPagingHeaderTag::new</span>();
-
-<span class="doccomment">/// The stivale2 specification says we need to define a &quot;header structure&quot;.</span>
-<span class="doccomment">/// This structure needs to reside in the .stivale2hdr ELF section in order</span>
-<span class="doccomment">/// for the bootloader to find it. We use the #[linker_section] and #[used] macros to</span>
-<span class="doccomment">/// tell the compiler to put the following structure in said section.</span>
-<span class="attribute">#[<span class="ident">link_section</span> <span class="op">=</span> <span class="string">&quot;.stivale2hdr&quot;</span>]</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="attribute">#[<span class="ident">used</span>]</span>
-<span class="kw">static</span> <span class="ident">STIVALE_HDR</span>: <span class="ident">StivaleHeader</span> <span class="op">=</span> <span class="ident">StivaleHeader::new</span>()
-    .<span class="ident">stack</span>(<span class="kw-2">&amp;</span><span class="ident">STACK</span>.<span class="number">0</span>[<span class="ident">STACK_SIZE</span> <span class="op">-</span> <span class="number">4096</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>)
-    .<span class="ident">tags</span>((<span class="kw-2">&amp;</span><span class="ident">FRAMEBUFFER_TAG</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">StivaleFramebufferHeaderTag</span>).<span class="ident">cast</span>());
-
-<span class="kw">const</span> <span class="ident">IO_VIRTUAL_BASE</span>: <span class="ident">VirtAddr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0xFFFFFFFF80200000</span> <span class="op">-</span> <span class="number">0x100000000</span>); <span class="comment">// KERNEL_VIRTUAL_BASE - 4GB</span>
+<span class="kw">const</span> <span class="ident">IO_VIRTUAL_BASE</span>: <span class="ident">VirtAddr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0xffffff0000000000</span>);
 
 <span class="attribute">#[<span class="ident">thread_local</span>]</span>
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">CPU_ID</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x00</span>;
 
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleStruct</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="kw">let</span> <span class="ident">mmap_tag</span> <span class="op">=</span> <span class="ident">boot_info</span>
-        .<span class="ident">memory_map</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provide a non-null memory map tag&quot;</span>);
-
-    <span class="kw">let</span> <span class="ident">rsdp_tag</span> <span class="op">=</span> <span class="ident">boot_info</span>
-        .<span class="ident">rsdp</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provided a non-null rsdp tag&quot;</span>);
-
-    <span class="kw">let</span> <span class="ident">framebuffer_tag</span> <span class="op">=</span> <span class="ident">boot_info</span>
-        .<span class="ident">framebuffer</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provide a non-null framebuffer tag&quot;</span>);
-
-    <span class="kw">let</span> <span class="ident">kernel_info</span> <span class="op">=</span> <span class="ident">boot_info</span>
-        .<span class="ident">kernel_file_v2</span>()
-        .<span class="ident">expect</span>(<span class="string">&quot;aero requires the bootloader to provode a non-null kernel info V2 tag&quot;</span>);
-
-    <span class="kw">let</span> <span class="ident">rsdp_address</span> <span class="op">=</span> <span class="ident">PhysAddr::new</span>(<span class="ident">rsdp_tag</span>.<span class="ident">rsdp</span>);
-
-    <span class="comment">// Note: STACK_SIZE - 1 points to the last u8 in the array, i.e.</span>
-    <span class="comment">// it&#39;s guaranteed to be at an address with its least significant bit</span>
-    <span class="comment">// being a 1, i.e. it never has an alignment greater than 1. STACK_SIZE - 4096</span>
-    <span class="comment">// points to the last u8 in STACK, that is aligned to 4096.</span>
-    <span class="kw">let</span> <span class="ident">stack_top_addr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>((<span class="kw-2">&amp;</span><span class="ident">STACK</span>.<span class="number">0</span>[<span class="ident">STACK_SIZE</span> <span class="op">-</span> <span class="number">4096</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="kw">as</span> <span class="kw">_</span>);
-
+<span class="kw">fn</span> <span class="ident">aero_main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
     <span class="comment">/*
      * NOTE: In this function we only want to initialize essential serivces, including
      * the task scheduler. Rest of the initializing (including kernel modules) should go
@@ -472,78 +299,21 @@
      *
      * First of all make sure interrupts are disabled.
      */</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">interrupts::disable_interrupts</span>();
-    }
-
-    <span class="kw">if</span> <span class="ident">mem::paging::level_5_paging_enabled</span>() {
-        <span class="kw">unsafe</span> { <span class="ident">PHYSICAL_MEMORY_OFFSET</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0xff00000000000000</span>) }
-    } <span class="kw">else</span> {
-        <span class="kw">unsafe</span> { <span class="ident">PHYSICAL_MEMORY_OFFSET</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0xffff800000000000</span>) }
-    }
-
-    <span class="ident">UNWIND_INFO</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> (<span class="ident">kernel_info</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">StivaleKernelFileV2Tag</span>) <span class="kw">as</span> <span class="ident">u64</span>;
-        <span class="kw">let</span> <span class="ident">new_addr</span> <span class="op">=</span> <span class="ident"><span class="self">self</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">addr</span>;
-
-        <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">new_addr</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">StivaleKernelFileV2Tag</span><span class="op">&gt;</span>()
-    });
-
-    <span class="ident">arch::init_cpu</span>();
-
-    <span class="comment">/*
-     * Initialize the COM ports before doing anything else.
-     *
-     * This will help printing panics and logs before or when the debug renderer
-     * is initialized if serial output is avaliable.
-     */</span>
-    <span class="ident">drivers::uart_16550::init</span>();
-    <span class="ident">logger::init</span>();
-
-    <span class="ident">rendy::init</span>(<span class="ident">framebuffer_tag</span>);
-
-    <span class="ident">arch::gdt::init_boot</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded bootstrap GDT&quot;</span>);
-
     <span class="ident">drivers::mouse::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PS/2 driver&quot;</span>);
-
-    <span class="kw">let</span> <span class="ident">apic_type</span> <span class="op">=</span> <span class="ident">apic::init</span>();
-    <span class="macro">log::info!</span>(
-        <span class="string">&quot;Loaded local apic (x2apic={})&quot;</span>,
-        <span class="ident">apic_type</span>.<span class="ident">supports_x2_apic</span>()
-    );
-
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="ident">mem::paging::init</span>(<span class="ident">mmap_tag</span>).<span class="ident">unwrap</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded paging&quot;</span>);
-
-    <span class="ident">mem::alloc::init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>).<span class="ident">expect</span>(<span class="string">&quot;Failed to initialize the heap.&quot;</span>);
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded heap&quot;</span>);
-
-    <span class="ident">interrupts::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded IDT&quot;</span>);
-
-    <span class="ident">acpi::init</span>(<span class="ident">rsdp_address</span>).<span class="ident">unwrap</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded ACPI&quot;</span>);
-
-    <span class="ident">tls::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded TLS&quot;</span>);
-
-    <span class="ident">arch::gdt::init</span>(<span class="ident">stack_top_addr</span>);
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded GDT&quot;</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;loaded PS/2 driver&quot;</span>);
 
     <span class="ident">time::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PIT&quot;</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;loaded PIT&quot;</span>);
 
     <span class="ident">fs::init</span>().<span class="ident">unwrap</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded filesystem&quot;</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;loaded filesystem&quot;</span>);
 
     <span class="ident">userland::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded userland&quot;</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;loaded userland&quot;</span>);
 
     <span class="ident">apic::mark_bsp_ready</span>(<span class="bool-val">true</span>);
 
-    <span class="macro">log::info!</span>(<span class="string">&quot;Initialized kernel&quot;</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;initialized kernel&quot;</span>);
 
     <span class="comment">/*
      * Now that all of the essential initialization is done we are going to schedule
@@ -568,10 +338,10 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="ident">address_space</span>.<span class="ident">offset_page_table</span>();
 
     <span class="ident">modules::init</span>();
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded kernel modules&quot;</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;loaded kernel modules&quot;</span>);
 
     <span class="ident">drivers::pci::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>);
-    <span class="macro">log::info!</span>(<span class="string">&quot;Loaded PCI driver&quot;</span>);
+    <span class="macro">log::info!</span>(<span class="string">&quot;loaded PCI driver&quot;</span>);
 
     <span class="ident">userland::run</span>();
 

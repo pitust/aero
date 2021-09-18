@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["PTI_STACK_SIZE",""]],"fn":[["map_pti",""],["switch_pti_stack",""],["unmap_pti",""]],"static":[["PTI_CPU_STACK","The PTI CPU stack stored as a thread local."]]});
+initSidebarItems({"fn":[["map_pti",""],["switch_pti_stack",""],["unmap_pti",""]]});

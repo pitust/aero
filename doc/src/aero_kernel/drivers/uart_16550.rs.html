@@ -293,7 +293,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">serial_print</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) {
-    <span class="ident"><span class="kw">crate</span>::drivers::uart_16550::_serial_print</span>(<span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
+    <span class="ident"><span class="kw">crate</span>::drivers::uart_16550::_serial_print</span>(<span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>))
 }
 
 <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">serial_println</span> {

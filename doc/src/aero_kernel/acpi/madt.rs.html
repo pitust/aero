@@ -233,10 +233,6 @@
 <span id="233">233</span>
 <span id="234">234</span>
 <span id="235">235</span>
-<span id="236">236</span>
-<span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -268,6 +264,7 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::apic</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::apic::ApicType</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::controlregs</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::interrupts</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::apic::IoApicHeader</span>;
@@ -318,17 +315,12 @@
                         <span class="kw">continue</span>;
                     }
 
-                    <span class="kw">let</span> <span class="ident">kernel_cr3</span>: <span class="ident">u64</span>;
-
-                    <span class="kw">unsafe</span> {
-                        <span class="macro">asm!</span>(<span class="string">&quot;mov {}, cr3&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">kernel_cr3</span>, <span class="ident">options</span>(<span class="ident">nomem</span>));
-                    }
-
+                    <span class="kw">let</span> <span class="ident">page_table</span> <span class="op">=</span> <span class="ident">controlregs::read_cr3_raw</span>();
                     <span class="kw">let</span> <span class="ident">stack_top</span> <span class="op">=</span> <span class="kw">unsafe</span> {
                         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::from_size_align_unchecked</span>(<span class="number">4096</span> <span class="op">*</span> <span class="number">16</span>, <span class="number">4096</span>);
                         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">alloc_zeroed</span>(<span class="ident">layout</span>);
 
-                        <span class="ident">raw</span>.<span class="ident">offset</span>(<span class="number">4096</span> <span class="op">*</span> <span class="number">16</span>)
+                        <span class="ident">raw</span>.<span class="ident">add</span>(<span class="ident">layout</span>.<span class="ident">size</span>())
                     };
 
                     <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">paging::level_5_paging_enabled</span>() {
@@ -339,7 +331,7 @@
 
                     <span class="kw">unsafe</span> {
                         <span class="ident">smp_prepare_launch</span>(
-                            <span class="ident">kernel_cr3</span>,
+                            <span class="ident">page_table</span>,
                             <span class="ident">stack_top</span> <span class="kw">as</span> <span class="ident">u64</span>,
                             <span class="ident">local_apic</span>.<span class="ident">apic_id</span> <span class="kw">as</span> <span class="ident">u64</span>,
                             <span class="ident">mode</span>,

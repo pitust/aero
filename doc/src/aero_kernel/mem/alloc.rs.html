@@ -177,7 +177,6 @@
 <span id="177">177</span>
 <span id="178">178</span>
 <span id="179">179</span>
-<span id="180">180</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -210,8 +209,9 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::paging::FRAME_ALLOCATOR</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::AddressSpace</span>;
 
-<span class="kw">const</span> <span class="ident">HEAP_MAX_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">128</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>;
-<span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xFFFFFFFF80200000</span> <span class="op">-</span> <span class="ident">HEAP_MAX_SIZE</span>;
+<span class="kw">const</span> <span class="ident">HEAP_MAX_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">128</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>; <span class="comment">// 128 GiB</span>
+<span class="kw">const</span> <span class="ident">HEAP_START</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0xfffff80000000000</span>;
+<span class="kw">const</span> <span class="ident">HEAP_END</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">HEAP_START</span> <span class="op">+</span> <span class="ident">HEAP_MAX_SIZE</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LockedHeap</span>(<span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Heap</span><span class="op">&gt;</span>);
 
@@ -237,11 +237,9 @@
             <span class="kw">let</span> <span class="ident">heap_top</span> <span class="op">=</span> <span class="ident">heap</span>.<span class="ident">top</span>();
             <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">align_up</span>(<span class="ident">layout</span>.<span class="ident">size</span>(), <span class="number">0x1000</span>);
 
-            <span class="kw">let</span> <span class="ident">max_mem</span> <span class="op">=</span> <span class="ident">HEAP_START</span> <span class="op">+</span> <span class="ident">HEAP_MAX_SIZE</span>;
-
             <span class="comment">// Check if our heap has not increased beyond the maximum allowed size.</span>
-            <span class="kw">if</span> <span class="ident">heap_top</span> <span class="op">+</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="ident">max_mem</span> {
-                <span class="macro">panic!</span>(<span class="string">&quot;The heap size has increased more then {}&quot;</span>, <span class="ident">max_mem</span>)
+            <span class="kw">if</span> <span class="ident">heap_top</span> <span class="op">+</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="ident">HEAP_END</span> {
+                <span class="macro">panic!</span>(<span class="string">&quot;The heap size has increased more then {:#x}&quot;</span>, <span class="ident">HEAP_END</span>)
             }
 
             <span class="comment">// Else we just have to extend the heap.</span>

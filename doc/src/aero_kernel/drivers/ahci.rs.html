@@ -966,6 +966,7 @@
 <span id="966">966</span>
 <span id="967">967</span>
 <span id="968">968</span>
+<span id="969">969</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -1842,6 +1843,7 @@
     <span class="doccomment">/// This function is responsible for enabling bus mastering and add AHCI</span>
     <span class="doccomment">/// IRQ handler.</span>
     <span class="kw">fn</span> <span class="ident">enable_interrupts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">PciHeader</span>) {
+        <span class="ident">header</span>.<span class="ident">enable_mmio</span>();
         <span class="ident">header</span>.<span class="ident">enable_bus_mastering</span>();
     }
 

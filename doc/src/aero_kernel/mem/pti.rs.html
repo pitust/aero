@@ -32,12 +32,6 @@
 <span id="32">32</span>
 <span id="33">33</span>
 <span id="34">34</span>
-<span id="35">35</span>
-<span id="36">36</span>
-<span id="37">37</span>
-<span id="38">38</span>
-<span id="39">39</span>
-<span id="40">40</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -63,12 +57,6 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Notes</span>
 <span class="doccomment">//! * &lt;https://en.wikipedia.org/wiki/Kernel_page-table_isolation&gt;</span>
-
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PTI_STACK_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">256</span>;
-
-<span class="doccomment">/// The PTI CPU stack stored as a thread local.</span>
-<span class="attribute">#[<span class="ident">thread_local</span>]</span>
-<span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PTI_CPU_STACK</span>: [<span class="ident">u8</span>; <span class="ident">PTI_STACK_SIZE</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">PTI_STACK_SIZE</span>];
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">warnings</span>)]</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">switch_pti_stack</span>(<span class="ident">old</span>: <span class="ident">usize</span>, <span class="ident">new</span>: <span class="ident">usize</span>) {}
