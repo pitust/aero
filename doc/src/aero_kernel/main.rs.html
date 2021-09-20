@@ -189,6 +189,8 @@
 <span id="189">189</span>
 <span id="190">190</span>
 <span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -248,6 +250,7 @@
 <span class="kw">mod</span> <span class="ident">acpi</span>;
 <span class="kw">mod</span> <span class="ident">apic</span>;
 <span class="kw">mod</span> <span class="ident">arch</span>;
+<span class="kw">mod</span> <span class="ident">cmdline</span>;
 <span class="kw">mod</span> <span class="ident">drivers</span>;
 <span class="kw">mod</span> <span class="ident">fs</span>;
 <span class="kw">mod</span> <span class="ident">logger</span>;
@@ -343,11 +346,12 @@
     <span class="ident">drivers::pci::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded PCI driver&quot;</span>);
 
+    <span class="ident">rendy::clear_screen</span>();
+    <span class="ident">logger::set_rendy_debug</span>(<span class="bool-val">false</span>);
+
     <span class="ident">userland::run</span>();
 
-    <span class="kw">loop</span> {
-        <span class="kw">unsafe</span> { <span class="ident">interrupts::halt</span>() }
-    }
+    <span class="macro">unreachable!</span>()
 }
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>

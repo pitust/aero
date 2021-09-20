@@ -116,6 +116,38 @@
 <span id="116">116</span>
 <span id="117">117</span>
 <span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -233,6 +265,38 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset_page_table</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OffsetPageTable</span> {
         <span class="kw">unsafe</span> { <span class="ident">OffsetPageTable::new</span>(<span class="self">self</span>.<span class="ident">page_table</span>(), <span class="ident">PHYSICAL_MEMORY_OFFSET</span>) }
     }
+}
+
+<span class="doccomment">/// Creates a Rust string from the provided C string.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Safety</span>
+<span class="doccomment">/// - The provided pointer must be valid.</span>
+<span class="doccomment">/// - The provided pointer must point to a null-terminated C string.</span>
+<span class="doccomment">/// - The returned lifetime is not guaranteed to be the actual lifetime</span>
+<span class="doccomment">/// of `ptr`.</span>
+<span class="doccomment">/// - It is not guaranteed that the memory pointed by `ptr` won’t change</span>
+<span class="doccomment">/// before the Rust string has been destroyed.</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">c_str_as_str</span><span class="op">&lt;</span><span class="lifetime">&#39;cstring</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;cstring</span> <span class="ident">str</span> {
+    <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">c_strlen</span>(<span class="ident">ptr</span>);
+    <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">core::slice::from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">length</span>);
+
+    <span class="ident">core::str::from_utf8_unchecked</span>(<span class="ident">slice</span>)
+}
+
+<span class="doccomment">/// Determines the provided of the given C string.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Safety</span>
+<span class="doccomment">/// - The provided pointer must be valid.</span>
+<span class="doccomment">/// - The provided pointer must point to a null-terminated C string.</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">c_strlen</span>(<span class="kw-2">mut</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">length</span> <span class="op">=</span> <span class="number">0</span>;
+
+    <span class="kw">while</span> <span class="kw-2">*</span><span class="ident">ptr</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">offset</span>(<span class="number">1</span>);
+        <span class="ident">length</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+    }
+
+    <span class="ident">length</span>
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>

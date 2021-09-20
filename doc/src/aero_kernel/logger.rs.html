@@ -88,6 +88,15 @@
 <span id="88">88</span>
 <span id="89">89</span>
 <span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -108,6 +117,7 @@
  */</span>
 
 <span class="kw">use</span> <span class="ident">core::fmt::Write</span>;
+<span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
 
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">Level</span>, <span class="ident">LevelFilter</span>, <span class="ident">Metadata</span>, <span class="ident">Record</span>};
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
@@ -121,6 +131,8 @@
 <span class="kw">static</span> <span class="ident">LOG_RING_BUFFER</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">RingBuffer</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="ident">DEFAULT_LOG_RING_BUFFER_SIZE</span>]<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 <span class="kw">static</span> <span class="ident">LOGGER</span>: <span class="ident">AeroLogger</span> <span class="op">=</span> <span class="ident">AeroLogger</span>;
 
+<span class="kw">static</span> <span class="ident">RENDY_DEBUG</span>: <span class="ident">AtomicBool</span> <span class="op">=</span> <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>);
+
 <span class="kw">struct</span> <span class="ident">AeroLogger</span>;
 
 <span class="kw">impl</span> <span class="ident">log::Log</span> <span class="kw">for</span> <span class="ident">AeroLogger</span> {
@@ -132,13 +144,16 @@
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">enabled</span>(<span class="ident">record</span>.<span class="ident">metadata</span>()) {
             <span class="kw">let</span> <span class="ident">level</span> <span class="op">=</span> <span class="ident">record</span>.<span class="ident">level</span>();
             <span class="kw">let</span> <span class="ident">spaces</span> <span class="op">=</span> <span class="ident">MAX_LOG_LEVEL_SPACE</span> <span class="op">-</span> <span class="ident">level</span>.<span class="ident">as_str</span>().<span class="ident">len</span>();
+            <span class="kw">let</span> <span class="ident">rendy_dbg</span> <span class="op">=</span> <span class="ident">RENDY_DEBUG</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>);
 
             <span class="kw">macro</span> <span class="ident">log</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) {
                 <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::serial_print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
+                <span class="kw">if</span> <span class="ident">rendy_dbg</span> { <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)); }
             }
 
             <span class="kw">macro</span> <span class="ident">log_ln</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) {
                 <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::serial_println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>));
+                <span class="kw">if</span> <span class="ident">rendy_dbg</span> { <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)); }
             }
 
             <span class="comment">// Append the log message to the log ring buffer.</span>
@@ -169,8 +184,11 @@
     <span class="ident">LOG_RING_BUFFER</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">force_unlock</span>());
 }
 
-<span class="doccomment">/// Initialize the global logger instance and the logger ring</span>
-<span class="doccomment">/// buffer.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rendy_debug</span>(<span class="ident">yes</span>: <span class="ident">bool</span>) {
+    <span class="ident">RENDY_DEBUG</span>.<span class="ident">store</span>(<span class="ident">yes</span>, <span class="ident">Ordering::SeqCst</span>);
+}
+
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() {
     <span class="ident">LOG_RING_BUFFER</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Mutex::new</span>(<span class="ident">RingBuffer::new</span>([<span class="number">0</span>; <span class="ident">DEFAULT_LOG_RING_BUFFER_SIZE</span>])));
 

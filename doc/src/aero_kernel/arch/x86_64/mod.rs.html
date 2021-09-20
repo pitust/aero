@@ -191,6 +191,19 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -217,6 +230,8 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::acpi</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::apic</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmdline</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::alloc</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>;
 
@@ -321,6 +336,17 @@
     <span class="ident">logger::init</span>();
 
     <span class="ident">rendy::init</span>(<span class="ident">framebuffer_tag</span>);
+
+    <span class="comment">// Parse the kernel command line.</span>
+    <span class="kw">let</span> <span class="ident">command_line</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">boot_info</span>.<span class="ident">command_line</span>().<span class="ident">map_or</span>(<span class="string">&quot;&quot;</span>, <span class="op">|</span><span class="ident">cmd</span><span class="op">|</span> <span class="kw">unsafe</span> {
+        <span class="comment">// SAFETY: The bootloader has provided a pointer that points to a valid C</span>
+        <span class="comment">// string with a NULL terminator of size less than `usize::MAX`, whose content</span>
+        <span class="comment">// remain valid and has a static lifetime.</span>
+        <span class="ident">mem::c_str_as_str</span>(<span class="ident">cmd</span>.<span class="ident">command_line</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>)
+    });
+
+    <span class="kw">let</span> <span class="ident">command_line</span> <span class="op">=</span> <span class="ident">cmdline::parse</span>(<span class="ident">command_line</span>);
+    <span class="ident">logger::set_rendy_debug</span>(<span class="ident">command_line</span>.<span class="ident">rendy_debug</span>);
 
     <span class="ident">gdt::init_boot</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded bootstrap GDT&quot;</span>);
