@@ -19,7 +19,7 @@ index <code>length() - 1</code> is the most significant bit.</p>
 
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">get_bit</span>(<span class="number">1</span>), <span class="bool-val">false</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">get_bit</span>(<span class="number">2</span>), <span class="bool-val">true</span>);</code></pre></div>
-<h2 id="panics" class="section-header"><a href="#panics">Panics</a></h2>
+<h6 id="panics" class="section-header"><a href="#panics">Panics</a></h6>
 <p>This method will panic if the bit index is out of bounds of the bit array.</p>
 </div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.get_bits" class="method has-srclink"><div class="rightside"><a class="srclink" href="../src/bit_field/lib.rs.html#158" title="goto source code">[src]</a></div><h4 class="code-header">fn <a href="#tymethod.get_bits" class="fnname">get_bits</a>&lt;U:&nbsp;RangeBounds&lt;usize&gt;&gt;(&amp;self, range: U) -&gt; T</h4></div></summary><div class="docblock"><p>Obtains the range of bits specified by <code>range</code>; note that index 0 is the least significant
 bit, while index <code>length() - 1</code> is the most significant bit.</p>
@@ -33,7 +33,7 @@ bit, while index <code>length() - 1</code> is the most significant bit.</p>
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">get_bits</span>(<span class="number">31</span>..<span class="number">33</span>), <span class="number">0b10</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">get_bits</span>(<span class="number">5</span>..<span class="op">=</span><span class="number">32</span>), <span class="number">0b1_0000_0000_0000_0000_0000_0000_001</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="ident">get_bits</span>(<span class="number">34</span>..), <span class="number">0</span>);</code></pre></div>
-<h2 id="panics-1" class="section-header"><a href="#panics-1">Panics</a></h2>
+<h6 id="panics-1" class="section-header"><a href="#panics-1">Panics</a></h6>
 <p>This method will panic if the start or end indexes of the range are out of bounds of the
 bit array, or if the range can’t be contained by the bit field T.</p>
 </div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.set_bit" class="method has-srclink"><div class="rightside"><a class="srclink" href="../src/bit_field/lib.rs.html#182" title="goto source code">[src]</a></div><h4 class="code-header">fn <a href="#tymethod.set_bit" class="fnname">set_bit</a>(&amp;mut self, bit: usize, value: bool)</h4></div></summary><div class="docblock"><p>Sets the bit at the index <code>bit</code> to the value <code>value</code> (where true means a value of ‘1’ and
@@ -52,7 +52,7 @@ false means a value of ‘0’); note that index 0 is the least significant bit,
 
 <span class="ident">value</span>.<span class="ident">set_bit</span>(<span class="number">1</span>, <span class="bool-val">false</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>, [<span class="number">8u32</span>]);</code></pre></div>
-<h2 id="panics-2" class="section-header"><a href="#panics-2">Panics</a></h2>
+<h6 id="panics-2" class="section-header"><a href="#panics-2">Panics</a></h6>
 <p>This method will panic if the bit index is out of the bounds of the bit array.</p>
 </div></details><details class="rustdoc-toggle" open><summary><div id="tymethod.set_bits" class="method has-srclink"><div class="rightside"><a class="srclink" href="../src/bit_field/lib.rs.html#205" title="goto source code">[src]</a></div><h4 class="code-header">fn <a href="#tymethod.set_bits" class="fnname">set_bits</a>&lt;U:&nbsp;RangeBounds&lt;usize&gt;&gt;(&amp;mut self, range: U, value: T)</h4></div></summary><div class="docblock"><p>Sets the range of bits defined by the range <code>range</code> to the lower bits of <code>value</code>; to be
 specific, if the range is N bits long, the N lower bits of <code>value</code> will be used; if any of
@@ -67,7 +67,7 @@ the other bits in <code>value</code> are set to 1, this function will panic.</p>
 
 <span class="ident">value</span>.<span class="ident">set_bits</span>(<span class="number">31</span>..<span class="number">35</span>, <span class="number">0b1010</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>, [<span class="number">0x0003</span>, <span class="number">0b101</span>]);</code></pre></div>
-<h2 id="panics-3" class="section-header"><a href="#panics-3">Panics</a></h2>
+<h6 id="panics-3" class="section-header"><a href="#panics-3">Panics</a></h6>
 <p>This method will panic if the range is out of bounds of the bit array,
 if the range can’t be contained by the bit field T, or if there are <code>1</code>s
 not in the lower N bits of <code>value</code>.</p>

@@ -187,12 +187,6 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
-<span id="190">190</span>
-<span id="191">191</span>
-<span id="192">192</span>
-<span id="193">193</span>
-<span id="194">194</span>
-<span id="195">195</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -297,13 +291,9 @@
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">CPU_ID</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x00</span>;
 
 <span class="kw">fn</span> <span class="ident">aero_main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-    <span class="comment">/*
-     * NOTE: In this function we only want to initialize essential serivces, including
-     * the task scheduler. Rest of the initializing (including kernel modules) should go
-     * into the kernel main thread function instead.
-     *
-     * First of all make sure interrupts are disabled.
-     */</span>
+    <span class="comment">// NOTE: In this function we only want to initialize essential serivces, including</span>
+    <span class="comment">// the task scheduler. Rest of the initializing (including kernel modules) should go</span>
+    <span class="comment">// into the kernel main thread function instead.</span>
     <span class="ident">drivers::mouse::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded PS/2 driver&quot;</span>);
 
@@ -320,10 +310,8 @@
 
     <span class="macro">log::info!</span>(<span class="string">&quot;initialized kernel&quot;</span>);
 
-    <span class="comment">/*
-     * Now that all of the essential initialization is done we are going to schedule
-     * the kernel main thread.
-     */</span>
+    <span class="comment">// Now that all of the essential initialization is done we are going to schedule</span>
+    <span class="comment">// the kernel main thread.</span>
     <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="ident">Task::new_kernel</span>(<span class="ident">kernel_main_thread</span>, <span class="bool-val">true</span>);
     <span class="ident">scheduler::get_scheduler</span>().<span class="ident">register_task</span>(<span class="ident">init</span>);
 

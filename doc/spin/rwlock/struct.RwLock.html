@@ -23,7 +23,7 @@ ever get a chance. Using an upgradeable lock guard can <em>somewhat</em> allevia
 new readers are allowed when an upgradeable guard is held, but upgradeable guards can be taken
 when there are existing readers. However if the lock is that highly contended and writes are
 crucial then this implementation may be a poor choice.</p>
-<h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
+<h2 id="examples" class="section-header"><a href="#examples">Examples</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">spin</span>;
 
 <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin::RwLock::new</span>(<span class="number">5</span>);
@@ -60,7 +60,7 @@ crucial then this implementation may be a poor choice.</p>
 storing both the lock and the pointer to the inner data gets inefficient.</p>
 <p>While this is safe, writing to the data is undefined behavior unless the current thread has
 acquired a write lock, and reading requires either a read or write lock.</p>
-<h1 id="example" class="section-header"><a href="#example">Example</a></h1>
+<h5 id="example" class="section-header"><a href="#example">Example</a></h5>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin::RwLock::new</span>(<span class="number">42</span>);
 
 <span class="kw">unsafe</span> {
@@ -127,22 +127,22 @@ or writers will acquire the lock first.</p>
     };
 }</code></pre></div>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.reader_count" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/spin/rwlock.rs.html#294-297" title="goto source code">[src]</a></div><a href="#method.reader_count" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.reader_count" class="fnname">reader_count</a>(&amp;self) -&gt; usize</h4></div></summary><div class="docblock"><p>Return the number of readers that currently hold the lock (including upgradable readers).</p>
-<h1 id="safety" class="section-header"><a href="#safety">Safety</a></h1>
+<h5 id="safety" class="section-header"><a href="#safety">Safety</a></h5>
 <p>This function provides no synchronization guarantees and so its result should be considered ‘out of date’
 the instant it is called. Do not use it for synchronization purposes. However, it may be useful as a heuristic.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.writer_count" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/spin/rwlock.rs.html#307-309" title="goto source code">[src]</a></div><a href="#method.writer_count" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.writer_count" class="fnname">writer_count</a>(&amp;self) -&gt; usize</h4></div></summary><div class="docblock"><p>Return the number of writers that currently hold the lock.</p>
 <p>Because <a href="struct.RwLock.html" title="RwLock"><code>RwLock</code></a> guarantees exclusive mutable access, this function may only return either <code>0</code> or <code>1</code>.</p>
-<h1 id="safety-1" class="section-header"><a href="#safety-1">Safety</a></h1>
+<h5 id="safety-1" class="section-header"><a href="#safety-1">Safety</a></h5>
 <p>This function provides no synchronization guarantees and so its result should be considered ‘out of date’
 the instant it is called. Do not use it for synchronization purposes. However, it may be useful as a heuristic.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.force_read_decrement" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/spin/rwlock.rs.html#320-323" title="goto source code">[src]</a></div><a href="#method.force_read_decrement" class="anchor"></a><h4 class="code-header">pub unsafe fn <a href="#method.force_read_decrement" class="fnname">force_read_decrement</a>(&amp;self)</h4></div></summary><div class="docblock"><p>Force decrement the reader count.</p>
-<h1 id="safety-2" class="section-header"><a href="#safety-2">Safety</a></h1>
+<h5 id="safety-2" class="section-header"><a href="#safety-2">Safety</a></h5>
 <p>This is <em>extremely</em> unsafe if there are outstanding <code>RwLockReadGuard</code>s
 live, or if called more times than <code>read</code> has been called, but can be
 useful in FFI contexts where the caller doesn’t know how to deal with
 RAII. The underlying atomic operation uses <code>Ordering::Release</code>.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.force_write_unlock" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/spin/rwlock.rs.html#334-337" title="goto source code">[src]</a></div><a href="#method.force_write_unlock" class="anchor"></a><h4 class="code-header">pub unsafe fn <a href="#method.force_write_unlock" class="fnname">force_write_unlock</a>(&amp;self)</h4></div></summary><div class="docblock"><p>Force unlock exclusive write access.</p>
-<h1 id="safety-3" class="section-header"><a href="#safety-3">Safety</a></h1>
+<h5 id="safety-3" class="section-header"><a href="#safety-3">Safety</a></h5>
 <p>This is <em>extremely</em> unsafe if there are outstanding <code>RwLockWriteGuard</code>s
 live, or if called when there are current readers, but can be useful in
 FFI contexts where the caller doesn’t know how to deal with RAII. The
@@ -167,7 +167,7 @@ returned.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.get_mut" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/spin/rwlock.rs.html#413-417" title="goto source code">[src]</a></div><a href="#method.get_mut" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.get_mut" class="fnname">get_mut</a>(&amp;mut self) -&gt; &amp;mut T</h4></div></summary><div class="docblock"><p>Returns a mutable reference to the underlying data.</p>
 <p>Since this call borrows the <code>RwLock</code> mutably, no actual locking needs to
 take place – the mutable borrow statically guarantees no locks exist.</p>
-<h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
+<h5 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h5>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">spin::RwLock::new</span>(<span class="number">0</span>);
 <span class="kw-2">*</span><span class="ident">lock</span>.<span class="ident">get_mut</span>() <span class="op">=</span> <span class="number">10</span>;
 <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="ident">lock</span>.<span class="ident">read</span>(), <span class="number">10</span>);</code></pre></div>

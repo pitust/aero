@@ -8,7 +8,7 @@ This is done using a static counter, so it can safely be used with a fixed keys.
 This means that two different <a href="struct.RandomState.html" title="RandomState">RandomState</a>s will will generate
 <a href="struct.AHasher.html" title="AHasher">AHasher</a>s that will return different hashcodes, but <a href="std::hash::Hasher">Hasher</a>s created from the same <a href="std::hash::BuildHasher">BuildHasher</a>
 will generate the same hashes for the same input data.</p>
-<h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
+<h5 id="examples" class="section-header"><a href="#examples">Examples</a></h5>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">ahash</span>::{<span class="ident">AHasher</span>, <span class="ident">RandomState</span>};
 <span class="kw">use</span> <span class="ident">std::hash</span>::{<span class="ident">Hasher</span>, <span class="ident">BuildHasher</span>};
 

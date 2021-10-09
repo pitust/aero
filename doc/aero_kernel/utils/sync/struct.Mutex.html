@@ -12,7 +12,7 @@ interrupts will be re-enabled when the guard falls out of scope. Deadlocks occur
 tries to acquire a lock that will never become free. Thus, locking interrupts is useful for volatile
 operations where we might be interrupted.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.force_unlock" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../../src/aero_kernel/utils/sync.rs.html#163-165" title="goto source code">[src]</a></div><a href="#method.force_unlock" class="anchor"></a><h4 class="code-header">pub unsafe fn <a href="#method.force_unlock" class="fnname">force_unlock</a>(&amp;self)</h4></div></summary><div class="docblock"><p>Force unlock this <a href="struct.Mutex.html" title="Mutex"><code>Mutex</code></a>.</p>
-<h1 id="safety" class="section-header"><a href="#safety">Safety</a></h1>
+<h5 id="safety" class="section-header"><a href="#safety">Safety</a></h5>
 <p>This is <em>extremely</em> unsafe if the lock is not held by the current thread. However, this
 can be useful in some instances for exposing the lock to FFI that doesn’t know how to deal
 with RAII.</p>

@@ -9,7 +9,7 @@ address <code>phys_offset</code>. This means that for example physical address <
 accessed through virtual address <code>phys_offset + 0x5000</code>. This mapping is required because
 the mapper needs to access page tables, which are not mapped into the virtual address
 space by default.</p>
-<h2 id="safety" class="section-header"><a href="#safety">Safety</a></h2>
+<h6 id="safety" class="section-header"><a href="#safety">Safety</a></h6>
 <p>This function is unsafe because the caller must guarantee that the passed <code>phys_offset</code>
 is correct. Also, the passed <code>page_table</code> must point to the level 4 page table
 of a valid page table hierarchy. Otherwise this function might break memory safety, e.g.

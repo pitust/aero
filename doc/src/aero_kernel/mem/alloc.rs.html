@@ -334,7 +334,7 @@
 
 <span class="doccomment">/// Initialize the heap at the [HEAP_START].</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+    <span class="kw">let</span> <span class="ident">frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="ident">FRAME_ALLOCATOR</span>
             .<span class="ident">allocate_frame</span>()
             .<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>

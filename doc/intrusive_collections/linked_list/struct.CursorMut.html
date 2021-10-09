@@ -36,19 +36,19 @@ object in its place.</p>
 modified to point to the newly added element.</p>
 <p>If the cursor is currently pointing to the null object then an error is
 returned containing the given <code>val</code> parameter.</p>
-<h1 id="panics" class="section-header"><a href="#panics">Panics</a></h1>
+<h5 id="panics" class="section-header"><a href="#panics">Panics</a></h5>
 <p>Panics if the new element is already linked to a different intrusive
 collection.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.insert_after" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/intrusive_collections/linked_list.rs.html#641-654" title="goto source code">[src]</a></div><a href="#method.insert_after" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.insert_after" class="fnname">insert_after</a>(&amp;mut self, val: &lt;A::<a class="type" href="../trait.Adapter.html#associatedtype.PointerOps" title="type intrusive_collections::Adapter::PointerOps">PointerOps</a> as <a class="trait" href="../trait.PointerOps.html" title="trait intrusive_collections::PointerOps">PointerOps</a>&gt;::<a class="type" href="../trait.PointerOps.html#associatedtype.Pointer" title="type intrusive_collections::PointerOps::Pointer">Pointer</a>)</h4></div></summary><div class="docblock"><p>Inserts a new element into the <code>LinkedList</code> after the current one.</p>
 <p>If the cursor is pointing at the null object then the new element is
 inserted at the front of the <code>LinkedList</code>.</p>
-<h1 id="panics-1" class="section-header"><a href="#panics-1">Panics</a></h1>
+<h5 id="panics-1" class="section-header"><a href="#panics-1">Panics</a></h5>
 <p>Panics if the new element is already linked to a different intrusive
 collection.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.insert_before" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/intrusive_collections/linked_list.rs.html#666-682" title="goto source code">[src]</a></div><a href="#method.insert_before" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.insert_before" class="fnname">insert_before</a>(&amp;mut self, val: &lt;A::<a class="type" href="../trait.Adapter.html#associatedtype.PointerOps" title="type intrusive_collections::Adapter::PointerOps">PointerOps</a> as <a class="trait" href="../trait.PointerOps.html" title="trait intrusive_collections::PointerOps">PointerOps</a>&gt;::<a class="type" href="../trait.PointerOps.html#associatedtype.Pointer" title="type intrusive_collections::PointerOps::Pointer">Pointer</a>)</h4></div></summary><div class="docblock"><p>Inserts a new element into the <code>LinkedList</code> before the current one.</p>
 <p>If the cursor is pointing at the null object then the new element is
 inserted at the end of the <code>LinkedList</code>.</p>
-<h1 id="panics-2" class="section-header"><a href="#panics-2">Panics</a></h1>
+<h5 id="panics-2" class="section-header"><a href="#panics-2">Panics</a></h5>
 <p>Panics if the new element is already linked to a different intrusive
 collection.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.splice_after" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/intrusive_collections/linked_list.rs.html#689-710" title="goto source code">[src]</a></div><a href="#method.splice_after" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.splice_after" class="fnname">splice_after</a>(&amp;mut self, list: <a class="struct" href="struct.LinkedList.html" title="struct intrusive_collections::linked_list::LinkedList">LinkedList</a>&lt;A&gt;)</h4></div></summary><div class="docblock"><p>Inserts the elements from the given <code>LinkedList</code> after the current one.</p>

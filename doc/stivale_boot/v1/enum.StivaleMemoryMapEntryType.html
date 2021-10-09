@@ -10,7 +10,7 @@ pub enum StivaleMemoryMapEntryType {
     Framebuffer,
 }</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The type of a memory map entry. The entries are guaranteed to be sorted by base address,
 lowest to highest.</p>
-<h2 id="alignment" class="section-header"><a href="#alignment">Alignment</a></h2>
+<h3 id="alignment" class="section-header"><a href="#alignment">Alignment</a></h3>
 <p>Usable and bootloader reclaimable entries are guaranteed to be 4096 byte aligned for both
 base and length. Usable and bootloader reclaimable entries are <strong>guaranteed</strong> not to overlap with
 any other entry.</p>

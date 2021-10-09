@@ -15,7 +15,7 @@ This is typically used in conjunction with <a href="std::hash::BuildHasherDefaul
 <p>Generally it is preferable to use <a href="struct.RandomState.html" title="RandomState">RandomState</a> instead, so that different
 hashmaps will have different keys. However if fixed keys are desireable this
 may be used instead.</p>
-<h1 id="example" class="section-header"><a href="#example">Example</a></h1>
+<h2 id="example" class="section-header"><a href="#example">Example</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">std::hash::BuildHasherDefault</span>;
 <span class="kw">use</span> <span class="ident">ahash</span>::{<span class="ident">AHasher</span>, <span class="ident">RandomState</span>};
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
@@ -29,7 +29,7 @@ If neither of these features are available, hardcoded constants will be used.</p
 <p>Because the values are fixed, different hashers will all hash elements the same way.
 This could make hash values predictable, if DOS attacks are a concern. If this behaviour is
 not required, it may be preferable to use <a href="struct.RandomState.html" title="RandomState">RandomState</a> instead.</p>
-<h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
+<h5 id="examples" class="section-header"><a href="#examples">Examples</a></h5>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">ahash::AHasher</span>;
 <span class="kw">use</span> <span class="ident">std::hash::Hasher</span>;
 

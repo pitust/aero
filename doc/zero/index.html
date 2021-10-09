@@ -14,23 +14,23 @@ valid discriminant). The user must assert this by implementing the trait
 <p>There are also unsafe versions of most functions which do not require the
 return type to implement <code>Pod</code> and which do no checking.</p>
 </div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
-<div class="item-table"><div class="item-left module-item"><a class="struct" href="struct.StrReaderIterator.html" title="zero::StrReaderIterator struct">StrReaderIterator</a></div><div class="item-right docblock-short"><p>Iterates over <code>self.data</code>, yielding strings (null-terminated in <code>self.data</code>).
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.StrReaderIterator.html" title="zero::StrReaderIterator struct">StrReaderIterator</a></div><div class="item-right docblock-short"><p>Iterates over <code>self.data</code>, yielding strings (null-terminated in <code>self.data</code>).
 See <code>read_strs_to_null</code>.</p>
-</div></div><h2 id="traits" class="section-header"><a href="#traits">Traits</a></h2>
-<div class="item-table"><div class="item-left module-item"><a class="trait" href="trait.Pod.html" title="zero::Pod trait">Pod</a></div><div class="item-right docblock-short"><p>Implementing this trait means that the concrete type is plain old data (POD).
+</div></div></div><h2 id="traits" class="section-header"><a href="#traits">Traits</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Pod.html" title="zero::Pod trait">Pod</a></div><div class="item-right docblock-short"><p>Implementing this trait means that the concrete type is plain old data (POD).
 Precisely, by implementing <code>Pod</code> the programmer asserts that it is safe to
 read the type from binary slices provided to <code>read</code>, etc.</p>
-</div></div><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2>
-<div class="item-table"><div class="item-left module-item"><a class="fn" href="fn.read.html" title="zero::read fn">read</a></div><div class="item-right docblock-short"><p>Reads a single <code>T</code> from <code>input</code>.</p>
-</div><div class="item-left module-item"><a class="fn" href="fn.read_array.html" title="zero::read_array fn">read_array</a></div><div class="item-right docblock-short"><p>Read an array of <code>T</code>s from input.</p>
-</div><div class="item-left module-item"><a class="fn" href="fn.read_array_unsafe.html" title="zero::read_array_unsafe fn">read_array_unsafe</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Reads an array of <code>T</code>s from <code>input</code> with no checks.</p>
-</div><div class="item-left module-item"><a class="fn" href="fn.read_str.html" title="zero::read_str fn">read_str</a></div><div class="item-right docblock-short"><p>Read a string from <code>input</code>. The string must be a null-termianted utf8 string.
+</div></div></div><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.read.html" title="zero::read fn">read</a></div><div class="item-right docblock-short"><p>Reads a single <code>T</code> from <code>input</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.read_array.html" title="zero::read_array fn">read_array</a></div><div class="item-right docblock-short"><p>Read an array of <code>T</code>s from input.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.read_array_unsafe.html" title="zero::read_array_unsafe fn">read_array_unsafe</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Reads an array of <code>T</code>s from <code>input</code> with no checks.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.read_str.html" title="zero::read_str fn">read_str</a></div><div class="item-right docblock-short"><p>Read a string from <code>input</code>. The string must be a null-termianted utf8 string.
 Note that an ascii C string fulfils this requirement.</p>
-</div><div class="item-left module-item"><a class="fn" href="fn.read_str_unsafe.html" title="zero::read_str_unsafe fn">read_str_unsafe</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Reads a null-terminated string from <code>input</code> with no checks.</p>
-</div><div class="item-left module-item"><a class="fn" href="fn.read_strs_to_null.html" title="zero::read_strs_to_null fn">read_strs_to_null</a></div><div class="item-right docblock-short"><p>Returns an iterator which will return a sequence of strings from <code>input</code>.
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.read_str_unsafe.html" title="zero::read_str_unsafe fn">read_str_unsafe</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Reads a null-terminated string from <code>input</code> with no checks.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.read_strs_to_null.html" title="zero::read_strs_to_null fn">read_strs_to_null</a></div><div class="item-right docblock-short"><p>Returns an iterator which will return a sequence of strings from <code>input</code>.
 Each string must be a null-terminated utf8 string. The sequence of strings
 is terminated either by a second null byte, or the end of input.</p>
-</div><div class="item-left module-item"><a class="fn" href="fn.read_unsafe.html" title="zero::read_unsafe fn">read_unsafe</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Reads a <code>T</code> from <code>input</code> with no checks.</p>
-</div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="zero" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.read_unsafe.html" title="zero::read_unsafe fn">read_unsafe</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Reads a <code>T</code> from <code>input</code> with no checks.</p>
+</div></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="zero" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
     <script src="../main.js"></script>
 </body></html>
