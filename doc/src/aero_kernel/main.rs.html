@@ -290,7 +290,7 @@
 <span class="attribute">#[<span class="ident">thread_local</span>]</span>
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">CPU_ID</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x00</span>;
 
-<span class="kw">fn</span> <span class="ident">aero_main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">fn</span> <span class="ident">aero_main</span>() -&gt; <span class="op">!</span> {
     <span class="comment">// NOTE: In this function we only want to initialize essential serivces, including</span>
     <span class="comment">// the task scheduler. Rest of the initializing (including kernel modules) should go</span>
     <span class="comment">// into the kernel main thread function instead.</span>
@@ -347,7 +347,7 @@
 }
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_ap_startup</span>(<span class="ident">ap_id</span>: <span class="ident">u64</span>, <span class="ident">stack_top_addr</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">kernel_ap_startup</span>(<span class="ident">ap_id</span>: <span class="ident">u64</span>, <span class="ident">stack_top_addr</span>: <span class="ident">VirtAddr</span>) -&gt; <span class="op">!</span> {
     <span class="macro">log::debug!</span>(<span class="string">&quot;booting CPU {}&quot;</span>, <span class="ident">ap_id</span>);
 
     <span class="ident">arch::gdt::init_boot</span>();

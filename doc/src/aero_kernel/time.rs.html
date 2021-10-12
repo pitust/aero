@@ -118,7 +118,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tick</span>() {
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">UPTIME_RAW</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Increment uptime raw ticks.</span>
 
-    <span class="kw">if</span> <span class="ident">value</span> <span class="op">%</span> <span class="ident">PIT_FREQUENCY_HZ</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+    <span class="kw">if</span> <span class="ident">value</span> <span class="op">%</span> <span class="ident">PIT_FREQUENCY_HZ</span> <span class="op">==</span> <span class="number">0</span> {
         <span class="ident">UPTIME_SEC</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Increment uptime seconds</span>
         <span class="ident">UNIX_EPOCH</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Increment unix epoch</span>
     }
@@ -127,7 +127,7 @@
 
     <span class="comment">// Check if the ticks are equal to the scheduler timeslice. If so, then</span>
     <span class="comment">// reschedule.</span>
-    <span class="kw">if</span> <span class="ident">value</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SCHED_TIMESLICE_MS</span> {
+    <span class="kw">if</span> <span class="ident">value</span> <span class="op">==</span> <span class="ident">SCHED_TIMESLICE_MS</span> {
         <span class="ident">SCHED_TICKS</span>.<span class="ident">store</span>(<span class="number">0</span>, <span class="ident">Ordering::Relaxed</span>); <span class="comment">// Reset the scheduler ticks counter.</span>
 
         <span class="ident">scheduler::get_scheduler</span>().<span class="ident">inner</span>.<span class="ident">preempt</span>();

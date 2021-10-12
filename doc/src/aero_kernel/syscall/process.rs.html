@@ -141,7 +141,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging::VirtAddr</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
     <span class="macro">log::trace!</span>(<span class="string">&quot;exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
     <span class="ident">scheduler::get_scheduler</span>().<span class="ident">inner</span>.<span class="ident">exit</span>(<span class="ident">status</span> <span class="kw">as</span> <span class="ident">isize</span>);
 }
@@ -151,9 +151,9 @@
 <span class="kw">const</span> <span class="ident">ARCH_GET_FS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0x1003</span>;
 <span class="kw">const</span> <span class="ident">ARCH_GET_GS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0x1004</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arch_prctl</span>(<span class="ident">command</span>: <span class="ident">usize</span>, <span class="ident">address</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arch_prctl</span>(<span class="ident">command</span>: <span class="ident">usize</span>, <span class="ident">address</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">command</span> {
-        <span class="ident">ARCH_SET_FS</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">ARCH_SET_FS</span> =&gt; {
             <span class="ident">scheduler::get_scheduler</span>()
                 .<span class="ident">current_task</span>()
                 .<span class="ident">arch_task_mut</span>()
@@ -162,20 +162,20 @@
             <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
         }
 
-        <span class="ident">ARCH_GET_FS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">scheduler::get_scheduler</span>()
+        <span class="ident">ARCH_GET_FS</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">scheduler::get_scheduler</span>()
             .<span class="ident">current_task</span>()
             .<span class="ident">arch_task_mut</span>()
             .<span class="ident">get_fs_base</span>()
             .<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="ident">usize</span>),
 
-        <span class="ident">ARCH_SET_GS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(),
-        <span class="ident">ARCH_GET_GS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(),
+        <span class="ident">ARCH_SET_GS</span> =&gt; <span class="macro">unimplemented!</span>(),
+        <span class="ident">ARCH_GET_GS</span> =&gt; <span class="macro">unimplemented!</span>(),
 
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::EINVAL</span>),
+        <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::EINVAL</span>),
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fork</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fork</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>();
     <span class="kw">let</span> <span class="ident">forked</span> <span class="op">=</span> <span class="ident">scheduler</span>.<span class="ident">current_task</span>().<span class="ident">fork</span>();
 
@@ -190,7 +190,7 @@
     <span class="ident">flags</span>: <span class="ident">usize</span>,
     <span class="ident">_fd</span>: <span class="ident">usize</span>,
     <span class="ident">_offset</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">address</span> <span class="kw">as</span> <span class="ident">u64</span>);
 
     <span class="kw">let</span> <span class="ident">protocol</span> <span class="op">=</span> <span class="ident">MMapProt::from_bits</span>(<span class="ident">protocol</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
@@ -211,7 +211,7 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">munmap</span>(<span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">munmap</span>(<span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">address</span> <span class="kw">as</span> <span class="ident">u64</span>);
 
     <span class="kw">if</span> <span class="ident">scheduler::get_scheduler</span>()
@@ -225,7 +225,7 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shutdown</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shutdown</span>() -&gt; <span class="op">!</span> {
     <span class="ident">fs::cache::dcache</span>().<span class="ident">log</span>();
 
     <span class="ident">fs::cache::clear_inode_cache</span>();

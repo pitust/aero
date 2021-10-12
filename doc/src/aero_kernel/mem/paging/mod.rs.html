@@ -104,6 +104,8 @@
 <span id="104">104</span>
 <span id="105">105</span>
 <span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -175,14 +177,16 @@
 
 <span class="doccomment">/// Returns true if level 5 paging is supported by the CPU and is enabled in Cr4.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">level_5_paging_enabled</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">level_5_paging_enabled</span>() -&gt; <span class="ident">bool</span> {
     <span class="ident">controlregs::read_cr4</span>().<span class="ident">contains</span>(<span class="ident">controlregs::Cr4Flags::L5_PAGING</span>)
 }
 
 <span class="doccomment">/// Initialize paging.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>(
     <span class="ident">memory_regions</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleMemoryMapTag</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">OffsetPageTable</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>, <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="ident">kernel_base</span>: <span class="ident">PhysAddr</span>,
+    <span class="ident">kernel_end</span>: <span class="ident">PhysAddr</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">OffsetPageTable</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>, <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">memory_regions</span> <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> (<span class="ident">memory_regions</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">StivaleMemoryMapTag</span>) <span class="kw">as</span> <span class="ident">u64</span>;
         <span class="kw">let</span> <span class="ident">new_addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">addr</span>;
@@ -194,14 +198,14 @@
     <span class="kw">let</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">OffsetPageTable::new</span>(<span class="ident">active_level_4</span>, <span class="ident">PHYSICAL_MEMORY_OFFSET</span>) };
 
     <span class="kw">unsafe</span> {
-        <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">init</span>(<span class="ident">memory_regions</span>);
+        <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">init</span>(<span class="ident">memory_regions</span>, <span class="ident">kernel_base</span>, <span class="ident">kernel_end</span>);
     }
 
     <span class="prelude-val">Ok</span>(<span class="ident">offset_table</span>)
 }
 
 <span class="doccomment">/// Get a mutable reference to the active level 4 page table.</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">active_level_4_table</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">PageTable</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">active_level_4_table</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">PageTable</span> {
     <span class="kw">let</span> (<span class="ident">level_4_table_frame</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">controlregs::read_cr3</span>();
 
     <span class="kw">let</span> <span class="ident">physical</span> <span class="op">=</span> <span class="ident">level_4_table_frame</span>.<span class="ident">start_address</span>();

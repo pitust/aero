@@ -291,7 +291,7 @@
 <span class="kw">impl</span> <span class="ident">Heap</span> {
     <span class="doccomment">/// Creates an empty heap. All allocate calls will return `None`.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_mut_refs&quot;</span>))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Heap</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">empty</span>() -&gt; <span class="ident">Heap</span> {
         <span class="ident">Heap</span> {
             <span class="ident">bottom</span>: <span class="number">0</span>,
             <span class="ident">size</span>: <span class="number">0</span>,
@@ -301,7 +301,7 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_mut_refs&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Heap</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">empty</span>() -&gt; <span class="ident">Heap</span> {
         <span class="ident">Heap</span> {
             <span class="ident">bottom</span>: <span class="number">0</span>,
             <span class="ident">size</span>: <span class="number">0</span>,
@@ -327,7 +327,7 @@
     <span class="doccomment">/// and the memory in the `[heap_bottom, heap_bottom + heap_size)` range must not be used for</span>
     <span class="doccomment">/// anything else. This function is unsafe because it can cause undefined behavior if the</span>
     <span class="doccomment">/// given address is invalid.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">heap_bottom</span>: <span class="ident">usize</span>, <span class="ident">heap_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Heap</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">heap_bottom</span>: <span class="ident">usize</span>, <span class="ident">heap_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">Heap</span> {
         <span class="kw">if</span> <span class="ident">heap_size</span> <span class="op">&lt;</span> <span class="ident">HoleList::min_size</span>() {
             <span class="ident"><span class="self">Self</span>::empty</span>()
         } <span class="kw">else</span> {
@@ -345,13 +345,13 @@
     <span class="doccomment">/// This function scans the list of free memory blocks and uses the first block that is big</span>
     <span class="doccomment">/// enough. The runtime is in O(n) where n is the number of free blocks, but it should be</span>
     <span class="doccomment">/// reasonably fast for small allocations.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocate_first_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocate_first_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">holes</span>.<span class="ident">allocate_first_fit</span>(<span class="ident">layout</span>) {
-            <span class="prelude-val">Ok</span>((<span class="ident">ptr</span>, <span class="ident">aligned_layout</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>((<span class="ident">ptr</span>, <span class="ident">aligned_layout</span>)) =&gt; {
                 <span class="self">self</span>.<span class="ident">used</span> <span class="op">+</span><span class="op">=</span> <span class="ident">aligned_layout</span>.<span class="ident">size</span>();
                 <span class="prelude-val">Ok</span>(<span class="ident">ptr</span>)
             }
-            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">err</span>),
         }
     }
 
@@ -367,27 +367,27 @@
     }
 
     <span class="doccomment">/// Returns the bottom address of the heap.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">bottom</span>
     }
 
     <span class="doccomment">/// Returns the size of the heap.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">size</span>
     }
 
     <span class="doccomment">/// Return the top address of the heap</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>
     }
 
     <span class="doccomment">/// Returns the size of the used part of the heap</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">used</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">used</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">used</span>
     }
 
     <span class="doccomment">/// Returns the size of the free part of the heap</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">free</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">free</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">size</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">used</span>
     }
 
@@ -407,13 +407,13 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_ref&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_spin&quot;</span>))]</span>
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Allocator</span> <span class="kw">for</span> <span class="ident">LockedHeap</span> {
-    <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">layout</span>.<span class="ident">size</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+    <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">layout</span>.<span class="ident">size</span>() <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">NonNull::slice_from_raw_parts</span>(<span class="ident">layout</span>.<span class="ident">dangling</span>(), <span class="number">0</span>));
         }
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">lock</span>().<span class="ident">allocate_first_fit</span>(<span class="ident">layout</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">ptr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">NonNull::slice_from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">layout</span>.<span class="ident">size</span>())),
-            <span class="prelude-val">Err</span>(()) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AllocError</span>),
+            <span class="prelude-val">Ok</span>(<span class="ident">ptr</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">NonNull::slice_from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">layout</span>.<span class="ident">size</span>())),
+            <span class="prelude-val">Err</span>(()) =&gt; <span class="prelude-val">Err</span>(<span class="ident">AllocError</span>),
         }
     }
 
@@ -431,13 +431,13 @@
 <span class="kw">impl</span> <span class="ident">LockedHeap</span> {
     <span class="doccomment">/// Creates an empty heap. All allocate calls will return `None`.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_spin_nightly&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LockedHeap</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">empty</span>() -&gt; <span class="ident">LockedHeap</span> {
         <span class="ident">LockedHeap</span>(<span class="ident">Spinlock::new</span>(<span class="ident">Heap::empty</span>()))
     }
 
     <span class="doccomment">/// Creates an empty heap. All allocate calls will return `None`.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_spin_nightly&quot;</span>))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LockedHeap</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">empty</span>() -&gt; <span class="ident">LockedHeap</span> {
         <span class="ident">LockedHeap</span>(<span class="ident">Spinlock::new</span>(<span class="ident">Heap::empty</span>()))
     }
 
@@ -445,7 +445,7 @@
     <span class="doccomment">/// and the memory in the `[heap_bottom, heap_bottom + heap_size)` range must not be used for</span>
     <span class="doccomment">/// anything else. This function is unsafe because it can cause undefined behavior if the</span>
     <span class="doccomment">/// given address is invalid.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">heap_bottom</span>: <span class="ident">usize</span>, <span class="ident">heap_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LockedHeap</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">heap_bottom</span>: <span class="ident">usize</span>, <span class="ident">heap_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">LockedHeap</span> {
         <span class="ident">LockedHeap</span>(<span class="ident">Spinlock::new</span>(<span class="ident">Heap</span> {
             <span class="ident">bottom</span>: <span class="ident">heap_bottom</span>,
             <span class="ident">size</span>: <span class="ident">heap_size</span>,
@@ -459,14 +459,14 @@
 <span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">LockedHeap</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">Spinlock</span><span class="op">&lt;</span><span class="ident">Heap</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Spinlock</span><span class="op">&lt;</span><span class="ident">Heap</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Spinlock</span><span class="op">&lt;</span><span class="ident">Heap</span><span class="op">&gt;</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_spin&quot;</span>)]</span>
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">GlobalAlloc</span> <span class="kw">for</span> <span class="ident">LockedHeap</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="number">0</span>
             .<span class="ident">lock</span>()
             .<span class="ident">allocate_first_fit</span>(<span class="ident">layout</span>)
@@ -483,10 +483,10 @@
 
 <span class="doccomment">/// Align downwards. Returns the greatest x with alignment `align`</span>
 <span class="doccomment">/// so that x &lt;= addr. The alignment must be a power of 2.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_down</span>(<span class="ident">addr</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_down</span>(<span class="ident">addr</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">if</span> <span class="ident">align</span>.<span class="ident">is_power_of_two</span>() {
         <span class="ident">addr</span> <span class="op">&amp;</span> <span class="op">!</span>(<span class="ident">align</span> <span class="op">-</span> <span class="number">1</span>)
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">align</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">align</span> <span class="op">==</span> <span class="number">0</span> {
         <span class="ident">addr</span>
     } <span class="kw">else</span> {
         <span class="macro">panic!</span>(<span class="string">&quot;`align` must be a power of 2&quot;</span>);
@@ -495,7 +495,7 @@
 
 <span class="doccomment">/// Align upwards. Returns the smallest x with alignment `align`</span>
 <span class="doccomment">/// so that x &gt;= addr. The alignment must be a power of 2.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_up</span>(<span class="ident">addr</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_up</span>(<span class="ident">addr</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
     <span class="ident">align_down</span>(<span class="ident">addr</span> <span class="op">+</span> <span class="ident">align</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">align</span>)
 }
 </code></pre></div>

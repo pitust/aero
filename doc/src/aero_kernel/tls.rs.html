@@ -131,7 +131,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Tls</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">Tls</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">Tls</span> {
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">address</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">Tls</span><span class="op">&gt;</span>() }
     }
 

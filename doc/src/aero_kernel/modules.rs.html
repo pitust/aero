@@ -78,7 +78,7 @@
 <span class="doccomment">/// has a valid function signature. This function returns the passed module init function as</span>
 <span class="doccomment">/// a const void pointer.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">make_module_init</span>(<span class="ident">init_function</span>: <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> ()) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ModuleInit</span> {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">make_module_init</span>(<span class="ident">init_function</span>: <span class="kw">fn</span>() -&gt; ()) -&gt; <span class="ident">ModuleInit</span> {
     <span class="ident">ModuleInit</span>(<span class="ident">init_function</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> ())
 }
 
@@ -91,7 +91,7 @@
 
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">module_init</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">init_function</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">init_function</span>:<span class="ident">expr</span>) =&gt; {
         <span class="attribute">#[<span class="ident">used</span>]</span>
         <span class="attribute">#[<span class="ident">link_section</span> <span class="op">=</span> <span class="string">&quot;.kernel_modules.init&quot;</span>]</span>
         <span class="kw">static</span> <span class="ident">__MODULE_INIT</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::modules::ModuleInit</span> <span class="op">=</span>
@@ -115,7 +115,7 @@
     <span class="kw">unsafe</span> {
         (<span class="ident">__kernel_modules_start</span>.<span class="ident">as_usize</span>()..<span class="ident">__kernel_modules_end</span>.<span class="ident">as_usize</span>())
             .<span class="ident">step_by</span>(<span class="number">0x08</span>)
-            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">module</span><span class="op">|</span> (<span class="kw-2">*</span>(<span class="ident">module</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> ()))());
+            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">module</span><span class="op">|</span> (<span class="kw-2">*</span>(<span class="ident">module</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">fn</span>() -&gt; ()))());
     }
 }
 </code></pre></div>

@@ -352,7 +352,7 @@
 
 <span class="kw">impl</span> <span class="ident">LockedRamINode</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">node</span>: <span class="ident">RamINode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">node</span>: <span class="ident">RamINode</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">RwLock::new</span>(<span class="ident">node</span>))
     }
 
@@ -376,7 +376,7 @@
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">file_type</span>: <span class="ident">FileType</span>,
         <span class="ident">contents</span>: <span class="ident">FileContents</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">icache</span> <span class="op">=</span> <span class="ident">cache::icache</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">write</span>();
 
@@ -409,7 +409,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">INodeInterface</span> <span class="kw">for</span> <span class="ident">LockedRamINode</span> {
-    <span class="kw">fn</span> <span class="ident">touch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">touch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">DirEntry::new</span>(
             <span class="ident">parent</span>,
             <span class="self">self</span>.<span class="ident">make_inode</span>(
@@ -422,12 +422,12 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mkdir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">mkdir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">make_inode</span>(<span class="ident">name</span>, <span class="ident">FileType::Directory</span>, <span class="ident">FileContents::None</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">make_dev_inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">marker</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">make_dev_inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">marker</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">make_inode</span>(
             <span class="ident">name</span>,
             <span class="ident">FileType::Device</span>,
@@ -435,23 +435,23 @@
         )
     }
 
-    <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>();
 
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">this</span>.<span class="ident">contents</span> {
-            <span class="ident">FileContents::Content</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">todo!</span>(),
-            <span class="ident">FileContents::Device</span>(<span class="ident">dev</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">FileContents::Content</span>(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+            <span class="ident">FileContents::Device</span>(<span class="ident">dev</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="ident">dev</span>.<span class="ident">clone</span>();
                 <span class="ident">drop</span>(<span class="ident">this</span>);
 
                 <span class="ident">device</span>.<span class="ident">write_at</span>(<span class="ident">offset</span>, <span class="ident">buffer</span>)
             }
 
-            <span class="ident">FileContents::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>),
+            <span class="ident">FileContents::None</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">dirent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">dirent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>();
 
         <span class="kw">if</span> <span class="ident">this</span>.<span class="ident">file_type</span> <span class="op">!</span><span class="op">=</span> <span class="ident">FileType::Directory</span> {
@@ -459,14 +459,14 @@
         }
 
         <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">index</span> {
-            <span class="number">0x00</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">DirEntry::new</span>(
+            <span class="number">0x00</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">DirEntry::new</span>(
                 <span class="ident">parent</span>,
                 <span class="comment">// UNWRAP: The inner node value should not be dropped.</span>
                 <span class="ident">this</span>.<span class="ident">node</span>.<span class="ident">upgrade</span>().<span class="ident">unwrap</span>().<span class="ident">into</span>(),
                 <span class="ident">String::from</span>(<span class="string">&quot;.&quot;</span>),
             )),
 
-            <span class="number">0x01</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="number">0x01</span> =&gt; {
                 <span class="prelude-val">Some</span>(<span class="ident">DirEntry::new</span>(
                     <span class="ident">parent</span>,
                     <span class="comment">// UNWRAP: The inner node value should not be dropped.</span>
@@ -476,7 +476,7 @@
             }
 
             <span class="comment">// Subtract two because of the &quot;.&quot; and &quot;..&quot; entries.</span>
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">this</span>
+            <span class="kw">_</span> =&gt; <span class="ident">this</span>
                 .<span class="ident">children</span>
                 .<span class="ident">iter</span>()
                 .<span class="ident">nth</span>(<span class="ident">index</span> <span class="op">-</span> <span class="number">2</span>)
@@ -484,37 +484,37 @@
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>();
 
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">this</span>.<span class="ident">contents</span> {
-            <span class="ident">FileContents::Content</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">todo!</span>(),
-            <span class="ident">FileContents::Device</span>(<span class="ident">device</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">FileContents::Content</span>(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+            <span class="ident">FileContents::Device</span>(<span class="ident">device</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="ident">device</span>.<span class="ident">clone</span>();
                 <span class="ident">drop</span>(<span class="ident">this</span>);
 
                 <span class="ident">device</span>.<span class="ident">read_at</span>(<span class="ident">offset</span>, <span class="ident">buffer</span>)
             }
 
-            <span class="ident">FileContents::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>),
+            <span class="ident">FileContents::None</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Metadata</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Metadata</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>();
 
         <span class="prelude-val">Ok</span>(<span class="ident">Metadata</span> {
             <span class="ident">id</span>: <span class="ident">this</span>.<span class="ident">id</span>,
             <span class="ident">file_type</span>: <span class="ident">this</span>.<span class="ident">file_type</span>,
             <span class="ident">size</span>: <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">this</span>.<span class="ident">contents</span> {
-                <span class="ident">FileContents::Content</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes</span>.<span class="ident">lock</span>().<span class="ident">len</span>(), <span class="comment">// Temporary value dropped and lock is unlocked!</span>
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0x00</span>,
+                <span class="ident">FileContents::Content</span>(<span class="ident">bytes</span>) =&gt; <span class="ident">bytes</span>.<span class="ident">lock</span>().<span class="ident">len</span>(), <span class="comment">// Temporary value dropped and lock is unlocked!</span>
+                <span class="kw">_</span> =&gt; <span class="number">0x00</span>,
             },
             <span class="ident">children_len</span>: <span class="ident">this</span>.<span class="ident">children</span>.<span class="ident">len</span>(),
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">lookup</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dir</span>: <span class="ident">DirCacheItem</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">lookup</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dir</span>: <span class="ident">DirCacheItem</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>();
         <span class="kw">let</span> <span class="ident">child</span> <span class="op">=</span> <span class="ident">this</span>
             .<span class="ident">children</span>
@@ -529,7 +529,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">weak_filesystem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">weak_filesystem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>().<span class="ident">filesystem</span>.<span class="ident">clone</span>())
     }
 }
@@ -543,7 +543,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">RamFs</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">icache</span> <span class="op">=</span> <span class="ident">cache::icache</span>();
 
         <span class="kw">let</span> <span class="ident">root_node</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">LockedRamINode::new</span>(<span class="ident">RamINode::default</span>()));
@@ -573,7 +573,7 @@
         <span class="ident">ramfs</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">allocate_inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_type</span>: <span class="ident">FileType</span>, <span class="ident">contents</span>: <span class="ident">FileContents</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">LockedRamINode</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">allocate_inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_type</span>: <span class="ident">FileType</span>, <span class="ident">contents</span>: <span class="ident">FileContents</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">LockedRamINode</span><span class="op">&gt;</span> {
         <span class="ident">Arc::new</span>(<span class="ident">LockedRamINode::new</span>(<span class="ident">RamINode</span> {
             <span class="ident">parent</span>: <span class="ident">CacheWeak::new</span>(),
             <span class="ident">node</span>: <span class="ident">CacheWeak::new</span>(),
@@ -588,7 +588,7 @@
 
 <span class="kw">impl</span> <span class="ident">FileSystem</span> <span class="kw">for</span> <span class="ident">RamFs</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">root_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DirCacheItem</span> {
+    <span class="kw">fn</span> <span class="ident">root_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">DirCacheItem</span> {
         <span class="self">self</span>.<span class="ident">root_dir</span>.<span class="ident">clone</span>()
     }
 }

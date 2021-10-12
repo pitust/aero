@@ -691,7 +691,7 @@
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">cmp::Ordering</span>, <span class="ident">convert::TryInto</span>, <span class="ident">mem</span>, <span class="ident">ops::Deref</span>};
 
 <span class="doccomment">/// Type 2 opcodes return a value and so can be used in expressions.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">type2_opcode</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">type2_opcode</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -734,7 +734,7 @@
     ))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_add</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_add</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -760,7 +760,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_and</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_and</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -786,7 +786,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_buffer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_buffer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -821,7 +821,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">buffer</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Buffer</span>(<span class="ident">Arc::new</span>(<span class="ident">buffer</span>))))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_concat</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_concat</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -835,7 +835,7 @@
             <span class="string">&quot;DefConcat&quot;</span>,
             <span class="ident">term_arg</span>().<span class="ident">then</span>(<span class="ident">term_arg</span>()).<span class="ident">then</span>(<span class="ident">target</span>()).<span class="ident">map_with_context</span>(<span class="op">|</span>((<span class="ident">left</span>, <span class="ident">right</span>), <span class="ident">target</span>), <span class="ident">context</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">left</span>.<span class="ident">as_concat_type</span>() {
-                    <span class="ident">AmlValue::Integer</span>(<span class="ident">left</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">AmlValue::Integer</span>(<span class="ident">left</span>) =&gt; {
                         <span class="kw">let</span> <span class="ident">right</span> <span class="op">=</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">right</span>.<span class="ident">as_integer</span>(<span class="ident">context</span>));
 
                         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">2</span>);
@@ -844,21 +844,21 @@
 
                         <span class="ident">AmlValue::Buffer</span>(<span class="ident">Arc::new</span>(<span class="ident">buffer</span>))
                     }
-                    <span class="ident">AmlValue::Buffer</span>(<span class="ident">left</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">AmlValue::Buffer</span>(<span class="ident">left</span>) =&gt; {
                         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new</span> <span class="op">=</span> <span class="ident">left</span>.<span class="ident">deref</span>().<span class="ident">clone</span>();
                         <span class="ident">new</span>.<span class="ident">extend</span>(<span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">right</span>.<span class="ident">as_buffer</span>(<span class="ident">context</span>)).<span class="ident">iter</span>());
                         <span class="ident">AmlValue::Buffer</span>(<span class="ident">Arc::new</span>(<span class="ident">new</span>))
                     }
-                    <span class="ident">AmlValue::String</span>(<span class="ident">left</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">AmlValue::String</span>(<span class="ident">left</span>) =&gt; {
                         <span class="kw">let</span> <span class="ident">right</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">right</span>.<span class="ident">as_concat_type</span>() {
-                            <span class="ident">AmlValue::String</span>(<span class="ident">right</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">right</span>,
-                            <span class="ident">AmlValue::Integer</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">right</span>.<span class="ident">as_string</span>(<span class="ident">context</span>)),
-                            <span class="ident">AmlValue::Buffer</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">right</span>.<span class="ident">as_string</span>(<span class="ident">context</span>)),
-                            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Invalid type returned from `as_concat_type`&quot;</span>),
+                            <span class="ident">AmlValue::String</span>(<span class="ident">right</span>) =&gt; <span class="ident">right</span>,
+                            <span class="ident">AmlValue::Integer</span>(<span class="kw">_</span>) =&gt; <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">right</span>.<span class="ident">as_string</span>(<span class="ident">context</span>)),
+                            <span class="ident">AmlValue::Buffer</span>(<span class="kw">_</span>) =&gt; <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">right</span>.<span class="ident">as_string</span>(<span class="ident">context</span>)),
+                            <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Invalid type returned from `as_concat_type`&quot;</span>),
                         };
                         <span class="ident">AmlValue::String</span>(<span class="ident">left</span> <span class="op">+</span> <span class="kw-2">&amp;</span><span class="ident">right</span>)
                     }
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Invalid type returned from `as_concat_type`&quot;</span>),
+                    <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Invalid type returned from `as_concat_type`&quot;</span>),
                 };
 
                 <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">context</span>.<span class="ident">store</span>(<span class="ident">target</span>, <span class="ident">result</span>.<span class="ident">clone</span>()));
@@ -868,7 +868,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_concat_res</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_concat_res</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -884,7 +884,7 @@
                 <span class="kw">let</span> <span class="ident">left</span> <span class="op">=</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">left</span>.<span class="ident">as_buffer</span>(<span class="ident">context</span>));
                 <span class="kw">let</span> <span class="ident">right</span> <span class="op">=</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">right</span>.<span class="ident">as_buffer</span>(<span class="ident">context</span>));
 
-                <span class="kw">if</span> <span class="ident">left</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">right</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+                <span class="kw">if</span> <span class="ident">left</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">right</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">1</span> {
                     <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">AmlError::ResourceDescriptorTooShort</span>)), <span class="ident">context</span>);
                 }
 
@@ -898,8 +898,8 @@
                 <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span>
                         <span class="ident">Vec::with_capacity</span>(<span class="ident">left</span>.<span class="ident">len</span>().<span class="ident">saturating_sub</span>(<span class="number">2</span>) <span class="op">+</span> <span class="ident">right</span>.<span class="ident">len</span>().<span class="ident">saturating_sub</span>(<span class="number">2</span>) <span class="op">+</span> <span class="number">2</span>);
-                    <span class="ident">result</span>.<span class="ident">extend_from_slice</span>(<span class="kw">if</span> <span class="ident">left</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> { <span class="kw-2">&amp;</span>[] } <span class="kw">else</span> { <span class="kw-2">&amp;</span><span class="ident">left</span>[..(<span class="ident">left</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">2</span>)] });
-                    <span class="ident">result</span>.<span class="ident">extend_from_slice</span>(<span class="kw">if</span> <span class="ident">right</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> { <span class="kw-2">&amp;</span>[] } <span class="kw">else</span> { <span class="kw-2">&amp;</span><span class="ident">right</span>[..(<span class="ident">right</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">2</span>)] });
+                    <span class="ident">result</span>.<span class="ident">extend_from_slice</span>(<span class="kw">if</span> <span class="ident">left</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> { <span class="kw-2">&amp;</span>[] } <span class="kw">else</span> { <span class="kw-2">&amp;</span><span class="ident">left</span>[..(<span class="ident">left</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">2</span>)] });
+                    <span class="ident">result</span>.<span class="ident">extend_from_slice</span>(<span class="kw">if</span> <span class="ident">right</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> { <span class="kw-2">&amp;</span>[] } <span class="kw">else</span> { <span class="kw-2">&amp;</span><span class="ident">right</span>[..(<span class="ident">right</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">2</span>)] });
 
                     <span class="comment">/*
                      * Construct a new end tag, including a new checksum:
@@ -924,7 +924,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_increment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_increment</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -946,7 +946,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_decrement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_decrement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -968,7 +968,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_l_or</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_l_or</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -989,7 +989,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_l_equal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_l_equal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1003,13 +1003,13 @@
             <span class="string">&quot;DefLEqual&quot;</span>,
             <span class="ident">term_arg</span>().<span class="ident">then</span>(<span class="ident">term_arg</span>()).<span class="ident">map_with_context</span>(<span class="op">|</span>(<span class="ident">left_arg</span>, <span class="ident">right_arg</span>), <span class="ident">context</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">ord</span> <span class="op">=</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">left_arg</span>.<span class="ident">cmp</span>(<span class="ident">right_arg</span>, <span class="ident">context</span>));
-                (<span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Boolean</span>(<span class="ident">ord</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Ordering::Equal</span>)), <span class="ident">context</span>)
+                (<span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Boolean</span>(<span class="ident">ord</span> <span class="op">==</span> <span class="ident">Ordering::Equal</span>)), <span class="ident">context</span>)
             }),
         ))
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_l_greater</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_l_greater</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1022,13 +1022,13 @@
             <span class="string">&quot;DefLGreater&quot;</span>,
             <span class="ident">term_arg</span>().<span class="ident">then</span>(<span class="ident">term_arg</span>()).<span class="ident">map_with_context</span>(<span class="op">|</span>(<span class="ident">left_arg</span>, <span class="ident">right_arg</span>), <span class="ident">context</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">ord</span> <span class="op">=</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">left_arg</span>.<span class="ident">cmp</span>(<span class="ident">right_arg</span>, <span class="ident">context</span>));
-                (<span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Boolean</span>(<span class="ident">ord</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Ordering::Greater</span>)), <span class="ident">context</span>)
+                (<span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Boolean</span>(<span class="ident">ord</span> <span class="op">==</span> <span class="ident">Ordering::Greater</span>)), <span class="ident">context</span>)
             }),
         ))
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_l_greater_equal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_l_greater_equal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1048,7 +1048,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>(((), ()), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_l_less</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_l_less</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1061,13 +1061,13 @@
             <span class="string">&quot;DefLLess&quot;</span>,
             <span class="ident">term_arg</span>().<span class="ident">then</span>(<span class="ident">term_arg</span>()).<span class="ident">map_with_context</span>(<span class="op">|</span>(<span class="ident">left_arg</span>, <span class="ident">right_arg</span>), <span class="ident">context</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">ord</span> <span class="op">=</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">left_arg</span>.<span class="ident">cmp</span>(<span class="ident">right_arg</span>, <span class="ident">context</span>));
-                (<span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Boolean</span>(<span class="ident">ord</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Ordering::Less</span>)), <span class="ident">context</span>)
+                (<span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Boolean</span>(<span class="ident">ord</span> <span class="op">==</span> <span class="ident">Ordering::Less</span>)), <span class="ident">context</span>)
             }),
         ))
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_l_less_equal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_l_less_equal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1087,7 +1087,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>(((), ()), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_l_not_equal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_l_not_equal</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1107,7 +1107,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>(((), ()), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">def_mid</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_mid</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1127,7 +1127,7 @@
                     <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="macro">try_with_context!</span>(
                         <span class="ident">context</span>,
                         <span class="kw">match</span> <span class="ident">source</span> {
-                            <span class="ident">AmlValue::Buffer</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="ident">AmlValue::Buffer</span>(<span class="ident">bytes</span>) =&gt; {
                                 <span class="kw">if</span> <span class="ident">index</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">len</span>() {
                                     <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Buffer</span>(<span class="ident">Arc::new</span>(<span class="macro">vec!</span>[])))
                                 } <span class="kw">else</span> <span class="kw">if</span> (<span class="ident">index</span> <span class="op">+</span> <span class="ident">length</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">len</span>() {
@@ -1140,7 +1140,7 @@
                              * XXX: The spec conflates characters and bytes, so we effectively ignore unicode and do
                              * this bytewise, to hopefully match other implementations.
                              */</span>
-                            <span class="ident">AmlValue::String</span>(<span class="ident">string</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="ident">AmlValue::String</span>(<span class="ident">string</span>) =&gt; {
                                 <span class="kw">if</span> <span class="ident">index</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">string</span>.<span class="ident">len</span>() {
                                     <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::String</span>(<span class="ident">String::new</span>()))
                                 } <span class="kw">else</span> <span class="kw">if</span> (<span class="ident">index</span> <span class="op">+</span> <span class="ident">length</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="ident">string</span>.<span class="ident">len</span>() {
@@ -1149,7 +1149,7 @@
                                     <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::String</span>(<span class="ident">string</span>[<span class="ident">index</span>..(<span class="ident">index</span> <span class="op">+</span> <span class="ident">length</span>)].<span class="ident">to_string</span>()))
                                 }
                             }
-                            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::TypeCannotBeSliced</span>(<span class="ident">source</span>.<span class="ident">type_of</span>())),
+                            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">AmlError::TypeCannotBeSliced</span>(<span class="ident">source</span>.<span class="ident">type_of</span>())),
                         }
                     );
 
@@ -1161,7 +1161,7 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">result</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_package</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_package</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1198,14 +1198,14 @@
         .<span class="ident">map</span>(<span class="op">|</span>((), <span class="ident">package</span>)<span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">package</span>))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">package_element</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">package_element</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
     <span class="macro">choice!</span>(<span class="ident">data_ref_object</span>(), <span class="ident">name_string</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">string</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::String</span>(<span class="ident">string</span>.<span class="ident">as_string</span>()))))
 }
 
-<span class="kw">fn</span> <span class="ident">def_shift_left</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_shift_left</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1232,7 +1232,7 @@
         })
 }
 
-<span class="kw">fn</span> <span class="ident">def_shift_right</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_shift_right</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1259,7 +1259,7 @@
         })
 }
 
-<span class="kw">fn</span> <span class="ident">def_store</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">def_store</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1279,7 +1279,7 @@
         })
 }
 
-<span class="kw">fn</span> <span class="ident">method_invocation</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">method_invocation</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {

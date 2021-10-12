@@ -6,7 +6,7 @@ manual description. The library works with no_std.</p>
 <span class="kw">let</span> <span class="ident">cpuid</span> <span class="op">=</span> <span class="ident">CpuId::new</span>();
 
 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">vf</span>) <span class="op">=</span> <span class="ident">cpuid</span>.<span class="ident">get_vendor_info</span>() {
-    <span class="macro">assert!</span>(<span class="ident">vf</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;GenuineIntel&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">vf</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;AuthenticAMD&quot;</span>);
+    <span class="macro">assert!</span>(<span class="ident">vf</span>.<span class="ident">as_str</span>() <span class="op">==</span> <span class="string">&quot;GenuineIntel&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">vf</span>.<span class="ident">as_str</span>() <span class="op">==</span> <span class="string">&quot;AuthenticAMD&quot;</span>);
 }
 
 <span class="kw">let</span> <span class="ident">has_sse</span> <span class="op">=</span> <span class="ident">cpuid</span>.<span class="ident">get_feature_info</span>().<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">finfo</span><span class="op">|</span> <span class="ident">finfo</span>.<span class="ident">has_sse</span>());

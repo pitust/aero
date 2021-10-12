@@ -1404,7 +1404,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ExtendedProcessorFeatureIdentifiers</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">vendor</span>: <span class="ident">Vendor</span>, <span class="ident">data</span>: <span class="ident">CpuIdResult</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">vendor</span>: <span class="ident">Vendor</span>, <span class="ident">data</span>: <span class="ident">CpuIdResult</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">vendor</span>,
             <span class="ident">eax</span>: <span class="ident">data</span>.<span class="ident">eax</span>,
@@ -1426,7 +1426,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extended_signature</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extended_signature</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">eax</span>
     }
 
@@ -1437,7 +1437,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pkg_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pkg_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">28</span>, <span class="number">31</span>)
     }
 
@@ -1448,7 +1448,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">brand_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">brand_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">0</span>, <span class="number">15</span>)
     }
 
@@ -1456,7 +1456,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_lahf_sahf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_lahf_sahf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::LAHF_SAHF</span>)
     }
 
@@ -1464,16 +1464,16 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_cmp_legacy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::CMP_LEGACY</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_cmp_legacy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::CMP_LEGACY</span>)
     }
 
     <span class="doccomment">/// Secure virtual machine supported.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_svm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::SVM</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_svm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::SVM</span>)
     }
 
     <span class="doccomment">/// Extended APIC space.</span>
@@ -1483,16 +1483,16 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_ext_apic_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::EXT_APIC_SPACE</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_ext_apic_space</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::EXT_APIC_SPACE</span>)
     }
 
     <span class="doccomment">/// LOCK MOV CR0 means MOV CR8. See “MOV(CRn)” in APM3.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alt_mov_cr8</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::ALTMOVCR8</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alt_mov_cr8</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::ALTMOVCR8</span>)
     }
 
     <span class="doccomment">/// Is LZCNT available?</span>
@@ -1503,7 +1503,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_lzcnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_lzcnt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::LZCNT</span>)
     }
 
@@ -1513,8 +1513,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse4a</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::SSE4A</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse4a</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::SSE4A</span>)
     }
 
     <span class="doccomment">/// Misaligned SSE mode. See “Misaligned Access Support Added for SSE Instructions” in</span>
@@ -1522,8 +1522,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_misaligned_sse_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::MISALIGNSSE</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_misaligned_sse_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::MISALIGNSSE</span>)
     }
 
     <span class="doccomment">/// Is PREFETCHW available?</span>
@@ -1533,7 +1533,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_prefetchw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_prefetchw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PREFETCHW</span>)
     }
 
@@ -1541,24 +1541,24 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_osvw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::OSVW</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_osvw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::OSVW</span>)
     }
 
     <span class="doccomment">/// Instruction based sampling.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_ibs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::IBS</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_ibs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::IBS</span>)
     }
 
     <span class="doccomment">/// Extended operation support.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_xop</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::XOP</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_xop</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::XOP</span>)
     }
 
     <span class="doccomment">/// SKINIT and STGI are supported.</span>
@@ -1568,8 +1568,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_skinit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::SKINIT</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_skinit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::SKINIT</span>)
     }
 
     <span class="doccomment">/// Watchdog timer support.</span>
@@ -1578,32 +1578,32 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_wdt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::WDT</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_wdt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::WDT</span>)
     }
 
     <span class="doccomment">/// Lightweight profiling support</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_lwp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::LWP</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_lwp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::LWP</span>)
     }
 
     <span class="doccomment">/// Four-operand FMA instruction support.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_fma4</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::FMA4</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_fma4</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::FMA4</span>)
     }
 
     <span class="doccomment">/// Trailing bit manipulation instruction support.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_tbm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::TBM</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_tbm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::TBM</span>)
     }
 
     <span class="doccomment">/// Topology extensions support.</span>
@@ -1612,8 +1612,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_topology_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::TOPEXT</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_topology_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::TOPEXT</span>)
     }
 
     <span class="doccomment">/// Processor performance counter extensions support.</span>
@@ -1622,8 +1622,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_perf_cntr_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PERFCTREXT</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_perf_cntr_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PERFCTREXT</span>)
     }
 
     <span class="doccomment">/// NB performance counter extensions support.</span>
@@ -1632,8 +1632,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_nb_perf_cntr_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PERFCTREXTNB</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_nb_perf_cntr_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PERFCTREXTNB</span>)
     }
 
     <span class="doccomment">/// Data access breakpoint extension.</span>
@@ -1642,8 +1642,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_data_access_bkpt_extension</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::DATABRKPEXT</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_data_access_bkpt_extension</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::DATABRKPEXT</span>)
     }
 
     <span class="doccomment">/// Performance time-stamp counter.</span>
@@ -1652,39 +1652,39 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_perf_tsc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PERFTSC</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_perf_tsc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PERFTSC</span>)
     }
 
     <span class="doccomment">/// Support for L3 performance counter extension.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_perf_cntr_llc_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PERFCTREXTLLC</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_perf_cntr_llc_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::PERFCTREXTLLC</span>)
     }
 
     <span class="doccomment">/// Support for MWAITX and MONITORX instructions.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_monitorx_mwaitx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::MONITORX</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_monitorx_mwaitx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::MONITORX</span>)
     }
 
     <span class="doccomment">/// Breakpoint Addressing masking extended to bit 31.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_addr_mask_extension</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::ADDRMASKEXT</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_addr_mask_extension</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">ecx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEcx::ADDRMASKEXT</span>)
     }
 
     <span class="doccomment">/// Are fast system calls available.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_syscall_sysret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_syscall_sysret</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::SYSCALL_SYSRET</span>)
     }
 
@@ -1692,7 +1692,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_execute_disable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_execute_disable</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::EXECUTE_DISABLE</span>)
     }
 
@@ -1700,23 +1700,23 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mmx_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::MMXEXT</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mmx_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::MMXEXT</span>)
     }
 
     <span class="doccomment">/// FXSAVE and FXRSTOR instruction optimizations.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_fast_fxsave_fxstor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::FFXSR</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_fast_fxsave_fxstor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::FFXSR</span>)
     }
 
     <span class="doccomment">/// Is there support for 1GiB pages.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_1gib_pages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_1gib_pages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::GIB_PAGES</span>)
     }
 
@@ -1724,7 +1724,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_rdtscp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_rdtscp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::RDTSCP</span>)
     }
 
@@ -1732,7 +1732,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_64bit_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_64bit_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::I64BIT_MODE</span>)
     }
 
@@ -1740,25 +1740,25 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_amd_3dnow_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::THREEDNOWEXT</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_amd_3dnow_extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::THREEDNOWEXT</span>)
     }
 
     <span class="doccomment">/// 3DNow extensions.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platform</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (will return false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_3dnow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::THREEDNOW</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_3dnow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ExtendedFunctionInfoEdx::THREEDNOW</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExtendedProcessorFeatureIdentifiers</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ds</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ExtendedProcessorFeatureIdentifiers&quot;</span>);
         <span class="ident">ds</span>.<span class="ident">field</span>(<span class="string">&quot;extended_signature&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">extended_signature</span>());
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Vendor::Amd</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">vendor</span> <span class="op">==</span> <span class="ident">Vendor::Amd</span> {
             <span class="ident">ds</span>.<span class="ident">field</span>(<span class="string">&quot;pkg_type&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pkg_type</span>());
             <span class="ident">ds</span>.<span class="ident">field</span>(<span class="string">&quot;brand_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">brand_id</span>());
         }
@@ -1826,7 +1826,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ProcessorBrandString</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: [<span class="ident">CpuIdResult</span>; <span class="number">3</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: [<span class="ident">CpuIdResult</span>; <span class="number">3</span>]) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">data</span> }
     }
 
@@ -1834,7 +1834,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// For example:</span>
     <span class="doccomment">/// &quot;11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz&quot;.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="comment">// Safety: CpuIdResult is laid out with repr(C), and the array</span>
         <span class="comment">// self.data contains 3 contiguous elements.</span>
         <span class="kw">let</span> <span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="kw">unsafe</span> {
@@ -1845,7 +1845,7 @@
         };
 
         <span class="comment">// Brand terminated at nul byte or end, whichever comes first.</span>
-        <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice</span>.<span class="ident">split</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>).<span class="ident">next</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice</span>.<span class="ident">split</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">==</span> <span class="number">0</span>).<span class="ident">next</span>().<span class="ident">unwrap</span>();
         <span class="ident">str::from_utf8</span>(<span class="ident">slice</span>)
             .<span class="ident">unwrap_or</span>(<span class="string">&quot;Invalid Processor Brand String&quot;</span>)
             .<span class="ident">trim</span>()
@@ -1853,7 +1853,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ProcessorBrandString</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ProcessorBrandString&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;as_str&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_str</span>())
             .<span class="ident">finish</span>()
@@ -1874,7 +1874,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">L1CacheTlbInfo</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">eax</span>: <span class="ident">data</span>.<span class="ident">eax</span>,
             <span class="ident">ebx</span>: <span class="ident">data</span>.<span class="ident">ebx</span>,
@@ -1884,7 +1884,7 @@
     }
 
     <span class="doccomment">/// Data TLB associativity for 2-MB and 4-MB pages.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_2m_4m_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_2m_4m_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">24</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l1</span>(<span class="ident">assoc_bits</span>)
     }
@@ -1894,12 +1894,12 @@
     <span class="doccomment">/// The value returned is for the number of entries available for the 2-MB page size;</span>
     <span class="doccomment">/// 4-MB pages require two 2-MB entries, so the number of entries available for the</span>
     <span class="doccomment">/// 4-MB page size is one-half the returned value.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_2m_4m_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_2m_4m_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">16</span>, <span class="number">23</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// Instruction TLB associativity for 2-MB and 4-MB pages.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_2m_4m_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_2m_4m_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">8</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l1</span>(<span class="ident">assoc_bits</span>)
     }
@@ -1909,71 +1909,71 @@
     <span class="doccomment">/// The value returned is for the number of entries available for the 2-MB page size;</span>
     <span class="doccomment">/// 4-MB pages require two 2-MB entries, so the number of entries available for the</span>
     <span class="doccomment">/// 4-MB page size is one-half the returned value.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_2m_4m_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_2m_4m_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// Data TLB associativity for 4K pages.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_4k_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_4k_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">24</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l1</span>(<span class="ident">assoc_bits</span>)
     }
 
     <span class="doccomment">/// Data TLB number of entries for 4K pages.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_4k_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_4k_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">16</span>, <span class="number">23</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// Instruction TLB associativity for 4K pages.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_4k_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_4k_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">8</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l1</span>(<span class="ident">assoc_bits</span>)
     }
 
     <span class="doccomment">/// Instruction TLB number of entries for 4K pages.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_4k_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_4k_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// L1 data cache size in KB</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dcache_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dcache_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">24</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// L1 data cache associativity.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dcache_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dcache_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">16</span>, <span class="number">23</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l1</span>(<span class="ident">assoc_bits</span>)
     }
 
     <span class="doccomment">/// L1 data cache lines per tag.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dcache_lines_per_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dcache_lines_per_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">8</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// L1 data cache line size in bytes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dcache_line_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dcache_line_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// L1 instruction cache size in KB</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icache_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icache_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">24</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// L1 instruction cache associativity.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icache_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icache_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">16</span>, <span class="number">23</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l1</span>(<span class="ident">assoc_bits</span>)
     }
 
     <span class="doccomment">/// L1 instruction cache lines per tag.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icache_lines_per_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icache_lines_per_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">8</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// L1 instruction cache line size in bytes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icache_line_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">icache_line_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 }
@@ -1992,7 +1992,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">L2And3CacheTlbInfo</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">eax</span>: <span class="ident">data</span>.<span class="ident">eax</span>,
             <span class="ident">ebx</span>: <span class="ident">data</span>.<span class="ident">ebx</span>,
@@ -2005,7 +2005,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_2m_4m_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_2m_4m_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">28</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l2</span>(<span class="ident">assoc_bits</span>)
     }
@@ -2018,7 +2018,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_2m_4m_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_2m_4m_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">16</span>, <span class="number">27</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 
@@ -2026,7 +2026,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_2m_4m_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_2m_4m_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">12</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l2</span>(<span class="ident">assoc_bits</span>)
     }
@@ -2039,7 +2039,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_2m_4m_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_2m_4m_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">0</span>, <span class="number">11</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 
@@ -2047,7 +2047,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_4k_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_4k_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">28</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l2</span>(<span class="ident">assoc_bits</span>)
     }
@@ -2056,7 +2056,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_4k_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dtlb_4k_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">16</span>, <span class="number">27</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 
@@ -2064,7 +2064,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_4k_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_4k_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">12</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l2</span>(<span class="ident">assoc_bits</span>)
     }
@@ -2073,7 +2073,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_4k_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">itlb_4k_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">0</span>, <span class="number">11</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 
@@ -2081,7 +2081,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l2cache_line_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l2cache_line_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
@@ -2089,7 +2089,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l2cache_lines_per_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l2cache_lines_per_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">8</span>, <span class="number">11</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
@@ -2097,7 +2097,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l2cache_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l2cache_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">12</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l2</span>(<span class="ident">assoc_bits</span>)
     }
@@ -2106,7 +2106,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l2cache_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l2cache_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">16</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 
@@ -2114,7 +2114,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l3cache_line_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l3cache_line_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
@@ -2122,7 +2122,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l3cache_lines_per_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l3cache_lines_per_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">8</span>, <span class="number">11</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
@@ -2130,7 +2130,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Availability</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l3cache_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l3cache_associativity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">let</span> <span class="ident">assoc_bits</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">12</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">Associativity::for_l3</span>(<span class="ident">assoc_bits</span>)
     }
@@ -2141,7 +2141,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l3cache_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">l3cache_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">18</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 }
@@ -2159,38 +2159,38 @@
 
 <span class="kw">impl</span> <span class="ident">Associativity</span> {
     <span class="doccomment">/// Constructor for L1 Cache and TLB Associativity Field Encodings</span>
-    <span class="kw">fn</span> <span class="ident">for_l1</span>(<span class="ident">n</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">fn</span> <span class="ident">for_l1</span>(<span class="ident">n</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">match</span> <span class="ident">n</span> {
-            <span class="number">0x0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::Disabled</span>, <span class="comment">// Intel only, AMD is reserved</span>
-            <span class="number">0x1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::DirectMapped</span>,
-            <span class="number">0x2</span>..<span class="op">=</span><span class="number">0xfe</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="ident">n</span>),
-            <span class="number">0xff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::FullyAssociative</span>,
+            <span class="number">0x0</span> =&gt; <span class="ident">Associativity::Disabled</span>, <span class="comment">// Intel only, AMD is reserved</span>
+            <span class="number">0x1</span> =&gt; <span class="ident">Associativity::DirectMapped</span>,
+            <span class="number">0x2</span>..<span class="op">=</span><span class="number">0xfe</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="ident">n</span>),
+            <span class="number">0xff</span> =&gt; <span class="ident">Associativity::FullyAssociative</span>,
         }
     }
 
     <span class="doccomment">/// Constructor for L2 Cache and TLB Associativity Field Encodings</span>
-    <span class="kw">fn</span> <span class="ident">for_l2</span>(<span class="ident">n</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">fn</span> <span class="ident">for_l2</span>(<span class="ident">n</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="kw">match</span> <span class="ident">n</span> {
-            <span class="number">0x0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::Disabled</span>,
-            <span class="number">0x1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::DirectMapped</span>,
-            <span class="number">0x2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">2</span>),
-            <span class="number">0x4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">4</span>),
-            <span class="number">0x5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">6</span>), <span class="comment">// Reserved on Intel</span>
-            <span class="number">0x6</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">8</span>),
-            <span class="number">0x8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">16</span>),
-            <span class="number">0x9</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::Unknown</span>, <span class="comment">// Intel: Reserved, AMD: Value for all fields should be determined from Fn8000_001D</span>
-            <span class="number">0xa</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">32</span>),
-            <span class="number">0xb</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">48</span>),
-            <span class="number">0xc</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">64</span>),
-            <span class="number">0xd</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">96</span>),
-            <span class="number">0xe</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::NWay</span>(<span class="number">128</span>),
-            <span class="number">0xF</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::FullyAssociative</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Associativity::Unknown</span>,
+            <span class="number">0x0</span> =&gt; <span class="ident">Associativity::Disabled</span>,
+            <span class="number">0x1</span> =&gt; <span class="ident">Associativity::DirectMapped</span>,
+            <span class="number">0x2</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">2</span>),
+            <span class="number">0x4</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">4</span>),
+            <span class="number">0x5</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">6</span>), <span class="comment">// Reserved on Intel</span>
+            <span class="number">0x6</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">8</span>),
+            <span class="number">0x8</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">16</span>),
+            <span class="number">0x9</span> =&gt; <span class="ident">Associativity::Unknown</span>, <span class="comment">// Intel: Reserved, AMD: Value for all fields should be determined from Fn8000_001D</span>
+            <span class="number">0xa</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">32</span>),
+            <span class="number">0xb</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">48</span>),
+            <span class="number">0xc</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">64</span>),
+            <span class="number">0xd</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">96</span>),
+            <span class="number">0xe</span> =&gt; <span class="ident">Associativity::NWay</span>(<span class="number">128</span>),
+            <span class="number">0xF</span> =&gt; <span class="ident">Associativity::FullyAssociative</span>,
+            <span class="kw">_</span> =&gt; <span class="ident">Associativity::Unknown</span>,
         }
     }
 
     <span class="doccomment">/// Constructor for L2 Cache and TLB Associativity Field Encodings</span>
-    <span class="kw">fn</span> <span class="ident">for_l3</span>(<span class="ident">n</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Associativity</span> {
+    <span class="kw">fn</span> <span class="ident">for_l3</span>(<span class="ident">n</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Associativity</span> {
         <span class="ident">Associativity::for_l2</span>(<span class="ident">n</span>)
     }
 }
@@ -2210,7 +2210,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ApmInfo</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">_eax</span>: <span class="ident">data</span>.<span class="ident">eax</span>,
             <span class="ident">ebx</span>: <span class="ident">RasCapabilities::from_bits_truncate</span>(<span class="ident">data</span>.<span class="ident">ebx</span>),
@@ -2227,7 +2227,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mca_overflow_recovery</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mca_overflow_recovery</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>.<span class="ident">contains</span>(<span class="ident">RasCapabilities::MCAOVFLRECOV</span>)
     }
 
@@ -2239,7 +2239,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_succor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_succor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>.<span class="ident">contains</span>(<span class="ident">RasCapabilities::SUCCOR</span>)
     }
 
@@ -2249,7 +2249,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_hwa</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_hwa</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>.<span class="ident">contains</span>(<span class="ident">RasCapabilities::HWA</span>)
     }
 
@@ -2260,7 +2260,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cpu_pwr_sample_time_ratio</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cpu_pwr_sample_time_ratio</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">ecx</span>
     }
 
@@ -2268,7 +2268,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_ts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_ts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::TS</span>)
     }
 
@@ -2279,7 +2279,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_freq_id_ctrl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_freq_id_ctrl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::FID</span>)
     }
 
@@ -2290,7 +2290,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_volt_id_ctrl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_volt_id_ctrl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::VID</span>)
     }
 
@@ -2298,7 +2298,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_thermtrip</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_thermtrip</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::TTP</span>)
     }
 
@@ -2306,7 +2306,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_tm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_tm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::TM</span>)
     }
 
@@ -2314,7 +2314,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_100mhz_steps</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_100mhz_steps</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::MHZSTEPS100</span>)
     }
 
@@ -2325,7 +2325,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_hw_pstate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_hw_pstate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::HWPSTATE</span>)
     }
 
@@ -2333,7 +2333,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_invariant_tsc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_invariant_tsc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::INVTSC</span>)
     }
 
@@ -2341,7 +2341,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_cpb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_cpb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::CPB</span>)
     }
 
@@ -2353,7 +2353,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_ro_effective_freq_iface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_ro_effective_freq_iface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::EFFFREQRO</span>)
     }
 
@@ -2364,7 +2364,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_feedback_iface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_feedback_iface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::PROCFEEDBACKIF</span>)
     }
 
@@ -2372,7 +2372,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_power_reporting_iface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_power_reporting_iface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">ApmInfoEdx::PROCPWRREPORT</span>)
     }
 }
@@ -2423,7 +2423,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ProcessorCapacityAndFeatureInfo</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">eax</span>: <span class="ident">data</span>.<span class="ident">eax</span>,
             <span class="ident">ebx</span>: <span class="ident">ProcessorCapacityAndFeatureEbx::from_bits_truncate</span>(<span class="ident">data</span>.<span class="ident">ebx</span>),
@@ -2436,7 +2436,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">physical_address_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">physical_address_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
@@ -2444,7 +2444,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">linear_address_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">linear_address_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">8</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
@@ -2456,7 +2456,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guest_physical_address_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guest_physical_address_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">16</span>, <span class="number">23</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
@@ -2464,7 +2464,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_cl_zero</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_cl_zero</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>.<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::CLZERO</span>)
     }
 
@@ -2472,7 +2472,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_inst_ret_cntr_msr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_inst_ret_cntr_msr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>
             .<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::INST_RETCNT_MSR</span>)
     }
@@ -2481,7 +2481,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_restore_fp_error_ptrs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_restore_fp_error_ptrs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>
             .<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::RSTR_FP_ERR_PTRS</span>)
     }
@@ -2490,7 +2490,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_invlpgb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_invlpgb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>.<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::INVLPGB</span>)
     }
 
@@ -2498,7 +2498,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_rdpru</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_rdpru</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>.<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::RDPRU</span>)
     }
 
@@ -2506,7 +2506,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mcommit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mcommit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>.<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::MCOMMIT</span>)
     }
 
@@ -2514,7 +2514,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ✅ Intel</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_wbnoinvd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_wbnoinvd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>.<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::WBNOINVD</span>)
     }
 
@@ -2522,7 +2522,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_int_wbinvd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_int_wbinvd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>
             .<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::INT_WBINVD</span>)
     }
@@ -2531,7 +2531,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_unsupported_efer_lmsle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_unsupported_efer_lmsle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>
             .<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::EFER_LMSLE_UNSUPP</span>)
     }
@@ -2540,7 +2540,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_invlpgb_nested</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_invlpgb_nested</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">ebx</span>
             .<span class="ident">contains</span>(<span class="ident">ProcessorCapacityAndFeatureEbx::INVLPGB_NESTED</span>)
     }
@@ -2551,14 +2551,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=false)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">perf_tsc_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">perf_tsc_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">16</span>, <span class="number">17</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="kw">match</span> <span class="ident">s</span> <span class="op">&amp;</span> <span class="number">0b11</span> {
-            <span class="number">0b00</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">40</span>,
-            <span class="number">0b01</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">48</span>,
-            <span class="number">0b10</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">56</span>,
-            <span class="number">0b11</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">64</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;AND with 0b11 in match&quot;</span>),
+            <span class="number">0b00</span> =&gt; <span class="number">40</span>,
+            <span class="number">0b01</span> =&gt; <span class="number">48</span>,
+            <span class="number">0b10</span> =&gt; <span class="number">56</span>,
+            <span class="number">0b11</span> =&gt; <span class="number">64</span>,
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;AND with 0b11 in match&quot;</span>),
         }
     }
 
@@ -2570,7 +2570,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apic_id_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apic_id_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">12</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
@@ -2583,7 +2583,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">maximum_logical_processors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">maximum_logical_processors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">usize::pow</span>(<span class="number">2</span>, <span class="self">self</span>.<span class="ident">apic_id_size</span>() <span class="kw">as</span> <span class="ident">u32</span>)
     }
 
@@ -2602,7 +2602,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_phys_threads</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_phys_threads</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ecx</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> <span class="number">1</span>
     }
 
@@ -2610,7 +2610,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invlpgb_max_pages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invlpgb_max_pages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">0</span>, <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 
@@ -2618,7 +2618,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Platforms</span>
     <span class="doccomment">/// ✅ AMD ❌ Intel (reserved=0)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_rdpru_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_rdpru_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">edx</span>, <span class="number">16</span>, <span class="number">31</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 }
@@ -2653,7 +2653,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">MemoryEncryptionInfo</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">eax</span>: <span class="ident">MemoryEncryptionInfoEax::from_bits_truncate</span>(<span class="ident">data</span>.<span class="ident">eax</span>),
             <span class="ident">ebx</span>: <span class="ident">data</span>.<span class="ident">ebx</span>,
@@ -2663,87 +2663,87 @@
     }
 
     <span class="doccomment">/// Secure Memory Encryption is supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sme</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sme</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::SME</span>)
     }
 
     <span class="doccomment">/// Secure Encrypted Virtualization is supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sev</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sev</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::SEV</span>)
     }
 
     <span class="doccomment">/// The Page Flush MSR is available if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_page_flush_msr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_page_flush_msr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::PAGE_FLUSH_MSR</span>)
     }
 
     <span class="doccomment">/// SEV Encrypted State is supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sev_es</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sev_es</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::SEV_ES</span>)
     }
 
     <span class="doccomment">/// SEV Secure Nested Paging supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sev_snp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sev_snp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::SEV_SNP</span>)
     }
 
     <span class="doccomment">/// VM Permission Levels supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_vmpl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_vmpl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::VMPL</span>)
     }
 
     <span class="doccomment">/// Hardware cache coherency across encryption domains enforced if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_hw_enforced_cache_coh</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_hw_enforced_cache_coh</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::HWENFCACHECOH</span>)
     }
 
     <span class="doccomment">/// SEV guest execution only allowed from a 64-bit host if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_64bit_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_64bit_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::HOST64</span>)
     }
 
     <span class="doccomment">/// Restricted Injection supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_restricted_injection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_restricted_injection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::RESTINJECT</span>)
     }
 
     <span class="doccomment">/// Alternate Injection supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alternate_injection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alternate_injection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::ALTINJECT</span>)
     }
 
     <span class="doccomment">/// Full debug state swap supported for SEV-ES guests.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_debug_swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_debug_swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::DBGSWP</span>)
     }
 
     <span class="doccomment">/// Disallowing IBS use by the host supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_prevent_host_ibs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_prevent_host_ibs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::PREVHOSTIBS</span>)
     }
 
     <span class="doccomment">/// Virtual Transparent Encryption supported if set.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_vte</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_vte</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">eax</span>.<span class="ident">contains</span>(<span class="ident">MemoryEncryptionInfoEax::VTE</span>)
     }
 
     <span class="doccomment">/// C-bit location in page table entry</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">c_bit_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">c_bit_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">0</span>, <span class="number">5</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// Physical Address bit reduction</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">physical_address_reduction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">physical_address_reduction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">ebx</span>, <span class="number">6</span>, <span class="number">11</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// Number of encrypted guests supported simultaneouslys</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_encrypted_guests</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_encrypted_guests</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">ecx</span>
     }
 
     <span class="doccomment">/// Minimum ASID value for an SEV enabled, SEV-ES disabled guest</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">min_sev_no_es_asid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">min_sev_no_es_asid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">edx</span>
     }
 }

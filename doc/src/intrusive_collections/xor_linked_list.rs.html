@@ -1985,7 +1985,7 @@
     <span class="doccomment">/// [`replace_next_or_prev`]: #tymethod.replace_next_or_prev</span>
     <span class="doccomment">/// [`set`]: #tymethod.set</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>)
-        <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>;
+        -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Returns the &quot;prev&quot; link pointer of `ptr`.</span>
     <span class="doccomment">///</span>
@@ -1998,7 +1998,7 @@
     <span class="doccomment">/// [`replace_next_or_prev`]: #tymethod.replace_next_or_prev</span>
     <span class="doccomment">/// [`set`]: #tymethod.set</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">prev</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>)
-        <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>;
+        -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Assigns the &quot;prev&quot; and &quot;next&quot; link pointers of `ptr`.</span>
     <span class="doccomment">///</span>
@@ -2045,7 +2045,7 @@
 <span class="kw">impl</span> <span class="ident">Link</span> {
     <span class="doccomment">/// Creates a new `Link`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Link</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Link</span> {
         <span class="ident">Link</span> {
             <span class="ident">packed</span>: <span class="ident">Cell::new</span>(<span class="ident">UNLINKED_MARKER</span>),
         }
@@ -2053,7 +2053,7 @@
 
     <span class="doccomment">/// Checks whether the `Link` is linked into a `XorLinkedList`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_linked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_linked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">packed</span>.<span class="ident">get</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">UNLINKED_MARKER</span>
     }
 
@@ -2084,7 +2084,7 @@
 <span class="comment">// unlinked. This allows structs containing a link to derive Clone.</span>
 <span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Link</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Link</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Link</span> {
         <span class="ident">Link::new</span>()
     }
 }
@@ -2092,7 +2092,7 @@
 <span class="comment">// Same as above</span>
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Link</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Link</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="ident">Link</span> {
         <span class="ident">Link::new</span>()
     }
 }
@@ -2101,7 +2101,7 @@
 <span class="comment">// still derive Debug.</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Link</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="comment">// There isn&#39;t anything sensible to print here except whether the link</span>
         <span class="comment">// is currently in a list.</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_linked</span>() {
@@ -2124,7 +2124,7 @@
     <span class="kw">type</span> <span class="ident">LinkPtr</span> <span class="op">=</span> <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">Link</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">acquire_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">acquire_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">is_linked</span>() {
             <span class="bool-val">false</span>
         } <span class="kw">else</span> {
@@ -2145,7 +2145,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>,
         <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">packed</span>.<span class="ident">get</span>() <span class="op">^</span> <span class="ident">prev</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
         <span class="ident">NonNull::new</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>)
     }
@@ -2155,7 +2155,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>,
         <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">packed</span>.<span class="ident">get</span>() <span class="op">^</span> <span class="ident">next</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
         <span class="ident">NonNull::new</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>)
     }
@@ -2189,7 +2189,7 @@
 
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">SinglyLinkedListOps</span> <span class="kw">for</span> <span class="ident">LinkOps</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">packed</span>.<span class="ident">get</span>();
         <span class="ident">NonNull::new</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>)
     }
@@ -2240,7 +2240,7 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">XorLinkedListOps</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">Cursor</span> {
             <span class="ident">current</span>: <span class="self">self</span>.<span class="ident">current</span>,
             <span class="ident">prev</span>: <span class="self">self</span>.<span class="ident">prev</span>,
@@ -2256,7 +2256,7 @@
 {
     <span class="doccomment">/// Checks if the cursor is currently pointing to the null object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">is_none</span>()
     }
 
@@ -2266,7 +2266,7 @@
     <span class="doccomment">/// This returns `None` if the cursor is currently pointing to the null</span>
     <span class="doccomment">/// object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">list</span>.<span class="ident">adapter</span>.<span class="ident">get_value</span>(<span class="self">self</span>.<span class="ident">current</span><span class="question-mark">?</span>) })
     }
 
@@ -2276,7 +2276,7 @@
     <span class="doccomment">/// This returns `None` if the cursor is currently pointing to the null</span>
     <span class="doccomment">/// object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_pointer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_pointer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>: <span class="ident">Clone</span>,
     {
@@ -2333,7 +2333,7 @@
     <span class="doccomment">/// first element of the `XorLinkedList`. If it is pointing to the last</span>
     <span class="doccomment">/// element of the `XorLinkedList` then this will return a null cursor.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>();
         <span class="ident">next</span>.<span class="ident">move_next</span>();
         <span class="ident">next</span>
@@ -2345,7 +2345,7 @@
     <span class="doccomment">/// last element of the `XorLinkedList`. If it is pointing to the first</span>
     <span class="doccomment">/// element of the `XorLinkedList` then this will return a null cursor.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_prev</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_prev</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>();
         <span class="ident">prev</span>.<span class="ident">move_prev</span>();
         <span class="ident">prev</span>
@@ -2369,7 +2369,7 @@
 {
     <span class="doccomment">/// Checks if the cursor is currently pointing to the null object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">is_none</span>()
     }
 
@@ -2379,7 +2379,7 @@
     <span class="doccomment">/// This returns None if the cursor is currently pointing to the null</span>
     <span class="doccomment">/// object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">list</span>.<span class="ident">adapter</span>.<span class="ident">get_value</span>(<span class="self">self</span>.<span class="ident">current</span><span class="question-mark">?</span>) })
     }
 
@@ -2389,7 +2389,7 @@
     <span class="doccomment">/// `CursorMut`, which means it cannot outlive the `CursorMut` and that the</span>
     <span class="doccomment">/// `CursorMut` is frozen for the lifetime of the `Cursor`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_cursor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_cursor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">Cursor</span> {
             <span class="ident">current</span>: <span class="self">self</span>.<span class="ident">current</span>,
             <span class="ident">prev</span>: <span class="self">self</span>.<span class="ident">prev</span>,
@@ -2445,7 +2445,7 @@
     <span class="doccomment">/// first element of the `XorLinkedList`. If it is pointing to the last</span>
     <span class="doccomment">/// element of the `XorLinkedList` then this will return a null cursor.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_next</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_cursor</span>();
         <span class="ident">next</span>.<span class="ident">move_next</span>();
         <span class="ident">next</span>
@@ -2457,7 +2457,7 @@
     <span class="doccomment">/// last element of the `XorLinkedList`. If it is pointing to the first</span>
     <span class="doccomment">/// element of the `XorLinkedList` then this will return a null cursor.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_prev</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_prev</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_cursor</span>();
         <span class="ident">prev</span>.<span class="ident">move_prev</span>();
         <span class="ident">prev</span>
@@ -2471,7 +2471,7 @@
     <span class="doccomment">/// If the cursor is currently pointing to the null object then no element</span>
     <span class="doccomment">/// is removed and `None` is returned.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">link_ops::LinkOps</span>;
 
         <span class="kw">unsafe</span> {
@@ -2493,10 +2493,10 @@
                     <span class="self">self</span>.<span class="ident">prev</span>,
                 );
             }
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">head</span> <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">head</span> <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) {
                 <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">head</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">next</span>;
             }
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) {
                 <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">prev</span>;
             }
             <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">next</span>;
@@ -2533,7 +2533,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace_with</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">val</span>: <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>, <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>, <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span>
     {
         <span class="kw">use</span> <span class="ident">link_ops::LinkOps</span>;
 
@@ -2542,10 +2542,10 @@
                 <span class="kw">let</span> <span class="ident">new</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">node_from_value</span>(<span class="ident">val</span>);
                 <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">current</span>;
 
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">head</span> <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) {
+                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">head</span> <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) {
                     <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">head</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">new</span>);
                 }
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) {
+                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) {
                     <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">new</span>);
                 }
 
@@ -2685,7 +2685,7 @@
                     <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">head</span> <span class="op">=</span> <span class="ident">list</span>.<span class="ident">head</span>;
                     <span class="self">self</span>.<span class="ident">next</span> <span class="op">=</span> <span class="ident">list</span>.<span class="ident">head</span>;
                 }
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
+                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">current</span> {
                     <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">=</span> <span class="ident">list</span>.<span class="ident">tail</span>;
                 }
                 <span class="ident">list</span>.<span class="ident">head</span> <span class="op">=</span> <span class="prelude-val">None</span>;
@@ -2723,7 +2723,7 @@
                     <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">head</span> <span class="op">=</span> <span class="ident">list</span>.<span class="ident">head</span>;
                     <span class="self">self</span>.<span class="ident">next</span> <span class="op">=</span> <span class="ident">list</span>.<span class="ident">head</span>;
                 }
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
+                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">current</span> {
                     <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">tail</span> <span class="op">=</span> <span class="ident">list</span>.<span class="ident">tail</span>;
                 }
                 <span class="ident">list</span>.<span class="ident">head</span> <span class="op">=</span> <span class="prelude-val">None</span>;
@@ -2739,7 +2739,7 @@
     <span class="doccomment">/// If the cursor is pointing at the null object then the entire contents</span>
     <span class="doccomment">/// of the `XorLinkedList` are moved.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_after</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_after</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">Clone</span>,
     {
@@ -2786,7 +2786,7 @@
     <span class="doccomment">/// If the cursor is pointing at the null object then the entire contents</span>
     <span class="doccomment">/// of the `XorLinkedList` are moved.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_before</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_before</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">Clone</span>,
     {
@@ -2855,7 +2855,7 @@
     <span class="kw">fn</span> <span class="ident">node_from_value</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">val</span>: <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">A::LinkOps</span> <span class="kw">as</span> <span class="ident">link_ops::LinkOps</span><span class="op">&gt;</span><span class="ident">::LinkPtr</span> {
+    ) -&gt; <span class="op">&lt;</span><span class="ident">A::LinkOps</span> <span class="kw">as</span> <span class="ident">link_ops::LinkOps</span><span class="op">&gt;</span><span class="ident">::LinkPtr</span> {
         <span class="kw">use</span> <span class="ident">link_ops::LinkOps</span>;
 
         <span class="kw">unsafe</span> {
@@ -2876,7 +2876,7 @@
     <span class="doccomment">/// Creates an empty `XorLinkedList`.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nightly&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">adapter</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">adapter</span>: <span class="ident">A</span>) -&gt; <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">XorLinkedList</span> {
             <span class="ident">head</span>: <span class="prelude-val">None</span>,
             <span class="ident">tail</span>: <span class="prelude-val">None</span>,
@@ -2887,7 +2887,7 @@
     <span class="doccomment">/// Creates an empty `XorLinkedList`.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nightly&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">adapter</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">adapter</span>: <span class="ident">A</span>) -&gt; <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">XorLinkedList</span> {
             <span class="ident">head</span>: <span class="prelude-val">None</span>,
             <span class="ident">tail</span>: <span class="prelude-val">None</span>,
@@ -2897,13 +2897,13 @@
 
     <span class="doccomment">/// Returns `true` if the `XorLinkedList` is empty.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">is_none</span>()
     }
 
     <span class="doccomment">/// Returns a null `Cursor` for this list.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cursor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cursor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">Cursor</span> {
             <span class="ident">current</span>: <span class="prelude-val">None</span>,
             <span class="ident">prev</span>: <span class="self">self</span>.<span class="ident">tail</span>,
@@ -2914,7 +2914,7 @@
 
     <span class="doccomment">/// Returns a null `CursorMut` for this list.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cursor_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cursor_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">CursorMut</span> {
             <span class="ident">current</span>: <span class="prelude-val">None</span>,
             <span class="ident">prev</span>: <span class="self">self</span>.<span class="ident">tail</span>,
@@ -2934,7 +2934,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
         <span class="ident">prev</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">current</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">ptr</span>);
         <span class="kw">let</span> <span class="ident">prev</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">prev</span>.<span class="ident">is_null</span>() {
             <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">prev</span>))
@@ -2962,7 +2962,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
         <span class="ident">prev</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">current</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">ptr</span>);
         <span class="kw">let</span> <span class="ident">prev</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">prev</span>.<span class="ident">is_null</span>() {
             <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">prev</span>))
@@ -2990,7 +2990,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
         <span class="ident">next</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">current</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">ptr</span>);
         <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">next</span>.<span class="ident">is_null</span>() {
             <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">next</span>))
@@ -3018,7 +3018,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
         <span class="ident">next</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">current</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">ptr</span>);
         <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">next</span>.<span class="ident">is_null</span>() {
             <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">next</span>))
@@ -3038,7 +3038,7 @@
     <span class="doccomment">/// Returns a `Cursor` pointing to the first element of the list. If the</span>
     <span class="doccomment">/// list is empty then a null cursor is returned.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">front</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">front</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cursor</span>();
         <span class="ident">cursor</span>.<span class="ident">move_next</span>();
         <span class="ident">cursor</span>
@@ -3047,7 +3047,7 @@
     <span class="doccomment">/// Returns a `CursorMut` pointing to the first element of the list. If the</span>
     <span class="doccomment">/// the list is empty then a null cursor is returned.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">front_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">front_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cursor_mut</span>();
         <span class="ident">cursor</span>.<span class="ident">move_next</span>();
         <span class="ident">cursor</span>
@@ -3056,7 +3056,7 @@
     <span class="doccomment">/// Returns a `Cursor` pointing to the last element of the list. If the list</span>
     <span class="doccomment">/// is empty then a null cursor is returned.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">back</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">back</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cursor</span>();
         <span class="ident">cursor</span>.<span class="ident">move_prev</span>();
         <span class="ident">cursor</span>
@@ -3065,7 +3065,7 @@
     <span class="doccomment">/// Returns a `CursorMut` pointing to the last element of the list. If the</span>
     <span class="doccomment">/// list is empty then a null cursor is returned.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">back_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">back_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cursor_mut</span>();
         <span class="ident">cursor</span>.<span class="ident">move_prev</span>();
         <span class="ident">cursor</span>
@@ -3073,7 +3073,7 @@
 
     <span class="doccomment">/// Gets an iterator over the objects in the `XorLinkedList`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">Iter</span> {
             <span class="ident">prev_head</span>: <span class="prelude-val">None</span>,
             <span class="ident">head</span>: <span class="self">self</span>.<span class="ident">head</span>,
@@ -3124,7 +3124,7 @@
     <span class="doccomment">/// Takes all the elements out of the `XorLinkedList`, leaving it empty.</span>
     <span class="doccomment">/// The taken elements are returned as a new `XorLinkedList`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">Clone</span>,
     {
@@ -3154,7 +3154,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This returns `None` if the `XorLinkedList` is empty.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pop_front</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pop_front</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">front_mut</span>().<span class="ident">remove</span>()
     }
 
@@ -3162,7 +3162,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This returns `None` if the `XorLinkedList` is empty.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pop_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pop_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">back_mut</span>().<span class="ident">remove</span>()
     }
 
@@ -3211,7 +3211,7 @@
     <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">IntoIter</span> { <span class="ident">list</span>: <span class="self">self</span> }
     }
 }
@@ -3224,7 +3224,7 @@
     <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>()
     }
 }
@@ -3233,7 +3233,7 @@
 <span class="kw">where</span>
     <span class="ident">A::LinkOps</span>: <span class="ident">XorLinkedListOps</span>,
 {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="ident">XorLinkedList</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">XorLinkedList::new</span>(<span class="ident">A::default</span>())
     }
 }
@@ -3243,7 +3243,7 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">XorLinkedListOps</span>,
     <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>: <span class="ident">fmt::Debug</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_list</span>().<span class="ident">entries</span>(<span class="self">self</span>.<span class="ident">iter</span>()).<span class="ident">finish</span>()
     }
 }
@@ -3270,10 +3270,10 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">head</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span><span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">head</span>) <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">tail</span> {
+        <span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">head</span>) <span class="op">==</span> <span class="self">self</span>.<span class="ident">tail</span> {
             <span class="self">self</span>.<span class="ident">prev_head</span> <span class="op">=</span> <span class="prelude-val">None</span>;
             <span class="self">self</span>.<span class="ident">head</span> <span class="op">=</span> <span class="prelude-val">None</span>;
             <span class="self">self</span>.<span class="ident">next_tail</span> <span class="op">=</span> <span class="prelude-val">None</span>;
@@ -3291,10 +3291,10 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">XorLinkedListOps</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">tail</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tail</span><span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">tail</span>) <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span> {
+        <span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">tail</span>) <span class="op">==</span> <span class="self">self</span>.<span class="ident">head</span> {
             <span class="self">self</span>.<span class="ident">prev_head</span> <span class="op">=</span> <span class="prelude-val">None</span>;
             <span class="self">self</span>.<span class="ident">head</span> <span class="op">=</span> <span class="prelude-val">None</span>;
             <span class="self">self</span>.<span class="ident">next_tail</span> <span class="op">=</span> <span class="prelude-val">None</span>;
@@ -3312,7 +3312,7 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">XorLinkedListOps</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">Iter</span> {
             <span class="ident">prev_head</span>: <span class="self">self</span>.<span class="ident">prev_head</span>,
             <span class="ident">head</span>: <span class="self">self</span>.<span class="ident">head</span>,
@@ -3341,7 +3341,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">pop_front</span>()
     }
 }
@@ -3350,7 +3350,7 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">XorLinkedListOps</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">list</span>.<span class="ident">pop_back</span>()
     }
 }
@@ -3376,14 +3376,14 @@
         <span class="ident">value</span>: <span class="ident">u32</span>,
     }
     <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Obj</span> {
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
             <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
         }
     }
     <span class="macro">intrusive_adapter!</span>(<span class="ident">ObjAdapter1</span> <span class="op">=</span> <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">Obj</span><span class="op">&gt;</span>: <span class="ident">Obj</span> { <span class="ident">link1</span>: <span class="ident">Link</span> });
     <span class="macro">intrusive_adapter!</span>(<span class="ident">ObjAdapter2</span> <span class="op">=</span> <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">Obj</span><span class="op">&gt;</span>: <span class="ident">Obj</span> { <span class="ident">link2</span>: <span class="ident">Link</span> });
 
-    <span class="kw">fn</span> <span class="ident">make_obj</span>(<span class="ident">value</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">Obj</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">make_obj</span>(<span class="ident">value</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">Obj</span><span class="op">&gt;</span> {
         <span class="ident">Rc::new</span>(<span class="ident">Obj</span> {
             <span class="ident">link1</span>: <span class="ident">Link::new</span>(),
             <span class="ident">link2</span>: <span class="ident">Link::default</span>(),
@@ -3855,7 +3855,7 @@
     }
 
     <span class="macro">macro_rules!</span> <span class="ident">test_clone_pointer</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr</span>: <span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr_import</span>: <span class="ident">path</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr</span>: <span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr_import</span>: <span class="ident">path</span>) =&gt; {
             <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr_import</span>;
 
             <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>

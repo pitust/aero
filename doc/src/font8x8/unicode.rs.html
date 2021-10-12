@@ -156,47 +156,47 @@
 
 <span class="kw">impl</span> <span class="ident">FontUnicode</span> {
     <span class="doccomment">/// Return the char value</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">char</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">char</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">char</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">char</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 
     <span class="doccomment">/// Return the `[u8; 8]`-representation for this font.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">byte_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="number">8</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">byte_array</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [<span class="ident">u8</span>; <span class="number">8</span>] {
         <span class="self">self</span>.<span class="number">1</span>
     }
 
     <span class="doccomment">/// Returns a `bool` indicating whether this font renders as a whitespace (all `0`).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_whitespace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">NOTHING_TO_DISPLAY</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_whitespace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="number">1</span> <span class="op">==</span> <span class="ident">NOTHING_TO_DISPLAY</span>
     }
 
     <span class="doccomment">/// Consumes the current `FontUnicode` and returns the inner `(char, [u8; 8])` tuple.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">char</span>, [<span class="ident">u8</span>; <span class="number">8</span>]) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) -&gt; (<span class="ident">char</span>, [<span class="ident">u8</span>; <span class="number">8</span>]) {
         <span class="self">self</span>.<span class="ident">into</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FontUnicode</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">char</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="ident">FontUnicode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">char</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="ident">FontUnicode</span>) -&gt; <span class="ident">char</span> {
         <span class="ident">f</span>.<span class="number">0</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FontUnicode</span><span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">u8</span>; <span class="number">8</span>] {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="ident">FontUnicode</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="number">8</span>] {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="ident">FontUnicode</span>) -&gt; [<span class="ident">u8</span>; <span class="number">8</span>] {
         <span class="ident">f</span>.<span class="number">1</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FontUnicode</span><span class="op">&gt;</span> <span class="kw">for</span> (<span class="ident">char</span>, [<span class="ident">u8</span>; <span class="number">8</span>]) {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="ident">FontUnicode</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">char</span>, [<span class="ident">u8</span>; <span class="number">8</span>]) {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="ident">FontUnicode</span>) -&gt; (<span class="ident">char</span>, [<span class="ident">u8</span>; <span class="number">8</span>]) {
         (<span class="ident">f</span>.<span class="number">0</span>, <span class="ident">f</span>.<span class="number">1</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">FontUnicode</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">to_string</span>())
     }
 }
@@ -204,17 +204,17 @@
 <span class="doccomment">/// A trait for collections of `FontUnicode`, which provide methods for retrieving</span>
 <span class="doccomment">/// the `Option&lt;[u8; 8]&gt;`, using the corresponding `char` as key.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UnicodeFonts</span> {
-    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8</span>]<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">char</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8</span>]<span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_font</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontUnicode</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">get_font</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">char</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FontUnicode</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::core::slice::Iter</span><span class="op">&lt;</span><span class="ident">FontUnicode</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">::core::slice::Iter</span><span class="op">&lt;</span><span class="ident">FontUnicode</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">print_set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">to_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">char</span>, <span class="ident">FontUnicode</span>)<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">to_vec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">char</span>, <span class="ident">FontUnicode</span>)<span class="op">&gt;</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>

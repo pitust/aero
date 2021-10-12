@@ -167,7 +167,7 @@
     <span class="kw">fn</span> <span class="ident">register_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">task</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>);
 
     <span class="doccomment">/// Get a reference-counting pointer to the current task.</span>
-    <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>;
 
     <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
     <span class="kw">fn</span> <span class="ident">await_io</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
@@ -177,7 +177,7 @@
     <span class="kw">fn</span> <span class="ident">preempt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
 
     <span class="doccomment">/// Exits the current task.</span>
-    <span class="kw">fn</span> <span class="ident">exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">status</span>: <span class="ident">isize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>;
+    <span class="kw">fn</span> <span class="ident">exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">status</span>: <span class="ident">isize</span>) -&gt; <span class="op">!</span>;
 }
 
 <span class="doccomment">/// Container or a transparent struct containing a hashmap of all of the taskes</span>
@@ -190,7 +190,7 @@
 <span class="kw">impl</span> <span class="ident">TaskContainer</span> {
     <span class="doccomment">/// Creates a new task container with no taskes by default.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">Mutex::new</span>(<span class="ident">hashbrown::HashMap::new</span>()))
     }
 
@@ -212,7 +212,7 @@
 <span class="kw">impl</span> <span class="ident">Scheduler</span> {
     <span class="doccomment">/// Create a new scheduler with no active tasks by default.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">tasks</span>: <span class="ident">TaskContainer::new</span>(),
 
@@ -233,13 +233,13 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">current_task</span>()
     }
 }
 
 <span class="doccomment">/// Get a reference to the active scheduler.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_scheduler</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Scheduler</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_scheduler</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Scheduler</span> {
     <span class="ident">SCHEDULER</span>
         .<span class="ident">get</span>()
         .<span class="ident">expect</span>(<span class="string">&quot;Attempted to get the scheduler before it was initialized&quot;</span>)

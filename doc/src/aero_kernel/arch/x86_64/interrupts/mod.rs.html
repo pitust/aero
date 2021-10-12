@@ -445,7 +445,7 @@
 <span class="kw">impl</span> <span class="ident">InterruptController</span> {
     <span class="doccomment">/// Creates a new interrupt controller using the PIC chip by default.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">method</span>: <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>),
         }
@@ -454,10 +454,10 @@
     <span class="doccomment">/// Send EOI, indicating the completion of an interrupt.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">eoi</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">method</span>.<span class="ident">load</span>(<span class="ident">Ordering::Acquire</span>) {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PIC_CONTROLLER</span>.<span class="ident">eoi</span>(),
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">APIC_CONTROLLER</span>.<span class="ident">eoi</span>(),
+            <span class="number">0</span> =&gt; <span class="ident">PIC_CONTROLLER</span>.<span class="ident">eoi</span>(),
+            <span class="number">1</span> =&gt; <span class="ident">APIC_CONTROLLER</span>.<span class="ident">eoi</span>(),
 
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 
@@ -503,7 +503,7 @@
 <span class="kw">impl</span> <span class="ident">PicController</span> {
     <span class="doccomment">/// Creates a new PIC controller. This function is responsible for remapping</span>
     <span class="doccomment">/// the PIC chip.</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> (<span class="ident">a1</span>, <span class="ident">a2</span>);
 
@@ -549,7 +549,7 @@
     <span class="doccomment">/// for sending the provided `command` PIC master to get the register values. PIC</span>
     <span class="doccomment">/// master represents IRQs 0-7, with 2 being the chain. PIC slave is chained, and</span>
     <span class="doccomment">/// represents IRQs 8-15.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_irq_register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">command</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_irq_register</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">command</span>: <span class="ident">u8</span>) -&gt; <span class="ident">u16</span> {
         <span class="ident">io::outb</span>(<span class="ident">PIC2_COMMAND</span>, <span class="ident">command</span>);
         <span class="ident">io::wait</span>();
 
@@ -563,14 +563,14 @@
     }
 
     <span class="doccomment">/// Returns true if the PIC master chip is active.</span>
-    <span class="kw">fn</span> <span class="ident">is_master_active</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_master_active</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">isr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">get_irq_register</span>(<span class="ident">ICW1_READ_ISR</span>) };
 
         (<span class="ident">isr</span> <span class="op">&amp;</span> <span class="number">0xFF</span>) <span class="op">&gt;</span> <span class="number">0</span>
     }
 
     <span class="doccomment">/// Returns true if the PIC slave chip is active.</span>
-    <span class="kw">fn</span> <span class="ident">is_slave_active</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_slave_active</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">isr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">get_irq_register</span>(<span class="ident">ICW1_READ_ISR</span>) };
 
         (<span class="ident">isr</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="op">&gt;</span> <span class="number">0</span>
@@ -748,7 +748,7 @@
 
 <span class="doccomment">/// Returns true if interrupts are enabled.</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_enabled</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_enabled</span>() -&gt; <span class="ident">bool</span> {
     <span class="ident">controlregs::read_rflags</span>().<span class="ident">contains</span>(<span class="ident">controlregs::RFlags::INTERRUPT_FLAG</span>)
 }
 

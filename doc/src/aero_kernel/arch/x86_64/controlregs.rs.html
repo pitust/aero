@@ -461,7 +461,7 @@
 }
 
 <span class="doccomment">/// Returns the current value of the RFLAGS register.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_rflags</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RFlags</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_rflags</span>() -&gt; <span class="ident">RFlags</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u64</span>;
 
     <span class="kw">unsafe</span> {
@@ -473,7 +473,7 @@
 
 <span class="doccomment">/// Read the current set of CR4 flags.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr4</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cr4Flags</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr4</span>() -&gt; <span class="ident">Cr4Flags</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u64</span>;
 
     <span class="kw">unsafe</span> {
@@ -484,7 +484,7 @@
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr3_raw</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr3_raw</span>() -&gt; <span class="ident">u64</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u64</span>;
 
     <span class="kw">unsafe</span> {
@@ -495,7 +495,7 @@
 }
 
 <span class="doccomment">/// Read the current set of CR0 flags.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr0</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cr0Flags</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr0</span>() -&gt; <span class="ident">Cr0Flags</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u64</span>;
 
     <span class="kw">unsafe</span> {
@@ -527,7 +527,7 @@
 
 <span class="doccomment">/// Read the current P4 table address from the CR3 register.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr3</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">PhysFrame</span>, <span class="ident">Cr3Flags</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr3</span>() -&gt; (<span class="ident">PhysFrame</span>, <span class="ident">Cr3Flags</span>) {
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">read_cr3_raw</span>();
     <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">PhysAddr::new</span>(<span class="ident">value</span> <span class="op">&amp;</span> <span class="number">0x_000f_ffff_ffff_f000</span>); <span class="comment">// Grab the frame address</span>
     <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">PhysFrame::containing_address</span>(<span class="ident">addr</span>); <span class="comment">// Get the frame containing the address</span>
@@ -539,7 +539,7 @@
 
 <span class="doccomment">/// Read the current page fault linear address from the CR2 register.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr2</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VirtAddr</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_cr2</span>() -&gt; <span class="ident">VirtAddr</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u64</span>;
 
     <span class="kw">unsafe</span> {

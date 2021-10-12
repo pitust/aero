@@ -904,128 +904,128 @@
 }
 
 <span class="kw">impl</span> <span class="ident">DeviceType</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">base_class</span>: <span class="ident">u32</span>, <span class="ident">sub_class</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">base_class</span>: <span class="ident">u32</span>, <span class="ident">sub_class</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> (<span class="ident">base_class</span>, <span class="ident">sub_class</span>) {
-            (<span class="number">0x00</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::LegacyNotVgaCompatible</span>,
-            (<span class="number">0x00</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::LegacyVgaCompatible</span>,
+            (<span class="number">0x00</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::LegacyNotVgaCompatible</span>,
+            (<span class="number">0x00</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::LegacyVgaCompatible</span>,
 
-            (<span class="number">0x01</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ScsiBusController</span>,
-            (<span class="number">0x01</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::IdeController</span>,
-            (<span class="number">0x01</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::FloppyController</span>,
-            (<span class="number">0x01</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::IpiBusController</span>,
-            (<span class="number">0x01</span>, <span class="number">0x04</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::RaidController</span>,
-            (<span class="number">0x01</span>, <span class="number">0x05</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::AtaController</span>,
-            (<span class="number">0x01</span>, <span class="number">0x06</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SataController</span>,
-            (<span class="number">0x01</span>, <span class="number">0x07</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SasController</span>,
-            (<span class="number">0x01</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherMassStorageController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::ScsiBusController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::IdeController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::FloppyController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::IpiBusController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x04</span>) =&gt; <span class="ident">DeviceType::RaidController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x05</span>) =&gt; <span class="ident">DeviceType::AtaController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x06</span>) =&gt; <span class="ident">DeviceType::SataController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x07</span>) =&gt; <span class="ident">DeviceType::SasController</span>,
+            (<span class="number">0x01</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherMassStorageController</span>,
 
-            (<span class="number">0x02</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::EthernetController</span>,
-            (<span class="number">0x02</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::TokenRingController</span>,
-            (<span class="number">0x02</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::FddiController</span>,
-            (<span class="number">0x02</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::AtmController</span>,
-            (<span class="number">0x02</span>, <span class="number">0x04</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::IsdnController</span>,
-            (<span class="number">0x02</span>, <span class="number">0x06</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::PicmgController</span>,
-            (<span class="number">0x02</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherNetworkController</span>,
+            (<span class="number">0x02</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::EthernetController</span>,
+            (<span class="number">0x02</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::TokenRingController</span>,
+            (<span class="number">0x02</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::FddiController</span>,
+            (<span class="number">0x02</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::AtmController</span>,
+            (<span class="number">0x02</span>, <span class="number">0x04</span>) =&gt; <span class="ident">DeviceType::IsdnController</span>,
+            (<span class="number">0x02</span>, <span class="number">0x06</span>) =&gt; <span class="ident">DeviceType::PicmgController</span>,
+            (<span class="number">0x02</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherNetworkController</span>,
 
-            (<span class="number">0x03</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::VgaCompatibleController</span>,
-            (<span class="number">0x03</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::XgaController</span>,
-            (<span class="number">0x03</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ThreeDController</span>,
-            (<span class="number">0x03</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherDisplayController</span>,
+            (<span class="number">0x03</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::VgaCompatibleController</span>,
+            (<span class="number">0x03</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::XgaController</span>,
+            (<span class="number">0x03</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::ThreeDController</span>,
+            (<span class="number">0x03</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherDisplayController</span>,
 
-            (<span class="number">0x04</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::VideoDevice</span>,
-            (<span class="number">0x04</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::AudioDevice</span>,
-            (<span class="number">0x04</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::TelephonyDevice</span>,
-            (<span class="number">0x04</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherMultimediaDevice</span>,
+            (<span class="number">0x04</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::VideoDevice</span>,
+            (<span class="number">0x04</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::AudioDevice</span>,
+            (<span class="number">0x04</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::TelephonyDevice</span>,
+            (<span class="number">0x04</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::OtherMultimediaDevice</span>,
 
-            (<span class="number">0x05</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::RamController</span>,
-            (<span class="number">0x05</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::FlashController</span>,
-            (<span class="number">0x05</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherMemoryController</span>,
+            (<span class="number">0x05</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::RamController</span>,
+            (<span class="number">0x05</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::FlashController</span>,
+            (<span class="number">0x05</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::OtherMemoryController</span>,
 
-            (<span class="number">0x06</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::HostBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::IsaBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::EisaBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::McaBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x04</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::PciPciBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x05</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::PcmciaBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x06</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::NuBusBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x07</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::CardBusBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x08</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::RacewayBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x09</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SemiTransparentPciPciBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x0a</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::InfinibandPciHostBridge</span>,
-            (<span class="number">0x06</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherBridgeDevice</span>,
+            (<span class="number">0x06</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::HostBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::IsaBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::EisaBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::McaBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x04</span>) =&gt; <span class="ident">DeviceType::PciPciBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x05</span>) =&gt; <span class="ident">DeviceType::PcmciaBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x06</span>) =&gt; <span class="ident">DeviceType::NuBusBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x07</span>) =&gt; <span class="ident">DeviceType::CardBusBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x08</span>) =&gt; <span class="ident">DeviceType::RacewayBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x09</span>) =&gt; <span class="ident">DeviceType::SemiTransparentPciPciBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x0a</span>) =&gt; <span class="ident">DeviceType::InfinibandPciHostBridge</span>,
+            (<span class="number">0x06</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherBridgeDevice</span>,
 
-            (<span class="number">0x07</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SerialController</span>,
-            (<span class="number">0x07</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ParallelPort</span>,
-            (<span class="number">0x07</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::MultiportSerialController</span>,
-            (<span class="number">0x07</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::Modem</span>,
-            (<span class="number">0x07</span>, <span class="number">0x04</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::GpibController</span>,
-            (<span class="number">0x07</span>, <span class="number">0x05</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SmartCard</span>,
-            (<span class="number">0x07</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherCommunicationsDevice</span>,
+            (<span class="number">0x07</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::SerialController</span>,
+            (<span class="number">0x07</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::ParallelPort</span>,
+            (<span class="number">0x07</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::MultiportSerialController</span>,
+            (<span class="number">0x07</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::Modem</span>,
+            (<span class="number">0x07</span>, <span class="number">0x04</span>) =&gt; <span class="ident">DeviceType::GpibController</span>,
+            (<span class="number">0x07</span>, <span class="number">0x05</span>) =&gt; <span class="ident">DeviceType::SmartCard</span>,
+            (<span class="number">0x07</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherCommunicationsDevice</span>,
 
-            (<span class="number">0x08</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::InterruptController</span>,
-            (<span class="number">0x08</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::DmaController</span>,
-            (<span class="number">0x08</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SystemTimer</span>,
-            (<span class="number">0x08</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::RtcController</span>,
-            (<span class="number">0x08</span>, <span class="number">0x04</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::GenericPciHotPlugController</span>,
-            (<span class="number">0x08</span>, <span class="number">0x05</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SdHostController</span>,
-            (<span class="number">0x08</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherSystemPeripheral</span>,
+            (<span class="number">0x08</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::InterruptController</span>,
+            (<span class="number">0x08</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::DmaController</span>,
+            (<span class="number">0x08</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::SystemTimer</span>,
+            (<span class="number">0x08</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::RtcController</span>,
+            (<span class="number">0x08</span>, <span class="number">0x04</span>) =&gt; <span class="ident">DeviceType::GenericPciHotPlugController</span>,
+            (<span class="number">0x08</span>, <span class="number">0x05</span>) =&gt; <span class="ident">DeviceType::SdHostController</span>,
+            (<span class="number">0x08</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherSystemPeripheral</span>,
 
-            (<span class="number">0x09</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::KeyboardController</span>,
-            (<span class="number">0x09</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::Digitizer</span>,
-            (<span class="number">0x09</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::MouseController</span>,
-            (<span class="number">0x09</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ScannerController</span>,
-            (<span class="number">0x09</span>, <span class="number">0x04</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::GameportController</span>,
-            (<span class="number">0x09</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherInputController</span>,
+            (<span class="number">0x09</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::KeyboardController</span>,
+            (<span class="number">0x09</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::Digitizer</span>,
+            (<span class="number">0x09</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::MouseController</span>,
+            (<span class="number">0x09</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::ScannerController</span>,
+            (<span class="number">0x09</span>, <span class="number">0x04</span>) =&gt; <span class="ident">DeviceType::GameportController</span>,
+            (<span class="number">0x09</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherInputController</span>,
 
-            (<span class="number">0x0a</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::GenericDockingStation</span>,
-            (<span class="number">0x0a</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherDockingStation</span>,
+            (<span class="number">0x0a</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::GenericDockingStation</span>,
+            (<span class="number">0x0a</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherDockingStation</span>,
 
-            (<span class="number">0x0b</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::Processor386</span>,
-            (<span class="number">0x0b</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::Processor486</span>,
-            (<span class="number">0x0b</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ProcessorPentium</span>,
-            (<span class="number">0x0b</span>, <span class="number">0x10</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ProcessorAlpha</span>,
-            (<span class="number">0x0b</span>, <span class="number">0x20</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ProcessorPowerPc</span>,
-            (<span class="number">0x0b</span>, <span class="number">0x30</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ProcessorMips</span>,
-            (<span class="number">0x0b</span>, <span class="number">0x40</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::CoProcessor</span>,
+            (<span class="number">0x0b</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::Processor386</span>,
+            (<span class="number">0x0b</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::Processor486</span>,
+            (<span class="number">0x0b</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::ProcessorPentium</span>,
+            (<span class="number">0x0b</span>, <span class="number">0x10</span>) =&gt; <span class="ident">DeviceType::ProcessorAlpha</span>,
+            (<span class="number">0x0b</span>, <span class="number">0x20</span>) =&gt; <span class="ident">DeviceType::ProcessorPowerPc</span>,
+            (<span class="number">0x0b</span>, <span class="number">0x30</span>) =&gt; <span class="ident">DeviceType::ProcessorMips</span>,
+            (<span class="number">0x0b</span>, <span class="number">0x40</span>) =&gt; <span class="ident">DeviceType::CoProcessor</span>,
 
-            (<span class="number">0x0c</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::FirewireController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::AccessBusController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SsaBusController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::UsbController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x04</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::FibreChannelController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x05</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SmBusController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x06</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::InfiniBandController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x07</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::IpmiController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x08</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::SercosController</span>,
-            (<span class="number">0x0c</span>, <span class="number">0x09</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::CanBusController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::FirewireController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::AccessBusController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::SsaBusController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::UsbController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x04</span>) =&gt; <span class="ident">DeviceType::FibreChannelController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x05</span>) =&gt; <span class="ident">DeviceType::SmBusController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x06</span>) =&gt; <span class="ident">DeviceType::InfiniBandController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x07</span>) =&gt; <span class="ident">DeviceType::IpmiController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x08</span>) =&gt; <span class="ident">DeviceType::SercosController</span>,
+            (<span class="number">0x0c</span>, <span class="number">0x09</span>) =&gt; <span class="ident">DeviceType::CanBusController</span>,
 
-            (<span class="number">0x0d</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::IrdaController</span>,
-            (<span class="number">0x0d</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ConsumerIrController</span>,
-            (<span class="number">0x0d</span>, <span class="number">0x10</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::RfController</span>,
-            (<span class="number">0x0d</span>, <span class="number">0x11</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::BluetoothController</span>,
-            (<span class="number">0x0d</span>, <span class="number">0x12</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::BroadbandController</span>,
-            (<span class="number">0x0d</span>, <span class="number">0x20</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::Ethernet5GHzController</span>,
-            (<span class="number">0x0d</span>, <span class="number">0x21</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::Ethernet24GHzController</span>,
-            (<span class="number">0x0d</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherWirelessController</span>,
+            (<span class="number">0x0d</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::IrdaController</span>,
+            (<span class="number">0x0d</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::ConsumerIrController</span>,
+            (<span class="number">0x0d</span>, <span class="number">0x10</span>) =&gt; <span class="ident">DeviceType::RfController</span>,
+            (<span class="number">0x0d</span>, <span class="number">0x11</span>) =&gt; <span class="ident">DeviceType::BluetoothController</span>,
+            (<span class="number">0x0d</span>, <span class="number">0x12</span>) =&gt; <span class="ident">DeviceType::BroadbandController</span>,
+            (<span class="number">0x0d</span>, <span class="number">0x20</span>) =&gt; <span class="ident">DeviceType::Ethernet5GHzController</span>,
+            (<span class="number">0x0d</span>, <span class="number">0x21</span>) =&gt; <span class="ident">DeviceType::Ethernet24GHzController</span>,
+            (<span class="number">0x0d</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherWirelessController</span>,
 
-            (<span class="number">0x0e</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::IntelligentIoController</span>,
+            (<span class="number">0x0e</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::IntelligentIoController</span>,
 
-            (<span class="number">0x0f</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::TvSatelliteCommunicationsController</span>,
-            (<span class="number">0x0f</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::AudioSatelliteCommunicationsController</span>,
-            (<span class="number">0x0f</span>, <span class="number">0x02</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::VoiceSatelliteCommunicationsController</span>,
-            (<span class="number">0x0f</span>, <span class="number">0x03</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::DataSatelliteCommunicationsController</span>,
+            (<span class="number">0x0f</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::TvSatelliteCommunicationsController</span>,
+            (<span class="number">0x0f</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::AudioSatelliteCommunicationsController</span>,
+            (<span class="number">0x0f</span>, <span class="number">0x02</span>) =&gt; <span class="ident">DeviceType::VoiceSatelliteCommunicationsController</span>,
+            (<span class="number">0x0f</span>, <span class="number">0x03</span>) =&gt; <span class="ident">DeviceType::DataSatelliteCommunicationsController</span>,
 
-            (<span class="number">0x10</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::NetworkCryptionController</span>,
-            (<span class="number">0x10</span>, <span class="number">0x10</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::EntertainmentCryptionController</span>,
-            (<span class="number">0x10</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherCryptionController</span>,
+            (<span class="number">0x10</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::NetworkCryptionController</span>,
+            (<span class="number">0x10</span>, <span class="number">0x10</span>) =&gt; <span class="ident">DeviceType::EntertainmentCryptionController</span>,
+            (<span class="number">0x10</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherCryptionController</span>,
 
-            (<span class="number">0x11</span>, <span class="number">0x00</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::DpioModule</span>,
-            (<span class="number">0x11</span>, <span class="number">0x01</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::PerformanceCounter</span>,
-            (<span class="number">0x11</span>, <span class="number">0x10</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::CommunicationsSynchronizationController</span>,
-            (<span class="number">0x11</span>, <span class="number">0x20</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::ManagementCard</span>,
-            (<span class="number">0x11</span>, <span class="number">0x80</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::OtherSignalProcessingController</span>,
+            (<span class="number">0x11</span>, <span class="number">0x00</span>) =&gt; <span class="ident">DeviceType::DpioModule</span>,
+            (<span class="number">0x11</span>, <span class="number">0x01</span>) =&gt; <span class="ident">DeviceType::PerformanceCounter</span>,
+            (<span class="number">0x11</span>, <span class="number">0x10</span>) =&gt; <span class="ident">DeviceType::CommunicationsSynchronizationController</span>,
+            (<span class="number">0x11</span>, <span class="number">0x20</span>) =&gt; <span class="ident">DeviceType::ManagementCard</span>,
+            (<span class="number">0x11</span>, <span class="number">0x80</span>) =&gt; <span class="ident">DeviceType::OtherSignalProcessingController</span>,
 
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DeviceType::Unknown</span>,
+            <span class="kw">_</span> =&gt; <span class="ident">DeviceType::Unknown</span>,
         }
     }
 }
@@ -1040,20 +1040,20 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Vendor</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">id</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">id</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">id</span> {
-            <span class="number">0x8086</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Intel</span>,
-            <span class="number">0x1022</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::AMD</span>,
-            <span class="number">0x10DE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::NVIDIA</span>,
-            <span class="number">0x1234</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Qemu</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Unknown</span>(<span class="ident">id</span>),
+            <span class="number">0x8086</span> =&gt; <span class="ident"><span class="self">Self</span>::Intel</span>,
+            <span class="number">0x1022</span> =&gt; <span class="ident"><span class="self">Self</span>::AMD</span>,
+            <span class="number">0x10DE</span> =&gt; <span class="ident"><span class="self">Self</span>::NVIDIA</span>,
+            <span class="number">0x1234</span> =&gt; <span class="ident"><span class="self">Self</span>::Qemu</span>,
+            <span class="kw">_</span> =&gt; <span class="ident"><span class="self">Self</span>::Unknown</span>(<span class="ident">id</span>),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Unknown</span>(<span class="ident">id</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">id</span> <span class="op">!</span><span class="op">=</span> <span class="number">0xFFFF</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident"><span class="self">Self</span>::Unknown</span>(<span class="ident">id</span>) =&gt; <span class="kw-2">*</span><span class="ident">id</span> <span class="op">!</span><span class="op">=</span> <span class="number">0xFFFF</span>,
+            <span class="kw">_</span> =&gt; <span class="bool-val">true</span>,
         }
     }
 }
@@ -1061,7 +1061,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PciHeader</span>(<span class="ident">u32</span>);
 
 <span class="kw">impl</span> <span class="ident">PciHeader</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">bus</span>: <span class="ident">u8</span>, <span class="ident">device</span>: <span class="ident">u8</span>, <span class="ident">function</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">bus</span>: <span class="ident">u8</span>, <span class="ident">device</span>: <span class="ident">u8</span>, <span class="ident">function</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
 
         <span class="ident">result</span>.<span class="ident">set_bits</span>(<span class="number">0</span>..<span class="number">3</span>, <span class="ident">function</span> <span class="kw">as</span> <span class="ident">u32</span>);
@@ -1073,21 +1073,21 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_bits</span>(<span class="number">8</span>..<span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_bits</span>(<span class="number">3</span>..<span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">function</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">function</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">3</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">let</span> <span class="ident">bus</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bus</span>() <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">device</span>() <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">function</span>() <span class="kw">as</span> <span class="ident">u32</span>;
@@ -1096,10 +1096,10 @@
         <span class="ident">io::outl</span>(<span class="ident">PCI_CONFIG_ADDRESS_PORT</span>, <span class="ident">address</span>);
 
         <span class="kw">match</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::inb</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>) <span class="kw">as</span> <span class="ident">u32</span>, <span class="comment">// u8</span>
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::inw</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>) <span class="kw">as</span> <span class="ident">u32</span>, <span class="comment">// u16</span>
-            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::inl</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>),        <span class="comment">// u32</span>
-            <span class="ident">width</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;unknown PCI read width: `{}`&quot;</span>, <span class="ident">width</span>),
+            <span class="number">1</span> =&gt; <span class="ident">io::inb</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>) <span class="kw">as</span> <span class="ident">u32</span>, <span class="comment">// u8</span>
+            <span class="number">2</span> =&gt; <span class="ident">io::inw</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>) <span class="kw">as</span> <span class="ident">u32</span>, <span class="comment">// u16</span>
+            <span class="number">4</span> =&gt; <span class="ident">io::inl</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>),        <span class="comment">// u32</span>
+            <span class="ident">width</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;unknown PCI read width: `{}`&quot;</span>, <span class="ident">width</span>),
         }
     }
 
@@ -1112,10 +1112,10 @@
         <span class="ident">io::outl</span>(<span class="ident">PCI_CONFIG_ADDRESS_PORT</span>, <span class="ident">address</span>);
 
         <span class="kw">match</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::outb</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>), <span class="comment">// u8</span>
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::outw</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u16</span>), <span class="comment">// u16</span>
-            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::outl</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>, <span class="ident">value</span>),       <span class="comment">// u32</span>
-            <span class="ident">width</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;unknown PCI write width: `{}`&quot;</span>, <span class="ident">width</span>),
+            <span class="number">1</span> =&gt; <span class="ident">io::outb</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>), <span class="comment">// u8</span>
+            <span class="number">2</span> =&gt; <span class="ident">io::outw</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u16</span>), <span class="comment">// u16</span>
+            <span class="number">4</span> =&gt; <span class="ident">io::outl</span>(<span class="ident">PCI_CONFIG_DATA_PORT</span>, <span class="ident">value</span>),       <span class="comment">// u32</span>
+            <span class="ident">width</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;unknown PCI write width: `{}`&quot;</span>, <span class="ident">width</span>),
         }
     }
 
@@ -1146,27 +1146,27 @@
     <span class="doccomment">/// Returns the value stored in the PCI vendor ID register which is used to identify</span>
     <span class="doccomment">/// the manufacturer of the PCI device.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_vendor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vendor</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_vendor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vendor</span> {
         <span class="kw">unsafe</span> { <span class="ident">Vendor::new</span>(<span class="self">self</span>.<span class="ident">read</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>(<span class="number">0x00</span>)) }
     }
 
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DeviceType</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">DeviceType</span> {
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="number">0x08</span>);
 
         <span class="ident">DeviceType::new</span>(<span class="ident">id</span>.<span class="ident">get_bits</span>(<span class="number">24</span>..<span class="number">32</span>), <span class="ident">id</span>.<span class="ident">get_bits</span>(<span class="number">16</span>..<span class="number">24</span>))
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_multiple_functions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_multiple_functions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">read</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="number">0x0c</span>) }.<span class="ident">get_bit</span>(<span class="number">23</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pin</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="kw">unsafe</span> { (<span class="self">self</span>.<span class="ident">read</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="number">0x3D</span>) <span class="op">&gt;</span><span class="op">&gt;</span> (<span class="number">0x3D</span> <span class="op">&amp;</span> <span class="number">0b11</span>) <span class="op">*</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span> }
     }
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resolve_irq_mapping</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resolve_irq_mapping</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
         <span class="ident">PCI_ROUTER</span>
             .<span class="ident">get</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> {
@@ -1174,11 +1174,11 @@
                     <span class="self">self</span>.<span class="ident">device</span>() <span class="kw">as</span> <span class="kw">_</span>,
                     <span class="self">self</span>.<span class="ident">function</span>() <span class="kw">as</span> <span class="kw">_</span>,
                     <span class="kw">match</span> <span class="self">self</span>.<span class="ident">pin</span>() <span class="op">-</span> <span class="number">1</span> {
-                        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::IntA</span>,
-                        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::IntB</span>,
-                        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::IntC</span>,
-                        <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::IntD</span>,
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+                        <span class="number">0</span> =&gt; <span class="ident">Pin::IntA</span>,
+                        <span class="number">1</span> =&gt; <span class="ident">Pin::IntB</span>,
+                        <span class="number">2</span> =&gt; <span class="ident">Pin::IntC</span>,
+                        <span class="number">3</span> =&gt; <span class="ident">Pin::IntD</span>,
+                        <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(),
                     },
                     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">acpi::get_aml_context</span>(),
                 )
@@ -1188,14 +1188,14 @@
 
     <span class="doccomment">/// Returnes the value stored in the PCI header type register which is used to</span>
     <span class="doccomment">/// indicate layout for bytes,of the device’s configuration space.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_header_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_header_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">read</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="number">0x0E</span>) <span class="kw">as</span> <span class="kw">_</span> }
     }
 
     <span class="doccomment">/// Returns the value stored in the bar of the provided slot. Returns [`None`] if the</span>
     <span class="doccomment">/// bar is empty.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bar</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bar</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Bar</span><span class="op">&gt;</span> {
-        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">get_header_type</span>() <span class="op">&amp;</span> <span class="number">0b01111111</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>); <span class="comment">// Ensure header type == 0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bar</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bar</span>: <span class="ident">u8</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Bar</span><span class="op">&gt;</span> {
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">get_header_type</span>() <span class="op">&amp;</span> <span class="number">0b01111111</span> <span class="op">==</span> <span class="number">0</span>); <span class="comment">// Ensure header type == 0</span>
         <span class="macro">debug_assert!</span>(<span class="ident">bar</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">5</span>); <span class="comment">// Make sure the bar is valid.</span>
 
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="number">0x10</span> <span class="op">+</span> (<span class="ident">bar</span> <span class="kw">as</span> <span class="ident">u16</span>) <span class="op">*</span> <span class="number">4</span>;
@@ -1214,7 +1214,7 @@
 
                 <span class="comment">// If the entire readback value is zero, the BAR is not implemented, so we</span>
                 <span class="comment">// return `None`.</span>
-                <span class="kw">if</span> <span class="ident">readback</span> <span class="op">=</span><span class="op">=</span> <span class="number">0x0</span> {
+                <span class="kw">if</span> <span class="ident">readback</span> <span class="op">==</span> <span class="number">0x0</span> {
                     <span class="kw">return</span> <span class="prelude-val">None</span>;
                 }
 
@@ -1223,13 +1223,13 @@
             };
 
             <span class="kw">match</span> <span class="ident">bar</span>.<span class="ident">get_bits</span>(<span class="number">1</span>..<span class="number">3</span>) {
-                <span class="number">0b00</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Bar::Memory32</span> {
+                <span class="number">0b00</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">Bar::Memory32</span> {
                     <span class="ident">address</span>,
                     <span class="ident">size</span>,
                     <span class="ident">prefetchable</span>,
                 }),
 
-                <span class="number">0b10</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="number">0b10</span> =&gt; {
                     <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> {
                         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">address</span> <span class="kw">as</span> <span class="ident">u64</span>;
 
@@ -1249,7 +1249,7 @@
                     })
                 }
 
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
             }
         } <span class="kw">else</span> {
             <span class="prelude-val">Some</span>(<span class="ident">Bar::IO</span>(<span class="ident">bar</span>.<span class="ident">get_bits</span>(<span class="number">2</span>..<span class="number">32</span>)))
@@ -1260,7 +1260,7 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PciDeviceHandle</span>: <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span> {
     <span class="doccomment">/// Returns true if the PCI device driver handles the device with</span>
     <span class="doccomment">/// the provided `vendor_id` and `device_id`.</span>
-    <span class="kw">fn</span> <span class="ident">handles</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">vendor_id</span>: <span class="ident">Vendor</span>, <span class="ident">device_id</span>: <span class="ident">DeviceType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">handles</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">vendor_id</span>: <span class="ident">Vendor</span>, <span class="ident">device_id</span>: <span class="ident">DeviceType</span>) -&gt; <span class="ident">bool</span>;
 
     <span class="doccomment">/// This function is responsible for initializing the device driver</span>
     <span class="doccomment">/// and starting it.</span>
@@ -1276,7 +1276,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PciTable</span> {
-    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">inner</span>: <span class="ident">Vec::new</span>() }
     }
 }

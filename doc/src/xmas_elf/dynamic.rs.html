@@ -227,81 +227,81 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">impls</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>: <span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>: <span class="ident">ident</span>) =&gt; {
         <span class="kw">impl</span> <span class="ident">Dynamic</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span><span class="op">&gt;</span> {
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Tag</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Tag</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">tag</span>.<span class="ident">as_tag</span>()
             }
 
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_val</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_val</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">get_tag</span>()<span class="question-mark">?</span> {
                     <span class="ident">Tag::Needed</span> <span class="op">|</span> <span class="ident">Tag::PltRelSize</span> <span class="op">|</span> <span class="ident">Tag::RelaSize</span> <span class="op">|</span> <span class="ident">Tag::RelaEnt</span> <span class="op">|</span> <span class="ident">Tag::StrSize</span> <span class="op">|</span>
                     <span class="ident">Tag::SymEnt</span> <span class="op">|</span> <span class="ident">Tag::SoName</span> <span class="op">|</span> <span class="ident">Tag::RPath</span> <span class="op">|</span> <span class="ident">Tag::RelSize</span> <span class="op">|</span> <span class="ident">Tag::RelEnt</span> <span class="op">|</span> <span class="ident">Tag::PltRel</span> <span class="op">|</span>
                     <span class="ident">Tag::InitArraySize</span> <span class="op">|</span> <span class="ident">Tag::FiniArraySize</span> <span class="op">|</span> <span class="ident">Tag::RunPath</span> <span class="op">|</span> <span class="ident">Tag::Flags</span> <span class="op">|</span>
                     <span class="ident">Tag::PreInitArraySize</span> <span class="op">|</span> <span class="ident">Tag::Flags1</span> <span class="op">|</span> <span class="ident">Tag::OsSpecific</span>(<span class="kw">_</span>) <span class="op">|</span>
-                    <span class="ident">Tag::ProcessorSpecific</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">un</span>),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid value&quot;</span>),
+                    <span class="ident">Tag::ProcessorSpecific</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">un</span>),
+                    <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid value&quot;</span>),
                 }
             }
 
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">get_tag</span>()<span class="question-mark">?</span> {
                     <span class="ident">Tag::Pltgot</span> <span class="op">|</span> <span class="ident">Tag::Hash</span> <span class="op">|</span> <span class="ident">Tag::StrTab</span> <span class="op">|</span> <span class="ident">Tag::SymTab</span> <span class="op">|</span> <span class="ident">Tag::Rela</span> <span class="op">|</span> <span class="ident">Tag::Init</span> <span class="op">|</span> <span class="ident">Tag::Fini</span> <span class="op">|</span>
                     <span class="ident">Tag::Rel</span> <span class="op">|</span> <span class="ident">Tag::Debug</span> <span class="op">|</span> <span class="ident">Tag::JmpRel</span> <span class="op">|</span> <span class="ident">Tag::InitArray</span> <span class="op">|</span> <span class="ident">Tag::FiniArray</span> <span class="op">|</span>
                     <span class="ident">Tag::PreInitArray</span> <span class="op">|</span> <span class="ident">Tag::SymTabShIndex</span>  <span class="op">|</span> <span class="ident">Tag::OsSpecific</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">Tag::ProcessorSpecific</span>(<span class="kw">_</span>)
-                    <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">un</span>),
-                     <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid ptr&quot;</span>),
+                    =&gt; <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">un</span>),
+                     <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid ptr&quot;</span>),
                 }
             }
         }
 
         <span class="kw">impl</span> <span class="ident">Tag_</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">as_tag</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Tag</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">as_tag</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Tag</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-                    <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Null</span>),
-                    <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Needed</span>),
-                    <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::PltRelSize</span>),
-                    <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Pltgot</span>),
-                    <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Hash</span>),
-                    <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::StrTab</span>),
-                    <span class="number">6</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::SymTab</span>),
-                    <span class="number">7</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Rela</span>),
-                    <span class="number">8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::RelaSize</span>),
-                    <span class="number">9</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::RelaEnt</span>),
-                    <span class="number">10</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::StrSize</span>),
-                    <span class="number">11</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::SymEnt</span>),
-                    <span class="number">12</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Init</span>),
-                    <span class="number">13</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Fini</span>),
-                    <span class="number">14</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::SoName</span>),
-                    <span class="number">15</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::RPath</span>),
-                    <span class="number">16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Symbolic</span>),
-                    <span class="number">17</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Rel</span>),
-                    <span class="number">18</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::RelSize</span>),
-                    <span class="number">19</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::RelEnt</span>),
-                    <span class="number">20</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::PltRel</span>),
-                    <span class="number">21</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Debug</span>),
-                    <span class="number">22</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::TextRel</span>),
-                    <span class="number">23</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::JmpRel</span>),
-                    <span class="number">24</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::BindNow</span>),
-                    <span class="number">25</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::InitArray</span>),
-                    <span class="number">26</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::FiniArray</span>),
-                    <span class="number">27</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::InitArraySize</span>),
-                    <span class="number">28</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::FiniArraySize</span>),
-                    <span class="number">29</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::RunPath</span>),
-                    <span class="number">30</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Flags</span>),
-                    <span class="number">32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::PreInitArray</span>),
-                    <span class="number">33</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::PreInitArraySize</span>),
-                    <span class="number">34</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::SymTabShIndex</span>),
-                    <span class="number">0x6ffffffb</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::Flags1</span>),
-                    <span class="ident">t</span> <span class="kw">if</span> <span class="ident">t</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x6000000D</span> <span class="op">&amp;&amp;</span> <span class="ident">t</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0x6fffffff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::OsSpecific</span>(<span class="ident">t</span>)),
-                    <span class="ident">t</span> <span class="kw">if</span> <span class="ident">t</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x70000000</span> <span class="op">&amp;&amp;</span> <span class="ident">t</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0x7fffffff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Tag::ProcessorSpecific</span>(<span class="ident">t</span>)),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid tag value&quot;</span>),
+                    <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Null</span>),
+                    <span class="number">1</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Needed</span>),
+                    <span class="number">2</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::PltRelSize</span>),
+                    <span class="number">3</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Pltgot</span>),
+                    <span class="number">4</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Hash</span>),
+                    <span class="number">5</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::StrTab</span>),
+                    <span class="number">6</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::SymTab</span>),
+                    <span class="number">7</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Rela</span>),
+                    <span class="number">8</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::RelaSize</span>),
+                    <span class="number">9</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::RelaEnt</span>),
+                    <span class="number">10</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::StrSize</span>),
+                    <span class="number">11</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::SymEnt</span>),
+                    <span class="number">12</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Init</span>),
+                    <span class="number">13</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Fini</span>),
+                    <span class="number">14</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::SoName</span>),
+                    <span class="number">15</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::RPath</span>),
+                    <span class="number">16</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Symbolic</span>),
+                    <span class="number">17</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Rel</span>),
+                    <span class="number">18</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::RelSize</span>),
+                    <span class="number">19</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::RelEnt</span>),
+                    <span class="number">20</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::PltRel</span>),
+                    <span class="number">21</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Debug</span>),
+                    <span class="number">22</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::TextRel</span>),
+                    <span class="number">23</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::JmpRel</span>),
+                    <span class="number">24</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::BindNow</span>),
+                    <span class="number">25</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::InitArray</span>),
+                    <span class="number">26</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::FiniArray</span>),
+                    <span class="number">27</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::InitArraySize</span>),
+                    <span class="number">28</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::FiniArraySize</span>),
+                    <span class="number">29</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::RunPath</span>),
+                    <span class="number">30</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Flags</span>),
+                    <span class="number">32</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::PreInitArray</span>),
+                    <span class="number">33</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::PreInitArraySize</span>),
+                    <span class="number">34</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::SymTabShIndex</span>),
+                    <span class="number">0x6ffffffb</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::Flags1</span>),
+                    <span class="ident">t</span> <span class="kw">if</span> <span class="ident">t</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x6000000D</span> <span class="op">&amp;&amp;</span> <span class="ident">t</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0x6fffffff</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::OsSpecific</span>(<span class="ident">t</span>)),
+                    <span class="ident">t</span> <span class="kw">if</span> <span class="ident">t</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x70000000</span> <span class="op">&amp;&amp;</span> <span class="ident">t</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0x7fffffff</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Tag::ProcessorSpecific</span>(<span class="ident">t</span>)),
+                    <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid tag value&quot;</span>),
                 }
             }
         }
 
         <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Tag_</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
                 <span class="self">self</span>.<span class="ident">as_tag</span>().<span class="ident">fmt</span>(<span class="ident">f</span>)
             }
         }

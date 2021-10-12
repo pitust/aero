@@ -244,7 +244,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">symbol_table</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
     <span class="kw">for</span> <span class="ident">section</span> <span class="kw">in</span> <span class="ident">kernel_elf</span>.<span class="ident">section_iter</span>() {
-        <span class="kw">if</span> <span class="ident">section</span>.<span class="ident">get_type</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Ok</span>(<span class="ident">ShType::SymTab</span>) {
+        <span class="kw">if</span> <span class="ident">section</span>.<span class="ident">get_type</span>() <span class="op">==</span> <span class="prelude-val">Ok</span>(<span class="ident">ShType::SymTab</span>) {
             <span class="kw">let</span> <span class="ident">section_data</span> <span class="op">=</span> <span class="ident">section</span>
                 .<span class="ident">get_data</span>(<span class="kw-2">&amp;</span><span class="ident">kernel_elf</span>)
                 .<span class="ident">expect</span>(<span class="string">&quot;Failed to get kernel section data information&quot;</span>);
@@ -267,7 +267,7 @@
     <span class="comment">// set the field `eliminate-frame-pointer` in the target file to true or manually resetting</span>
     <span class="comment">// the RBP to prevent backtrace to avoid address leaks (for example when jumping to userland).</span>
     <span class="comment">// If thats the case we return (resumes the parent function).</span>
-    <span class="kw">if</span> <span class="ident">rbp</span> <span class="op">=</span><span class="op">=</span> <span class="number">0x00</span> {
+    <span class="kw">if</span> <span class="ident">rbp</span> <span class="op">==</span> <span class="number">0x00</span> {
         <span class="macro">log::trace!</span>(<span class="string">&quot;&lt;empty backtrace&gt;&quot;</span>);
         <span class="kw">return</span>;
     }
@@ -286,7 +286,7 @@
 
             <span class="kw">let</span> <span class="ident">rip</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="ident">rip_rbp</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">usize</span>) };
 
-            <span class="kw">if</span> <span class="ident">rip</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">rip</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="kw">break</span>;
             }
 
@@ -314,7 +314,7 @@
 }
 
 <span class="attribute">#[<span class="ident">panic_handler</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_begin_unwind</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">PanicInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_begin_unwind</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident">PanicInfo</span>) -&gt; <span class="op">!</span> {
     <span class="comment">// Disable interrupts as we do not want to be interrupted while</span>
     <span class="comment">// we are unwinding the stack.</span>
     <span class="kw">unsafe</span> {
@@ -362,7 +362,7 @@
 <span class="doccomment">/// we just came from and picking up where we left off.</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">_Unwind_Resume</span>(<span class="ident">unwind_context_ptr</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">_Unwind_Resume</span>(<span class="ident">unwind_context_ptr</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
     <span class="macro">log::debug!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">unwind_context_ptr</span>);
 
     <span class="kw">unsafe</span> {
@@ -377,7 +377,7 @@
 <span class="doccomment">/// This function is the entry point for the unwinding process.</span>
 <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;eh_personality&quot;</span>]</span>
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_eh_personality</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_eh_personality</span>() -&gt; <span class="op">!</span> {
     <span class="macro">log::error!</span>(<span class="string">&quot;Poisoned function `rust_eh_personaity` was invoked.&quot;</span>);
 
     <span class="kw">unsafe</span> {

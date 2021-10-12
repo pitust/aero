@@ -29,11 +29,11 @@ primitives.</p>
 
 <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">spin::Once</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">spin::Once::new</span>();
 
-<span class="kw">fn</span> <span class="ident">get_cached_val</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_cached_val</span>() -&gt; <span class="ident">usize</span> {
     <span class="kw-2">*</span><span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="ident">expensive_computation</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">expensive_computation</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">expensive_computation</span>() -&gt; <span class="ident">usize</span> {
     <span class="comment">// ...</span>
 }</code></pre></div>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.wait" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/spin/once.rs.html#268-275" title="goto source code">[src]</a></div><a href="#method.wait" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.wait" class="fnname">wait</a>(&amp;self) -&gt; &amp;T</h4></div></summary><div class="docblock"><p>Spins until the <a href="struct.Once.html" title="Once"><code>Once</code></a> contains a value.</p>

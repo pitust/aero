@@ -219,7 +219,7 @@
     <span class="doccomment">/// Creates a new uninitialized instance of the kernel</span>
     <span class="doccomment">/// global allocator.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_uninit</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_uninit</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">Mutex::new</span>(<span class="ident">Heap::empty</span>()))
     }
 
@@ -227,7 +227,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns a pointer to newly-allocated memory, or null to indicate</span>
     <span class="doccomment">/// allocation failure.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
         <span class="comment">// SAFETY: We we need to be careful to not cause a deadlock as the interrupt</span>
         <span class="comment">// handlers utilize the heap and might interrupt an in-progress allocation. So, we</span>
         <span class="comment">// lock the interrupts during the allocation.</span>
@@ -291,7 +291,7 @@
 }
 
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">GlobalAlloc</span> <span class="kw">for</span> <span class="ident">LockedHeap</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="macro">debug_assert!</span>(<span class="ident">layout</span>.<span class="ident">align</span>().<span class="ident">is_power_of_two</span>());
 
         <span class="comment">// Rounded up size is:</span>
@@ -324,7 +324,7 @@
 }
 
 <span class="attribute">#[<span class="ident">alloc_error_handler</span>]</span>
-<span class="kw">fn</span> <span class="ident">alloc_error_handler</span>(<span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">fn</span> <span class="ident">alloc_error_handler</span>(<span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) -&gt; <span class="op">!</span> {
     <span class="macro">panic!</span>(
         <span class="string">&quot;Allocation error with size {} and layout {}&quot;</span>,
         <span class="ident">layout</span>.<span class="ident">size</span>(),
@@ -333,7 +333,7 @@
 }
 
 <span class="doccomment">/// Initialize the heap at the [HEAP_START].</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="ident">FRAME_ALLOCATOR</span>
             .<span class="ident">allocate_frame</span>()

@@ -253,7 +253,7 @@
 <span class="doccomment">/// Wrapper function to the `inb` assembly instruction used to do the</span>
 <span class="doccomment">/// 8-bit low level port input.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inb</span>(<span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inb</span>(<span class="ident">port</span>: <span class="ident">u16</span>) -&gt; <span class="ident">u8</span> {
     <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">u8</span>;
 
     <span class="macro">asm!</span>(
@@ -293,7 +293,7 @@
 <span class="doccomment">/// Wrapper function to the `inl` assembly instruction used to do the</span>
 <span class="doccomment">/// 32-bit low level port input.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inl</span>(<span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inl</span>(<span class="ident">port</span>: <span class="ident">u16</span>) -&gt; <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">u32</span>;
 
     <span class="macro">asm!</span>(
@@ -309,7 +309,7 @@
 <span class="doccomment">/// Wrapper function to the `inw` assembly instruction used to do the</span>
 <span class="doccomment">/// 16-bit low level port input.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inw</span>(<span class="ident">port</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inw</span>(<span class="ident">port</span>: <span class="ident">u16</span>) -&gt; <span class="ident">u16</span> {
     <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">u16</span>;
 
     <span class="macro">asm!</span>(
@@ -342,7 +342,7 @@
 <span class="doccomment">/// Wrapper function to the `rdmsr` assembly instruction used</span>
 <span class="comment">// to read 64 bits msr register.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">rdmsr</span>(<span class="ident">msr</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">rdmsr</span>(<span class="ident">msr</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u64</span> {
     <span class="kw">let</span> (<span class="ident">high</span>, <span class="ident">low</span>): (<span class="ident">u32</span>, <span class="ident">u32</span>);
 
     <span class="macro">asm!</span>(<span class="string">&quot;rdmsr&quot;</span>, <span class="ident">out</span>(<span class="string">&quot;eax&quot;</span>) <span class="ident">low</span>, <span class="ident">out</span>(<span class="string">&quot;edx&quot;</span>) <span class="ident">high</span>, <span class="kw">in</span>(<span class="string">&quot;ecx&quot;</span>) <span class="ident">msr</span>, <span class="ident">options</span>(<span class="ident">nomem</span>));

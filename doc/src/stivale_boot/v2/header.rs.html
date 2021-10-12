@@ -149,11 +149,11 @@
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">super</span>::StivaleStruct</span>;
 
 <span class="macro">macro_rules!</span> <span class="ident">make_header_tag</span> {
-	($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">expr</span>;) <span class="op">=</span><span class="op">&gt;</span> {
-		<span class="macro">make_header_tag!</span>($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>]</span>)<span class="op">*</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span> <span class="op">=</span><span class="op">&gt;</span> {};);
+	($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">expr</span>;) =&gt; {
+		<span class="macro">make_header_tag!</span>($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>]</span>)<span class="op">*</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span> =&gt; {};);
 	};
 
-	($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">expr</span> <span class="op">=</span><span class="op">&gt;</span> {$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_name</span>:<span class="ident">ident</span> : <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_default</span>:<span class="ident">expr</span>),<span class="kw-2">*</span>};) <span class="op">=</span><span class="op">&gt;</span> {
+	($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">meta</span>]</span>)<span class="op">*</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">expr</span> =&gt; {$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_name</span>:<span class="ident">ident</span> : <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_default</span>:<span class="ident">expr</span>),<span class="kw-2">*</span>};) =&gt; {
         $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>]</span>)<span class="op">*</span>
         <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
@@ -166,7 +166,7 @@
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span> <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {}
 
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span> <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
-			<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+			<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
 				<span class="self">Self</span> {
 					<span class="ident">identifier</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>,
 					<span class="ident">next</span>: <span class="ident">core::ptr::null</span>(),
@@ -174,12 +174,12 @@
 				}
 			}
 
-			<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">next</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+			<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">next</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) -&gt; <span class="self">Self</span> {
 				<span class="self">self</span>.<span class="ident">next</span> <span class="op">=</span> <span class="ident">next</span>;
 				<span class="self">self</span>
 			}
 
-			$(<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_name</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+			$(<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_name</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>) -&gt; <span class="self">Self</span> {
 				<span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_name</span> <span class="op">=</span> <span class="ident">value</span>;
 				<span class="self">self</span>
 			})<span class="op">*</span>
@@ -188,7 +188,7 @@
 }
 
 <span class="kw">union</span> <span class="ident">StivaleHeaderEntryPoint</span> {
-    <span class="ident">func</span>: <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleStruct</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>,
+    <span class="ident">func</span>: <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleStruct</span>) -&gt; <span class="op">!</span>,
     <span class="ident">zero</span>: <span class="ident">u64</span>,
 }
 
@@ -201,7 +201,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">StivaleHeader</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">entry_point</span>: <span class="ident">StivaleHeaderEntryPoint</span> { <span class="ident">zero</span>: <span class="number">0</span> },
             <span class="ident">stack</span>: <span class="ident">core::ptr::null</span>(),
@@ -210,22 +210,22 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">entry_point</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">func</span>: <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleStruct</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">entry_point</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">func</span>: <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleStruct</span>) -&gt; <span class="op">!</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">entry_point</span> <span class="op">=</span> <span class="ident">StivaleHeaderEntryPoint</span> { <span class="ident">func</span> };
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">stack</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stack</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">stack</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stack</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">stack</span> <span class="op">=</span> <span class="ident">stack</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">flags</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">flags</span>: <span class="ident">u64</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">flags</span> <span class="op">=</span> <span class="ident">flags</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">tags</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tags</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">tags</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tags</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">tags</span> <span class="op">=</span> <span class="ident">tags</span>;
         <span class="self">self</span>
     }
@@ -235,7 +235,7 @@
     <span class="doccomment">/// If this tag is present the bootloader is instructed to initialise a graphical</span>
     <span class="doccomment">/// framebuffer video mode. Omitting this tag will make the bootloader default to a</span>
     <span class="doccomment">/// CGA-compatible text mode, if supported.</span>
-    <span class="kw">struct</span> <span class="ident">StivaleFramebufferHeaderTag</span>: <span class="number">0x3ecc1bc43d0f7971</span> <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="kw">struct</span> <span class="ident">StivaleFramebufferHeaderTag</span>: <span class="number">0x3ecc1bc43d0f7971</span> =&gt; {
         <span class="ident">framebuffer_width</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="ident">framebuffer_height</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="ident">framebuffer_bpp</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">0</span>,
@@ -248,7 +248,7 @@
     <span class="doccomment">/// for use by the kernel at runtime. See &quot;Terminal struct tag&quot; below. The framebuffer</span>
     <span class="doccomment">/// header tag **must** be specified when passing this header tag, and this tag may inhibit</span>
     <span class="doccomment">/// the WC MTRR framebuffer feature.</span>
-    <span class="kw">struct</span> <span class="ident">StivaleTerminalHeaderTag</span>: <span class="number">0xa85d499b1823be72</span> <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="kw">struct</span> <span class="ident">StivaleTerminalHeaderTag</span>: <span class="number">0xa85d499b1823be72</span> =&gt; {
         <span class="ident">flags</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0</span>
     };
 );
@@ -264,7 +264,7 @@
 }
 
 <span class="macro">make_header_tag!</span>(
-    <span class="kw">struct</span> <span class="ident">StivaleSmpHeaderTag</span>: <span class="number">0x1ab015085f3273df</span> <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="kw">struct</span> <span class="ident">StivaleSmpHeaderTag</span>: <span class="number">0x1ab015085f3273df</span> =&gt; {
         <span class="ident">flags</span>: <span class="ident">StivaleSmpHeaderTagFlags</span> <span class="op">=</span> <span class="ident">StivaleSmpHeaderTagFlags::XAPIC</span>
     };
 );

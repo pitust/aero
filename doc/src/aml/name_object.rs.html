@@ -330,7 +330,7 @@
     <span class="ident">Local</span>(<span class="ident">LocalNum</span>),
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">target</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Target</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">target</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Target</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -345,7 +345,7 @@
     )
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">super_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Target</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">super_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Target</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -360,7 +360,7 @@
     )
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simple_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Target</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simple_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Target</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -378,7 +378,7 @@
     )
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name_string</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlName</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name_string</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlName</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -402,16 +402,16 @@
     <span class="comment">// TODO: combinator to select a parser based on a peeked byte?</span>
     <span class="ident">comment_scope</span>(<span class="ident">DebugVerbosity::AllScopes</span>, <span class="string">&quot;NameString&quot;</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span><span class="op">|</span> {
         <span class="kw">let</span> <span class="ident">first_char</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">first</span>() {
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnexpectedEndOfStream</span>))),
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>) =&gt; <span class="ident">c</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnexpectedEndOfStream</span>))),
         };
 
         <span class="kw">match</span> <span class="ident">first_char</span> {
-            <span class="ident">ROOT_CHAR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">root_name_string</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>),
-            <span class="ident">PREFIX_CHAR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">prefix_path</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name_path</span>()
+            <span class="ident">ROOT_CHAR</span> =&gt; <span class="ident">root_name_string</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>),
+            <span class="ident">PREFIX_CHAR</span> =&gt; <span class="ident">prefix_path</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>),
+            <span class="kw">_</span> =&gt; <span class="ident">name_path</span>()
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> {
-                    <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                    <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">AmlError::EmptyNamesAreInvalid</span>));
                     }
 
@@ -422,7 +422,7 @@
     })
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name_path</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NameComponent</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name_path</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NameComponent</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -437,7 +437,7 @@
     )
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">null_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NameComponent</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">null_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NameComponent</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -447,7 +447,7 @@
     <span class="ident">opcode</span>(<span class="ident">NULL_NAME</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Vec::with_capacity</span>(<span class="number">0</span>)))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dual_name_path</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NameComponent</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dual_name_path</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NameComponent</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -459,7 +459,7 @@
     })
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">multi_name_path</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NameComponent</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">multi_name_path</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NameComponent</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -470,11 +470,11 @@
         <span class="kw">let</span> (<span class="ident">new_input</span>, <span class="ident">context</span>, ((), <span class="ident">seg_count</span>)) <span class="op">=</span>
             <span class="ident">opcode</span>(<span class="ident">MULTI_NAME_PREFIX</span>).<span class="ident">then</span>(<span class="ident">take</span>()).<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>)<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="ident">n_of</span>(<span class="ident">name_seg</span>(), <span class="ident">usize::from</span>(<span class="ident">seg_count</span>)).<span class="ident">parse</span>(<span class="ident">new_input</span>, <span class="ident">context</span>) {
-            <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">name_segs</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">name_segs</span>)) =&gt; {
                 <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">name_segs</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">seg</span><span class="op">|</span> <span class="ident">NameComponent::Segment</span>(<span class="ident">seg</span>)).<span class="ident">collect</span>()))
             }
             <span class="comment">// Correct returned input to the one we haven&#39;t touched</span>
-            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
+            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">err</span>)) =&gt; <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
         }
     }
 }
@@ -483,7 +483,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NameSeg</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) [<span class="ident">u8</span>; <span class="number">4</span>]);
 
 <span class="kw">impl</span> <span class="ident">NameSeg</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NameSeg</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NameSeg</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
         <span class="comment">// Each NameSeg can only have four chars, and must have at least one</span>
         <span class="kw">if</span> <span class="ident">string</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">string</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">4</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::InvalidNameSeg</span>);
@@ -512,7 +512,7 @@
 
     <span class="doccomment">/// Turn a `NameSeg` into a `&amp;str`. Returns it in a `ParseResult` so it&#39;s easy to use from</span>
     <span class="doccomment">/// inside parsers.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="comment">/*
          * This is safe, because we always check that all the bytes are valid ASCII, so every
          * `NameSeg` will be valid UTF8.
@@ -523,12 +523,12 @@
 
 <span class="comment">// A list of ASCII codes is pretty much never useful, so we always just show it as a string</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">NameSeg</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="ident">as_str</span>())
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name_seg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">NameSeg</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name_seg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">NameSeg</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -545,15 +545,15 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">is_lead_name_char</span>(<span class="ident">byte</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-    (<span class="ident">byte</span> <span class="op">&gt;</span><span class="op">=</span> <span class="string">b&#39;A&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">byte</span> <span class="op">&lt;</span><span class="op">=</span> <span class="string">b&#39;Z&#39;</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">byte</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;_&#39;</span>
+<span class="kw">fn</span> <span class="ident">is_lead_name_char</span>(<span class="ident">byte</span>: <span class="ident">u8</span>) -&gt; <span class="ident">bool</span> {
+    (<span class="ident">byte</span> <span class="op">&gt;</span><span class="op">=</span> <span class="string">b&#39;A&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">byte</span> <span class="op">&lt;</span><span class="op">=</span> <span class="string">b&#39;Z&#39;</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">byte</span> <span class="op">==</span> <span class="string">b&#39;_&#39;</span>
 }
 
-<span class="kw">fn</span> <span class="ident">is_digit_char</span>(<span class="ident">byte</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">is_digit_char</span>(<span class="ident">byte</span>: <span class="ident">u8</span>) -&gt; <span class="ident">bool</span> {
     <span class="ident">byte</span> <span class="op">&gt;</span><span class="op">=</span> <span class="string">b&#39;0&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">byte</span> <span class="op">&lt;</span><span class="op">=</span> <span class="string">b&#39;9&#39;</span>
 }
 
-<span class="kw">fn</span> <span class="ident">is_name_char</span>(<span class="ident">byte</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">is_name_char</span>(<span class="ident">byte</span>: <span class="ident">u8</span>) -&gt; <span class="ident">bool</span> {
     <span class="ident">is_lead_name_char</span>(<span class="ident">byte</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">is_digit_char</span>(<span class="ident">byte</span>)
 }
 

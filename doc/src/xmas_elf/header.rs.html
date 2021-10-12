@@ -462,7 +462,7 @@
 <span class="kw">use</span> <span class="ident">zero</span>::{<span class="ident">read</span>, <span class="ident">Pod</span>};
 
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">size_pt1</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt1</span><span class="op">&gt;</span>();
     <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">size_pt1</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;File is shorter than the first ELF header part&quot;</span>);
@@ -474,8 +474,8 @@
     }
 
     <span class="kw">let</span> <span class="ident">header_2</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">header_1</span>.<span class="ident">class</span>() {
-        <span class="ident">Class::None</span> <span class="op">|</span> <span class="ident">Class::Other</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid ELF class&quot;</span>),
-        <span class="ident">Class::ThirtyTwo</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Class::None</span> <span class="op">|</span> <span class="ident">Class::Other</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid ELF class&quot;</span>),
+        <span class="ident">Class::ThirtyTwo</span> =&gt; {
             <span class="kw">let</span> <span class="ident">size_pt2</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P32</span><span class="op">&gt;</span><span class="op">&gt;</span>();
             <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">size_pt1</span> <span class="op">+</span> <span class="ident">size_pt2</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;File is shorter than ELF headers&quot;</span>);
@@ -484,7 +484,7 @@
                 <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>[<span class="ident">size_pt1</span>..<span class="ident">size_pt1</span> <span class="op">+</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P32</span><span class="op">&gt;</span><span class="op">&gt;</span>()]);
             <span class="ident">HeaderPt2::Header32</span>(<span class="ident">header_2</span>)
         }
-        <span class="ident">Class::SixtyFour</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Class::SixtyFour</span> =&gt; {
             <span class="kw">let</span> <span class="ident">size_pt2</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P64</span><span class="op">&gt;</span><span class="op">&gt;</span>();
             <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">size_pt1</span> <span class="op">+</span> <span class="ident">size_pt2</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;File is shorter than ELF headers&quot;</span>);
@@ -511,7 +511,7 @@
 <span class="comment">// TODO add Header::section_count, because if sh_count = 0, then the real count is in the first section.</span>
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;ELF header:&quot;</span>)<span class="question-mark">?</span>;
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;    magic:            {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">pt1</span>.<span class="ident">magic</span>)<span class="question-mark">?</span>;
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;    class:            {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">pt1</span>.<span class="ident">class</span>)<span class="question-mark">?</span>;
@@ -541,19 +541,19 @@
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pod</span> <span class="kw">for</span> <span class="ident">HeaderPt1</span> {}
 
 <span class="kw">impl</span> <span class="ident">HeaderPt1</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">class</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Class</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">class</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Class</span> {
         <span class="self">self</span>.<span class="ident">class</span>.<span class="ident">as_class</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Data</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Data</span> {
         <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">as_data</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Version</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Version</span> {
         <span class="self">self</span>.<span class="ident">version</span>.<span class="ident">as_version</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">os_abi</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OsAbi</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">os_abi</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">OsAbi</span> {
         <span class="self">self</span>.<span class="ident">os_abi</span>.<span class="ident">as_os_abi</span>()
     }
 }
@@ -565,21 +565,21 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">getter</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>: <span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>: <span class="ident">ident</span>) =&gt; {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span> {
             <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-                <span class="ident">HeaderPt2::Header32</span>(<span class="ident">h</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>,
-                <span class="ident">HeaderPt2::Header64</span>(<span class="ident">h</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>,
+                <span class="ident">HeaderPt2::Header32</span>(<span class="ident">h</span>) =&gt; <span class="ident">h</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>,
+                <span class="ident">HeaderPt2::Header64</span>(<span class="ident">h</span>) =&gt; <span class="ident">h</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">typ</span>,
             }
         }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">HeaderPt2</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">HeaderPt2::Header32</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P32</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-            <span class="ident">HeaderPt2::Header64</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P64</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+            <span class="ident">HeaderPt2::Header32</span>(<span class="kw">_</span>) =&gt; <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P32</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+            <span class="ident">HeaderPt2::Header64</span>(<span class="kw">_</span>) =&gt; <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P64</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
         }
     }
 
@@ -599,10 +599,10 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">HeaderPt2</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">HeaderPt2::Header32</span>(<span class="ident">h</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">h</span>),
-            <span class="ident">HeaderPt2::Header64</span>(<span class="ident">h</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">h</span>),
+            <span class="ident">HeaderPt2::Header32</span>(<span class="ident">h</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">h</span>),
+            <span class="ident">HeaderPt2::Header64</span>(<span class="ident">h</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">h</span>),
         }
     }
 }
@@ -628,7 +628,7 @@
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="ident">Pod</span> <span class="kw">for</span> <span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {}
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">fmt::Display</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;    type:             {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">type_</span>)<span class="question-mark">?</span>;
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;    machine:          {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">machine</span>)<span class="question-mark">?</span>;
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;    version:          {}&quot;</span>, <span class="self">self</span>.<span class="ident">version</span>)<span class="question-mark">?</span>;
@@ -650,22 +650,22 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Class_</span>(<span class="ident">u8</span>);
 
 <span class="kw">impl</span> <span class="ident">Class_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_class</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Class</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_class</span>(<span class="self">self</span>) -&gt; <span class="ident">Class</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Class::None</span>,
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Class::ThirtyTwo</span>,
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Class::SixtyFour</span>,
-            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Class::Other</span>(<span class="ident">other</span>),
+            <span class="number">0</span> =&gt; <span class="ident">Class::None</span>,
+            <span class="number">1</span> =&gt; <span class="ident">Class::ThirtyTwo</span>,
+            <span class="number">2</span> =&gt; <span class="ident">Class::SixtyFour</span>,
+            <span class="ident">other</span> =&gt; <span class="ident">Class::Other</span>(<span class="ident">other</span>),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">==</span> <span class="number">0</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Class_</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">as_class</span>().<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -679,7 +679,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Class</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Class::None</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> { <span class="bool-val">true</span> } <span class="kw">else</span> { <span class="bool-val">false</span> }
     }
 }
@@ -688,22 +688,22 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Data_</span>(<span class="ident">u8</span>);
 
 <span class="kw">impl</span> <span class="ident">Data_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_data</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Data</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_data</span>(<span class="self">self</span>) -&gt; <span class="ident">Data</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Data::None</span>,
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Data::LittleEndian</span>,
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Data::BigEndian</span>,
-            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Data::Other</span>(<span class="ident">other</span>),
+            <span class="number">0</span> =&gt; <span class="ident">Data::None</span>,
+            <span class="number">1</span> =&gt; <span class="ident">Data::LittleEndian</span>,
+            <span class="number">2</span> =&gt; <span class="ident">Data::BigEndian</span>,
+            <span class="ident">other</span> =&gt; <span class="ident">Data::Other</span>(<span class="ident">other</span>),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">==</span> <span class="number">0</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Data_</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">as_data</span>().<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -717,7 +717,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Data</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Data::None</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> { <span class="bool-val">true</span> } <span class="kw">else</span> { <span class="bool-val">false</span> }
     }
 }
@@ -726,21 +726,21 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Version_</span>(<span class="ident">u8</span>);
 
 <span class="kw">impl</span> <span class="ident">Version_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_version</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Version</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_version</span>(<span class="self">self</span>) -&gt; <span class="ident">Version</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Version::None</span>,
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Version::Current</span>,
-            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Version::Other</span>(<span class="ident">other</span>),
+            <span class="number">0</span> =&gt; <span class="ident">Version::None</span>,
+            <span class="number">1</span> =&gt; <span class="ident">Version::Current</span>,
+            <span class="ident">other</span> =&gt; <span class="ident">Version::Other</span>(<span class="ident">other</span>),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">==</span> <span class="number">0</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Version_</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">as_version</span>().<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -753,7 +753,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Version</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Version::None</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="bool-val">true</span>
         } <span class="kw">else</span> {
@@ -766,25 +766,25 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OsAbi_</span>(<span class="ident">u8</span>);
 
 <span class="kw">impl</span> <span class="ident">OsAbi_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_os_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OsAbi</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_os_abi</span>(<span class="self">self</span>) -&gt; <span class="ident">OsAbi</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="number">0x00</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::SystemV</span>,
-            <span class="number">0x01</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::HpUx</span>,
-            <span class="number">0x02</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::NetBSD</span>,
-            <span class="number">0x03</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::Linux</span>,
-            <span class="number">0x06</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::Solaris</span>,
-            <span class="number">0x07</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::Aix</span>,
-            <span class="number">0x08</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::Irix</span>,
-            <span class="number">0x09</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::FreeBSD</span>,
-            <span class="number">0x0C</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::OpenBSD</span>,
-            <span class="number">0x0D</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::OpenVMS</span>,
-            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OsAbi::Other</span>(<span class="ident">other</span>),
+            <span class="number">0x00</span> =&gt; <span class="ident">OsAbi::SystemV</span>,
+            <span class="number">0x01</span> =&gt; <span class="ident">OsAbi::HpUx</span>,
+            <span class="number">0x02</span> =&gt; <span class="ident">OsAbi::NetBSD</span>,
+            <span class="number">0x03</span> =&gt; <span class="ident">OsAbi::Linux</span>,
+            <span class="number">0x06</span> =&gt; <span class="ident">OsAbi::Solaris</span>,
+            <span class="number">0x07</span> =&gt; <span class="ident">OsAbi::Aix</span>,
+            <span class="number">0x08</span> =&gt; <span class="ident">OsAbi::Irix</span>,
+            <span class="number">0x09</span> =&gt; <span class="ident">OsAbi::FreeBSD</span>,
+            <span class="number">0x0C</span> =&gt; <span class="ident">OsAbi::OpenBSD</span>,
+            <span class="number">0x0D</span> =&gt; <span class="ident">OsAbi::OpenVMS</span>,
+            <span class="ident">other</span> =&gt; <span class="ident">OsAbi::Other</span>(<span class="ident">other</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">OsAbi_</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">as_os_abi</span>().<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -809,20 +809,20 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Type_</span>(<span class="kw">pub</span> <span class="ident">u16</span>);
 
 <span class="kw">impl</span> <span class="ident">Type_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_type</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Type</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_type</span>(<span class="self">self</span>) -&gt; <span class="ident">Type</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::None</span>,
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::Relocatable</span>,
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::Executable</span>,
-            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::SharedObject</span>,
-            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::Core</span>,
-            <span class="ident">x</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::ProcessorSpecific</span>(<span class="ident">x</span>),
+            <span class="number">0</span> =&gt; <span class="ident">Type::None</span>,
+            <span class="number">1</span> =&gt; <span class="ident">Type::Relocatable</span>,
+            <span class="number">2</span> =&gt; <span class="ident">Type::Executable</span>,
+            <span class="number">3</span> =&gt; <span class="ident">Type::SharedObject</span>,
+            <span class="number">4</span> =&gt; <span class="ident">Type::Core</span>,
+            <span class="ident">x</span> =&gt; <span class="ident">Type::ProcessorSpecific</span>(<span class="ident">x</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Type_</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">as_type</span>().<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -841,27 +841,27 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Machine_</span>(<span class="ident">u16</span>);
 
 <span class="kw">impl</span> <span class="ident">Machine_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_machine</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Machine</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_machine</span>(<span class="self">self</span>) -&gt; <span class="ident">Machine</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="number">0x00</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::None</span>,
-            <span class="number">0x02</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::Sparc</span>,
-            <span class="number">0x03</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::X86</span>,
-            <span class="number">0x08</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::Mips</span>,
-            <span class="number">0x14</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::PowerPC</span>,
-            <span class="number">0x28</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::Arm</span>,
-            <span class="number">0x2A</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::SuperH</span>,
-            <span class="number">0x32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::Ia64</span>,
-            <span class="number">0x3E</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::X86_64</span>,
-            <span class="number">0xB7</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::AArch64</span>,
-            <span class="number">0xF3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::RISC_V</span>,
-            <span class="number">0xF7</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::BPF</span>,
-            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Machine::Other</span>(<span class="ident">other</span>),
+            <span class="number">0x00</span> =&gt; <span class="ident">Machine::None</span>,
+            <span class="number">0x02</span> =&gt; <span class="ident">Machine::Sparc</span>,
+            <span class="number">0x03</span> =&gt; <span class="ident">Machine::X86</span>,
+            <span class="number">0x08</span> =&gt; <span class="ident">Machine::Mips</span>,
+            <span class="number">0x14</span> =&gt; <span class="ident">Machine::PowerPC</span>,
+            <span class="number">0x28</span> =&gt; <span class="ident">Machine::Arm</span>,
+            <span class="number">0x2A</span> =&gt; <span class="ident">Machine::SuperH</span>,
+            <span class="number">0x32</span> =&gt; <span class="ident">Machine::Ia64</span>,
+            <span class="number">0x3E</span> =&gt; <span class="ident">Machine::X86_64</span>,
+            <span class="number">0xB7</span> =&gt; <span class="ident">Machine::AArch64</span>,
+            <span class="number">0xF3</span> =&gt; <span class="ident">Machine::RISC_V</span>,
+            <span class="number">0xF7</span> =&gt; <span class="ident">Machine::BPF</span>,
+            <span class="ident">other</span> =&gt; <span class="ident">Machine::Other</span>(<span class="ident">other</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Machine_</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">as_machine</span>().<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -886,17 +886,17 @@
 
 <span class="comment">// TODO any more constants that need to go in here?</span>
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sanity_check</span>(<span class="ident">file</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
-    <span class="macro">check!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt1</span><span class="op">&gt;</span>() <span class="op">=</span><span class="op">=</span> <span class="number">16</span>);
-    <span class="macro">check!</span>(<span class="ident">file</span>.<span class="ident">header</span>.<span class="ident">pt1</span>.<span class="ident">magic</span> <span class="op">=</span><span class="op">=</span> <span class="ident">MAGIC</span>, <span class="string">&quot;bad magic number&quot;</span>);
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sanity_check</span>(<span class="ident">file</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="macro">check!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt1</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">16</span>);
+    <span class="macro">check!</span>(<span class="ident">file</span>.<span class="ident">header</span>.<span class="ident">pt1</span>.<span class="ident">magic</span> <span class="op">==</span> <span class="ident">MAGIC</span>, <span class="string">&quot;bad magic number&quot;</span>);
     <span class="kw">let</span> <span class="ident">pt2</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">header</span>.<span class="ident">pt2</span>;
-    <span class="macro">check!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt1</span><span class="op">&gt;</span>() <span class="op">+</span> <span class="ident">pt2</span>.<span class="ident">size</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">pt2</span>.<span class="ident">header_size</span>() <span class="kw">as</span> <span class="ident">usize</span>,
+    <span class="macro">check!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt1</span><span class="op">&gt;</span>() <span class="op">+</span> <span class="ident">pt2</span>.<span class="ident">size</span>() <span class="op">==</span> <span class="ident">pt2</span>.<span class="ident">header_size</span>() <span class="kw">as</span> <span class="ident">usize</span>,
            <span class="string">&quot;header_size does not match size of header&quot;</span>);
     <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">header</span>.<span class="ident">pt1</span>.<span class="ident">class</span>(), <span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">header</span>.<span class="ident">pt2</span>) {
-        (<span class="kw-2">&amp;</span><span class="ident">Class::None</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;No class&quot;</span>),
+        (<span class="kw-2">&amp;</span><span class="ident">Class::None</span>, <span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;No class&quot;</span>),
         (<span class="kw-2">&amp;</span><span class="ident">Class::ThirtyTwo</span>, <span class="kw-2">&amp;</span><span class="ident">HeaderPt2::Header32</span>(<span class="kw">_</span>)) <span class="op">|</span>
-        (<span class="kw-2">&amp;</span><span class="ident">Class::SixtyFour</span>, <span class="kw-2">&amp;</span><span class="ident">HeaderPt2::Header64</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {}
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Mismatch between specified and actual class&quot;</span>),
+        (<span class="kw-2">&amp;</span><span class="ident">Class::SixtyFour</span>, <span class="kw-2">&amp;</span><span class="ident">HeaderPt2::Header64</span>(<span class="kw">_</span>)) =&gt; {}
+        <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Mismatch between specified and actual class&quot;</span>),
     }
     <span class="macro">check!</span>(<span class="op">!</span><span class="ident">file</span>.<span class="ident">header</span>.<span class="ident">pt1</span>.<span class="ident">version</span>.<span class="ident">is_none</span>(), <span class="string">&quot;no version&quot;</span>);
     <span class="macro">check!</span>(<span class="op">!</span><span class="ident">file</span>.<span class="ident">header</span>.<span class="ident">pt1</span>.<span class="ident">data</span>.<span class="ident">is_none</span>(), <span class="string">&quot;no data format&quot;</span>);

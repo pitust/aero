@@ -260,30 +260,30 @@
     <span class="kw">let</span> <span class="ident">g</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">r9</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
     <span class="kw">match</span> <span class="ident">a</span> {
-        <span class="ident">SYS_EXIT</span> <span class="op">=</span><span class="op">&gt;</span> {}
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="ident">interrupts::enable_interrupts</span>() },
+        <span class="ident">SYS_EXIT</span> =&gt; {}
+        <span class="kw">_</span> =&gt; <span class="kw">unsafe</span> { <span class="ident">interrupts::enable_interrupts</span>() },
     }
 
     <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">a</span> {
-        <span class="ident">SYS_EXIT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::exit</span>(<span class="ident">b</span>),
-        <span class="ident">SYS_SHUTDOWN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::shutdown</span>(),
-        <span class="ident">SYS_FORK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::fork</span>(),
-        <span class="ident">SYS_MMAP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::mmap</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>, <span class="ident">g</span>),
-        <span class="ident">SYS_ARCH_PRCTL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::arch_prctl</span>(<span class="ident">b</span>, <span class="ident">c</span>),
-        <span class="ident">SYS_MUNMAP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">process::munmap</span>(<span class="ident">b</span>, <span class="ident">c</span>),
+        <span class="ident">SYS_EXIT</span> =&gt; <span class="ident">process::exit</span>(<span class="ident">b</span>),
+        <span class="ident">SYS_SHUTDOWN</span> =&gt; <span class="ident">process::shutdown</span>(),
+        <span class="ident">SYS_FORK</span> =&gt; <span class="ident">process::fork</span>(),
+        <span class="ident">SYS_MMAP</span> =&gt; <span class="ident">process::mmap</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>, <span class="ident">g</span>),
+        <span class="ident">SYS_ARCH_PRCTL</span> =&gt; <span class="ident">process::arch_prctl</span>(<span class="ident">b</span>, <span class="ident">c</span>),
+        <span class="ident">SYS_MUNMAP</span> =&gt; <span class="ident">process::munmap</span>(<span class="ident">b</span>, <span class="ident">c</span>),
 
-        <span class="ident">SYS_READ</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::read</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
-        <span class="ident">SYS_OPEN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::open</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>),
-        <span class="ident">SYS_CLOSE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::close</span>(<span class="ident">b</span>),
-        <span class="ident">SYS_WRITE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::write</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
-        <span class="ident">SYS_GETDENTS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::getdents</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
-        <span class="ident">SYS_GETCWD</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::getcwd</span>(<span class="ident">b</span>, <span class="ident">c</span>),
-        <span class="ident">SYS_CHDIR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::chdir</span>(<span class="ident">b</span>, <span class="ident">c</span>),
-        <span class="ident">SYS_MKDIR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::mkdir</span>(<span class="ident">b</span>, <span class="ident">c</span>),
-        <span class="ident">SYS_MKDIR_AT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::mkdirat</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
-        <span class="ident">SYS_RMDIR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fs::rmdir</span>(<span class="ident">b</span>, <span class="ident">c</span>),
+        <span class="ident">SYS_READ</span> =&gt; <span class="ident">fs::read</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
+        <span class="ident">SYS_OPEN</span> =&gt; <span class="ident">fs::open</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>),
+        <span class="ident">SYS_CLOSE</span> =&gt; <span class="ident">fs::close</span>(<span class="ident">b</span>),
+        <span class="ident">SYS_WRITE</span> =&gt; <span class="ident">fs::write</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
+        <span class="ident">SYS_GETDENTS</span> =&gt; <span class="ident">fs::getdents</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
+        <span class="ident">SYS_GETCWD</span> =&gt; <span class="ident">fs::getcwd</span>(<span class="ident">b</span>, <span class="ident">c</span>),
+        <span class="ident">SYS_CHDIR</span> =&gt; <span class="ident">fs::chdir</span>(<span class="ident">b</span>, <span class="ident">c</span>),
+        <span class="ident">SYS_MKDIR</span> =&gt; <span class="ident">fs::mkdir</span>(<span class="ident">b</span>, <span class="ident">c</span>),
+        <span class="ident">SYS_MKDIR_AT</span> =&gt; <span class="ident">fs::mkdirat</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
+        <span class="ident">SYS_RMDIR</span> =&gt; <span class="ident">fs::rmdir</span>(<span class="ident">b</span>, <span class="ident">c</span>),
 
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="kw">_</span> =&gt; {
             <span class="macro">log::error!</span>(<span class="string">&quot;invalid syscall: {:#x}&quot;</span>, <span class="ident">a</span>);
             <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::ENOSYS</span>)
         }

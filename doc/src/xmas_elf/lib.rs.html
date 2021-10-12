@@ -205,12 +205,12 @@
 
 <span class="comment">// TODO move to a module</span>
 <span class="macro">macro_rules!</span> <span class="ident">check</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) =&gt; {
         <span class="kw">if</span> <span class="op">!</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;&quot;</span>);
         }
     };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">msg</span>: <span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">msg</span>: <span class="ident">expr</span>) =&gt; {
         <span class="kw">if</span> <span class="op">!</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">msg</span>);
         }
@@ -246,7 +246,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="ident">header::parse_header</span>(<span class="ident">input</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">ElfFile</span> {
             <span class="ident">input</span>: <span class="ident">input</span>,
@@ -254,33 +254,33 @@
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">section_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SectionHeader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">section_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u16</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SectionHeader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">sections::parse_section_header</span>(<span class="self">self</span>.<span class="ident">input</span>, <span class="self">self</span>.<span class="ident">header</span>, <span class="ident">index</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">section_iter</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIter</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">section_iter</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIter</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">SectionIter</span> {
             <span class="ident">file</span>: <span class="self">self</span>,
             <span class="ident">next_index</span>: <span class="number">0</span>,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">program_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProgramHeader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">program_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u16</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProgramHeader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">program::parse_program_header</span>(<span class="self">self</span>.<span class="ident">input</span>, <span class="self">self</span>.<span class="ident">header</span>, <span class="ident">index</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">program_iter</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProgramIter</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">program_iter</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="self">self</span>) -&gt; <span class="ident">ProgramIter</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">ProgramIter</span> {
             <span class="ident">file</span>: <span class="self">self</span>,
             <span class="ident">next_index</span>: <span class="number">0</span>,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_shstr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_shstr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">get_shstr_table</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">shstr_table</span><span class="op">|</span> <span class="ident">read_str</span>(<span class="kw-2">&amp;</span><span class="ident">shstr_table</span>[(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>)..]))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">find_section_by_name</span>(<span class="string">&quot;.strtab&quot;</span>).<span class="ident">ok_or</span>(<span class="string">&quot;no .strtab section&quot;</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="ident">header</span>.<span class="ident">get_type</span>()<span class="question-mark">?</span> <span class="op">!</span><span class="op">=</span> <span class="ident">sections::ShType::StrTab</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;expected .strtab to be StrTab&quot;</span>);
@@ -288,17 +288,17 @@
         <span class="prelude-val">Ok</span>(<span class="ident">read_str</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>.<span class="ident">raw_data</span>(<span class="self">self</span>)[(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>)..]))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_dyn_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_dyn_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">find_section_by_name</span>(<span class="string">&quot;.dynstr&quot;</span>).<span class="ident">ok_or</span>(<span class="string">&quot;no .dynstr section&quot;</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">read_str</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>.<span class="ident">raw_data</span>(<span class="self">self</span>)[(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>)..]))
     }
 
     <span class="comment">// This is really, stupidly slow. Not sure how to fix that, perhaps keeping</span>
     <span class="comment">// a HashTable mapping names to section header indices?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_section_by_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SectionHeader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_section_by_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SectionHeader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">sect</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">section_iter</span>() {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">sect_name</span>) <span class="op">=</span> <span class="ident">sect</span>.<span class="ident">get_name</span>(<span class="self">self</span>) {
-                <span class="kw">if</span> <span class="ident">sect_name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">name</span> {
+                <span class="kw">if</span> <span class="ident">sect_name</span> <span class="op">==</span> <span class="ident">name</span> {
                     <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">sect</span>);
                 }
             }
@@ -307,7 +307,7 @@
         <span class="prelude-val">None</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">get_shstr_table</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_shstr_table</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="comment">// TODO cache this?</span>
         <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">section_header</span>(<span class="self">self</span>.<span class="ident">header</span>.<span class="ident">pt2</span>.<span class="ident">sh_str_index</span>());
         <span class="ident">header</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">h</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">input</span>[(<span class="ident">h</span>.<span class="ident">offset</span>() <span class="kw">as</span> <span class="ident">usize</span>)..])
@@ -319,21 +319,21 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Extensions</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Parse and return the value of the .note.gnu.build-id section, if it</span>
     <span class="doccomment">/// exists and is well-formed.</span>
-    <span class="kw">fn</span> <span class="ident">get_gnu_buildid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">get_gnu_buildid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Parse and return the value of the .gnu_debuglink section, if it</span>
     <span class="doccomment">/// exists and is well-formed.</span>
-    <span class="kw">fn</span> <span class="ident">get_gnu_debuglink</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="ident">u32</span>)<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">get_gnu_debuglink</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="ident">u32</span>)<span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Extensions</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">get_gnu_buildid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_gnu_buildid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">find_section_by_name</span>(<span class="string">&quot;.note.gnu.build-id&quot;</span>)
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">header</span><span class="op">|</span> <span class="ident">header</span>.<span class="ident">get_data</span>(<span class="self">self</span>).<span class="ident">ok</span>())
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">data</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">data</span> {
                 <span class="comment">// Handle Note32 if it&#39;s ever implemented!</span>
-                <span class="ident">sections::SectionData::Note64</span>(<span class="ident">header</span>, <span class="ident">data</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">header</span>, <span class="ident">data</span>)),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                <span class="ident">sections::SectionData::Note64</span>(<span class="ident">header</span>, <span class="ident">data</span>) =&gt; <span class="prelude-val">Some</span>((<span class="ident">header</span>, <span class="ident">data</span>)),
+                <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
             })
             .<span class="ident">and_then</span>(<span class="op">|</span>(<span class="ident">header</span>, <span class="ident">data</span>)<span class="op">|</span> {
                 <span class="comment">// Check for NT_GNU_BUILD_ID</span>
@@ -349,7 +349,7 @@
             })
     }
 
-    <span class="kw">fn</span> <span class="ident">get_gnu_debuglink</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="ident">u32</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_gnu_debuglink</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="ident">u32</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">find_section_by_name</span>(<span class="string">&quot;.gnu_debuglink&quot;</span>)
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">header</span><span class="op">|</span> <span class="ident">header</span>.<span class="ident">raw_data</span>(<span class="self">self</span>))
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">data</span><span class="op">|</span> {
@@ -375,12 +375,12 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident">header</span>::{<span class="ident">HeaderPt1</span>, <span class="ident">HeaderPt2_</span>};
 
-    <span class="kw">fn</span> <span class="ident">mk_elf_header</span>(<span class="ident">class</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">mk_elf_header</span>(<span class="ident">class</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">header_size</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt1</span><span class="op">&gt;</span>() <span class="op">+</span>
                           <span class="kw">match</span> <span class="ident">class</span> {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P32</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P64</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
+            <span class="number">1</span> =&gt; <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P32</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+            <span class="number">2</span> =&gt; <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">HeaderPt2_</span><span class="op">&lt;</span><span class="ident">P64</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+            <span class="kw">_</span> =&gt; <span class="number">0</span>,
         };
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0x7f</span>, <span class="string">&#39;E&#39;</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="string">&#39;L&#39;</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="string">&#39;F&#39;</span> <span class="kw">as</span> <span class="ident">u8</span>];
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="number">1u8</span>;

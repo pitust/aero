@@ -345,12 +345,12 @@
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLACK</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::from_hex</span>(<span class="number">0x000000</span>);
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_hex</span>(<span class="ident">hex</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_hex</span>(<span class="ident">hex</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">hex</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }
@@ -360,17 +360,17 @@
 
 <span class="kw">impl</span> <span class="ident">ColorCode</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">foreground</span>: <span class="ident">Color</span>, <span class="ident">background</span>: <span class="ident">Color</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorCode</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">foreground</span>: <span class="ident">Color</span>, <span class="ident">background</span>: <span class="ident">Color</span>) -&gt; <span class="ident">ColorCode</span> {
         <span class="ident">ColorCode</span>(<span class="ident">foreground</span>, <span class="ident">background</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_foreground</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_foreground</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Color</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_background</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_background</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Color</span> {
         <span class="self">self</span>.<span class="number">1</span>
     }
 }
@@ -429,7 +429,7 @@
     <span class="doccomment">/// **Note**: The debug renderer should **not** be used after GUI has started. Use the</span>
     <span class="doccomment">/// respective VGA functions instead.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">buffer</span>: <span class="ident">u64</span>, <span class="ident">info</span>: <span class="ident">FrameBufferInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">buffer</span>: <span class="ident">u64</span>, <span class="ident">info</span>: <span class="ident">FrameBufferInfo</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">buffer</span>,
             <span class="ident">info</span>,
@@ -447,10 +447,10 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_character</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">char</span>: <span class="ident">char</span>) {
         <span class="kw">match</span> <span class="ident">char</span> {
-            <span class="string">&#39;\n&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">new_line</span>(),
-            <span class="string">&#39;\r&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">carriage_return</span>(),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">char</span> <span class="op">=</span> <span class="ident">font8x8::BASIC_FONTS</span>.<span class="ident">get</span>(<span class="ident">char</span>).<span class="ident">unwrap</span>();
+            <span class="string">&#39;\n&#39;</span> =&gt; <span class="self">self</span>.<span class="ident">new_line</span>(),
+            <span class="string">&#39;\r&#39;</span> =&gt; <span class="self">self</span>.<span class="ident">carriage_return</span>(),
+            <span class="kw">_</span> =&gt; {
+                <span class="kw">let</span> <span class="ident">char</span> <span class="op">=</span> <span class="ident">font8x8::BASIC_FONTS</span>.<span class="ident">get</span>(<span class="ident">char</span>).<span class="ident">unwrap_or</span>([<span class="number">0</span>; <span class="number">8</span>]);
 
                 <span class="kw">if</span> <span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">width</span>() {
                     <span class="self">self</span>.<span class="ident">new_line</span>();
@@ -468,7 +468,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
         <span class="kw">for</span> (<span class="ident">y</span>, <span class="ident">byte</span>) <span class="kw">in</span> <span class="ident">bytes</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">for</span> (<span class="ident">x</span>, <span class="ident">bit</span>) <span class="kw">in</span> (<span class="number">0</span>..<span class="number">8</span>).<span class="ident">enumerate</span>() {
-                <span class="kw">let</span> <span class="ident">background</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bit</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span>;
+                <span class="kw">let</span> <span class="ident">background</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bit</span>) <span class="op">==</span> <span class="number">0</span>;
 
                 <span class="kw">if</span> <span class="ident">background</span> {
                     <span class="self">self</span>.<span class="ident">put_pixel</span>(<span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">+</span> <span class="ident">x</span>, <span class="self">self</span>.<span class="ident">y_pos</span> <span class="op">+</span> <span class="ident">y</span>, <span class="self">self</span>.<span class="ident">color</span>.<span class="ident">get_background</span>());
@@ -516,18 +516,18 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">horizontal_resolution</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">vertical_resolution</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Write</span> <span class="kw">for</span> <span class="ident">DebugRendy</span> {
-    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">write_string</span>(<span class="ident">string</span>);
 
         <span class="prelude-val">Ok</span>(())
@@ -540,24 +540,24 @@
 <span class="kw">static</span> <span class="ident">DEBUG_RENDY</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">DebugRendy</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 
 <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">print</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::rendy::_print</span>(<span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>))),
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::rendy::_print</span>(<span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>))),
 }
 
 <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">println</span> {
-    () <span class="op">=</span><span class="op">&gt;</span> (<span class="macro-nonterminal">$</span><span class="macro">crate::rendy::print!</span>(<span class="string">&quot;\n&quot;</span>)),
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="macro-nonterminal">$</span><span class="macro">crate::rendy::print!</span>(<span class="string">&quot;{}\n&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>))),
+    () =&gt; (<span class="macro-nonterminal">$</span><span class="macro">crate::rendy::print!</span>(<span class="string">&quot;\n&quot;</span>)),
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; (<span class="macro-nonterminal">$</span><span class="macro">crate::rendy::print!</span>(<span class="string">&quot;{}\n&quot;</span>, <span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>))),
 }
 
 <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">dbg</span> {
-    () <span class="op">=</span><span class="op">&gt;</span> {
+    () =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::rendy::println!</span>(<span class="string">&quot;[{}:{}]&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro">crate::file!</span>(), <span class="macro-nonterminal">$</span><span class="macro">crate::line!</span>());
     },
 
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span> $(,)<span class="question-mark">?</span>) =&gt; {
         <span class="comment">// Use of `match` here is intentional because it affects the lifetimes</span>
         <span class="comment">// of temporaries - https://stackoverflow.com/a/48732525/1063961</span>
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span> {
-            <span class="ident">tmp</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">tmp</span> =&gt; {
                 <span class="macro-nonterminal">$</span><span class="macro">crate::rendy::println!</span>(<span class="string">&quot;[{}:{}] {} = {:#?}&quot;</span>,
                     <span class="macro">core::file!</span>(), <span class="macro">core::line!</span>(), <span class="macro">core::stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>), <span class="kw-2">&amp;</span><span class="ident">tmp</span>);
                 <span class="ident">tmp</span>
@@ -565,14 +565,14 @@
         }
     },
 
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>),<span class="op">+</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>),<span class="op">+</span> $(,)<span class="question-mark">?</span>) =&gt; {
         ($(<span class="macro-nonterminal">$</span><span class="macro">crate::rendy::dbg!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>)),<span class="op">+</span>,)
     },
 }
 
 <span class="doccomment">/// Return [true] if the debug renderer is initialized.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_initialized</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_initialized</span>() -&gt; <span class="ident">bool</span> {
     <span class="ident">DEBUG_RENDY</span>.<span class="ident">get</span>().<span class="ident">is_some</span>()
 }
 

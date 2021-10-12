@@ -516,19 +516,19 @@
 
 <span class="kw">impl</span> <span class="ident">ApicType</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::None</span>)
     }
 
     <span class="doccomment">/// Return true if the current CPU supports X2 APIC.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supports_x2_apic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supports_x2_apic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::X2apic</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FeatureInfo</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ApicType</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">feature_info</span>: <span class="ident">FeatureInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">feature_info</span>: <span class="ident">FeatureInfo</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">if</span> <span class="ident">feature_info</span>.<span class="ident">has_x2apic</span>() {
             <span class="ident"><span class="self">Self</span>::X2apic</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">feature_info</span>.<span class="ident">has_apic</span>() {
@@ -550,14 +550,14 @@
     <span class="doccomment">/// ## Saftey</span>
     <span class="doccomment">/// The provided `address` points to a valid local APIC memory region and</span>
     <span class="doccomment">/// the `apic_type` is valid.</span>
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>, <span class="ident">apic_type</span>: <span class="ident">ApicType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>, <span class="ident">apic_type</span>: <span class="ident">ApicType</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">address</span>, <span class="ident">apic_type</span> }
     }
 
     <span class="doccomment">/// This function is responsible for initializing this instance of the local APIC.</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
-            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ApicType::Xapic</span> =&gt; {
                 <span class="comment">// Clear the task priority register to enable all interrupts.</span>
                 <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_TPR</span>, <span class="number">0x00</span>);
 
@@ -568,7 +568,7 @@
                 <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_LVT_ERROR</span>, <span class="number">49</span>);
             }
 
-            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ApicType::X2apic</span> =&gt; {
                 <span class="comment">// Enable X2APIC (Bit 10)</span>
                 <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_APIC_BASE</span>, <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_APIC_BASE</span>) <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">10</span>);
 
@@ -583,7 +583,7 @@
             }
 
             <span class="comment">// Do nothing for the case of the None APIC type.</span>
-            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">ApicType::None</span> =&gt; {}
         }
     }
 
@@ -595,7 +595,7 @@
     <span class="doccomment">/// a valid interrupt vector.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">send_ipi</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cpu</span>: <span class="ident">usize</span>, <span class="ident">vec</span>: <span class="ident">u8</span>) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
-            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ApicType::Xapic</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR1</span>, (<span class="ident">cpu</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>);
                 <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR0</span>, <span class="ident">vec</span> <span class="kw">as</span> <span class="kw">_</span>);
 
@@ -605,7 +605,7 @@
                 <span class="kw">while</span> <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ICR0</span>) <span class="op">&amp;</span> (<span class="number">1u32</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>) <span class="op">&gt;</span> <span class="number">0</span> {}
             }
 
-            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ApicType::X2apic</span> =&gt; {
                 <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>, <span class="ident">vec</span> <span class="kw">as</span> <span class="ident">u64</span> <span class="op">|</span> ((<span class="ident">cpu</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>));
 
                 <span class="comment">// Make the ICR delivery status is clear, indicating that the</span>
@@ -615,37 +615,37 @@
             }
 
             <span class="comment">// Do nothing for the case of the None APIC type.</span>
-            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">ApicType::None</span> =&gt; {}
         }
     }
 
     <span class="doccomment">/// At power up, system hardware assigns a unique APIC ID to each local APIC on the</span>
     <span class="doccomment">/// system bus. This function returns the unique APIC ID this instance.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bsp_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">bsp_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
-            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">read</span>(<span class="number">0x20</span>) },
-            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_APICID</span>) <span class="kw">as</span> <span class="kw">_</span> },
-            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">u32::MAX</span>,
+            <span class="ident">ApicType::Xapic</span> =&gt; <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">read</span>(<span class="number">0x20</span>) },
+            <span class="ident">ApicType::X2apic</span> =&gt; <span class="kw">unsafe</span> { <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_APICID</span>) <span class="kw">as</span> <span class="kw">_</span> },
+            <span class="ident">ApicType::None</span> =&gt; <span class="ident">u32::MAX</span>,
         }
     }
 
     <span class="doccomment">/// The local APIC records errors detected during interrupt handling in the error status</span>
     <span class="doccomment">/// register (ESR). This function returns the value stored in the error status register</span>
     <span class="doccomment">/// of this instance.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_esr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_esr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
-            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ApicType::Xapic</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ESR</span>, <span class="number">0x00</span>);
                 <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">XAPIC_ESR</span>)
             }
 
-            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ApicType::X2apic</span> =&gt; {
                 <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_ESR</span>, <span class="number">0x00</span>);
                 <span class="ident">io::rdmsr</span>(<span class="ident">io::IA32_X2APIC_ESR</span>) <span class="kw">as</span> <span class="kw">_</span>
             }
 
-            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">u32::MAX</span>,
+            <span class="ident">ApicType::None</span> =&gt; <span class="ident">u32::MAX</span>,
         }
     }
 
@@ -655,21 +655,21 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">eoi</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">apic_type</span> {
-            <span class="ident">ApicType::Xapic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_EOI</span>, <span class="number">0x00</span>),
-            <span class="ident">ApicType::X2apic</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_EOI</span>, <span class="number">0x00</span>),
-            <span class="ident">ApicType::None</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">ApicType::Xapic</span> =&gt; <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_EOI</span>, <span class="number">0x00</span>),
+            <span class="ident">ApicType::X2apic</span> =&gt; <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_EOI</span>, <span class="number">0x00</span>),
+            <span class="ident">ApicType::None</span> =&gt; {}
         }
     }
 
     <span class="doccomment">/// Returns the APIC type of this local APIC instance.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apic_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApicType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apic_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ApicType</span> {
         <span class="self">self</span>.<span class="ident">apic_type</span>
     }
 
     <span class="doccomment">/// Sets the provided `value` to the ICR register of the instance.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_icr_xapic</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value_master</span>: <span class="ident">u32</span>, <span class="ident">value_slave</span>: <span class="ident">u32</span>) {
-        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">apic_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ApicType::Xapic</span>); <span class="comment">// Make sure we are dealing with XAPIC.</span>
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">apic_type</span> <span class="op">==</span> <span class="ident">ApicType::Xapic</span>); <span class="comment">// Make sure we are dealing with XAPIC.</span>
 
         <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR1</span>, <span class="ident">value_master</span>);
         <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">XAPIC_ICR0</span>, <span class="ident">value_slave</span>);
@@ -678,14 +678,14 @@
     <span class="doccomment">/// Sets the provided `value` to the ICR register of this instance.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_icr_x2apic</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u64</span>) {
-        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">apic_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ApicType::X2apic</span>); <span class="comment">// Make sure we are dealing with X2APIC.</span>
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">apic_type</span> <span class="op">==</span> <span class="ident">ApicType::X2apic</span>); <span class="comment">// Make sure we are dealing with X2APIC.</span>
 
         <span class="ident">io::wrmsr</span>(<span class="ident">io::IA32_X2APIC_ICR</span>, <span class="ident">value</span>);
     }
 
     <span class="doccomment">/// Reads from the provided `register` as described by the MADT.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">register</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">register</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
         <span class="ident">intrinsics::volatile_load</span>((<span class="self">self</span>.<span class="ident">address</span> <span class="op">+</span> <span class="ident">register</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>)
     }
 
@@ -706,7 +706,7 @@
 }
 
 <span class="doccomment">/// Get a mutable reference to the local apic.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_local_apic</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">LocalApic</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_local_apic</span>() -&gt; <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">LocalApic</span><span class="op">&gt;</span> {
     <span class="ident">LOCAL_APIC</span>
         .<span class="ident">get</span>()
         .<span class="ident">expect</span>(<span class="string">&quot;Attempted to get the local apic before it was initialized&quot;</span>)
@@ -715,19 +715,19 @@
 
 <span class="doccomment">/// Get the local BSP&#39;s id.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bsp_id</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bsp_id</span>() -&gt; <span class="ident">u64</span> {
     <span class="ident">BSP_APIC_ID</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>)
 }
 
 <span class="doccomment">/// Return the number of active CPUs.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_cpu_count</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_cpu_count</span>() -&gt; <span class="ident">usize</span> {
     <span class="ident">CPU_COUNT</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>)
 }
 
 <span class="doccomment">/// Returns true if the AP is ready.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ap_ready</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ap_ready</span>() -&gt; <span class="ident">bool</span> {
     <span class="ident">AP_READY</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>)
 }
 
@@ -737,7 +737,7 @@
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_bsp_ready</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_bsp_ready</span>() -&gt; <span class="ident">bool</span> {
     <span class="ident">BSP_READY</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>)
 }
 
@@ -747,7 +747,7 @@
 }
 
 <span class="doccomment">/// Read from the `io_apic_id` I/O APIC as described by the MADT.</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">io_apic_read</span>(<span class="ident">io_apic_id</span>: <span class="ident">usize</span>, <span class="ident">register</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">io_apic_read</span>(<span class="ident">io_apic_id</span>: <span class="ident">usize</span>, <span class="ident">register</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="ident">io_apic</span> <span class="op">=</span> <span class="ident">madt::IO_APICS</span>.<span class="ident">read</span>()[<span class="ident">io_apic_id</span>];
     <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">io_apic</span>.<span class="ident">io_apic_address</span> <span class="kw">as</span> <span class="ident">usize</span>;
     <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span> <span class="op">=</span> <span class="ident">addr</span>.<span class="ident">as_mut_ptr</span>();
@@ -767,12 +767,12 @@
 }
 
 <span class="doccomment">/// Get the maximum number of redirects this I/O APIC can handle.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">io_apic_get_max_redirect</span>(<span class="ident">io_apic_id</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">io_apic_get_max_redirect</span>(<span class="ident">io_apic_id</span>: <span class="ident">usize</span>) -&gt; <span class="ident">u32</span> {
     <span class="kw">unsafe</span> { (<span class="ident">io_apic_read</span>(<span class="ident">io_apic_id</span>, <span class="number">1</span>) <span class="op">&amp;</span> <span class="number">0xff0000</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span> }
 }
 
 <span class="doccomment">/// Return the index of the I/O APIC that handles this redirect.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">io_apic_from_redirect</span>(<span class="ident">gsi</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">io_apic_from_redirect</span>(<span class="ident">gsi</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">io_apics</span> <span class="op">=</span> <span class="ident">madt::IO_APICS</span>.<span class="ident">read</span>();
 
     <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">entry</span>) <span class="kw">in</span> <span class="ident">io_apics</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
@@ -791,16 +791,16 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">redirect</span> <span class="op">=</span> <span class="number">0x00</span>;
 
         <span class="comment">// Active high(0) or low(1)</span>
-        <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">2</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+        <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">2</span> <span class="op">==</span> <span class="number">1</span> {
             <span class="ident">redirect</span> <span class="op">|</span><span class="op">=</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">13</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         }
 
         <span class="comment">// Edge(0) or level(1) triggered</span>
-        <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">8</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+        <span class="kw">if</span> <span class="ident">flags</span> <span class="op">&amp;</span> <span class="number">8</span> <span class="op">==</span> <span class="number">1</span> {
             <span class="ident">redirect</span> <span class="op">|</span><span class="op">=</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">15</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         }
 
-        <span class="kw">if</span> <span class="ident">status</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+        <span class="kw">if</span> <span class="ident">status</span> <span class="op">==</span> <span class="number">1</span> {
             <span class="comment">// Set the mask bit</span>
             <span class="ident">redirect</span> <span class="op">|</span><span class="op">=</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         }
@@ -828,7 +828,7 @@
     <span class="kw">let</span> <span class="ident">isos_entries</span> <span class="op">=</span> <span class="ident">madt::ISOS</span>.<span class="ident">read</span>();
 
     <span class="kw">for</span> <span class="ident">entry</span> <span class="kw">in</span> <span class="ident">isos_entries</span>.<span class="ident">iter</span>() {
-        <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">irq</span> <span class="op">=</span><span class="op">=</span> <span class="ident">irq</span> {
+        <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">irq</span> <span class="op">==</span> <span class="ident">irq</span> {
             <span class="ident">io_apic_set_redirect</span>(
                 <span class="ident">entry</span>.<span class="ident">irq</span> <span class="op">+</span> <span class="number">0x20</span>,
                 <span class="ident">entry</span>.<span class="ident">global_system_interrupt</span>,
@@ -844,7 +844,7 @@
 }
 
 <span class="doccomment">/// Initialize the local apic.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApicType</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init</span>() -&gt; <span class="ident">ApicType</span> {
     <span class="kw">let</span> <span class="ident">feature_info</span> <span class="op">=</span> <span class="ident">CpuId::new</span>()
         .<span class="ident">get_feature_info</span>()
         .<span class="ident">expect</span>(<span class="string">&quot;Failed to get CPU feature info&quot;</span>);

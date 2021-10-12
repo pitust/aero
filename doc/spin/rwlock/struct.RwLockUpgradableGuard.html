@@ -15,8 +15,8 @@ when the lock is acquired.</p>
 <span class="kw">let</span> <span class="ident">upgradeable</span> <span class="op">=</span> <span class="ident">mylock</span>.<span class="ident">upgradeable_read</span>(); <span class="comment">// Readable, but not yet writable</span>
 
 <span class="kw">match</span> <span class="ident">upgradeable</span>.<span class="ident">try_upgrade</span>() {
-    <span class="prelude-val">Ok</span>(<span class="ident">writable</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="comment">/* upgrade successful - use writable lock guard */</span> (),
-    <span class="prelude-val">Err</span>(<span class="ident">upgradeable</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="comment">/* upgrade unsuccessful */</span> (),
+    <span class="prelude-val">Ok</span>(<span class="ident">writable</span>) =&gt; <span class="comment">/* upgrade successful - use writable lock guard */</span> (),
+    <span class="prelude-val">Err</span>(<span class="ident">upgradeable</span>) =&gt; <span class="comment">/* upgrade unsuccessful */</span> (),
 };</code></pre></div>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><div id="method.downgrade" class="method has-srclink"><div class="rightside"><a class="srclink" href="../../src/spin/rwlock.rs.html#555-568" title="goto source code">[src]</a></div><a href="#method.downgrade" class="anchor"></a><h4 class="code-header">pub fn <a href="#method.downgrade" class="fnname">downgrade</a>(self) -&gt; <a class="struct" href="struct.RwLockReadGuard.html" title="struct spin::rwlock::RwLockReadGuard">RwLockReadGuard</a>&lt;'rwlock, T&gt;</h4></div></summary><div class="docblock"><p>Downgrades the upgradeable lock guard to a readable, shared lock guard. Cannot fail and is guaranteed not to spin.</p>
 

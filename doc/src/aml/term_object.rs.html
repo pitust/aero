@@ -1025,7 +1025,7 @@
 
 <span class="doccomment">/// `TermList`s are usually found within explicit-length objects (so they have a `PkgLength`</span>
 <span class="doccomment">/// elsewhere in the structure), so this takes a number of bytes to parse.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">term_list</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>(<span class="ident">list_length</span>: <span class="ident">PkgLength</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">term_list</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>(<span class="ident">list_length</span>: <span class="ident">PkgLength</span>) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1046,7 +1046,7 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">term_object</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AmlValue</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">term_object</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AmlValue</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1065,7 +1065,7 @@
     )
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">namespace_modifier</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">namespace_modifier</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1075,7 +1075,7 @@
     <span class="macro">choice!</span>(<span class="ident">def_name</span>(), <span class="ident">def_scope</span>())
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">named_obj</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">named_obj</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1110,7 +1110,7 @@
     )
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1132,7 +1132,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_scope</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_scope</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1172,7 +1172,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_bit_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_bit_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1206,7 +1206,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_byte_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_byte_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1240,7 +1240,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_word_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_word_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1274,7 +1274,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_dword_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_dword_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1308,7 +1308,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_qword_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_qword_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1342,7 +1342,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_create_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1378,7 +1378,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_op_region</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_op_region</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1406,33 +1406,33 @@
             <span class="ident">name_string</span>().<span class="ident">then</span>(<span class="ident">take</span>()).<span class="ident">then</span>(<span class="ident">term_arg</span>()).<span class="ident">then</span>(<span class="ident">term_arg</span>()).<span class="ident">map_with_context</span>(
                 <span class="op">|</span>(((<span class="ident">name</span>, <span class="ident">space</span>), <span class="ident">offset</span>), <span class="ident">length</span>), <span class="ident">context</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">region</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">space</span> {
-                        <span class="number">0x00</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::SystemMemory</span>,
-                        <span class="number">0x01</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::SystemIo</span>,
-                        <span class="number">0x02</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::PciConfig</span>,
-                        <span class="number">0x03</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::EmbeddedControl</span>,
-                        <span class="number">0x04</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::SMBus</span>,
-                        <span class="number">0x05</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::SystemCmos</span>,
-                        <span class="number">0x06</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::PciBarTarget</span>,
-                        <span class="number">0x07</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::IPMI</span>,
-                        <span class="number">0x08</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::GeneralPurposeIo</span>,
-                        <span class="number">0x09</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::GenericSerialBus</span>,
-                        <span class="ident">space</span> @ <span class="number">0x80</span>..<span class="op">=</span><span class="number">0xff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RegionSpace::OemDefined</span>(<span class="ident">space</span>),
-                        <span class="ident">byte</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">AmlError::InvalidRegionSpace</span>(<span class="ident">byte</span>))), <span class="ident">context</span>),
+                        <span class="number">0x00</span> =&gt; <span class="ident">RegionSpace::SystemMemory</span>,
+                        <span class="number">0x01</span> =&gt; <span class="ident">RegionSpace::SystemIo</span>,
+                        <span class="number">0x02</span> =&gt; <span class="ident">RegionSpace::PciConfig</span>,
+                        <span class="number">0x03</span> =&gt; <span class="ident">RegionSpace::EmbeddedControl</span>,
+                        <span class="number">0x04</span> =&gt; <span class="ident">RegionSpace::SMBus</span>,
+                        <span class="number">0x05</span> =&gt; <span class="ident">RegionSpace::SystemCmos</span>,
+                        <span class="number">0x06</span> =&gt; <span class="ident">RegionSpace::PciBarTarget</span>,
+                        <span class="number">0x07</span> =&gt; <span class="ident">RegionSpace::IPMI</span>,
+                        <span class="number">0x08</span> =&gt; <span class="ident">RegionSpace::GeneralPurposeIo</span>,
+                        <span class="number">0x09</span> =&gt; <span class="ident">RegionSpace::GenericSerialBus</span>,
+                        <span class="ident">space</span> @ <span class="number">0x80</span>..<span class="op">=</span><span class="number">0xff</span> =&gt; <span class="ident">RegionSpace::OemDefined</span>(<span class="ident">space</span>),
+                        <span class="ident">byte</span> =&gt; <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">AmlError::InvalidRegionSpace</span>(<span class="ident">byte</span>))), <span class="ident">context</span>),
                     };
                     <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">offset</span>.<span class="ident">as_integer</span>(<span class="ident">context</span>) {
-                        <span class="prelude-val">Ok</span>(<span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">offset</span>,
-                        <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">err</span>)), <span class="ident">context</span>),
+                        <span class="prelude-val">Ok</span>(<span class="ident">offset</span>) =&gt; <span class="ident">offset</span>,
+                        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">err</span>)), <span class="ident">context</span>),
                     };
                     <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">length</span>.<span class="ident">as_integer</span>(<span class="ident">context</span>) {
-                        <span class="prelude-val">Ok</span>(<span class="ident">length</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">length</span>,
-                        <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">err</span>)), <span class="ident">context</span>),
+                        <span class="prelude-val">Ok</span>(<span class="ident">length</span>) =&gt; <span class="ident">length</span>,
+                        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">err</span>)), <span class="ident">context</span>),
                     };
                     <span class="kw">let</span> <span class="ident">parent_device</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">region</span> {
-                        <span class="ident">RegionSpace::PciConfig</span> <span class="op">|</span> <span class="ident">RegionSpace::IPMI</span> <span class="op">|</span> <span class="ident">RegionSpace::GenericSerialBus</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="ident">RegionSpace::PciConfig</span> <span class="op">|</span> <span class="ident">RegionSpace::IPMI</span> <span class="op">|</span> <span class="ident">RegionSpace::GenericSerialBus</span> =&gt; {
                             <span class="kw">let</span> <span class="ident">resolved_path</span> <span class="op">=</span> <span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">name</span>.<span class="ident">resolve</span>(<span class="kw-2">&amp;</span><span class="ident">context</span>.<span class="ident">current_scope</span>));
                             <span class="prelude-val">Some</span>(<span class="macro">try_with_context!</span>(<span class="ident">context</span>, <span class="ident">resolved_path</span>.<span class="ident">parent</span>()))
                         }
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                        <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
                     };
 
                     <span class="macro">try_with_context!</span>(
@@ -1450,7 +1450,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_field</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1473,7 +1473,7 @@
             <span class="ident">DebugVerbosity::Scopes</span>,
             <span class="string">&quot;DefField&quot;</span>,
             <span class="ident">pkg_length</span>().<span class="ident">then</span>(<span class="ident">opregion_as_handle</span>).<span class="ident">then</span>(<span class="ident">take</span>()).<span class="ident">feed</span>(<span class="op">|</span>((<span class="ident">list_length</span>, <span class="ident">region_handle</span>), <span class="ident">flags</span>)<span class="op">|</span> {
-                <span class="kw">move</span> <span class="op">|</span><span class="kw-2">mut</span> <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="kw-2">mut</span> <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span> {
+                <span class="kw">move</span> <span class="op">|</span><span class="kw-2">mut</span> <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="kw-2">mut</span> <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span><span class="op">|</span> -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span> {
                     <span class="comment">/*
                      * FieldList := Nothing | &lt;FieldElement FieldList&gt;
                      */</span>
@@ -1501,7 +1501,7 @@
     <span class="ident">region_handle</span>: <span class="ident">AmlHandle</span>,
     <span class="ident">flags</span>: <span class="ident">FieldFlags</span>,
     <span class="ident">current_offset</span>: <span class="ident">u64</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u64</span><span class="op">&gt;</span>
+) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u64</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1557,7 +1557,7 @@
     <span class="macro">choice!</span>(<span class="ident">reserved_field</span>, <span class="ident">named_field</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_method</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_method</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1595,7 +1595,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_external</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_external</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1609,7 +1609,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_device</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_device</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1647,7 +1647,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_processor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_processor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1699,7 +1699,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_power_res</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_power_res</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1749,7 +1749,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_thermal_zone</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_thermal_zone</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1789,7 +1789,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_mutex</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">def_mutex</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1817,7 +1817,7 @@
         .<span class="ident">discard_result</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">term_arg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">term_arg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1840,7 +1840,7 @@
     )
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_ref_object</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_ref_object</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1850,7 +1850,7 @@
     <span class="ident">comment_scope</span>(<span class="ident">DebugVerbosity::AllScopes</span>, <span class="string">&quot;DataRefObject&quot;</span>, <span class="macro">choice!</span>(<span class="ident">data_object</span>()))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_object</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data_object</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1864,7 +1864,7 @@
     <span class="ident">comment_scope</span>(<span class="ident">DebugVerbosity::AllScopes</span>, <span class="string">&quot;DataObject&quot;</span>, <span class="macro">choice!</span>(<span class="ident">def_package</span>(), <span class="ident">computational_data</span>()))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">computational_data</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">computational_data</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -1880,19 +1880,19 @@
      * RevisionOp := ExtOpPrefix(0x5b) 0x30
      */</span>
     <span class="kw">let</span> <span class="ident">const_parser</span> <span class="op">=</span> <span class="op">|</span><span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">string_parser</span> <span class="op">=</span> <span class="op">|</span><span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">string_parser</span> <span class="op">=</span> <span class="op">|</span><span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span><span class="op">|</span> -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">AmlValue</span><span class="op">&gt;</span> {
             <span class="comment">/*
              * Using `position` isn&#39;t very efficient here, but is probably fine because the
              * strings are usually quite short.
              */</span>
-            <span class="kw">let</span> <span class="ident">nul_position</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;\0&#39;</span>) {
-                <span class="prelude-val">Some</span>(<span class="ident">position</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">position</span>,
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnterminatedStringConstant</span>))),
+            <span class="kw">let</span> <span class="ident">nul_position</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">b&#39;\0&#39;</span>) {
+                <span class="prelude-val">Some</span>(<span class="ident">position</span>) =&gt; <span class="ident">position</span>,
+                <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnterminatedStringConstant</span>))),
             };
 
             <span class="kw">let</span> <span class="ident">string</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="kw">match</span> <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>[<span class="number">0</span>..<span class="ident">nul_position</span>]) {
-                <span class="prelude-val">Ok</span>(<span class="ident">string</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">string</span>,
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::InvalidStringConstant</span>))),
+                <span class="prelude-val">Ok</span>(<span class="ident">string</span>) =&gt; <span class="ident">string</span>,
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::InvalidStringConstant</span>))),
             });
 
             <span class="prelude-val">Ok</span>((<span class="kw-2">&amp;</span><span class="ident">input</span>[(<span class="ident">nul_position</span> <span class="op">+</span> <span class="number">1</span>)..], <span class="ident">context</span>, <span class="ident">AmlValue::String</span>(<span class="ident">string</span>)))
@@ -1900,22 +1900,22 @@
 
         <span class="kw">let</span> (<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">op</span>) <span class="op">=</span> <span class="ident">take</span>().<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>)<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="ident">op</span> {
-            <span class="ident">opcode::BYTE_CONST</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">opcode::BYTE_CONST</span> =&gt; {
                 <span class="ident">take</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Integer</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u64</span>))).<span class="ident">parse</span>(<span class="ident">new_input</span>, <span class="ident">context</span>)
             }
-            <span class="ident">opcode::WORD_CONST</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">opcode::WORD_CONST</span> =&gt; {
                 <span class="ident">take_u16</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Integer</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u64</span>))).<span class="ident">parse</span>(<span class="ident">new_input</span>, <span class="ident">context</span>)
             }
-            <span class="ident">opcode::DWORD_CONST</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">opcode::DWORD_CONST</span> =&gt; {
                 <span class="ident">take_u32</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Integer</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u64</span>))).<span class="ident">parse</span>(<span class="ident">new_input</span>, <span class="ident">context</span>)
             }
-            <span class="ident">opcode::QWORD_CONST</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">take_u64</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Integer</span>(<span class="ident">value</span>))).<span class="ident">parse</span>(<span class="ident">new_input</span>, <span class="ident">context</span>),
-            <span class="ident">opcode::STRING_PREFIX</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">string_parser</span>.<span class="ident">parse</span>(<span class="ident">new_input</span>, <span class="ident">context</span>),
-            <span class="ident">opcode::ZERO_OP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">AmlValue::zero</span>())),
-            <span class="ident">opcode::ONE_OP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">AmlValue::one</span>())),
-            <span class="ident">opcode::ONES_OP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">AmlValue::ones</span>())),
+            <span class="ident">opcode::QWORD_CONST</span> =&gt; <span class="ident">take_u64</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">value</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">AmlValue::Integer</span>(<span class="ident">value</span>))).<span class="ident">parse</span>(<span class="ident">new_input</span>, <span class="ident">context</span>),
+            <span class="ident">opcode::STRING_PREFIX</span> =&gt; <span class="ident">string_parser</span>.<span class="ident">parse</span>(<span class="ident">new_input</span>, <span class="ident">context</span>),
+            <span class="ident">opcode::ZERO_OP</span> =&gt; <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">AmlValue::zero</span>())),
+            <span class="ident">opcode::ONE_OP</span> =&gt; <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">AmlValue::one</span>())),
+            <span class="ident">opcode::ONES_OP</span> =&gt; <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">AmlValue::ones</span>())),
 
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>))),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>))),
         }
     };
 

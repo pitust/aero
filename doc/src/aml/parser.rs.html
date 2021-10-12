@@ -574,7 +574,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AmlError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Propagate</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">AmlError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">AmlError</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Err</span>(<span class="ident">error</span>)
     }
 }
@@ -586,23 +586,23 @@
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">map_fn</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Map</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">F</span>, <span class="ident">R</span>, <span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">map_fn</span>: <span class="ident">F</span>) -&gt; <span class="ident">Map</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">F</span>, <span class="ident">R</span>, <span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>,
+        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>,
     {
         <span class="ident">Map</span> { <span class="ident">parser</span>: <span class="self">self</span>, <span class="ident">map_fn</span>, <span class="ident">_phantom</span>: <span class="ident">PhantomData</span> }
     }
 
-    <span class="kw">fn</span> <span class="ident">map_with_context</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">map_fn</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MapWithContext</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">F</span>, <span class="ident">R</span>, <span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">map_with_context</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">map_fn</span>: <span class="ident">F</span>) -&gt; <span class="ident">MapWithContext</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">F</span>, <span class="ident">R</span>, <span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>),
+        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; (<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>),
     {
         <span class="ident">MapWithContext</span> { <span class="ident">parser</span>: <span class="self">self</span>, <span class="ident">map_fn</span>, <span class="ident">_phantom</span>: <span class="ident">PhantomData</span> }
     }
 
-    <span class="kw">fn</span> <span class="ident">discard_result</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DiscardResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">discard_result</span>(<span class="self">self</span>) -&gt; <span class="ident">DiscardResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">R</span><span class="op">&gt;</span> {
         <span class="ident">DiscardResult</span> { <span class="ident">parser</span>: <span class="self">self</span>, <span class="ident">_phantom</span>: <span class="ident">PhantomData</span> }
     }
 
@@ -610,14 +610,14 @@
     <span class="doccomment">/// parsing with `other`, returning the result of that parser in all cases. Other errors from the first</span>
     <span class="doccomment">/// parser are propagated without attempting the second parser. To chain more than two parsers using</span>
     <span class="doccomment">/// `or`, see the `choice!` macro.</span>
-    <span class="kw">fn</span> <span class="ident">or</span><span class="op">&lt;</span><span class="ident">OtherParser</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">OtherParser</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Or</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">OtherParser</span>, <span class="ident">R</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">or</span><span class="op">&lt;</span><span class="ident">OtherParser</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">OtherParser</span>) -&gt; <span class="ident">Or</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">OtherParser</span>, <span class="ident">R</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">OtherParser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
     {
         <span class="ident">Or</span> { <span class="ident">p1</span>: <span class="self">self</span>, <span class="ident">p2</span>: <span class="ident">other</span>, <span class="ident">_phantom</span>: <span class="ident">PhantomData</span> }
     }
 
-    <span class="kw">fn</span> <span class="ident">then</span><span class="op">&lt;</span><span class="ident">NextParser</span>, <span class="ident">NextR</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">next</span>: <span class="ident">NextParser</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Then</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">NextParser</span>, <span class="ident">R</span>, <span class="ident">NextR</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">then</span><span class="op">&lt;</span><span class="ident">NextParser</span>, <span class="ident">NextR</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">next</span>: <span class="ident">NextParser</span>) -&gt; <span class="ident">Then</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">NextParser</span>, <span class="ident">R</span>, <span class="ident">NextR</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">NextParser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">NextR</span><span class="op">&gt;</span>,
     {
@@ -629,10 +629,10 @@
     <span class="doccomment">/// but is useful for when the next parser&#39;s behaviour depends on a property of the result of</span>
     <span class="doccomment">/// the first (e.g. the first parser might parse a length `n`, and the second parser then</span>
     <span class="doccomment">/// consumes `n` bytes).</span>
-    <span class="kw">fn</span> <span class="ident">feed</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">P2</span>, <span class="ident">R2</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">producer_fn</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Feed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">P2</span>, <span class="ident">F</span>, <span class="ident">R</span>, <span class="ident">R2</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">feed</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">P2</span>, <span class="ident">R2</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">producer_fn</span>: <span class="ident">F</span>) -&gt; <span class="ident">Feed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="self">Self</span>, <span class="ident">P2</span>, <span class="ident">F</span>, <span class="ident">R</span>, <span class="ident">R2</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">P2</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R2</span><span class="op">&gt;</span>,
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">P2</span>,
+        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>) -&gt; <span class="ident">P2</span>,
     {
         <span class="ident">Feed</span> { <span class="ident">parser</span>: <span class="self">self</span>, <span class="ident">producer_fn</span>, <span class="ident">_phantom</span>: <span class="ident">PhantomData</span> }
     }
@@ -641,33 +641,33 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">F</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span> {
         <span class="self">self</span>(<span class="ident">input</span>, <span class="ident">context</span>)
     }
 }
 
 <span class="doccomment">/// The identity parser - returns the stream and context unchanged. Useful for producing parsers</span>
 <span class="doccomment">/// that produce a result without parsing anything by doing: `id().map(|()| Ok(foo))`.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
     <span class="kw">move</span> <span class="op">|</span><span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span><span class="op">|</span> <span class="prelude-val">Ok</span>((<span class="ident">input</span>, <span class="ident">context</span>, ()))
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u8</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u8</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
     <span class="kw">move</span> <span class="op">|</span><span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">first</span>() {
-        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">byte</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="kw-2">&amp;</span><span class="ident">input</span>[<span class="number">1</span>..], <span class="ident">context</span>, <span class="ident">byte</span>)),
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnexpectedEndOfStream</span>))),
+        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">byte</span>) =&gt; <span class="prelude-val">Ok</span>((<span class="kw-2">&amp;</span><span class="ident">input</span>[<span class="number">1</span>..], <span class="ident">context</span>, <span class="ident">byte</span>)),
+        <span class="prelude-val">None</span> =&gt; <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnexpectedEndOfStream</span>))),
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_u16</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u16</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_u16</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u16</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -680,7 +680,7 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_u32</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u32</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_u32</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u32</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -693,7 +693,7 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_u64</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u64</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_u64</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u64</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -706,7 +706,7 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_n</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_n</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>(<span class="ident">n</span>: <span class="ident">u32</span>) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -720,7 +720,7 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_to_end_of_pkglength</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>(<span class="ident">length</span>: <span class="ident">PkgLength</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_to_end_of_pkglength</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span>(<span class="ident">length</span>: <span class="ident">PkgLength</span>) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
 {
@@ -730,14 +730,14 @@
          * I would&#39;ve thought we would pick up all invalid lengths there, so have a look at why this is needed.
          */</span>
         <span class="kw">let</span> <span class="ident">bytes_to_take</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">input</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>).<span class="ident">checked_sub</span>(<span class="ident">length</span>.<span class="ident">end_offset</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">bytes_to_take</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes_to_take</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::InvalidPkgLength</span>))),
+            <span class="prelude-val">Some</span>(<span class="ident">bytes_to_take</span>) =&gt; <span class="ident">bytes_to_take</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::InvalidPkgLength</span>))),
         };
         <span class="ident">take_n</span>(<span class="ident">bytes_to_take</span>).<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>)
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">n_of</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">P</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">parser</span>: <span class="ident">P</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">n_of</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">P</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">parser</span>: <span class="ident">P</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
@@ -748,8 +748,8 @@
 
         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">n</span> {
             <span class="kw">let</span> (<span class="ident">new_input</span>, <span class="ident">new_context</span>, <span class="ident">result</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">parser</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>) {
-                <span class="prelude-val">Ok</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">result</span>)) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">result</span>),
-                <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">propagate</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">propagate</span>)),
+                <span class="prelude-val">Ok</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">result</span>)) =&gt; (<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">result</span>),
+                <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">propagate</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">propagate</span>)),
             };
             <span class="ident">results</span>.<span class="ident">push</span>(<span class="ident">result</span>);
             <span class="ident">input</span> <span class="op">=</span> <span class="ident">new_input</span>;
@@ -760,7 +760,7 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_while</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">P</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">parser</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">usize</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_while</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">P</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">parser</span>: <span class="ident">P</span>) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">usize</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
@@ -769,29 +769,29 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">num_passed</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">loop</span> {
             <span class="kw">match</span> <span class="ident">parser</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>) {
-                <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">new_context</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">new_context</span>, <span class="kw">_</span>)) =&gt; {
                     <span class="ident">input</span> <span class="op">=</span> <span class="ident">new_input</span>;
                     <span class="ident">context</span> <span class="op">=</span> <span class="ident">new_context</span>;
                     <span class="ident">num_passed</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                 }
-                <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>))) =&gt; {
                     <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">num_passed</span>))
                 }
-                <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
+                <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">err</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
             }
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">consume</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">condition</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u8</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">consume</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">condition</span>: <span class="ident">F</span>) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">u8</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">u8</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="kw">move</span> <span class="op">|</span><span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">first</span>() {
-        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">byte</span>) <span class="kw">if</span> <span class="ident">condition</span>(<span class="ident">byte</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="kw-2">&amp;</span><span class="ident">input</span>[<span class="number">1</span>..], <span class="ident">context</span>, <span class="ident">byte</span>)),
-        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">byte</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnexpectedByte</span>(<span class="ident">byte</span>)))),
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnexpectedEndOfStream</span>))),
+        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">byte</span>) <span class="kw">if</span> <span class="ident">condition</span>(<span class="ident">byte</span>) =&gt; <span class="prelude-val">Ok</span>((<span class="kw-2">&amp;</span><span class="ident">input</span>[<span class="number">1</span>..], <span class="ident">context</span>, <span class="ident">byte</span>)),
+        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">byte</span>) =&gt; <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnexpectedByte</span>(<span class="ident">byte</span>)))),
+        <span class="prelude-val">None</span> =&gt; <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::UnexpectedEndOfStream</span>))),
     }
 }
 
@@ -799,7 +799,7 @@
     <span class="ident">verbosity</span>: <span class="ident">DebugVerbosity</span>,
     <span class="ident">scope_name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
     <span class="ident">parser</span>: <span class="ident">P</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>
+) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">R</span>: <span class="ident">core::fmt::Debug</span>,
@@ -828,7 +828,7 @@
 <span class="doccomment">/// which allows the result of a piece of AML to be reevaluated with a new context, for example.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Note that reparsing the stream is not idempotent - the context is changed by this parse.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">P</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">parser</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, (<span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>])<span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">P</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">parser</span>: <span class="ident">P</span>) -&gt; <span class="kw">impl</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, (<span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>])<span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
@@ -860,11 +860,11 @@
     <span class="ident">P1</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
     <span class="ident">P2</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">p1</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">parse_result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">parse_result</span>),
-            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">p2</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>),
-            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
+            <span class="prelude-val">Ok</span>(<span class="ident">parse_result</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">parse_result</span>),
+            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>))) =&gt; <span class="self">self</span>.<span class="ident">p2</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>),
+            <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">err</span>)) =&gt; <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
         }
     }
 }
@@ -873,7 +873,7 @@
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>,
 {
     <span class="ident">parser</span>: <span class="ident">P</span>,
     <span class="ident">map_fn</span>: <span class="ident">F</span>,
@@ -884,15 +884,15 @@
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">parser</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>) {
-            <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">result</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">map_fn</span>)(<span class="ident">result</span>) {
-                <span class="prelude-val">Ok</span>(<span class="ident">result_value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">result_value</span>)),
-                <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
+            <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">result</span>)) =&gt; <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">map_fn</span>)(<span class="ident">result</span>) {
+                <span class="prelude-val">Ok</span>(<span class="ident">result_value</span>) =&gt; <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">result_value</span>)),
+                <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
             },
-            <span class="prelude-val">Err</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">result</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">result</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">result</span>),
         }
     }
 }
@@ -901,7 +901,7 @@
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>),
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; (<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>),
 {
     <span class="ident">parser</span>: <span class="ident">P</span>,
     <span class="ident">map_fn</span>: <span class="ident">F</span>,
@@ -912,15 +912,15 @@
 <span class="kw">where</span>
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>),
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; (<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">Propagate</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>),
 {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">parser</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>) {
-            <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">result</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">map_fn</span>)(<span class="ident">result</span>, <span class="ident">context</span>) {
-                (<span class="prelude-val">Ok</span>(<span class="ident">result_value</span>), <span class="ident">context</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">result_value</span>)),
-                (<span class="prelude-val">Err</span>(<span class="ident">err</span>), <span class="ident">context</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
+            <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">result</span>)) =&gt; <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">map_fn</span>)(<span class="ident">result</span>, <span class="ident">context</span>) {
+                (<span class="prelude-val">Ok</span>(<span class="ident">result_value</span>), <span class="ident">context</span>) =&gt; <span class="prelude-val">Ok</span>((<span class="ident">new_input</span>, <span class="ident">context</span>, <span class="ident">result_value</span>)),
+                (<span class="prelude-val">Err</span>(<span class="ident">err</span>), <span class="ident">context</span>) =&gt; <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">err</span>)),
             },
-            <span class="prelude-val">Err</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">result</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">result</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">result</span>),
         }
     }
 }
@@ -939,7 +939,7 @@
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, ()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">parser</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>).<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">new_input</span>, <span class="ident">new_context</span>, <span class="kw">_</span>)<span class="op">|</span> (<span class="ident">new_input</span>, <span class="ident">new_context</span>, ()))
     }
 }
@@ -961,7 +961,7 @@
     <span class="ident">P1</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R1</span><span class="op">&gt;</span>,
     <span class="ident">P2</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R2</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, (<span class="ident">R1</span>, <span class="ident">R2</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, (<span class="ident">R1</span>, <span class="ident">R2</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">p1</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>).<span class="ident">and_then</span>(<span class="op">|</span>(<span class="ident">next_input</span>, <span class="ident">context</span>, <span class="ident">result_a</span>)<span class="op">|</span> {
             <span class="self">self</span>.<span class="ident">p2</span>
                 .<span class="ident">parse</span>(<span class="ident">next_input</span>, <span class="ident">context</span>)
@@ -975,7 +975,7 @@
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P1</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R1</span><span class="op">&gt;</span>,
     <span class="ident">P2</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R2</span><span class="op">&gt;</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">P2</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R1</span>) -&gt; <span class="ident">P2</span>,
 {
     <span class="ident">parser</span>: <span class="ident">P1</span>,
     <span class="ident">producer_fn</span>: <span class="ident">F</span>,
@@ -987,9 +987,9 @@
     <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span>,
     <span class="ident">P1</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R1</span><span class="op">&gt;</span>,
     <span class="ident">P2</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R2</span><span class="op">&gt;</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">P2</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">R1</span>) -&gt; <span class="ident">P2</span>,
 {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R2</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>, <span class="ident">R2</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">first_result</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">parser</span>.<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>)<span class="question-mark">?</span>;
 
         <span class="comment">// We can now produce the second parser, and parse using that.</span>
@@ -1001,7 +1001,7 @@
 <span class="doccomment">/// Takes a number of parsers, and tries to apply each one to the input in order. Returns the</span>
 <span class="doccomment">/// result of the first one that succeeds, or fails if all of them fail.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">macro</span> <span class="ident">choice</span> {
-    () <span class="op">=</span><span class="op">&gt;</span> {
+    () =&gt; {
         <span class="ident">id</span>().<span class="ident">map</span>(<span class="op">|</span>()<span class="op">|</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::WrongParser</span>))
     },
 
@@ -1021,13 +1021,13 @@
      * the next parser. This generates worse code at the macro callsite, but is much easier for the compiler to
      * type-check (and so reduces the cost of pulling us in as a dependency as well as improving ergonomics).
      */</span>
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parser</span>: <span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parser</span>: <span class="ident">expr</span>),<span class="op">+</span>) =&gt; {
         <span class="kw">move</span> <span class="op">|</span><span class="ident">input</span>, <span class="ident">context</span><span class="op">|</span> {
             $(
                 <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="kw">match</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parser</span>).<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">context</span>) {
-                    <span class="prelude-val">Ok</span>(<span class="ident">parse_result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">parse_result</span>),
-                    <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">new_context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">new_context</span>,
-                    <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">propagate</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">propagate</span>)),
+                    <span class="prelude-val">Ok</span>(<span class="ident">parse_result</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">parse_result</span>),
+                    <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">new_context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>))) =&gt; <span class="ident">new_context</span>,
+                    <span class="prelude-val">Err</span>((<span class="kw">_</span>, <span class="ident">context</span>, <span class="ident">propagate</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">propagate</span>)),
                 };
              )<span class="op">+</span>
             <span class="prelude-val">Err</span>((<span class="ident">input</span>, <span class="ident">context</span>, <span class="ident">Propagate::Err</span>(<span class="ident">AmlError::WrongParser</span>)))
@@ -1056,8 +1056,8 @@
 <span class="doccomment">/// Solution: use `try_with_context!(context, expr)` instead.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">macro</span> <span class="ident">try_with_context</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">context</span>: <span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">expr</span>: <span class="ident">expr</span>) {
     <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">expr</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">result</span>,
-        <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">err</span>)), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">context</span>),
+        <span class="prelude-val">Ok</span>(<span class="ident">result</span>) =&gt; <span class="ident">result</span>,
+        <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> (<span class="prelude-val">Err</span>(<span class="ident">Propagate::Err</span>(<span class="ident">err</span>)), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">context</span>),
     }
 }
 

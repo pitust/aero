@@ -316,7 +316,7 @@
 <span class="kw">impl</span> <span class="ident">TaskQueue</span> {
     <span class="doccomment">/// Creates a new task queue with no taskes by default.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">idle_task</span>: <span class="ident">Task::new_idle</span>(),
             <span class="ident">preempt_task</span>: <span class="ident">Task::new_kernel</span>(<span class="ident">preempter</span>, <span class="bool-val">false</span>),
@@ -366,7 +366,7 @@
 <span class="kw">impl</span> <span class="ident">RoundRobin</span> {
     <span class="doccomment">/// Creates a new instance of the round robin scheduler and return a</span>
     <span class="doccomment">/// reference-counting pointer to itself.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="self">Self</span> {
             <span class="ident">queue</span>: <span class="ident">PerCpu::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TaskQueue::new</span>()),
         });
@@ -399,7 +399,7 @@
             <span class="ident">arch::task::arch_task_spinup</span>(<span class="ident">queue</span>.<span class="ident">preempt_task</span>.<span class="ident">arch_task_mut</span>(), <span class="ident">task</span>.<span class="ident">arch_task</span>());
         } <span class="kw">else</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="ident">queue</span>.<span class="ident">current_task</span>.<span class="ident">as_ref</span>() {
-                <span class="kw">if</span> <span class="ident">current</span>.<span class="ident">state</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">TaskState::Runnable</span> {
+                <span class="kw">if</span> <span class="ident">current</span>.<span class="ident">state</span>() <span class="op">==</span> <span class="ident">TaskState::Runnable</span> {
                     <span class="ident">arch::task::arch_task_spinup</span>(
                         <span class="ident">queue</span>.<span class="ident">preempt_task</span>.<span class="ident">arch_task_mut</span>(),
                         <span class="ident">current</span>.<span class="ident">arch_task</span>(),
@@ -423,7 +423,7 @@
         <span class="ident">queue</span>.<span class="ident">push_runnable</span>(<span class="ident">task</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">current_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get</span>();
 
         <span class="ident">queue</span>.<span class="ident">current_task</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>()
@@ -438,7 +438,7 @@
         <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">IrqGuard::new</span>();
         <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get_mut</span>();
 
-        <span class="kw">if</span> <span class="ident">task</span>.<span class="ident">state</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">TaskState::AwaitingIo</span> {
+        <span class="kw">if</span> <span class="ident">task</span>.<span class="ident">state</span>() <span class="op">==</span> <span class="ident">TaskState::AwaitingIo</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">queue</span>.<span class="ident">awaiting</span>.<span class="ident">cursor_mut_from_ptr</span>(<span class="ident">task</span>.<span class="ident">as_ref</span>()) };
 
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">task</span>) <span class="op">=</span> <span class="ident">cursor</span>.<span class="ident">remove</span>() {
@@ -487,7 +487,7 @@
         <span class="self">self</span>.<span class="ident">preempt</span>();
     }
 
-    <span class="kw">fn</span> <span class="ident">exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">status</span>: <span class="ident">isize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">fn</span> <span class="ident">exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">status</span>: <span class="ident">isize</span>) -&gt; <span class="op">!</span> {
         <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">IrqGuard::new</span>();
         <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get_mut</span>();
 

@@ -453,7 +453,7 @@
 
 <span class="kw">impl</span> <span class="ident">StdinBuffer</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">back_buffer</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">front_buffer</span>: <span class="ident">Vec::new</span>(),
@@ -471,7 +471,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_complete</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_complete</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">i</span>
     }
 }
@@ -497,7 +497,7 @@
 
 <span class="kw">impl</span> <span class="ident">Tty</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">Arc::new_cyclic</span>(<span class="op">|</span><span class="ident">sref</span><span class="op">|</span> <span class="self">Self</span> {
             <span class="ident">device_id</span>: <span class="ident">devfs::alloc_device_marker</span>(),
             <span class="ident">state</span>: <span class="ident">Mutex::new</span>(<span class="ident">TtyState</span> {
@@ -518,7 +518,7 @@
 
 <span class="kw">impl</span> <span class="ident">INodeInterface</span> <span class="kw">for</span> <span class="ident">Tty</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fs::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">fs::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">block_queue</span>
             .<span class="ident">block_on</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">stdin</span>, <span class="op">|</span><span class="ident">future</span><span class="op">|</span> <span class="ident">future</span>.<span class="ident">is_complete</span>());
 
@@ -534,7 +534,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fs::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">fs::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">crate::prelude::print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">core::str::from_utf8_unchecked</span>(<span class="ident">buffer</span>));
             <span class="prelude-val">Ok</span>(<span class="ident">buffer</span>.<span class="ident">len</span>())
@@ -544,17 +544,17 @@
 
 <span class="kw">impl</span> <span class="ident">devfs::Device</span> <span class="kw">for</span> <span class="ident">Tty</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">device_marker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">device_marker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">device_id</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">device_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">device_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="string">&quot;tty&quot;</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">inode::INodeInterface</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">inode::INodeInterface</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">sref</span>.<span class="ident">upgrade</span>().<span class="ident">unwrap</span>()
     }
 }
@@ -564,8 +564,8 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">lock</span>();
 
         <span class="kw">match</span> <span class="ident">key</span> {
-            <span class="ident">KeyCode::KEY_CAPSLOCK</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">state</span>.<span class="ident">caps</span> <span class="op">=</span> <span class="op">!</span><span class="ident">state</span>.<span class="ident">caps</span>,
-            <span class="ident">KeyCode::KEY_ENTER</span> <span class="op">|</span> <span class="ident">KeyCode::KEY_KPENTER</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">KeyCode::KEY_CAPSLOCK</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; <span class="ident">state</span>.<span class="ident">caps</span> <span class="op">=</span> <span class="op">!</span><span class="ident">state</span>.<span class="ident">caps</span>,
+            <span class="ident">KeyCode::KEY_ENTER</span> <span class="op">|</span> <span class="ident">KeyCode::KEY_KPENTER</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">stdin</span>.<span class="ident">lock_irq</span>();
                 <span class="ident">stdin</span>.<span class="ident">back_buffer</span>.<span class="ident">push</span>(<span class="string">&#39;\n&#39;</span> <span class="kw">as</span> <span class="ident">u8</span>);
 
@@ -573,18 +573,18 @@
                 <span class="self">self</span>.<span class="ident">block_queue</span>.<span class="ident">notify_complete</span>();
             }
 
-            <span class="ident">KeyCode::KEY_BACKSPACE</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">KeyCode::KEY_BACKSPACE</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; {}
 
-            <span class="ident">KeyCode::KEY_LEFTSHIFT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">state</span>.<span class="ident">lshift</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
-            <span class="ident">KeyCode::KEY_RIGHTSHIFT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">state</span>.<span class="ident">rshift</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
+            <span class="ident">KeyCode::KEY_LEFTSHIFT</span> =&gt; <span class="ident">state</span>.<span class="ident">lshift</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
+            <span class="ident">KeyCode::KEY_RIGHTSHIFT</span> =&gt; <span class="ident">state</span>.<span class="ident">rshift</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
 
-            <span class="ident">KeyCode::KEY_LEFTCTRL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">state</span>.<span class="ident">lctrl</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
-            <span class="ident">KeyCode::KEY_RIGHTCTRL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">state</span>.<span class="ident">rctrl</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
+            <span class="ident">KeyCode::KEY_LEFTCTRL</span> =&gt; <span class="ident">state</span>.<span class="ident">lctrl</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
+            <span class="ident">KeyCode::KEY_RIGHTCTRL</span> =&gt; <span class="ident">state</span>.<span class="ident">rctrl</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
 
-            <span class="ident">KeyCode::KEY_LEFTALT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">state</span>.<span class="ident">lalt</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
-            <span class="ident">KeyCode::KEY_RIGHTALT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">state</span>.<span class="ident">altgr</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
+            <span class="ident">KeyCode::KEY_LEFTALT</span> =&gt; <span class="ident">state</span>.<span class="ident">lalt</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
+            <span class="ident">KeyCode::KEY_RIGHTALT</span> =&gt; <span class="ident">state</span>.<span class="ident">altgr</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
 
-            <span class="kw">_</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">_</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shift</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">lshift</span> <span class="op">|</span><span class="op">|</span> <span class="ident">state</span>.<span class="ident">rshift</span>;
                 <span class="kw">let</span> <span class="ident">ctrl</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">lctrl</span> <span class="op">|</span><span class="op">|</span> <span class="ident">state</span>.<span class="ident">rctrl</span>;
 
@@ -593,14 +593,14 @@
                 }
 
                 <span class="kw">let</span> <span class="ident">map</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">shift</span>, <span class="ident">ctrl</span>, <span class="ident">state</span>.<span class="ident">lalt</span>, <span class="ident">state</span>.<span class="ident">altgr</span>) {
-                    (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PLAIN_MAP</span>,
-                    (<span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SHIFT_MAP</span>,
-                    (<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CTRL_MAP</span>,
-                    (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ALT_MAP</span>,
-                    (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ALTGR_MAP</span>,
-                    (<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SHIFT_CTRL_MAP</span>,
-                    (<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CTRL_ALT_MAP</span>,
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PLAIN_MAP</span>,
+                    (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; <span class="ident">PLAIN_MAP</span>,
+                    (<span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; <span class="ident">SHIFT_MAP</span>,
+                    (<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; <span class="ident">CTRL_MAP</span>,
+                    (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; <span class="ident">ALT_MAP</span>,
+                    (<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>) =&gt; <span class="ident">ALTGR_MAP</span>,
+                    (<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; <span class="ident">SHIFT_CTRL_MAP</span>,
+                    (<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; <span class="ident">CTRL_ALT_MAP</span>,
+                    <span class="kw">_</span> =&gt; <span class="ident">PLAIN_MAP</span>,
                 };
 
                 <span class="kw">let</span> <span class="ident">character</span> <span class="op">=</span>
@@ -610,7 +610,7 @@
                 <span class="macro">crate::prelude::print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">character</span>);
             }
 
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="kw">_</span> =&gt; {}
         }
     }
 }

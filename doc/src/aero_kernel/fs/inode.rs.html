@@ -335,31 +335,31 @@
 <span class="doccomment">/// the inode structure.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">INodeInterface</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Downcastable</span> {
     <span class="doccomment">/// Returns the inode metadata of `this` inode.</span>
-    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Metadata</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Metadata</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Read at the provided `offset` to the given `buffer`.</span>
-    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Write at the provided `offset` with the given `buffer` as its contents.</span>
-    <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Creates a new directory with the provided `name` in the filesystem.</span>
-    <span class="kw">fn</span> <span class="ident">mkdir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">mkdir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">rmdir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">rmdir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Creates a new file with the provoded `name` in the filesystem.</span>
-    <span class="kw">fn</span> <span class="ident">touch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">touch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
@@ -370,27 +370,27 @@
     <span class="doccomment">/// In the inner implementation this simply looks up for the device with the device</span>
     <span class="doccomment">/// marker in the global devices b-tree map and adds it as a device inode in the children</span>
     <span class="doccomment">/// array of itself.</span>
-    <span class="kw">fn</span> <span class="ident">make_dev_inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">_marker</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">make_dev_inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">_marker</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">INodeCacheItem</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Looks up the directory entry in the filesystem.</span>
-    <span class="kw">fn</span> <span class="ident">lookup</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_dir</span>: <span class="ident">DirCacheItem</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">lookup</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_dir</span>: <span class="ident">DirCacheItem</span>, <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">open</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_flags</span>: <span class="ident">OpenFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">open</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_flags</span>: <span class="ident">OpenFlags</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_flags</span>: <span class="ident">OpenFlags</span>) {}
 
-    <span class="kw">fn</span> <span class="ident">dirent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">dirent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">_index</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 
     <span class="doccomment">/// Returns a weak reference to the filesystem that this inode belongs to.</span>
-    <span class="kw">fn</span> <span class="ident">weak_filesystem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">weak_filesystem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">None</span>
     }
 }
@@ -413,19 +413,19 @@
 
 <span class="kw">impl</span> <span class="ident">Metadata</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">id</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">file_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FileType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">file_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FileType</span> {
         <span class="self">self</span>.<span class="ident">file_type</span>
     }
 
     <span class="doccomment">/// Returns [`true`] if the file type of the inode is a directory.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_directory</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">file_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">FileType::Directory</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_directory</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">file_type</span> <span class="op">==</span> <span class="ident">FileType::Directory</span>
     }
 }
 
@@ -446,7 +446,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">FileContents</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Content</span>(<span class="ident">Mutex::new</span>(<span class="ident">Vec::new</span>()))
     }
 }
@@ -459,17 +459,17 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FileType</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">aero_syscall::SysFileType</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">file</span>: <span class="ident">FileType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">file</span>: <span class="ident">FileType</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">file</span> {
-            <span class="ident">FileType::File</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">aero_syscall::SysFileType::File</span>,
-            <span class="ident">FileType::Directory</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">aero_syscall::SysFileType::Directory</span>,
-            <span class="ident">FileType::Device</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">aero_syscall::SysFileType::Device</span>,
+            <span class="ident">FileType::File</span> =&gt; <span class="ident">aero_syscall::SysFileType::File</span>,
+            <span class="ident">FileType::Directory</span> =&gt; <span class="ident">aero_syscall::SysFileType::Directory</span>,
+            <span class="ident">FileType::Device</span> =&gt; <span class="ident">aero_syscall::SysFileType::Device</span>,
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">FileType</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::File</span>
     }
 }
@@ -491,7 +491,7 @@
 <span class="kw">impl</span> <span class="ident">DirEntry</span> {
     <span class="doccomment">/// Creates a new cached directory entry, where the entry has the provided `parent` and</span>
     <span class="doccomment">/// uses the weak filesystem pointer that the provided `inode` holds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">inode</span>: <span class="ident">INodeCacheItem</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DirCacheItem</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">inode</span>: <span class="ident">INodeCacheItem</span>, <span class="ident">name</span>: <span class="ident">String</span>) -&gt; <span class="ident">DirCacheItem</span> {
         <span class="kw">let</span> <span class="ident">dcache</span> <span class="op">=</span> <span class="ident">cache::dcache</span>();
 
         <span class="comment">/*
@@ -533,7 +533,7 @@
     <span class="doccomment">/// Creates a new root cached directory entry where the there is no parent</span>
     <span class="doccomment">/// of the cache item and no filesystem reference by default. The caller is responsible</span>
     <span class="doccomment">/// for initializing the weak reference to the filesystem.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_root</span>(<span class="ident">inode</span>: <span class="ident">INodeCacheItem</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DirCacheItem</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_root</span>(<span class="ident">inode</span>: <span class="ident">INodeCacheItem</span>, <span class="ident">name</span>: <span class="ident">String</span>) -&gt; <span class="ident">DirCacheItem</span> {
         <span class="kw">let</span> <span class="ident">dcache</span> <span class="op">=</span> <span class="ident">cache::dcache</span>();
 
         <span class="ident">dcache</span>.<span class="ident">make_item_no_cache</span>(<span class="self">Self</span> {
@@ -548,12 +548,12 @@
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">name</span>.<span class="ident">clone</span>()
     }
 
     <span class="doccomment">/// Returns the inner cached inode item of the directory entry.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">INodeCacheItem</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">INodeCacheItem</span> {
         <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">inode</span>.<span class="ident">clone</span>()
     }
 
@@ -566,7 +566,7 @@
 
 <span class="doccomment">/// Fetches a cached directory entry item from the directory cache. Returns if</span>
 <span class="doccomment">/// the provided entry exists in the given parent directory cache.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_dir_entry</span>(<span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_dir_entry</span>(<span class="ident">parent</span>: <span class="ident">DirCacheItem</span>, <span class="ident">name</span>: <span class="ident">String</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dcache</span> <span class="op">=</span> <span class="ident">cache::dcache</span>();
     <span class="kw">let</span> <span class="ident">cache_key</span> <span class="op">=</span> (<span class="ident">parent</span>.<span class="ident">cache_marker</span>, <span class="ident">name</span>);
 

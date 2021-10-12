@@ -274,33 +274,33 @@
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Pod</span> <span class="kw">for</span> <span class="ident">DynEntry64</span> {}
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Entry</span> {
-    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span>;
-    <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span>;
-    <span class="kw">fn</span> <span class="ident">other</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Visibility_</span>;
-    <span class="kw">fn</span> <span class="ident">shndx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span>;
-    <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span>;
-    <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span>;
+    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span>;
+    <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span>;
+    <span class="kw">fn</span> <span class="ident">other</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Visibility_</span>;
+    <span class="kw">fn</span> <span class="ident">shndx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span>;
+    <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span>;
+    <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">elf_file</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">get_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">elf_file</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_other</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Visibility</span> {
+    <span class="kw">fn</span> <span class="ident">get_other</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Visibility</span> {
         <span class="self">self</span>.<span class="ident">other</span>().<span class="ident">as_visibility</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">get_binding</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Binding</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_binding</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Binding</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">Binding_</span>(<span class="self">self</span>.<span class="ident">info</span>() <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">4</span>).<span class="ident">as_binding</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">get_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Type</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Type</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">Type_</span>(<span class="self">self</span>.<span class="ident">info</span>() <span class="op">&amp;</span> <span class="number">0xf</span>).<span class="ident">as_type</span>()
     }
 
     <span class="kw">fn</span> <span class="ident">get_section_header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
                               <span class="ident">elf_file</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
                               <span class="ident">self_index</span>: <span class="ident">usize</span>)
-                              <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">sections::SectionHeader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+                              -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">sections::SectionHeader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">shndx</span>() {
-            <span class="ident">sections::SHN_XINDEX</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">sections::SHN_XINDEX</span> =&gt; {
                 <span class="comment">// TODO factor out distinguished section names into sections consts</span>
                 <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="ident">elf_file</span>.<span class="ident">find_section_by_name</span>(<span class="string">&quot;.symtab_shndx&quot;</span>);
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">header</span>) <span class="op">=</span> <span class="ident">header</span> {
@@ -321,14 +321,14 @@
             }
             <span class="ident">sections::SHN_UNDEF</span> <span class="op">|</span>
             <span class="ident">sections::SHN_ABS</span> <span class="op">|</span>
-            <span class="ident">sections::SHN_COMMON</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Reserved section header index&quot;</span>),
-            <span class="ident">i</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">elf_file</span>.<span class="ident">section_header</span>(<span class="ident">i</span>),
+            <span class="ident">sections::SHN_COMMON</span> =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Reserved section header index&quot;</span>),
+            <span class="ident">i</span> =&gt; <span class="ident">elf_file</span>.<span class="ident">section_header</span>(<span class="ident">i</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">dyn</span> <span class="ident">Entry</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;Symbol table entry:&quot;</span>)<span class="question-mark">?</span>;
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;    name:             {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())<span class="question-mark">?</span>;
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;    binding:          {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">get_binding</span>())<span class="question-mark">?</span>;
@@ -342,18 +342,18 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">impl_entry</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="ident">ident</span> <span class="ident">with</span> <span class="ident">ElfFile</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">strfunc</span>: <span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>: <span class="ident">ident</span> <span class="ident">with</span> <span class="ident">ElfFile</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">strfunc</span>: <span class="ident">ident</span>) =&gt; {
         <span class="kw">impl</span> <span class="ident">Entry</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
-            <span class="kw">fn</span> <span class="ident">get_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">elf_file</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">get_name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">elf_file</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
                 <span class="ident">elf_file</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">strfunc</span>(<span class="self">self</span>.<span class="ident">name</span>())
             }
 
-            <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">name</span> }
-            <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">info</span> }
-            <span class="kw">fn</span> <span class="ident">other</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Visibility_</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">other</span> }
-            <span class="kw">fn</span> <span class="ident">shndx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">shndx</span> }
-            <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u64</span> }
-            <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span> }
+            <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">name</span> }
+            <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">info</span> }
+            <span class="kw">fn</span> <span class="ident">other</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Visibility_</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">other</span> }
+            <span class="kw">fn</span> <span class="ident">shndx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">shndx</span> }
+            <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u64</span> }
+            <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span> }
         }
     }
 }
@@ -375,7 +375,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Visibility_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_visibility</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Visibility</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_visibility</span>(<span class="self">self</span>) -&gt; <span class="ident">Visibility</span> {
         <span class="kw">unsafe</span> { <span class="ident">mem::transmute</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="number">0x3</span>) }
     }
 }
@@ -393,14 +393,14 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Binding_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_binding</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Binding</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_binding</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Binding</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Binding::Local</span>),
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Binding::Global</span>),
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Binding::Weak</span>),
-            <span class="ident">b</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">12</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Binding::OsSpecific</span>(<span class="ident">b</span>)),
-            <span class="ident">b</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">13</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">15</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Binding::ProcessorSpecific</span>(<span class="ident">b</span>)),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid value for binding&quot;</span>),
+            <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Binding::Local</span>),
+            <span class="number">1</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Binding::Global</span>),
+            <span class="number">2</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Binding::Weak</span>),
+            <span class="ident">b</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">12</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Binding::OsSpecific</span>(<span class="ident">b</span>)),
+            <span class="ident">b</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">13</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">15</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Binding::ProcessorSpecific</span>(<span class="ident">b</span>)),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid value for binding&quot;</span>),
         }
     }
 }
@@ -423,18 +423,18 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Type_</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_type</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Type</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_type</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Type</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::NoType</span>),
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Object</span>),
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Func</span>),
-            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Section</span>),
-            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::File</span>),
-            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Common</span>),
-            <span class="number">6</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Tls</span>),
-            <span class="ident">b</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">12</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::OsSpecific</span>(<span class="ident">b</span>)),
-            <span class="ident">b</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">13</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">15</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::ProcessorSpecific</span>(<span class="ident">b</span>)),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid value for type&quot;</span>),
+            <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::NoType</span>),
+            <span class="number">1</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::Object</span>),
+            <span class="number">2</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::Func</span>),
+            <span class="number">3</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::Section</span>),
+            <span class="number">4</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::File</span>),
+            <span class="number">5</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::Common</span>),
+            <span class="number">6</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::Tls</span>),
+            <span class="ident">b</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">12</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::OsSpecific</span>(<span class="ident">b</span>)),
+            <span class="ident">b</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">13</span> <span class="op">&amp;&amp;</span> <span class="ident">b</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">15</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Type::ProcessorSpecific</span>(<span class="ident">b</span>)),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Invalid value for type&quot;</span>),
         }
     }
 }

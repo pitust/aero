@@ -868,7 +868,7 @@
 
 <span class="doccomment">/// Parse a `ResourceDescriptor` into a list of resources. Returns `AmlError::IncompatibleValueConversion` if the passed value is not a</span>
 <span class="doccomment">/// `Buffer`.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_descriptor_list</span>(<span class="ident">descriptor</span>: <span class="kw-2">&amp;</span><span class="ident">AmlValue</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Resource</span><span class="op">&gt;</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resource_descriptor_list</span>(<span class="ident">descriptor</span>: <span class="kw-2">&amp;</span><span class="ident">AmlValue</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Resource</span><span class="op">&gt;</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="ident">AmlValue::Buffer</span>(<span class="ident">bytes</span>) <span class="op">=</span> <span class="ident">descriptor</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">descriptors</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">as_slice</span>();
@@ -892,7 +892,7 @@
 
 <span class="doccomment">/// Parse a `ResourceDescriptor`. Returns `AmlError::IncompatibleValueConversion` if the passed value is not a</span>
 <span class="doccomment">/// `Buffer`.</span>
-<span class="kw">fn</span> <span class="ident">resource_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Resource</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]), <span class="ident">AmlError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">resource_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Resource</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]), <span class="ident">AmlError</span><span class="op">&gt;</span> {
     <span class="comment">/*
      * If bit 7 of Byte 0 is set, it&#39;s a large descriptor. If not, it&#39;s a small descriptor.
      */</span>
@@ -928,27 +928,27 @@
         <span class="kw">let</span> (<span class="ident">descriptor_bytes</span>, <span class="ident">remaining_bytes</span>) <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">split_at</span>(<span class="ident">length</span> <span class="op">+</span> <span class="number">3</span>);
 
         <span class="kw">let</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">descriptor_type</span> {
-            <span class="number">0x01</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;24-bit Memory Range Descriptor&quot;</span>),
-            <span class="number">0x02</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Generic Register Descriptor&quot;</span>),
-            <span class="number">0x03</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;0x03 Reserved&quot;</span>),
-            <span class="number">0x04</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Vendor-defined Descriptor&quot;</span>),
-            <span class="number">0x05</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;32-bit Memory Range Descriptor&quot;</span>),
-            <span class="number">0x06</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fixed_memory_descriptor</span>(<span class="ident">descriptor_bytes</span>),
-            <span class="number">0x07</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">address_space_descriptor</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="ident">descriptor_bytes</span>),
-            <span class="number">0x08</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">address_space_descriptor</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>(<span class="ident">descriptor_bytes</span>),
-            <span class="number">0x09</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">extended_interrupt_descriptor</span>(<span class="ident">descriptor_bytes</span>),
-            <span class="number">0x0a</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">address_space_descriptor</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="ident">descriptor_bytes</span>),
-            <span class="number">0x0b</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Extended Address Space Descriptor&quot;</span>),
-            <span class="number">0x0c</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;GPIO Connection Descriptor&quot;</span>),
-            <span class="number">0x0d</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Function Descriptor&quot;</span>),
-            <span class="number">0x0e</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;GenericSerialBus Connection Descriptor&quot;</span>),
-            <span class="number">0x0f</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Configuration Descriptor&quot;</span>),
-            <span class="number">0x10</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Group Descriptor&quot;</span>),
-            <span class="number">0x11</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Group Function Descriptor&quot;</span>),
-            <span class="number">0x12</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Group Configuration Descriptor&quot;</span>),
+            <span class="number">0x01</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;24-bit Memory Range Descriptor&quot;</span>),
+            <span class="number">0x02</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Generic Register Descriptor&quot;</span>),
+            <span class="number">0x03</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;0x03 Reserved&quot;</span>),
+            <span class="number">0x04</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Vendor-defined Descriptor&quot;</span>),
+            <span class="number">0x05</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;32-bit Memory Range Descriptor&quot;</span>),
+            <span class="number">0x06</span> =&gt; <span class="ident">fixed_memory_descriptor</span>(<span class="ident">descriptor_bytes</span>),
+            <span class="number">0x07</span> =&gt; <span class="ident">address_space_descriptor</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="ident">descriptor_bytes</span>),
+            <span class="number">0x08</span> =&gt; <span class="ident">address_space_descriptor</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>(<span class="ident">descriptor_bytes</span>),
+            <span class="number">0x09</span> =&gt; <span class="ident">extended_interrupt_descriptor</span>(<span class="ident">descriptor_bytes</span>),
+            <span class="number">0x0a</span> =&gt; <span class="ident">address_space_descriptor</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>(<span class="ident">descriptor_bytes</span>),
+            <span class="number">0x0b</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Extended Address Space Descriptor&quot;</span>),
+            <span class="number">0x0c</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;GPIO Connection Descriptor&quot;</span>),
+            <span class="number">0x0d</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Function Descriptor&quot;</span>),
+            <span class="number">0x0e</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;GenericSerialBus Connection Descriptor&quot;</span>),
+            <span class="number">0x0f</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Configuration Descriptor&quot;</span>),
+            <span class="number">0x10</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Group Descriptor&quot;</span>),
+            <span class="number">0x11</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Group Function Descriptor&quot;</span>),
+            <span class="number">0x12</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Pin Group Configuration Descriptor&quot;</span>),
 
-            <span class="number">0x00</span> <span class="op">|</span> <span class="number">0x13</span>..<span class="op">=</span><span class="number">0x7f</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::ReservedResourceType</span>),
-            <span class="number">0x80</span>..<span class="op">=</span><span class="number">0xff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="number">0x00</span> <span class="op">|</span> <span class="number">0x13</span>..<span class="op">=</span><span class="number">0x7f</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">AmlError::ReservedResourceType</span>),
+            <span class="number">0x80</span>..<span class="op">=</span><span class="number">0xff</span> =&gt; <span class="macro">unreachable!</span>(),
         }<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>((<span class="prelude-val">Some</span>(<span class="ident">descriptor</span>), <span class="ident">remaining_bytes</span>))
@@ -979,18 +979,18 @@
         <span class="kw">let</span> (<span class="ident">descriptor_bytes</span>, <span class="ident">remaining_bytes</span>) <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">split_at</span>(<span class="ident">length</span> <span class="op">+</span> <span class="number">1</span>);
 
         <span class="kw">let</span> <span class="ident">descriptor</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">descriptor_type</span> {
-            <span class="number">0x00</span>..<span class="op">=</span><span class="number">0x03</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::ReservedResourceType</span>),
-            <span class="number">0x04</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">irq_format_descriptor</span>(<span class="ident">descriptor_bytes</span>),
-            <span class="number">0x05</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">dma_format_descriptor</span>(<span class="ident">descriptor_bytes</span>),
-            <span class="number">0x06</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Start Dependent Functions Descriptor&quot;</span>),
-            <span class="number">0x07</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;End Dependent Functions Descriptor&quot;</span>),
-            <span class="number">0x08</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">io_port_descriptor</span>(<span class="ident">descriptor_bytes</span>),
-            <span class="number">0x09</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Fixed Location IO Port Descriptor&quot;</span>),
-            <span class="number">0x0A</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Fixed DMA Descriptor&quot;</span>),
-            <span class="number">0x0B</span>..<span class="op">=</span><span class="number">0x0D</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::ReservedResourceType</span>),
-            <span class="number">0x0E</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Vendor Defined Descriptor&quot;</span>),
-            <span class="number">0x0F</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>[])),
-            <span class="number">0x10</span>..<span class="op">=</span><span class="number">0xFF</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="number">0x00</span>..<span class="op">=</span><span class="number">0x03</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">AmlError::ReservedResourceType</span>),
+            <span class="number">0x04</span> =&gt; <span class="ident">irq_format_descriptor</span>(<span class="ident">descriptor_bytes</span>),
+            <span class="number">0x05</span> =&gt; <span class="ident">dma_format_descriptor</span>(<span class="ident">descriptor_bytes</span>),
+            <span class="number">0x06</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Start Dependent Functions Descriptor&quot;</span>),
+            <span class="number">0x07</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;End Dependent Functions Descriptor&quot;</span>),
+            <span class="number">0x08</span> =&gt; <span class="ident">io_port_descriptor</span>(<span class="ident">descriptor_bytes</span>),
+            <span class="number">0x09</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Fixed Location IO Port Descriptor&quot;</span>),
+            <span class="number">0x0A</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Fixed DMA Descriptor&quot;</span>),
+            <span class="number">0x0B</span>..<span class="op">=</span><span class="number">0x0D</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">AmlError::ReservedResourceType</span>),
+            <span class="number">0x0E</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Vendor Defined Descriptor&quot;</span>),
+            <span class="number">0x0F</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>((<span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>[])),
+            <span class="number">0x10</span>..<span class="op">=</span><span class="number">0xFF</span> =&gt; <span class="macro">unreachable!</span>(),
         }<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>((<span class="prelude-val">Some</span>(<span class="ident">descriptor</span>), <span class="ident">remaining_bytes</span>))
@@ -1040,7 +1040,7 @@
     <span class="ident">FixedLocation</span> { <span class="ident">is_writable</span>: <span class="ident">bool</span>, <span class="ident">base_address</span>: <span class="ident">u32</span>, <span class="ident">range_length</span>: <span class="ident">u32</span> },
 }
 
-<span class="kw">fn</span> <span class="ident">fixed_memory_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">fixed_memory_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
     <span class="comment">/*
      * -- 32-bit Fixed Memory Descriptor ---
      * Offset     Field Name                              Definition
@@ -1078,7 +1078,7 @@
     <span class="prelude-val">Ok</span>(<span class="ident">Resource::MemoryRange</span>(<span class="ident">MemoryRangeDescriptor::FixedLocation</span> { <span class="ident">is_writable</span>, <span class="ident">base_address</span>, <span class="ident">range_length</span> }))
 }
 
-<span class="kw">fn</span> <span class="ident">address_space_descriptor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">address_space_descriptor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
     <span class="comment">/*
      * WORD Address Space Descriptor Definition
      * Note: The definitions for DWORD and QWORD are the same other than the width of the address fields.
@@ -1128,11 +1128,11 @@
     }
 
     <span class="kw">let</span> <span class="ident">resource_type</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">bytes</span>[<span class="number">3</span>] {
-        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AddressSpaceResourceType::MemoryRange</span>,
-        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AddressSpaceResourceType::IORange</span>,
-        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AddressSpaceResourceType::BusNumberRange</span>,
-        <span class="number">3</span>..<span class="op">=</span><span class="number">191</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::ReservedResourceType</span>),
-        <span class="number">192</span>..<span class="op">=</span><span class="number">255</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(),
+        <span class="number">0</span> =&gt; <span class="ident">AddressSpaceResourceType::MemoryRange</span>,
+        <span class="number">1</span> =&gt; <span class="ident">AddressSpaceResourceType::IORange</span>,
+        <span class="number">2</span> =&gt; <span class="ident">AddressSpaceResourceType::BusNumberRange</span>,
+        <span class="number">3</span>..<span class="op">=</span><span class="number">191</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::ReservedResourceType</span>),
+        <span class="number">192</span>..<span class="op">=</span><span class="number">255</span> =&gt; <span class="macro">unimplemented!</span>(),
     };
 
     <span class="kw">let</span> <span class="ident">general_flags</span> <span class="op">=</span> <span class="ident">bytes</span>[<span class="number">4</span>];
@@ -1179,7 +1179,7 @@
     <span class="kw">pub</span> <span class="ident">irq</span>: <span class="ident">u32</span>,
 }
 
-<span class="kw">fn</span> <span class="ident">irq_format_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">irq_format_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
     <span class="comment">/*
      * IRQ Descriptor Definition
      *
@@ -1211,8 +1211,8 @@
      */</span>
 
     <span class="kw">match</span> <span class="ident">bytes</span>.<span class="ident">len</span>() {
-        <span class="number">0</span>..<span class="op">=</span><span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::ResourceDescriptorTooShort</span>),
-        <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="number">0</span>..<span class="op">=</span><span class="number">2</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">AmlError::ResourceDescriptorTooShort</span>),
+        <span class="number">3</span> =&gt; {
             <span class="comment">// no IRQ information (&quot;length 2&quot; in spec)</span>
             <span class="kw">let</span> <span class="ident">irq</span> <span class="op">=</span> <span class="ident">LittleEndian::read_u16</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>[<span class="number">1</span>..<span class="op">=</span><span class="number">2</span>]);
 
@@ -1226,7 +1226,7 @@
                 <span class="ident">is_consumer</span>: <span class="bool-val">false</span>, <span class="comment">// assumed to be producer</span>
             }))
         }
-        <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="number">4</span> =&gt; {
             <span class="comment">// with IRQ information (&quot;length 3&quot; in spec)</span>
             <span class="kw">let</span> <span class="ident">irq</span> <span class="op">=</span> <span class="ident">LittleEndian::read_u16</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>[<span class="number">1</span>..<span class="op">=</span><span class="number">2</span>]);
 
@@ -1234,12 +1234,12 @@
             <span class="kw">let</span> <span class="ident">is_wake_capable</span> <span class="op">=</span> <span class="ident">information</span>.<span class="ident">get_bit</span>(<span class="number">5</span>);
             <span class="kw">let</span> <span class="ident">is_shared</span> <span class="op">=</span> <span class="ident">information</span>.<span class="ident">get_bit</span>(<span class="number">4</span>);
             <span class="kw">let</span> <span class="ident">polarity</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">information</span>.<span class="ident">get_bit</span>(<span class="number">3</span>) {
-                <span class="bool-val">false</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">InterruptPolarity::ActiveHigh</span>,
-                <span class="bool-val">true</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">InterruptPolarity::ActiveLow</span>,
+                <span class="bool-val">false</span> =&gt; <span class="ident">InterruptPolarity::ActiveHigh</span>,
+                <span class="bool-val">true</span> =&gt; <span class="ident">InterruptPolarity::ActiveLow</span>,
             };
             <span class="kw">let</span> <span class="ident">trigger</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">information</span>.<span class="ident">get_bit</span>(<span class="number">0</span>) {
-                <span class="bool-val">false</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">InterruptTrigger::Level</span>,
-                <span class="bool-val">true</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">InterruptTrigger::Edge</span>,
+                <span class="bool-val">false</span> =&gt; <span class="ident">InterruptTrigger::Level</span>,
+                <span class="bool-val">true</span> =&gt; <span class="ident">InterruptTrigger::Edge</span>,
             };
 
             <span class="prelude-val">Ok</span>(<span class="ident">Resource::Irq</span>(<span class="ident">IrqDescriptor</span> {
@@ -1252,7 +1252,7 @@
                 <span class="ident">is_consumer</span>: <span class="bool-val">false</span>, <span class="comment">// assumed to be producer</span>
             }))
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::ResourceDescriptorTooLong</span>),
+        <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">AmlError::ResourceDescriptorTooLong</span>),
     }
 }
 
@@ -1279,7 +1279,7 @@
     <span class="ident">transfer_type_preference</span>: <span class="ident">DMATransferTypePreference</span>,
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dma_format_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dma_format_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
     <span class="comment">/*
      * DMA Descriptor Definition
      * Offset  Field Name
@@ -1313,19 +1313,19 @@
     <span class="kw">let</span> <span class="ident">channel_mask</span> <span class="op">=</span> <span class="ident">bytes</span>[<span class="number">1</span>];
     <span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">bytes</span>[<span class="number">2</span>];
     <span class="kw">let</span> <span class="ident">supported_speeds</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">options</span>.<span class="ident">get_bits</span>(<span class="number">5</span>..<span class="op">=</span><span class="number">6</span>) {
-        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DMASupportedSpeed::CompatibilityMode</span>,
-        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DMASupportedSpeed::TypeA</span>,
-        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DMASupportedSpeed::TypeB</span>,
-        <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DMASupportedSpeed::TypeF</span>,
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+        <span class="number">0</span> =&gt; <span class="ident">DMASupportedSpeed::CompatibilityMode</span>,
+        <span class="number">1</span> =&gt; <span class="ident">DMASupportedSpeed::TypeA</span>,
+        <span class="number">2</span> =&gt; <span class="ident">DMASupportedSpeed::TypeB</span>,
+        <span class="number">3</span> =&gt; <span class="ident">DMASupportedSpeed::TypeF</span>,
+        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
     };
     <span class="kw">let</span> <span class="ident">is_bus_master</span> <span class="op">=</span> <span class="ident">options</span>.<span class="ident">get_bit</span>(<span class="number">2</span>);
     <span class="kw">let</span> <span class="ident">transfer_type_preference</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">options</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="op">=</span><span class="number">1</span>) {
-        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DMATransferTypePreference::_8BitOnly</span>,
-        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DMATransferTypePreference::_8And16Bit</span>,
-        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">DMATransferTypePreference::_16Bit</span>,
-        <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;Reserved DMA transfer type preference&quot;</span>),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+        <span class="number">0</span> =&gt; <span class="ident">DMATransferTypePreference::_8BitOnly</span>,
+        <span class="number">1</span> =&gt; <span class="ident">DMATransferTypePreference::_8And16Bit</span>,
+        <span class="number">2</span> =&gt; <span class="ident">DMATransferTypePreference::_16Bit</span>,
+        <span class="number">3</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Reserved DMA transfer type preference&quot;</span>),
+        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
     };
 
     <span class="prelude-val">Ok</span>(<span class="ident">Resource::Dma</span>(<span class="ident">DMADescriptor</span> { <span class="ident">channel_mask</span>, <span class="ident">supported_speeds</span>, <span class="ident">is_bus_master</span>, <span class="ident">transfer_type_preference</span> }))
@@ -1339,7 +1339,7 @@
     <span class="ident">range_length</span>: <span class="ident">u8</span>,
 }
 
-<span class="kw">fn</span> <span class="ident">io_port_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">io_port_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
     <span class="comment">/*
      * I/O Port Descriptor Definition
      * Offset   Field Name                                  Definition
@@ -1377,7 +1377,7 @@
     <span class="prelude-val">Ok</span>(<span class="ident">Resource::IOPort</span>(<span class="ident">IOPortDescriptor</span> { <span class="ident">decodes_full_address</span>, <span class="ident">memory_range</span>, <span class="ident">base_alignment</span>, <span class="ident">range_length</span> }))
 }
 
-<span class="kw">fn</span> <span class="ident">extended_interrupt_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">extended_interrupt_descriptor</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Resource</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
     <span class="comment">/*
      * --- Extended Interrupt Descriptor ---
      * Byte 3 contains the Interrupt Vector Flags:

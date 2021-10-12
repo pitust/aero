@@ -244,7 +244,7 @@
     <span class="doccomment">/// `AmlError::IncompatibleValueConversion` if the value passed is not a package, or if any of the values</span>
     <span class="doccomment">/// within it are not packages. Returns the various `AmlError::Prt*` errors if the internal structure of the</span>
     <span class="doccomment">/// entries is invalid.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_prt_path</span>(<span class="ident">prt_path</span>: <span class="kw-2">&amp;</span><span class="ident">AmlName</span>, <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AmlContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PciRoutingTable</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_prt_path</span>(<span class="ident">prt_path</span>: <span class="kw-2">&amp;</span><span class="ident">AmlName</span>, <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AmlContext</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PciRoutingTable</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
         <span class="kw">let</span> <span class="ident">prt</span> <span class="op">=</span> <span class="ident">context</span>.<span class="ident">invoke_method</span>(<span class="kw-2">&amp;</span><span class="ident">prt_path</span>, <span class="ident">Args::default</span>())<span class="question-mark">?</span>;
@@ -278,15 +278,15 @@
                     <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="ident">address</span>.<span class="ident">get_bits</span>(<span class="number">16</span>..<span class="number">32</span>).<span class="ident">try_into</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">AmlError::PrtInvalidAddress</span>)<span class="question-mark">?</span>;
                     <span class="kw">let</span> <span class="ident">function</span> <span class="op">=</span> <span class="ident">address</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">16</span>).<span class="ident">try_into</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">AmlError::PrtInvalidAddress</span>)<span class="question-mark">?</span>;
                     <span class="kw">let</span> <span class="ident">pin</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">pin_package</span>[<span class="number">1</span>].<span class="ident">as_integer</span>(<span class="ident">context</span>)<span class="question-mark">?</span> {
-                        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::IntA</span>,
-                        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::IntB</span>,
-                        <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::IntC</span>,
-                        <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::IntD</span>,
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::PrtInvalidPin</span>),
+                        <span class="number">0</span> =&gt; <span class="ident">Pin::IntA</span>,
+                        <span class="number">1</span> =&gt; <span class="ident">Pin::IntB</span>,
+                        <span class="number">2</span> =&gt; <span class="ident">Pin::IntC</span>,
+                        <span class="number">3</span> =&gt; <span class="ident">Pin::IntD</span>,
+                        <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::PrtInvalidPin</span>),
                     };
 
                     <span class="kw">match</span> <span class="ident">pin_package</span>[<span class="number">2</span>] {
-                        <span class="ident">AmlValue::Integer</span>(<span class="number">0</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="ident">AmlValue::Integer</span>(<span class="number">0</span>) =&gt; {
                             <span class="comment">/*
                              * The Source Index field contains the GSI number that this interrupt is attached
                              * to.
@@ -303,7 +303,7 @@
                                 ),
                             });
                         }
-                        <span class="ident">AmlValue::String</span>(<span class="kw-2">ref</span> <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="ident">AmlValue::String</span>(<span class="kw-2">ref</span> <span class="ident">name</span>) =&gt; {
                             <span class="kw">let</span> <span class="ident">link_object_name</span> <span class="op">=</span>
                                 <span class="ident">context</span>.<span class="ident">namespace</span>.<span class="ident">search_for_level</span>(<span class="kw-2">&amp;</span><span class="ident">AmlName::from_str</span>(<span class="ident">name</span>)<span class="question-mark">?</span>, <span class="kw-2">&amp;</span><span class="ident">prt_path</span>)<span class="question-mark">?</span>;
                             <span class="ident">entries</span>.<span class="ident">push</span>(<span class="ident">PciRoute</span> {
@@ -313,7 +313,7 @@
                                 <span class="ident">route_type</span>: <span class="ident">PciRouteType::LinkObject</span>(<span class="ident">link_object_name</span>),
                             });
                         }
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::PrtInvalidSource</span>),
+                        <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::PrtInvalidSource</span>),
                     }
                 } <span class="kw">else</span> {
                     <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::IncompatibleValueConversion</span> {
@@ -337,19 +337,19 @@
         <span class="ident">function</span>: <span class="ident">u16</span>,
         <span class="ident">pin</span>: <span class="ident">Pin</span>,
         <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AmlContext</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">IrqDescriptor</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">IrqDescriptor</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">entry</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">entries</span>
             .<span class="ident">iter</span>()
             .<span class="ident">find</span>(<span class="op">|</span><span class="ident">entry</span><span class="op">|</span> {
-                <span class="ident">entry</span>.<span class="ident">device</span> <span class="op">=</span><span class="op">=</span> <span class="ident">device</span>
-                    <span class="op">&amp;&amp;</span> (<span class="ident">entry</span>.<span class="ident">function</span> <span class="op">=</span><span class="op">=</span> <span class="number">0xffff</span> <span class="op">|</span><span class="op">|</span> <span class="ident">entry</span>.<span class="ident">function</span> <span class="op">=</span><span class="op">=</span> <span class="ident">function</span>)
-                    <span class="op">&amp;&amp;</span> <span class="ident">entry</span>.<span class="ident">pin</span> <span class="op">=</span><span class="op">=</span> <span class="ident">pin</span>
+                <span class="ident">entry</span>.<span class="ident">device</span> <span class="op">==</span> <span class="ident">device</span>
+                    <span class="op">&amp;&amp;</span> (<span class="ident">entry</span>.<span class="ident">function</span> <span class="op">==</span> <span class="number">0xffff</span> <span class="op">|</span><span class="op">|</span> <span class="ident">entry</span>.<span class="ident">function</span> <span class="op">==</span> <span class="ident">function</span>)
+                    <span class="op">&amp;&amp;</span> <span class="ident">entry</span>.<span class="ident">pin</span> <span class="op">==</span> <span class="ident">pin</span>
             })
             .<span class="ident">ok_or</span>(<span class="ident">AmlError::PrtNoEntry</span>)<span class="question-mark">?</span>;
 
         <span class="kw">match</span> <span class="ident">entry</span>.<span class="ident">route_type</span> {
-            <span class="ident">PciRouteType::Gsi</span>(<span class="ident">gsi</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">IrqDescriptor</span> {
+            <span class="ident">PciRouteType::Gsi</span>(<span class="ident">gsi</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">IrqDescriptor</span> {
                 <span class="ident">is_consumer</span>: <span class="bool-val">true</span>,
                 <span class="ident">trigger</span>: <span class="ident">InterruptTrigger::Level</span>,
                 <span class="ident">polarity</span>: <span class="ident">InterruptPolarity::ActiveLow</span>,
@@ -357,14 +357,14 @@
                 <span class="ident">is_wake_capable</span>: <span class="bool-val">false</span>,
                 <span class="ident">irq</span>: <span class="ident">gsi</span>,
             }),
-            <span class="ident">PciRouteType::LinkObject</span>(<span class="kw-2">ref</span> <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">PciRouteType::LinkObject</span>(<span class="kw-2">ref</span> <span class="ident">name</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">link_crs</span> <span class="op">=</span>
                     <span class="ident">context</span>.<span class="ident">namespace</span>.<span class="ident">get_by_path</span>(<span class="kw-2">&amp;</span><span class="ident">AmlName::from_str</span>(<span class="string">&quot;_CRS&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">resolve</span>(<span class="ident">name</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
 
                 <span class="kw">let</span> <span class="ident">resources</span> <span class="op">=</span> <span class="ident">resource::resource_descriptor_list</span>(<span class="ident">link_crs</span>)<span class="question-mark">?</span>;
                 <span class="kw">match</span> <span class="ident">resources</span>.<span class="ident">as_slice</span>() {
-                    [<span class="ident">Resource::Irq</span>(<span class="ident">descriptor</span>)] <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">descriptor</span>.<span class="ident">clone</span>()),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::UnexpectedResourceType</span>),
+                    [<span class="ident">Resource::Irq</span>(<span class="ident">descriptor</span>)] =&gt; <span class="prelude-val">Ok</span>(<span class="ident">descriptor</span>.<span class="ident">clone</span>()),
+                    <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">AmlError::UnexpectedResourceType</span>),
                 }
             }
         }
