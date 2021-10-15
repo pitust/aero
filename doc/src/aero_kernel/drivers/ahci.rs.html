@@ -955,18 +955,6 @@
 <span id="955">955</span>
 <span id="956">956</span>
 <span id="957">957</span>
-<span id="958">958</span>
-<span id="959">959</span>
-<span id="960">960</span>
-<span id="961">961</span>
-<span id="962">962</span>
-<span id="963">963</span>
-<span id="964">964</span>
-<span id="965">965</span>
-<span id="966">966</span>
-<span id="967">967</span>
-<span id="968">968</span>
-<span id="969">969</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -1167,10 +1155,6 @@
     <span class="ident">start</span>: <span class="ident">PhysAddr</span>,
     <span class="doccomment">/// The data size of the DMA buffer.</span>
     <span class="ident">data_size</span>: <span class="ident">usize</span>,
-
-    <span class="doccomment">/// True if the sector size is greator then 4KiB and we need</span>
-    <span class="doccomment">/// to allocate a huge page for it.</span>
-    <span class="ident">huge</span>: <span class="ident">bool</span>,
 }
 
 <span class="kw">struct</span> <span class="ident">DmaRequest</span> {
@@ -1187,19 +1171,16 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">DmaBuffer</span><span class="op">&gt;</span><span class="ident">::new</span>();
 
         <span class="kw">while</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="number">0</span> {
-            <span class="kw">let</span> <span class="ident">huge</span> <span class="op">=</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="number">0x1000</span>; <span class="comment">// Check if we want to allocate a huge page?</span>
             <span class="kw">let</span> <span class="ident">data_size</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">size</span>, <span class="number">0x2000</span>);
+            <span class="kw">let</span> <span class="ident">ordering</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="number">0x1000</span> {
+                <span class="ident">BuddyOrdering::Size8KiB</span>
+            } <span class="kw">else</span> {
+                <span class="ident">BuddyOrdering::Size4KiB</span>
+            };
 
-            <span class="kw">let</span> <span class="ident">frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }
-                .<span class="ident">expect</span>(<span class="string">&quot;failed to allocate frame for DMA request&quot;</span>);
+            <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">pmm_alloc</span>(<span class="ident">ordering</span>);
 
-            <span class="ident">buffer</span>.<span class="ident">push</span>(<span class="ident">DmaBuffer</span> {
-                <span class="ident">start</span>: <span class="ident">frame</span>.<span class="ident">start_address</span>(),
-                <span class="ident">data_size</span>,
-
-                <span class="ident">huge</span>,
-            });
-
+            <span class="ident">buffer</span>.<span class="ident">push</span>(<span class="ident">DmaBuffer</span> { <span class="ident">start</span>, <span class="ident">data_size</span> });
             <span class="ident">size</span> <span class="op">-</span><span class="op">=</span> <span class="ident">data_size</span>; <span class="comment">// Subtract the data size from the total size.</span>
         }
 
@@ -1510,35 +1491,25 @@
         <span class="comment">/*
          * size = sizeof(CTB) * 32 == 4KiB * 2 (so we need to allocate
          * two 4KiB size frames).
-         *
-         * We cannot directly allocate a huge page for the command list, because then
-         * we will end up wasting 0x1fe000 KiB of memory.
-         *
-         * TODO(Andy-Python-Programmer): We should find a chunk of memory that is the size of
-         * 2 contiguous 4KiB sized frames. We should also make the current frame allocator (which
-         * is a bump allocator) to be a buddy allocator instead which will be a much smarter approach
-         * to this issue since, it keeps track of so called &quot;buddies&quot; of different sizes. Which then
-         * we can have a buddy sized 2KiB :^).
          */</span>
-        <span class="kw">let</span> <span class="ident">frame_low</span>: <span class="ident">PhysFrame</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }.<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">frame_addr</span> <span class="op">=</span> <span class="ident">pmm_alloc</span>(<span class="ident">BuddyOrdering::Size8KiB</span>);
+        <span class="kw">let</span> <span class="ident">page_addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::IO_VIRTUAL_BASE</span> <span class="op">+</span> <span class="ident">frame_addr</span>.<span class="ident">as_u64</span>();
 
-        <span class="kw">let</span> <span class="ident">frame_high</span>: <span class="ident">PhysFrame</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">FRAME_ALLOCATOR</span>.<span class="ident">allocate_frame</span>() }.<span class="ident">ok_or</span>(<span class="ident">MapToError::FrameAllocationFailed</span>)<span class="question-mark">?</span>;
-
-        <span class="kw">let</span> <span class="ident">low_page</span>: <span class="ident">Page</span> <span class="op">=</span>
-            <span class="ident">Page::containing_address</span>(<span class="ident"><span class="kw">crate</span>::IO_VIRTUAL_BASE</span> <span class="op">+</span> <span class="ident">frame_low</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>());
-
-        <span class="kw">let</span> <span class="ident">high_page</span>: <span class="ident">Page</span> <span class="op">=</span>
-            <span class="ident">Page::containing_address</span>(<span class="ident"><span class="kw">crate</span>::IO_VIRTUAL_BASE</span> <span class="op">+</span> <span class="ident">frame_high</span>.<span class="ident">start_address</span>().<span class="ident">as_u64</span>());
-
-        <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags::PRESENT</span>
-            <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>
-            <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
-            <span class="op">|</span> <span class="ident">PageTableFlags::NO_CACHE</span>;
-
-        <span class="kw">unsafe</span> { <span class="ident">offset_table</span>.<span class="ident">map_to</span>(<span class="ident">low_page</span>, <span class="ident">frame_low</span>, <span class="ident">flags</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>) }<span class="question-mark">?</span>.<span class="ident">flush</span>();
-        <span class="kw">unsafe</span> { <span class="ident">offset_table</span>.<span class="ident">map_to</span>(<span class="ident">high_page</span>, <span class="ident">frame_high</span>, <span class="ident">flags</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>) }<span class="question-mark">?</span>.<span class="ident">flush</span>();
+        <span class="kw">for</span> <span class="ident">size</span> <span class="kw">in</span> (<span class="number">0</span>..<span class="number">0x2000u64</span>).<span class="ident">step_by</span>(<span class="number">0x1000</span>) {
+            <span class="kw">unsafe</span> {
+                <span class="ident">offset_table</span>
+                    .<span class="ident">map_to</span>(
+                        <span class="ident">Page</span>::<span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="ident">::containing_address</span>(<span class="ident">page_addr</span> <span class="op">+</span> <span class="ident">size</span>),
+                        <span class="ident">PhysFrame</span>::<span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="ident">::containing_address</span>(<span class="ident">frame_addr</span> <span class="op">+</span> <span class="ident">size</span>),
+                        <span class="ident">PageTableFlags::PRESENT</span>
+                            <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>
+                            <span class="op">|</span> <span class="ident">PageTableFlags::WRITE_THROUGH</span>
+                            <span class="op">|</span> <span class="ident">PageTableFlags::NO_CACHE</span>,
+                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
+                    )<span class="question-mark">?</span>
+                    .<span class="ident">flush</span>();
+            }
+        }
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">32</span> {
             <span class="kw">let</span> <span class="ident">command_header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd_header_at</span>(<span class="ident">i</span>);
@@ -1547,12 +1518,9 @@
             <span class="comment">// 256 bytes per command table, 64 + 16 + 48 + 16 * 8</span>
             <span class="ident">command_header</span>.<span class="ident">prdtl</span>.<span class="ident">set</span>(<span class="number">8</span>);
             <span class="ident">command_header</span>.<span class="ident">prdbc</span>.<span class="ident">set</span>(<span class="number">0</span>);
-
-            <span class="kw">if</span> <span class="ident">i</span> <span class="op">&lt;</span> <span class="number">16</span> {
-                <span class="ident">command_header</span>.<span class="ident">ctb</span>.<span class="ident">set</span>(<span class="ident">frame_low</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="number">256</span> <span class="op">*</span> <span class="ident">i</span>);
-            } <span class="kw">else</span> {
-                <span class="ident">command_header</span>.<span class="ident">ctb</span>.<span class="ident">set</span>(<span class="ident">frame_high</span>.<span class="ident">start_address</span>() <span class="op">+</span> <span class="number">256</span> <span class="op">*</span> <span class="ident">i</span>);
-            }
+            <span class="ident">command_header</span>.<span class="ident">ctb</span>.<span class="ident">set</span>(<span class="ident">PhysAddr::new</span>(
+                (<span class="ident">frame_addr</span>.<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> <span class="number">256</span> <span class="op">*</span> <span class="ident">i</span>) <span class="kw">as</span> <span class="ident">u64</span>,
+            ));
         }
 
         <span class="self">self</span>.<span class="ident">ie</span>.<span class="ident">set</span>(<span class="ident">HbaPortIE::all</span>());
@@ -1594,7 +1562,7 @@
         <span class="comment">// Check if the port is active and is present. If thats the case</span>
         <span class="comment">// we can start the AHCI port.</span>
         <span class="kw">if</span> <span class="kw">let</span> (<span class="ident">HbaPortDd::PresentAndE</span>, <span class="ident">HbaPortIpm::Active</span>) <span class="op">=</span> (<span class="ident">dd</span>, <span class="ident">ipm</span>) {
-            <span class="macro">log::trace!</span>(<span class="string">&quot;enabling AHCI port {}&quot;</span>, <span class="ident">port</span>);
+            <span class="macro">log::trace!</span>(<span class="string">&quot;ahci: enabling port {}&quot;</span>, <span class="ident">port</span>);
 
             <span class="self">self</span>.<span class="ident">start</span>(<span class="ident">offset_table</span>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)
@@ -1614,8 +1582,6 @@
     ) {
         <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd_header_at</span>(<span class="ident">slot</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">header</span>.<span class="ident">flags</span>.<span class="ident">get</span>();
-
-        <span class="ident">header</span>.<span class="ident">_reserved</span>.<span class="ident">fill</span>(<span class="number">00</span>);
 
         <span class="kw">if</span> <span class="ident">command</span> <span class="op">==</span> <span class="ident">AtaCommand::AtaCommandWriteDmaExt</span> <span class="op">|</span><span class="op">|</span> <span class="ident">command</span> <span class="op">==</span> <span class="ident">AtaCommand::AtaCommandWriteDma</span>
         {
@@ -1812,6 +1778,16 @@
 
         <span class="ident">hba</span>.<span class="ident">global_host_control</span>.<span class="ident">set</span>(<span class="ident">current_flags</span> <span class="op">|</span> <span class="ident">HbaHostCont::IE</span>); <span class="comment">// Enable Interrupts</span>
 
+        <span class="kw">let</span> <span class="ident">version</span> <span class="op">=</span> <span class="ident">hba</span>.<span class="ident">version</span>.<span class="ident">get</span>();
+        <span class="kw">let</span> <span class="ident">major_version</span> <span class="op">=</span> <span class="ident">version</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span> <span class="op">&amp;</span> <span class="number">0xffff</span>;
+        <span class="kw">let</span> <span class="ident">minor_version</span> <span class="op">=</span> <span class="ident">version</span> <span class="op">&amp;</span> <span class="number">0xffff</span>;
+
+        <span class="macro">log::info!</span>(
+            <span class="string">&quot;ahci: controller version {}.{}&quot;</span>,
+            <span class="ident">major_version</span>,
+            <span class="ident">minor_version</span>
+        );
+
         <span class="kw">let</span> <span class="ident">pi</span> <span class="op">=</span> <span class="ident">hba</span>.<span class="ident">ports_implemented</span>.<span class="ident">get</span>();
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">32</span> {
@@ -1897,7 +1873,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">PciHeader</span>, <span class="ident">_offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) {
-        <span class="macro">log::info!</span>(<span class="string">&quot;Starting AHCI driver...&quot;</span>);
+        <span class="macro">log::info!</span>(<span class="string">&quot;ahci: starting driver...&quot;</span>);
 
         <span class="ident">get_ahci</span>().<span class="ident">inner</span>.<span class="ident">lock_irq</span>().<span class="ident">start_driver</span>(<span class="ident">header</span>).<span class="ident">unwrap</span>(); <span class="comment">// Start and initialize the AHCI controller.</span>
 
