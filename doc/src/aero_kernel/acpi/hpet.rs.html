@@ -43,7 +43,6 @@
 <span id="43">43</span>
 <span id="44">44</span>
 <span id="45">45</span>
-<span id="46">46</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -70,17 +69,16 @@
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIGNATURE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;HPET&quot;</span>;
 
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">packed</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Hpet</span> {
-    <span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">Sdt</span>,
-    <span class="kw">pub</span> <span class="ident">hw_rev_id</span>: <span class="ident">u8</span>,
-    <span class="kw">pub</span> <span class="ident">comparator_descriptor</span>: <span class="ident">u8</span>,
-    <span class="kw">pub</span> <span class="ident">pci_vendor_id</span>: <span class="ident">u16</span>,
-    <span class="kw">pub</span> <span class="ident">base_address</span>: <span class="ident">GenericAddressStructure</span>,
-    <span class="kw">pub</span> <span class="ident">hpet_number</span>: <span class="ident">u8</span>,
-    <span class="kw">pub</span> <span class="ident">min_periodic_clk_tick</span>: <span class="ident">u16</span>,
-    <span class="kw">pub</span> <span class="ident">oem_attribute</span>: <span class="ident">u8</span>,
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">Hpet</span> {
+    <span class="ident">header</span>: <span class="ident">Sdt</span>,
+    <span class="ident">hw_rev_id</span>: <span class="ident">u8</span>,
+    <span class="ident">comparator_descriptor</span>: <span class="ident">u8</span>,
+    <span class="ident">pci_vendor_id</span>: <span class="ident">u16</span>,
+    <span class="ident">base_address</span>: <span class="ident">GenericAddressStructure</span>,
+    <span class="ident">hpet_number</span>: <span class="ident">u8</span>,
+    <span class="ident">min_periodic_clk_tick</span>: <span class="ident">u16</span>,
+    <span class="ident">oem_attribute</span>: <span class="ident">u8</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Hpet</span> {

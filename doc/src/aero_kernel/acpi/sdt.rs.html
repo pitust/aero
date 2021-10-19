@@ -66,6 +66,17 @@
 <span id="66">66</span>
 <span id="67">67</span>
 <span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -87,28 +98,39 @@
 
 <span class="kw">use</span> <span class="ident">core::mem</span>;
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="ident">XSDT_SIGNATURE</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> <span class="string">b&quot;XSDT&quot;</span>;
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="ident">RSDT_SIGNATURE</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> <span class="string">b&quot;RSDT&quot;</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging::VirtAddr</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Sdt</span> {
-    <span class="kw">pub</span> <span class="ident">signature</span>: [<span class="ident">u8</span>; <span class="number">4</span>],
-    <span class="kw">pub</span> <span class="ident">length</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">revision</span>: <span class="ident">u8</span>,
-    <span class="kw">pub</span> <span class="ident">checksum</span>: <span class="ident">u8</span>,
-    <span class="kw">pub</span> <span class="ident">oem_id</span>: [<span class="ident">u8</span>; <span class="number">6</span>],
-    <span class="kw">pub</span> <span class="ident">oem_table_id</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
-    <span class="kw">pub</span> <span class="ident">oem_revision</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">creator_id</span>: <span class="ident">u32</span>,
-    <span class="kw">pub</span> <span class="ident">creator_revision</span>: <span class="ident">u32</span>,
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">Sdt</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">signature</span>: [<span class="ident">u8</span>; <span class="number">4</span>],
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">length</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">revision</span>: <span class="ident">u8</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">checksum</span>: <span class="ident">u8</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">oem_id</span>: [<span class="ident">u8</span>; <span class="number">6</span>],
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">oem_table_id</span>: [<span class="ident">u8</span>; <span class="number">8</span>],
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">oem_revision</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">creator_id</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">creator_revision</span>: <span class="ident">u32</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Sdt</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">sptr</span> <span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
+            <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">length</span> <span class="kw">as</span> <span class="ident">usize</span>;
+
+            <span class="ident"><span class="kw">super</span>::rsdp::validate_checksum</span>(<span class="ident">sptr</span>, <span class="ident">size</span>)
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signature</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">signature</span> <span class="kw">as</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]
+    }
+
     <span class="doccomment">/// Get SDT from its address.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_address</span>(<span class="ident">address</span>: <span class="ident">u64</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="self">Self</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">address</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>)
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_address</span>(<span class="ident">address</span>: <span class="ident">VirtAddr</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="self">Self</span> {
+        <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">address</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>())
     }
 
     <span class="doccomment">/// Get the address of this tables data.</span>
