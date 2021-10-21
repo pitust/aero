@@ -449,6 +449,15 @@
 <span id="449">449</span>
 <span id="450">450</span>
 <span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -629,12 +638,21 @@
     <span class="macro">debug_assert!</span>(<span class="ident">ordering</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">BUDDY_SIZE</span>.<span class="ident">len</span>());
 
     <span class="kw">unsafe</span> {
-        <span class="ident"><span class="kw">super</span>::FRAME_ALLOCATOR</span>
+        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::FRAME_ALLOCATOR</span>
             .<span class="number">0</span>
             .<span class="ident">get</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">lock</span>().<span class="ident">allocate_frame_inner</span>(<span class="ident">ordering</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>))
             .<span class="ident">expect</span>(<span class="string">&quot;pmm: out of memory&quot;</span>)
-            .<span class="ident">expect</span>(<span class="string">&quot;pmm: frame allocator not initialized&quot;</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;pmm: frame allocator not initialized&quot;</span>);
+
+        <span class="kw">let</span> <span class="ident">virt</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">addr</span>.<span class="ident">as_u64</span>();
+        <span class="kw">let</span> <span class="ident">fill_size</span> <span class="op">=</span> <span class="ident">BUDDY_SIZE</span>[<span class="ident">ordering</span>] <span class="kw">as</span> <span class="ident">usize</span>;
+        <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">core::slice::from_raw_parts_mut</span>(<span class="ident">virt</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(), <span class="ident">fill_size</span>);
+
+        <span class="comment">// We always zero out memory for security reasons.</span>
+        <span class="ident">slice</span>.<span class="ident">fill</span>(<span class="number">0x00</span>);
+
+        <span class="ident">addr</span>
     }
 }
 

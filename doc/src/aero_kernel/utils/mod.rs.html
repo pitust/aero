@@ -290,6 +290,22 @@
 <span id="290">290</span>
 <span id="291">291</span>
 <span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -582,6 +598,22 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>)
     }
 }
+
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">CeilDiv</span> {
+    <span class="kw">fn</span> <span class="ident">ceil_div</span>(<span class="self">self</span>, <span class="ident">d</span>: <span class="self">Self</span>) -&gt; <span class="self">Self</span>;
+}
+
+<span class="macro">macro_rules!</span> <span class="ident">ceil_div_impl</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>)<span class="kw-2">*</span>) =&gt; ($(
+        <span class="kw">impl</span> <span class="ident">CeilDiv</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {
+            <span class="kw">fn</span> <span class="ident">ceil_div</span>(<span class="self">self</span>, <span class="ident">d</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {
+                (<span class="self">self</span> <span class="op">+</span> <span class="ident">d</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="ident">d</span>
+            }
+        }
+    )<span class="kw-2">*</span>)
+}
+
+<span class="macro">ceil_div_impl!</span>(<span class="ident">u8</span> <span class="ident">i8</span> <span class="ident">u16</span> <span class="ident">i16</span> <span class="ident">u32</span> <span class="ident">i32</span> <span class="ident">u64</span> <span class="ident">i64</span> <span class="ident">usize</span> <span class="ident">isize</span> <span class="ident">u128</span> <span class="ident">i128</span>);
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>

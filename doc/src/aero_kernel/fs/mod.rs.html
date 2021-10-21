@@ -277,6 +277,11 @@
 <span id="277">277</span>
 <span id="278">278</span>
 <span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -312,6 +317,7 @@
 <span class="kw">use</span> <span class="ident"><span class="self">self</span>::cache::Cacheable</span>;
 <span class="kw">use</span> <span class="self">self</span>::{<span class="ident">cache::DirCacheItem</span>, <span class="ident">ramfs::RamFs</span>};
 
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">block</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cache</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">devfs</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">file_table</span>;
@@ -554,6 +560,10 @@
     <span class="ident">devfs::init</span>()<span class="question-mark">?</span>;
     <span class="macro">log::info!</span>(<span class="string">&quot;Installed devfs&quot;</span>);
 
+    <span class="prelude-val">Ok</span>(())
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">launch</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
