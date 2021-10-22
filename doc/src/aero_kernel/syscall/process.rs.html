@@ -116,6 +116,37 @@
 <span id="116">116</span>
 <span id="117">117</span>
 <span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -138,8 +169,11 @@
 <span class="kw">use</span> <span class="ident">aero_syscall</span>::{<span class="ident">AeroSyscallError</span>, <span class="ident">MMapFlags</span>, <span class="ident">MMapProt</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::Path</span>;
+
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging::VirtAddr</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::validate_str</span>;
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
     <span class="macro">log::trace!</span>(<span class="string">&quot;exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
@@ -181,6 +215,34 @@
 
     <span class="ident">scheduler</span>.<span class="ident">register_task</span>(<span class="ident">forked</span>.<span class="ident">clone</span>());
     <span class="prelude-val">Ok</span>(<span class="ident">forked</span>.<span class="ident">task_id</span>().<span class="ident">as_usize</span>())
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exec</span>(
+    <span class="ident">path</span>: <span class="ident">usize</span>,
+    <span class="ident">path_size</span>: <span class="ident">usize</span>,
+    <span class="ident">_args</span>: <span class="ident">usize</span>,
+    <span class="ident">_args_size</span>: <span class="ident">usize</span>,
+    <span class="ident">_envs</span>: <span class="ident">usize</span>,
+    <span class="ident">_envs_size</span>: <span class="ident">usize</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">path_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path</span>);
+
+    <span class="kw">let</span> <span class="ident">executable</span> <span class="op">=</span> <span class="ident">fs::lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+
+    <span class="ident">scheduler::get_scheduler</span>()
+        .<span class="ident">current_task</span>()
+        .<span class="ident">exec</span>(<span class="ident">executable</span>)
+        .<span class="ident">expect</span>(<span class="string">&quot;task: failed to exec task&quot;</span>);
+
+    <span class="macro">unreachable!</span>()
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log</span>(<span class="ident">msg_start</span>: <span class="ident">usize</span>, <span class="ident">msg_size</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">msg_start</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">msg_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="macro">log::debug!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">message</span>);
+
+    <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap</span>(
