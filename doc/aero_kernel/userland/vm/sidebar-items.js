@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["UnmapResult",""]],"struct":[["MMapFile",""],["Mapping",""],["Vm",""],["VmProtected",""]]});
+initSidebarItems({"enum":[["UnmapResult",""]],"struct":[["LoadedBinary",""],["MMapFile",""],["Mapping",""],["Vm",""],["VmProtected",""]]});

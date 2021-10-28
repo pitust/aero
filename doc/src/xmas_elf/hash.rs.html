@@ -79,7 +79,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bucket</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">bucket_count</span>);
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">first_bucket</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>).<span class="ident">offset</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">isize</span>);
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">first_bucket</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u32</span>).<span class="ident">offset</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">isize</span>);
             <span class="kw-2">*</span><span class="ident">ptr</span>
         }
     }
@@ -88,7 +88,7 @@
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chain_count</span>);
         <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bucket_count</span> <span class="op">+</span> <span class="ident">index</span>;
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">first_bucket</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>).<span class="ident">offset</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">isize</span>);
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">first_bucket</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u32</span>).<span class="ident">offset</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">isize</span>);
             <span class="kw-2">*</span><span class="ident">ptr</span>
         }
     }

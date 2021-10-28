@@ -344,15 +344,15 @@
         <span class="self">self</span>.<span class="number">0</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_block_num</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">num</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_block_num</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">num</span>: <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">set_bits</span>(<span class="number">0</span>..<span class="op">=</span><span class="number">3</span>, <span class="ident">num</span> <span class="kw">as</span> <span class="ident">u8</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_slave</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">slave</span>: <span class="ident">bool</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_slave</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">slave</span>: <span class="ident">bool</span>) {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">set_bit</span>(<span class="number">4</span>, <span class="ident">slave</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_lba</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">lba</span>: <span class="ident">bool</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_lba</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">lba</span>: <span class="ident">bool</span>) {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">set_bit</span>(<span class="number">6</span>, <span class="ident">lba</span>);
     }
 }
@@ -415,7 +415,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_features</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_features</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">BASE_FEATURE</span>, <span class="number">0u8</span>);
     }
 
@@ -427,7 +427,7 @@
         <span class="ident">BaseStatusReg::from_bits</span>(<span class="self">self</span>.<span class="ident">base</span>.<span class="ident">read_offset</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">BASE_STATUS</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_drive_select</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">slave</span>: <span class="ident">bool</span>, <span class="ident">lba</span>: <span class="ident">bool</span>, <span class="ident">lba28_block_num</span>: <span class="ident">u16</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_drive_select</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">slave</span>: <span class="ident">bool</span>, <span class="ident">lba</span>: <span class="ident">bool</span>, <span class="ident">lba28_block_num</span>: <span class="ident">u16</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sel</span> <span class="op">=</span> <span class="ident">BaseDriveSelReg::new</span>();
         <span class="ident">sel</span>.<span class="ident">set_block_num</span>(<span class="ident">lba28_block_num</span> <span class="kw">as</span> <span class="ident">usize</span>);
         <span class="ident">sel</span>.<span class="ident">set_lba</span>(<span class="ident">lba</span>);
@@ -435,22 +435,22 @@
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">BASE_DRIVE_SEL</span>, <span class="ident">sel</span>.<span class="ident">val</span>());
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_command</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cmd</span>: <span class="ident">AtaCommand</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_command</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cmd</span>: <span class="ident">AtaCommand</span>) {
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">BASE_COMMAND</span>, <span class="ident">cmd</span> <span class="kw">as</span> <span class="ident">u8</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_count_lba28</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">u8</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_count_lba28</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">u8</span>) {
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">BASE_SECTOR_COUNT</span>, <span class="ident">count</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_count_lba48</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">u16</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_count_lba48</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">u16</span>) {
         <span class="self">self</span>.<span class="ident">base</span>
             .<span class="ident">write_offset</span>(<span class="ident">BASE_SECTOR_COUNT</span>, <span class="ident">count</span>.<span class="ident">get_bits</span>(<span class="number">8</span>..<span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>);
         <span class="self">self</span>.<span class="ident">base</span>
             .<span class="ident">write_offset</span>(<span class="ident">BASE_SECTOR_COUNT</span>, <span class="ident">count</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_count</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">lba48</span>: <span class="ident">bool</span>, <span class="ident">count</span>: <span class="ident">u16</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_count</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">lba48</span>: <span class="ident">bool</span>, <span class="ident">count</span>: <span class="ident">u16</span>) {
         <span class="kw">match</span> <span class="ident">lba48</span> {
             <span class="bool-val">true</span> =&gt; <span class="self">self</span>.<span class="ident">set_sector_count_lba48</span>(<span class="ident">count</span>),
             <span class="bool-val">false</span> =&gt; {
@@ -460,7 +460,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_num_lba48</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_num_lba48</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="ident">base</span>
             .<span class="ident">write_offset</span>(<span class="ident">BASE_LBA_LO</span>, <span class="ident">sector</span>.<span class="ident">get_bits</span>(<span class="number">24</span>..<span class="number">32</span>) <span class="kw">as</span> <span class="ident">u8</span>);
         <span class="self">self</span>.<span class="ident">base</span>
@@ -475,7 +475,7 @@
             .<span class="ident">write_offset</span>(<span class="ident">BASE_LBA_HI</span>, <span class="ident">sector</span>.<span class="ident">get_bits</span>(<span class="number">16</span>..<span class="number">24</span>) <span class="kw">as</span> <span class="ident">u8</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_num_lba28</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_num_lba28</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="ident">base</span>
             .<span class="ident">write_offset</span>(<span class="ident">BASE_LBA_LO</span>, <span class="ident">sector</span>.<span class="ident">get_bits</span>(<span class="number">0</span>..<span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>);
         <span class="self">self</span>.<span class="ident">base</span>
@@ -492,7 +492,7 @@
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">read_offset</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">BASE_LBA_HI</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_num</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">lba48</span>: <span class="ident">bool</span>, <span class="ident">sector</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_sector_num</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">lba48</span>: <span class="ident">bool</span>, <span class="ident">sector</span>: <span class="ident">usize</span>) {
         <span class="kw">match</span> <span class="ident">lba48</span> {
             <span class="bool-val">true</span> =&gt; <span class="self">self</span>.<span class="ident">set_sector_num_lba48</span>(<span class="ident">sector</span>),
             <span class="bool-val">false</span> =&gt; <span class="self">self</span>.<span class="ident">set_sector_num_lba28</span>(<span class="ident">sector</span>),
@@ -511,14 +511,14 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">software_reset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">software_reset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">let</span> <span class="ident">dev</span> <span class="op">=</span> <span class="ident">CtrlDevCtrlReg::SRST</span>;
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">CTRL_DEV_CTRL</span>, <span class="ident">dev</span>.<span class="ident">bits</span>());
         <span class="ident">io::delay</span>(<span class="number">5000</span>);
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">CTRL_DEV_CTRL</span>, <span class="number">0u8</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_interrupts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_interrupts</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">CTRL_DEV_CTRL</span>, <span class="number">0u8</span>);
     }
 }
@@ -534,7 +534,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_dma</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cmd</span>: <span class="ident">AtaCommand</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">start_dma</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cmd</span>: <span class="ident">AtaCommand</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">BMIdeCmd::DMA_START</span>;
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">cmd</span>.<span class="ident">is_write</span>() {
@@ -544,7 +544,7 @@
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">BMIDE_COMMAND</span>, <span class="ident">c</span>.<span class="ident">bits</span>());
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load_prdt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">prdt_base</span>: <span class="ident">PhysAddr</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load_prdt</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">prdt_base</span>: <span class="ident">PhysAddr</span>) {
         <span class="self">self</span>.<span class="ident">base</span>
             .<span class="ident">write_offset</span>(<span class="ident">BMIDE_PRDT</span>, <span class="ident">prdt_base</span>.<span class="ident">as_u64</span>() <span class="kw">as</span> <span class="ident">u32</span>);
     }
@@ -553,7 +553,7 @@
         <span class="ident">BMIdeStatus::from_bits_truncate</span>(<span class="self">self</span>.<span class="ident">base</span>.<span class="ident">read_offset</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">BMIDE_STATUS</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ack_interrupt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ack_interrupt</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">BMIdeStatus::DISK_IRQ</span> <span class="op">|</span> <span class="ident">BMIdeStatus::DMA_FAILED</span>;
         <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">write_offset</span>(<span class="ident">BMIDE_STATUS</span>, <span class="ident">v</span>.<span class="ident">bits</span>());
     }

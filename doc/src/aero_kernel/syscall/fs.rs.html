@@ -243,7 +243,7 @@
         .<span class="ident">flags</span>
         .<span class="ident">intersects</span>(<span class="ident">OpenFlags::O_WRONLY</span> <span class="op">|</span> <span class="ident">OpenFlags::O_RDWR</span>)
     {
-        <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">handle</span>.<span class="ident">write</span>(<span class="ident">buffer</span>)<span class="question-mark">?</span>)
     } <span class="kw">else</span> {
         <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::EACCES</span>)
@@ -261,7 +261,7 @@
         .<span class="ident">flags</span>
         .<span class="ident">intersects</span>(<span class="ident">OpenFlags::O_RDONLY</span> <span class="op">|</span> <span class="ident">OpenFlags::O_RDWR</span>)
     {
-        <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice_mut</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice_mut</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">handle</span>.<span class="ident">read</span>(<span class="ident">buffer</span>)<span class="question-mark">?</span>)
     } <span class="kw">else</span> {
         <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::EACCES</span>)
@@ -275,7 +275,7 @@
         <span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">OpenFlags::O_RDONLY</span>);
     }
 
-    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">len</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">len</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path</span>);
     <span class="kw">let</span> <span class="ident">inode</span> <span class="op">=</span> <span class="ident">fs::lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
@@ -302,7 +302,7 @@
         .<span class="ident">get_handle</span>(<span class="ident">fd</span>)
         .<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EBADFD</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice_mut</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice_mut</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">handle</span>.<span class="ident">get_dents</span>(<span class="ident">buffer</span>)<span class="question-mark">?</span>)
 }
 
@@ -321,7 +321,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chdir</span>(<span class="ident">path</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">inode</span> <span class="op">=</span> <span class="ident">fs::lookup_path</span>(<span class="ident">Path::new</span>(<span class="ident">buffer</span>))<span class="question-mark">?</span>;
 
     <span class="kw">if</span> <span class="op">!</span><span class="ident">inode</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>.<span class="ident">is_directory</span>() {
@@ -334,7 +334,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mkdirat</span>(<span class="ident">dfd</span>: <span class="ident">usize</span>, <span class="ident">path</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path_str</span>);
 
     <span class="comment">// NOTE: If the pathname given in pathname is relative, then it is interpreted</span>
@@ -382,7 +382,7 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rmdir</span>(<span class="ident">path</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path_str</span>);
 
     <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">child</span>) <span class="op">=</span> <span class="ident">path</span>.<span class="ident">parent_and_basename</span>();
@@ -406,7 +406,7 @@
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::EINVAL</span>);
     }
 
-    <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice_mut</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">validate_slice_mut</span>(<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>().<span class="ident">get_cwd</span>();
 
     <span class="ident">buffer</span>[..<span class="ident">cwd</span>.<span class="ident">len</span>()].<span class="ident">copy_from_slice</span>(<span class="ident">cwd</span>.<span class="ident">as_bytes</span>());

@@ -284,14 +284,14 @@
                 <span class="kw">break</span>;
             }
 
-            <span class="kw">let</span> <span class="ident">rip</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="ident">rip_rbp</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">usize</span>) };
+            <span class="kw">let</span> <span class="ident">rip</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="ident">rip_rbp</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">usize</span>) };
 
             <span class="kw">if</span> <span class="ident">rip</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="kw">break</span>;
             }
 
             <span class="kw">unsafe</span> {
-                <span class="ident">rbp</span> <span class="op">=</span> <span class="kw-2">*</span>(<span class="ident">rbp</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">usize</span>);
+                <span class="ident">rbp</span> <span class="op">=</span> <span class="kw-2">*</span>(<span class="ident">rbp</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">usize</span>);
             }
 
             <span class="kw">for</span> <span class="ident">data</span> <span class="kw">in</span> <span class="ident">symbol_table</span> {

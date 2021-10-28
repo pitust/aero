@@ -147,6 +147,19 @@
 <span id="147">147</span>
 <span id="148">148</span>
 <span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -220,26 +233,39 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exec</span>(
     <span class="ident">path</span>: <span class="ident">usize</span>,
     <span class="ident">path_size</span>: <span class="ident">usize</span>,
-    <span class="ident">_args</span>: <span class="ident">usize</span>,
-    <span class="ident">_args_size</span>: <span class="ident">usize</span>,
-    <span class="ident">_envs</span>: <span class="ident">usize</span>,
-    <span class="ident">_envs_size</span>: <span class="ident">usize</span>,
+    <span class="ident">args</span>: <span class="ident">usize</span>,
+    <span class="ident">argc</span>: <span class="ident">usize</span>,
+    <span class="ident">envs</span>: <span class="ident">usize</span>,
+    <span class="ident">envc</span>: <span class="ident">usize</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">path_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">path_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path</span>);
 
     <span class="kw">let</span> <span class="ident">executable</span> <span class="op">=</span> <span class="ident">fs::lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
 
+    <span class="comment">// NOTE: Neither args nor envs should be used after this point, the kernel</span>
+    <span class="comment">// now has owned copies in args and environment variables.</span>
+    <span class="kw">let</span> <span class="ident">argv</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">argc</span> <span class="op">&gt;</span> <span class="number">0</span> {
+        <span class="prelude-val">Some</span>(<span class="ident"><span class="kw">super</span>::exec_args_from_slice</span>(<span class="ident">args</span>, <span class="ident">argc</span>))
+    } <span class="kw">else</span> {
+        <span class="prelude-val">None</span>
+    };
+    <span class="kw">let</span> <span class="ident">envv</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">envc</span> <span class="op">&gt;</span> <span class="number">0</span> {
+        <span class="prelude-val">Some</span>(<span class="ident"><span class="kw">super</span>::exec_args_from_slice</span>(<span class="ident">envs</span>, <span class="ident">envc</span>))
+    } <span class="kw">else</span> {
+        <span class="prelude-val">None</span>
+    };
+
     <span class="ident">scheduler::get_scheduler</span>()
         .<span class="ident">current_task</span>()
-        .<span class="ident">exec</span>(<span class="ident">executable</span>)
+        .<span class="ident">exec</span>(<span class="ident">executable</span>, <span class="ident">argv</span>, <span class="ident">envv</span>)
         .<span class="ident">expect</span>(<span class="string">&quot;task: failed to exec task&quot;</span>);
 
     <span class="macro">unreachable!</span>()
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log</span>(<span class="ident">msg_start</span>: <span class="ident">usize</span>, <span class="ident">msg_size</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">msg_start</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">msg_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">msg_start</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">msg_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="macro">log::debug!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">message</span>);
 
     <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)

@@ -30,7 +30,7 @@
 <span class="kw">struct</span> <span class="ident">Writer</span>;
 
 <span class="kw">impl</span> <span class="ident">core::fmt::Write</span> <span class="kw">for</span> <span class="ident">Writer</span> {
-    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident"><span class="kw">crate</span>::sys_write</span>(<span class="number">1</span>, <span class="ident">s</span>.<span class="ident">as_bytes</span>()).<span class="ident">expect</span>(<span class="string">&quot;stdout: failed to write to the standard output&quot;</span>);
         <span class="prelude-val">Ok</span>(())
     }

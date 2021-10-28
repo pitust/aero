@@ -269,7 +269,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">get_hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">B</span>: <span class="ident">BuildHasher</span><span class="op">&gt;</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>, <span class="ident">build_hasher</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="ident">u64</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hasher</span> <span class="op">=</span> <span class="ident">build_hasher</span>.<span class="ident">build_hasher</span>();
-        <span class="ident">value</span>.<span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">hasher</span>);
+        <span class="ident">value</span>.<span class="ident">hash</span>(<span class="kw-2">&amp;mut</span> <span class="ident">hasher</span>);
         <span class="ident">hasher</span>.<span class="ident">finish</span>()
     }
 }
@@ -282,7 +282,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">get_hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">B</span>: <span class="ident">BuildHasher</span><span class="op">&gt;</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>, <span class="ident">build_hasher</span>: <span class="kw-2">&amp;</span><span class="ident">B</span>) -&gt; <span class="ident">u64</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hasher</span> <span class="op">=</span> <span class="ident">build_hasher</span>.<span class="ident">build_hasher</span>();
-        <span class="ident">value</span>.<span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">hasher</span>);
+        <span class="ident">value</span>.<span class="ident">hash</span>(<span class="kw-2">&amp;mut</span> <span class="ident">hasher</span>);
         <span class="ident">hasher</span>.<span class="ident">finish</span>()
     }
 }
@@ -382,7 +382,7 @@
         <span class="kw">let</span> <span class="ident">build_hasher</span> <span class="op">=</span> <span class="ident">RandomState::with_seeds</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
         <span class="kw">let</span> <span class="ident">shortened</span> <span class="op">=</span> <span class="ident">u64::get_hash</span>(<span class="kw-2">&amp;</span><span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">build_hasher</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hasher</span> <span class="op">=</span> <span class="ident">AHasher::new_with_keys</span>(<span class="number">1</span>, <span class="number">2</span>);
-        <span class="number">0_u64</span>.<span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">hasher</span>);
+        <span class="number">0_u64</span>.<span class="ident">hash</span>(<span class="kw-2">&amp;mut</span> <span class="ident">hasher</span>);
         <span class="macro">assert_ne!</span>(<span class="ident">hasher</span>.<span class="ident">finish</span>(), <span class="ident">shortened</span>);
     }
 

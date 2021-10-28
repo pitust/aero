@@ -314,7 +314,6 @@
 <span id="314">314</span>
 <span id="315">315</span>
 <span id="316">316</span>
-<span id="317">317</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">asm</span>, <span class="ident">decl_macro</span>)]</span>
 
@@ -491,7 +490,6 @@
     }
 }
 
-<span class="doccomment">/// Exits the current process with the provided status.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
     <span class="ident">syscall1</span>(<span class="ident">prelude::SYS_EXIT</span>, <span class="ident">status</span>);
     <span class="macro">unreachable!</span>()
@@ -520,7 +518,7 @@
     <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_read</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_read</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall3</span>(
         <span class="ident">prelude::SYS_READ</span>,
         <span class="ident">fd</span> <span class="kw">as</span> <span class="ident">usize</span>,
@@ -541,12 +539,12 @@
     <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_getcwd</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_getcwd</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall2</span>(<span class="ident">prelude::SYS_GETCWD</span>, <span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">buf</span>.<span class="ident">len</span>());
     <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_getdents</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_getdents</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall3</span>(
         <span class="ident">prelude::SYS_GETDENTS</span>,
         <span class="ident">fd</span> <span class="kw">as</span> <span class="ident">usize</span>,

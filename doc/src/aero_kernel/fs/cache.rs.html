@@ -502,7 +502,7 @@
     <span class="doccomment">/// This will decrement the strong reference count. If the strong reference</span>
     <span class="doccomment">/// count reaches zero then the only other references (if any) are</span>
     <span class="doccomment">/// [`CacheWeak`], so we `drop` the inner value.</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">let</span> <span class="ident">strong_count</span> <span class="op">=</span> <span class="ident">Arc::strong_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>);
 
         <span class="kw">if</span> <span class="ident">strong_count</span> <span class="op">==</span> <span class="number">1</span> {

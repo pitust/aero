@@ -667,7 +667,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">get</span>() {
             <span class="prelude-val">Some</span>(<span class="ident">s</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Once {{ data: &quot;</span>)
 				.<span class="ident">and_then</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">s</span>.<span class="ident">fmt</span>(<span class="ident">f</span>))
@@ -742,10 +742,10 @@
             }
         }
         <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Status</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">Status</span> {
             <span class="comment">// SAFETY: Since we know that the u8 inside must be a valid Status, we can safely cast</span>
             <span class="comment">// it to a &amp;mut Status.</span>
-            <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>((<span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_mut</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span>()) }
+            <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>((<span class="self">self</span>.<span class="number">0</span>.<span class="ident">get_mut</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>).<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span>()) }
         }
     }
 }
@@ -959,7 +959,7 @@
     <span class="doccomment">/// While this method itself is safe, accessing the pointer before the [`Once`] has been</span>
     <span class="doccomment">/// initialized is UB, unless this method has already been written to from a pointer coming</span>
     <span class="doccomment">/// from this method.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">T</span> {
         <span class="comment">// SAFETY:</span>
         <span class="comment">// * MaybeUninit&lt;T&gt; always has exactly the same layout as T</span>
         <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">get</span>().<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()
@@ -974,11 +974,11 @@
     }
 
     <span class="doccomment">/// Get a reference to the initialized instance. Must only be called once COMPLETE.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">force_get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">force_get_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">T</span> {
         <span class="comment">// SAFETY:</span>
         <span class="comment">// * `UnsafeCell`/inner deref: data never changes again</span>
         <span class="comment">// * `MaybeUninit`/outer deref: data was initialized</span>
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">data</span>.<span class="ident">get</span>()).<span class="ident">as_mut_ptr</span>()
+        <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">data</span>.<span class="ident">get</span>()).<span class="ident">as_mut_ptr</span>()
     }
 
     <span class="doccomment">/// Get a reference to the initialized instance. Must only be called once COMPLETE.</span>
@@ -1020,7 +1020,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Because this method requires a mutable reference to the [`Once`], no synchronization</span>
     <span class="doccomment">/// overhead is required to access the inner value. In effect, it is zero-cost.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">status</span>.<span class="ident">get_mut</span>() {
             <span class="ident">Status::Complete</span> =&gt; <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">force_get_mut</span>() }),
             <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
@@ -1056,7 +1056,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// No need to do any atomic access here, we have &amp;mut!</span>
         <span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">status</span>.<span class="ident">get_mut</span>() <span class="op">==</span> <span class="ident">Status::Complete</span> {
             <span class="kw">unsafe</span> {
@@ -1072,7 +1072,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Finish</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// While using Relaxed here would most likely not be an issue, we use SeqCst anyway.</span>
         <span class="comment">// This is mainly because panics are not meant to be fast at all, but also because if</span>
         <span class="comment">// there were to be a compiler bug which reorders accesses within the same thread,</span>
@@ -1225,7 +1225,7 @@
     <span class="kw">struct</span> <span class="ident">DropTest</span> {}
 
     <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">DropTest</span> {
-        <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
             <span class="kw">unsafe</span> {
                 <span class="ident">CALLED</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }

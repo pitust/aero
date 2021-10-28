@@ -158,7 +158,7 @@
         <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
 			<span class="ident">identifier</span>: <span class="ident">u64</span>,
-			<span class="ident">next</span>: <span class="kw-2">*</span><span class="kw">const</span> (),
+			<span class="ident">next</span>: <span class="kw-2">*const</span> (),
 			$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>),<span class="op">*</span>
 		}
 
@@ -174,7 +174,7 @@
 				}
 			}
 
-			<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">next</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) -&gt; <span class="self">Self</span> {
+			<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">next</span>: <span class="kw-2">*const</span> ()) -&gt; <span class="self">Self</span> {
 				<span class="self">self</span>.<span class="ident">next</span> <span class="op">=</span> <span class="ident">next</span>;
 				<span class="self">self</span>
 			}
@@ -195,9 +195,9 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StivaleHeader</span> {
     <span class="ident">entry_point</span>: <span class="ident">StivaleHeaderEntryPoint</span>,
-    <span class="ident">stack</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>,
+    <span class="ident">stack</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>,
     <span class="ident">flags</span>: <span class="ident">u64</span>,
-    <span class="ident">tags</span>: <span class="kw-2">*</span><span class="kw">const</span> (),
+    <span class="ident">tags</span>: <span class="kw-2">*const</span> (),
 }
 
 <span class="kw">impl</span> <span class="ident">StivaleHeader</span> {
@@ -215,7 +215,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">stack</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stack</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">stack</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stack</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">stack</span> <span class="op">=</span> <span class="ident">stack</span>;
         <span class="self">self</span>
     }
@@ -225,7 +225,7 @@
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">tags</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tags</span>: <span class="kw-2">*</span><span class="kw">const</span> ()) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">tags</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tags</span>: <span class="kw-2">*const</span> ()) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">tags</span> <span class="op">=</span> <span class="ident">tags</span>;
         <span class="self">self</span>
     }

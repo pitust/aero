@@ -302,7 +302,7 @@
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">inode</span>().<span class="ident">write_at</span>(<span class="ident">offset</span>, <span class="ident">buffer</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">inode</span>().<span class="ident">read_at</span>(<span class="ident">offset</span>, <span class="ident">buffer</span>)
     }
 }
@@ -354,7 +354,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">INodeInterface</span> <span class="kw">for</span> <span class="ident">DevNull</span> {
-    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">_buffer</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
     }
 

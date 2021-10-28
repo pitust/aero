@@ -301,7 +301,7 @@
 <span class="doccomment">/// make the bootloader default to text mode, if available.</span>
 <span class="kw">static</span> <span class="ident">FRAMEBUFFER_TAG</span>: <span class="ident">StivaleFramebufferHeaderTag</span> <span class="op">=</span> <span class="ident">StivaleFramebufferHeaderTag::new</span>()
     .<span class="ident">framebuffer_bpp</span>(<span class="number">24</span>)
-    .<span class="ident">next</span>((<span class="kw-2">&amp;</span><span class="ident">PAGING_TAG</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Stivale5LevelPagingHeaderTag</span>).<span class="ident">cast</span>());
+    .<span class="ident">next</span>((<span class="kw-2">&amp;</span><span class="ident">PAGING_TAG</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">Stivale5LevelPagingHeaderTag</span>).<span class="ident">cast</span>());
 
 <span class="doccomment">/// We are now going to define a level 5 paging header tag. This tag tells the bootloader to</span>
 <span class="doccomment">/// enable the LEVEL_5_PAGING bit in the Cr4 register. This is not possible to implement in the kernel</span>
@@ -316,8 +316,8 @@
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="attribute">#[<span class="ident">used</span>]</span>
 <span class="kw">static</span> <span class="ident">STIVALE_HDR</span>: <span class="ident">StivaleHeader</span> <span class="op">=</span> <span class="ident">StivaleHeader::new</span>()
-    .<span class="ident">stack</span>(<span class="kw-2">&amp;</span><span class="ident">STACK</span>.<span class="number">0</span>[<span class="ident">STACK_SIZE</span> <span class="op">-</span> <span class="number">4096</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>)
-    .<span class="ident">tags</span>((<span class="kw-2">&amp;</span><span class="ident">FRAMEBUFFER_TAG</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">StivaleFramebufferHeaderTag</span>).<span class="ident">cast</span>());
+    .<span class="ident">stack</span>(<span class="kw-2">&amp;</span><span class="ident">STACK</span>.<span class="number">0</span>[<span class="ident">STACK_SIZE</span> <span class="op">-</span> <span class="number">4096</span>] <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>)
+    .<span class="ident">tags</span>((<span class="kw-2">&amp;</span><span class="ident">FRAMEBUFFER_TAG</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">StivaleFramebufferHeaderTag</span>).<span class="ident">cast</span>());
 
 <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">x86_64_aero_main</span>(<span class="ident">boot_info</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">StivaleStruct</span>) -&gt; <span class="op">!</span> {
@@ -343,7 +343,7 @@
     <span class="comment">// guaranteed to be at an address with its least significant bit being a 1</span>
     <span class="comment">// and it never has an alignment greater than 1. STACK_SIZE - 4096 points</span>
     <span class="comment">// to the last u8 in STACK, that is aligned to 4096.</span>
-    <span class="kw">let</span> <span class="ident">stack_top_addr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>((<span class="kw-2">&amp;</span><span class="ident">STACK</span>.<span class="number">0</span>[<span class="ident">STACK_SIZE</span> <span class="op">-</span> <span class="number">4096</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="kw">as</span> <span class="kw">_</span>);
+    <span class="kw">let</span> <span class="ident">stack_top_addr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>((<span class="kw-2">&amp;</span><span class="ident">STACK</span>.<span class="number">0</span>[<span class="ident">STACK_SIZE</span> <span class="op">-</span> <span class="number">4096</span>] <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>) <span class="kw">as</span> <span class="kw">_</span>);
 
     <span class="kw">unsafe</span> {
         <span class="ident">interrupts::disable_interrupts</span>();
@@ -360,7 +360,7 @@
     }
 
     <span class="ident"><span class="kw">crate</span>::UNWIND_INFO</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> (<span class="ident">kernel_info</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">StivaleKernelFileV2Tag</span>) <span class="kw">as</span> <span class="ident">u64</span>;
+        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> (<span class="ident">kernel_info</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">StivaleKernelFileV2Tag</span>) <span class="kw">as</span> <span class="ident">u64</span>;
         <span class="kw">let</span> <span class="ident">new_addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">addr</span>;
 
         <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">new_addr</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">StivaleKernelFileV2Tag</span><span class="op">&gt;</span>()
@@ -422,7 +422,7 @@
         <span class="comment">// SAFETY: The bootloader has provided a pointer that points to a valid C</span>
         <span class="comment">// string with a NULL terminator of size less than `usize::MAX`, whose content</span>
         <span class="comment">// remain valid and has a static lifetime.</span>
-        <span class="ident">mem::c_str_as_str</span>(<span class="ident">cmd</span>.<span class="ident">command_line</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>)
+        <span class="ident">mem::c_str_as_str</span>(<span class="ident">cmd</span>.<span class="ident">command_line</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>)
     });
 
     <span class="kw">let</span> <span class="ident">command_line</span> <span class="op">=</span> <span class="ident">cmdline::parse</span>(<span class="ident">command_line</span>);
@@ -434,7 +434,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">offset_table</span> <span class="op">=</span> <span class="ident">paging::init</span>(<span class="ident">mmap_tag</span>, <span class="ident">kernel_base</span>, <span class="ident">kernel_end</span>).<span class="ident">unwrap</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded paging&quot;</span>);
 
-    <span class="ident">alloc::init_heap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>).<span class="ident">expect</span>(<span class="string">&quot;failed to initialize the kernel heap&quot;</span>);
+    <span class="ident">alloc::init_heap</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offset_table</span>).<span class="ident">expect</span>(<span class="string">&quot;failed to initialize the kernel heap&quot;</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded heap&quot;</span>);
 
     <span class="ident">interrupts::init</span>();

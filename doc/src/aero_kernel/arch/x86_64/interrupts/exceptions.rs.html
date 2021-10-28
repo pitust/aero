@@ -151,7 +151,7 @@
 
 <span class="kw">macro</span> <span class="ident">interrupt_exception</span>(<span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>() =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">message</span>:<span class="ident">expr</span>) {
     <span class="macro">super::interrupt_error_stack!</span>(
-        <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptErrorStack</span>) {
+        <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">InterruptErrorStack</span>) {
             <span class="macro">log::error!</span>(<span class="string">&quot;EXCEPTION: {}\n\nStack: {:#x?}&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">message</span>, <span class="ident">stack</span>);
 
             <span class="kw">if</span> <span class="ident">stack</span>.<span class="ident">stack</span>.<span class="ident">iret</span>.<span class="ident">is_user</span>() {
@@ -191,7 +191,7 @@
 <span class="macro">interrupt_exception!</span>(<span class="kw">fn</span> <span class="ident">security</span>() =&gt; <span class="string">&quot;Security exception&quot;</span>);
 
 <span class="macro">interrupt_error_stack!</span>(
-    <span class="kw">fn</span> <span class="ident">breakpoint</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptErrorStack</span>) {
+    <span class="kw">fn</span> <span class="ident">breakpoint</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">InterruptErrorStack</span>) {
         <span class="comment">/*
          * We will need to prevent RIP from going out of sync with
          * instructions.
@@ -204,7 +204,7 @@
 );
 
 <span class="macro">interrupt_error_stack!</span>(
-    <span class="kw">fn</span> <span class="ident">page_fault</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptErrorStack</span>) {
+    <span class="kw">fn</span> <span class="ident">page_fault</span>(<span class="ident">stack</span>: <span class="kw-2">&amp;mut</span> <span class="ident">InterruptErrorStack</span>) {
         <span class="kw">let</span> <span class="ident">accessed_address</span> <span class="op">=</span> <span class="ident">controlregs::read_cr2</span>();
         <span class="kw">let</span> <span class="ident">reason</span> <span class="op">=</span> <span class="ident">PageFaultErrorCode::from_bits_truncate</span>(<span class="ident">stack</span>.<span class="ident">code</span>);
 

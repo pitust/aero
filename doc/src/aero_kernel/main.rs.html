@@ -336,7 +336,7 @@
     <span class="ident">modules::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded kernel modules&quot;</span>);
 
-    <span class="ident">drivers::pci::init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">offset_table</span>);
+    <span class="ident">drivers::pci::init</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offset_table</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded PCI driver&quot;</span>);
 
     <span class="ident">fs::block::launch</span>().<span class="ident">unwrap</span>();
@@ -347,7 +347,7 @@
         <span class="ident">logger::set_rendy_debug</span>(<span class="bool-val">false</span>);
     }
 
-    <span class="ident">userland::run</span>();
+    <span class="ident">userland::run</span>().<span class="ident">unwrap</span>();
 
     <span class="macro">unreachable!</span>()
 }

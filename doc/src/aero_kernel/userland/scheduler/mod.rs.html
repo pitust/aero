@@ -123,6 +123,10 @@
 <span id="123">123</span>
 <span id="124">124</span>
 <span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -147,7 +151,8 @@
 
 <span class="kw">use</span> <span class="ident">alloc::sync::Arc</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">fs::cache::DirCacheItem</span>, <span class="ident">utils::sync::Mutex</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync::Mutex</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">fs::cache::DirCacheItem</span>, <span class="ident">syscall::ExecArgs</span>};
 
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
@@ -226,8 +231,11 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">executable</span>: <span class="ident">DirCacheItem</span>) {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">current_task</span>().<span class="ident">exec</span>(<span class="ident">executable</span>).<span class="ident">unwrap</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">executable</span>: <span class="ident">DirCacheItem</span>, <span class="ident">argv</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExecArgs</span><span class="op">&gt;</span>, <span class="ident">envv</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExecArgs</span><span class="op">&gt;</span>) {
+        <span class="self">self</span>.<span class="ident">inner</span>
+            .<span class="ident">current_task</span>()
+            .<span class="ident">exec</span>(<span class="ident">executable</span>, <span class="ident">argv</span>, <span class="ident">envv</span>)
+            .<span class="ident">unwrap</span>();
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>

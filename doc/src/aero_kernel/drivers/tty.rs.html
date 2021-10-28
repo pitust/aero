@@ -464,7 +464,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">swap_buffer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">swap_buffer</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">front_buffer</span>
             .<span class="ident">resize</span>(<span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">i</span>, <span class="number">0x00</span>);
         <span class="self">self</span>.<span class="ident">front_buffer</span>
@@ -520,7 +520,7 @@
 
 <span class="kw">impl</span> <span class="ident">INodeInterface</span> <span class="kw">for</span> <span class="ident">Tty</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">fs::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_offset</span>: <span class="ident">usize</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">fs::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">block_queue</span>
             .<span class="ident">block_on</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">stdin</span>, <span class="op">|</span><span class="ident">future</span><span class="op">|</span> <span class="ident">future</span>.<span class="ident">is_complete</span>());
 

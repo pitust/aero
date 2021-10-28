@@ -79,13 +79,13 @@
 <span class="doccomment">/// a const void pointer.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">make_module_init</span>(<span class="ident">init_function</span>: <span class="kw">fn</span>() -&gt; ()) -&gt; <span class="ident">ModuleInit</span> {
-    <span class="ident">ModuleInit</span>(<span class="ident">init_function</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> ())
+    <span class="ident">ModuleInit</span>(<span class="ident">init_function</span> <span class="kw">as</span> <span class="kw-2">*const</span> ())
 }
 
 <span class="doccomment">/// Inner helper structure holding the module init function as a void pointer. This struct</span>
 <span class="doccomment">/// is required as we cannot directly store a pointer in the static as it needs to implement</span>
 <span class="doccomment">/// [Sync].</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModuleInit</span>(<span class="kw-2">*</span><span class="kw">const</span> ());
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModuleInit</span>(<span class="kw-2">*const</span> ());
 
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">ModuleInit</span> {}
 
@@ -115,7 +115,7 @@
     <span class="kw">unsafe</span> {
         (<span class="ident">__kernel_modules_start</span>.<span class="ident">as_usize</span>()..<span class="ident">__kernel_modules_end</span>.<span class="ident">as_usize</span>())
             .<span class="ident">step_by</span>(<span class="number">0x08</span>)
-            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">module</span><span class="op">|</span> (<span class="kw-2">*</span>(<span class="ident">module</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">fn</span>() -&gt; ()))());
+            .<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">module</span><span class="op">|</span> (<span class="kw-2">*</span>(<span class="ident">module</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">fn</span>() -&gt; ()))());
     }
 }
 </code></pre></div>

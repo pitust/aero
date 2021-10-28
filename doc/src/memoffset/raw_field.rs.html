@@ -118,7 +118,7 @@
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">path</span>:<span class="ident">expr</span>) =&gt; {{
         <span class="comment">// This is UB because we create an intermediate reference to uninitialized memory.</span>
         <span class="comment">// Nothing we can do about that without `raw_const!` though.</span>
-        <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">path</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>
+        <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">path</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>
     }};
 }
 
@@ -162,7 +162,7 @@
         <span class="comment">// of the field check we did above.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_unsafe</span>)]</span> <span class="comment">// for when the macro is used in an unsafe block</span>
         <span class="kw">unsafe</span> {
-            <span class="macro">_memoffset__raw_const!</span>((<span class="kw-2">*</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">base</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>)
+            <span class="macro">_memoffset__raw_const!</span>((<span class="kw-2">*</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">base</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>)
         }
     }};
 }

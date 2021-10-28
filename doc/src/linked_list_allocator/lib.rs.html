@@ -316,7 +316,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function must be called at most once and must only be used on an</span>
     <span class="doccomment">/// empty heap.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">heap_bottom</span>: <span class="ident">usize</span>, <span class="ident">heap_size</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">heap_bottom</span>: <span class="ident">usize</span>, <span class="ident">heap_size</span>: <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="ident">bottom</span> <span class="op">=</span> <span class="ident">heap_bottom</span>;
         <span class="self">self</span>.<span class="ident">size</span> <span class="op">=</span> <span class="ident">heap_size</span>;
         <span class="self">self</span>.<span class="ident">used</span> <span class="op">=</span> <span class="number">0</span>;
@@ -345,7 +345,7 @@
     <span class="doccomment">/// This function scans the list of free memory blocks and uses the first block that is big</span>
     <span class="doccomment">/// enough. The runtime is in O(n) where n is the number of free blocks, but it should be</span>
     <span class="doccomment">/// reasonably fast for small allocations.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocate_first_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocate_first_fit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">holes</span>.<span class="ident">allocate_first_fit</span>(<span class="ident">layout</span>) {
             <span class="prelude-val">Ok</span>((<span class="ident">ptr</span>, <span class="ident">aligned_layout</span>)) =&gt; {
                 <span class="self">self</span>.<span class="ident">used</span> <span class="op">+</span><span class="op">=</span> <span class="ident">aligned_layout</span>.<span class="ident">size</span>();
@@ -362,7 +362,7 @@
     <span class="doccomment">/// This function walks the list of free memory blocks and inserts the freed block at the</span>
     <span class="doccomment">/// correct place. If the freed block is adjacent to another free block, the blocks are merged</span>
     <span class="doccomment">/// again. This operation is in `O(n)` since the list needs to be sorted by address.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">deallocate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">deallocate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
         <span class="self">self</span>.<span class="ident">used</span> <span class="op">-</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">holes</span>.<span class="ident">deallocate</span>(<span class="ident">ptr</span>, <span class="ident">layout</span>).<span class="ident">size</span>();
     }
 
@@ -396,11 +396,11 @@
     <span class="doccomment">/// # Unsafety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The new extended area must be valid</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">extend</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">by</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">extend</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">by</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">top</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span>();
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::from_size_align</span>(<span class="ident">by</span>, <span class="number">1</span>).<span class="ident">unwrap</span>();
         <span class="self">self</span>.<span class="ident">holes</span>
-            .<span class="ident">deallocate</span>(<span class="ident">NonNull::new_unchecked</span>(<span class="ident">top</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>), <span class="ident">layout</span>);
+            .<span class="ident">deallocate</span>(<span class="ident">NonNull::new_unchecked</span>(<span class="ident">top</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>), <span class="ident">layout</span>);
         <span class="self">self</span>.<span class="ident">size</span> <span class="op">+</span><span class="op">=</span> <span class="ident">by</span>;
     }
 }
@@ -466,15 +466,15 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;use_spin&quot;</span>)]</span>
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">GlobalAlloc</span> <span class="kw">for</span> <span class="ident">LockedHeap</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="number">0</span>
             .<span class="ident">lock</span>()
             .<span class="ident">allocate_first_fit</span>(<span class="ident">layout</span>)
             .<span class="ident">ok</span>()
-            .<span class="ident">map_or</span>(<span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="op">|</span><span class="ident">allocation</span><span class="op">|</span> <span class="ident">allocation</span>.<span class="ident">as_ptr</span>())
+            .<span class="ident">map_or</span>(<span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="op">|</span><span class="ident">allocation</span><span class="op">|</span> <span class="ident">allocation</span>.<span class="ident">as_ptr</span>())
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
         <span class="self">self</span>.<span class="number">0</span>
             .<span class="ident">lock</span>()
             .<span class="ident">deallocate</span>(<span class="ident">NonNull::new_unchecked</span>(<span class="ident">ptr</span>), <span class="ident">layout</span>)

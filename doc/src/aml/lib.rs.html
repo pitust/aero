@@ -943,7 +943,7 @@
         <span class="ident">context</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_table</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stream</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">AmlError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_table</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">stream</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">AmlError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">stream</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AmlError::UnexpectedEndOfStream</span>);
         }
@@ -963,7 +963,7 @@
     }
 
     <span class="comment">// TODO: docs</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invoke_method</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">AmlName</span>, <span class="ident">args</span>: <span class="ident">Args</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AmlValue</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">invoke_method</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">AmlName</span>, <span class="ident">args</span>: <span class="ident">Args</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AmlValue</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">value::MethodCode</span>;
 
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">namespace</span>.<span class="ident">get_by_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>.<span class="ident">clone</span>() {
@@ -973,8 +973,8 @@
                  * variables to &quot;null&quot; and setting the arguments. Save the current method state and scope, so if we&#39;re
                  * already executing another control method, we resume into it correctly.
                  */</span>
-                <span class="kw">let</span> <span class="ident">old_context</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">method_context</span>, <span class="prelude-val">Some</span>(<span class="ident">MethodContext::new</span>(<span class="ident">args</span>)));
-                <span class="kw">let</span> <span class="ident">old_scope</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">current_scope</span>, <span class="ident">path</span>.<span class="ident">clone</span>());
+                <span class="kw">let</span> <span class="ident">old_context</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">method_context</span>, <span class="prelude-val">Some</span>(<span class="ident">MethodContext::new</span>(<span class="ident">args</span>)));
+                <span class="kw">let</span> <span class="ident">old_scope</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">current_scope</span>, <span class="ident">path</span>.<span class="ident">clone</span>());
 
                 <span class="comment">/*
                  * Create a namespace level to store local objects created by the invocation.
@@ -1034,7 +1034,7 @@
     }
 
     <span class="comment">// TODO: docs</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialize_objects</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">AmlError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialize_objects</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">AmlError</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">name_object::NameSeg</span>;
         <span class="kw">use</span> <span class="ident">value::StatusObject</span>;
 
@@ -1127,7 +1127,7 @@
     <span class="doccomment">/// out of the target, if neccessary, as values can be altered during a store in some circumstances.  When</span>
     <span class="doccomment">/// required, this also performs required implicit conversions, otherwise stores are semantically equivalent to</span>
     <span class="doccomment">/// a `CopyObject`.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">store</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">target</span>: <span class="ident">Target</span>, <span class="ident">value</span>: <span class="ident">AmlValue</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AmlValue</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">store</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">target</span>: <span class="ident">Target</span>, <span class="ident">value</span>: <span class="ident">AmlValue</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AmlValue</span>, <span class="ident">AmlError</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">target</span> {
             <span class="ident">Target::Name</span>(<span class="kw-2">ref</span> <span class="ident">path</span>) =&gt; {
                 <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">handle</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">namespace</span>.<span class="ident">search</span>(<span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">current_scope</span>)<span class="question-mark">?</span>;
@@ -1275,7 +1275,7 @@
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">write_region</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">region_handle</span>: <span class="ident">AmlHandle</span>,
         <span class="ident">offset</span>: <span class="ident">u64</span>,
         <span class="ident">length</span>: <span class="ident">u64</span>,
@@ -1366,7 +1366,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">add_predefined_objects</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">add_predefined_objects</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">/*
          * These are the scopes predefined by the spec. Some tables will try to access them without defining them
          * themselves, and so we have to pre-create them.
@@ -1468,10 +1468,10 @@
     <span class="kw">fn</span> <span class="ident">read_u32</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>) -&gt; <span class="ident">u32</span>;
     <span class="kw">fn</span> <span class="ident">read_u64</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>) -&gt; <span class="ident">u64</span>;
 
-    <span class="kw">fn</span> <span class="ident">write_u8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">u8</span>);
-    <span class="kw">fn</span> <span class="ident">write_u16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">u16</span>);
-    <span class="kw">fn</span> <span class="ident">write_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">u32</span>);
-    <span class="kw">fn</span> <span class="ident">write_u64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">u64</span>);
+    <span class="kw">fn</span> <span class="ident">write_u8</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">u8</span>);
+    <span class="kw">fn</span> <span class="ident">write_u16</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">u16</span>);
+    <span class="kw">fn</span> <span class="ident">write_u32</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">u32</span>);
+    <span class="kw">fn</span> <span class="ident">write_u64</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">u64</span>);
 
     <span class="kw">fn</span> <span class="ident">read_io_u8</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">port</span>: <span class="ident">u16</span>) -&gt; <span class="ident">u8</span>;
     <span class="kw">fn</span> <span class="ident">read_io_u16</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">port</span>: <span class="ident">u16</span>) -&gt; <span class="ident">u16</span>;

@@ -197,7 +197,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::inode::INodeInterface</span>;
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BlockDeviceInterface</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>, <span class="ident">dest</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>, <span class="ident">dest</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
     <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
 }
 
@@ -253,12 +253,12 @@
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RawAccess</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
-    <span class="kw">fn</span> <span class="ident">read_direct</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">usize</span>, <span class="ident">dest</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">read_direct</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">usize</span>, <span class="ident">dest</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
     <span class="kw">fn</span> <span class="ident">write_direct</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">usize</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RawAccess</span><span class="op">&gt;</span> <span class="ident">BlockDeviceInterface</span> <span class="kw">for</span> <span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>, <span class="ident">dest</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sector</span>: <span class="ident">usize</span>, <span class="ident">dest</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">read_direct</span>(<span class="ident">sector</span> <span class="op">*</span> <span class="number">512</span>, <span class="ident">dest</span>)
     }
 
@@ -268,7 +268,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">RawAccess</span> <span class="kw">for</span> <span class="ident">BlockDevice</span> {
-    <span class="kw">fn</span> <span class="ident">read_direct</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">dest</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_direct</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">dest</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="macro">assert_eq!</span>(<span class="ident">offset</span> <span class="op">%</span> <span class="number">512</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">dev</span>.<span class="ident">read</span>(<span class="ident">offset</span> <span class="op">/</span> <span class="number">512</span>, <span class="ident">dest</span>)
     }
@@ -297,7 +297,7 @@
         <span class="self">self</span>.<span class="ident">bytes_mut</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes_mut</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes_mut</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>] {
         <span class="kw">unsafe</span> { <span class="ident">core::slice::from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">data</span>.<span class="ident">as_mut_ptr</span>(), <span class="number">512</span>) }
     }
 
@@ -323,7 +323,7 @@
 
 <span class="kw">impl</span> <span class="ident">Partition</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_sectors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="self">self</span>.<span class="ident">data</span>.<span class="ident">as_ptr</span>().<span class="ident">offset</span>(<span class="number">12</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>) }
+        <span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="self">self</span>.<span class="ident">data</span>.<span class="ident">as_ptr</span>().<span class="ident">offset</span>(<span class="number">12</span>) <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u32</span>) }
     }
 }
 

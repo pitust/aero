@@ -156,7 +156,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Lazy&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;cell&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cell</span>).<span class="ident">field</span>(<span class="string">&quot;init&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;..&quot;</span>).<span class="ident">finish</span>()
     }
 }
@@ -180,7 +180,7 @@
     <span class="doccomment">/// This is especially useful when interfacing with low level code or FFI where the caller</span>
     <span class="doccomment">/// explicitly knows that it has exclusive access to the inner data. Note that reading from</span>
     <span class="doccomment">/// this pointer is UB until initialized or directly written to.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">cell</span>.<span class="ident">as_mut_ptr</span>()
     }
 }

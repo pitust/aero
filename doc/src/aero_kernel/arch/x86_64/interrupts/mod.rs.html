@@ -602,18 +602,18 @@
 
 <span class="doccomment">/// Helper macro to generate an interrupt exception handler that expects an</span>
 <span class="doccomment">/// error code.</span>
-<span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">interrupt_error_stack</span>(<span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stack</span>:<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptErrorStack</span>) <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) {
+<span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">interrupt_error_stack</span>(<span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stack</span>:<span class="ident">ident</span>: <span class="kw-2">&amp;mut</span> <span class="ident">InterruptErrorStack</span>) <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) {
     <span class="macro">paste::item!</span> {
         <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> [<span class="op">&lt;</span><span class="ident">__interrupt_</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&gt;</span>](<span class="ident">stack</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::arch::interrupts::InterruptErrorStack</span>) {
+        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> [<span class="op">&lt;</span><span class="ident">__interrupt_</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&gt;</span>](<span class="ident">stack</span>: <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::arch::interrupts::InterruptErrorStack</span>) {
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span> <span class="comment">// Unused variable ($stack).</span>
-            <span class="kw">fn</span> <span class="ident">inner</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::arch::interrupts::InterruptErrorStack</span>) {
+            <span class="kw">fn</span> <span class="ident">inner</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stack</span>: <span class="kw-2">&amp;mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::arch::interrupts::InterruptErrorStack</span>) {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
             }
 
-            <span class="ident">inner</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">stack</span>);
+            <span class="ident">inner</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">stack</span>);
         }
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::prelude::intel_fn!</span>(
@@ -653,18 +653,18 @@
 
 <span class="doccomment">/// Helper macro to generate an interrupt handler that takes the interrupt stack as</span>
 <span class="doccomment">/// an argument.</span>
-<span class="kw">pub</span> <span class="kw">macro</span> <span class="macro-nonterminal">interrupt_stack</span>(<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stack</span>:<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">InterruptStack</span>) <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) {
+<span class="kw">pub</span> <span class="kw">macro</span> <span class="macro-nonterminal">interrupt_stack</span>(<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stack</span>:<span class="ident">ident</span>: <span class="kw-2">&amp;mut</span> <span class="ident">InterruptStack</span>) <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">block</span>) {
     <span class="macro">paste::item!</span> {
         <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> [<span class="op">&lt;</span><span class="ident">__interrupt_</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&gt;</span>](<span class="ident">stack</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::arch::interrupts::InterruptStack</span>) {
+        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> [<span class="op">&lt;</span><span class="ident">__interrupt_</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&gt;</span>](<span class="ident">stack</span>: <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::arch::interrupts::InterruptStack</span>) {
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span> <span class="comment">// Unused variable ($stack).</span>
-            <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::arch::interrupts::InterruptStack</span>) {
+            <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stack</span>: <span class="kw-2">&amp;mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::arch::interrupts::InterruptStack</span>) {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>
             }
 
-            <span class="ident">inner</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">stack</span>);
+            <span class="ident">inner</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">stack</span>);
         }
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::utils::intel_fn!</span>(

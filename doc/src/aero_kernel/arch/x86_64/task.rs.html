@@ -247,6 +247,79 @@
 <span id="247">247</span>
 <span id="248">248</span>
 <span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -269,13 +342,14 @@
 <span class="kw">use</span> <span class="ident">alloc::alloc::alloc_zeroed</span>;
 
 <span class="kw">use</span> <span class="ident">aero_syscall</span>::{<span class="ident">MMapFlags</span>, <span class="ident">MMapProt</span>};
-<span class="kw">use</span> <span class="ident">xmas_elf::ElfFile</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
-<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">alloc::Layout</span>, <span class="ident">ptr::Unique</span>};
+<span class="kw">use</span> <span class="ident">core::alloc::Layout</span>;
+<span class="kw">use</span> <span class="ident">core::ptr::Unique</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syscall</span>::{<span class="ident">RegistersFrame</span>, <span class="ident">SyscallFrame</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::vm::Vm</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syscall</span>::{<span class="ident">ExecArgs</span>, <span class="ident">RegistersFrame</span>, <span class="ident">SyscallFrame</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::vm</span>::{<span class="ident">LoadedBinary</span>, <span class="ident">Vm</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::StackHelper</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::controlregs</span>;
@@ -302,6 +376,16 @@
     <span class="ident">rbx</span>: <span class="ident">u64</span>,
     <span class="ident">rflags</span>: <span class="ident">u64</span>,
     <span class="ident">rip</span>: <span class="ident">u64</span>,
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u64</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AuxvType</span> {
+    <span class="ident">AtNull</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="ident">AtPhdr</span> <span class="op">=</span> <span class="number">3</span>,
+    <span class="ident">AtPhEnt</span> <span class="op">=</span> <span class="number">4</span>,
+    <span class="ident">AtPhNum</span> <span class="op">=</span> <span class="number">5</span>,
+    <span class="ident">AtEntry</span> <span class="op">=</span> <span class="number">9</span>,
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ArchTask</span> {
@@ -342,7 +426,7 @@
         <span class="comment">// Now at this stage, we have mapped the kernel task stack. Now we have to set up the</span>
         <span class="comment">// context for the kernel task required for the context switch.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack_ptr</span> <span class="op">=</span> <span class="ident">task_stack</span> <span class="kw">as</span> <span class="ident">u64</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stack_ptr</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack_ptr</span>);
 
         <span class="kw">let</span> <span class="ident">kernel_task_frame</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">stack</span>.<span class="ident">offset</span>::<span class="op">&lt;</span><span class="ident">KernelTaskFrame</span><span class="op">&gt;</span>() };
 
@@ -390,10 +474,10 @@
         };
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">old_stack_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">context_switch_rsp</span>.<span class="ident">as_u64</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">old_stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">old_stack_ptr</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">old_stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">old_stack_ptr</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_stack_ptr</span> <span class="op">=</span> <span class="ident">switch_stack</span> <span class="kw">as</span> <span class="ident">u64</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">new_stack_ptr</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">new_stack_ptr</span>);
 
         <span class="kw">unsafe</span> {
             <span class="comment">// Get the syscall frame and registers frame from the current task and copy it over</span>
@@ -427,7 +511,14 @@
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exec</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">vm</span>: <span class="kw-2">&amp;</span><span class="ident">Vm</span>, <span class="ident">executable</span>: <span class="kw-2">&amp;</span><span class="ident">ElfFile</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exec</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">vm</span>: <span class="kw-2">&amp;</span><span class="ident">Vm</span>,
+        <span class="ident">loaded_binary</span>: <span class="ident">LoadedBinary</span>,
+
+        <span class="ident">argv</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExecArgs</span><span class="op">&gt;</span>,
+        <span class="ident">envv</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExecArgs</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">address_space</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">rpl</span> <span class="op">==</span> <span class="ident">Ring::Ring0</span> {
             <span class="comment">// If the kernel task wants to execute an executable, then we have to</span>
             <span class="comment">// create a new address space for it as we cannot use the kernel&#39;s address space</span>
@@ -439,7 +530,7 @@
             <span class="comment">// page entries.</span>
             <span class="comment">//</span>
             <span class="comment">// TODO: deallocate the user address space&#39;s page entries.</span>
-            <span class="ident">AddressSpace::this</span>()
+            <span class="ident">AddressSpace::new</span>()<span class="question-mark">?</span>
         };
 
         <span class="comment">// mmap the userland stack...</span>
@@ -457,26 +548,81 @@
         <span class="self">self</span>.<span class="ident">context</span> <span class="op">=</span> <span class="ident">Unique::dangling</span>();
         <span class="self">self</span>.<span class="ident">address_space</span> <span class="op">=</span> <span class="ident">address_space</span>; <span class="comment">// Update the address space reference</span>
 
+        <span class="self">self</span>.<span class="ident">fs_base</span> <span class="op">=</span> <span class="ident">VirtAddr::zero</span>();
+
         <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
             <span class="kw">fn</span> <span class="ident">jump_userland_exec</span>(<span class="ident">stack</span>: <span class="ident">VirtAddr</span>, <span class="ident">rip</span>: <span class="ident">VirtAddr</span>, <span class="ident">rflags</span>: <span class="ident">u64</span>);
         }
 
-        <span class="kw">let</span> <span class="ident">entry_point</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">executable</span>.<span class="ident">header</span>.<span class="ident">pt2</span>.<span class="ident">entry_point</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack_addr</span> <span class="op">=</span> <span class="number">0x8000_0000_0000</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack_addr</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">envp</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">argp</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+
+        <span class="ident">envv</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">envv</span><span class="op">|</span> <span class="ident">envp</span> <span class="op">=</span> <span class="ident">envv</span>.<span class="ident">push_into_stack</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>));
+        <span class="ident">argv</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">argv</span><span class="op">|</span> <span class="ident">argp</span> <span class="op">=</span> <span class="ident">argv</span>.<span class="ident">push_into_stack</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack</span>));
+
+        <span class="ident">stack</span>.<span class="ident">align_down</span>();
+
+        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">envp</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span> <span class="op">+</span> <span class="ident">argp</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span> <span class="op">+</span> <span class="number">1</span>;
+
+        <span class="kw">if</span> <span class="ident">size</span> <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">1</span> {
+            <span class="kw">unsafe</span> {
+                <span class="ident">stack</span>.<span class="ident">write</span>(<span class="number">0u64</span>);
+            }
+        }
+
+        <span class="kw">let</span> <span class="ident">p2_header</span> <span class="op">=</span> <span class="ident">loaded_binary</span>.<span class="ident">elf</span>.<span class="ident">header</span>.<span class="ident">pt2</span>;
 
         <span class="kw">unsafe</span> {
-            <span class="ident">jump_userland_exec</span>(<span class="ident">VirtAddr::new</span>(<span class="number">0x8000_0000_0000</span>), <span class="ident">entry_point</span>, <span class="number">0x200</span>);
+            <span class="kw">let</span> <span class="ident">hdr</span>: [(<span class="ident">AuxvType</span>, <span class="ident">usize</span>); <span class="number">4</span>] <span class="op">=</span> [
+                (
+                    <span class="ident">AuxvType::AtPhdr</span>,
+                    (<span class="ident">p2_header</span>.<span class="ident">ph_offset</span>() <span class="op">+</span> <span class="ident">loaded_binary</span>.<span class="ident">base_addr</span>.<span class="ident">as_u64</span>()) <span class="kw">as</span> <span class="ident">usize</span>,
+                ),
+                (<span class="ident">AuxvType::AtPhEnt</span>, <span class="ident">p2_header</span>.<span class="ident">ph_entry_size</span>() <span class="kw">as</span> <span class="ident">usize</span>),
+                (<span class="ident">AuxvType::AtPhNum</span>, <span class="ident">p2_header</span>.<span class="ident">ph_count</span>() <span class="kw">as</span> <span class="ident">usize</span>),
+                (<span class="ident">AuxvType::AtEntry</span>, <span class="ident">p2_header</span>.<span class="ident">entry_point</span>() <span class="kw">as</span> <span class="ident">usize</span>),
+            ];
+
+            <span class="ident">stack</span>.<span class="ident">write</span>(<span class="number">0usize</span>); <span class="comment">// Make it 16 bytes aligned</span>
+            <span class="ident">stack</span>.<span class="ident">write</span>(<span class="ident">AuxvType::AtNull</span>);
+            <span class="ident">stack</span>.<span class="ident">write</span>(<span class="ident">hdr</span>);
+        }
+
+        <span class="comment">// struct ExecStackData {</span>
+        <span class="comment">//     argc: isize,</span>
+        <span class="comment">//     argv: *const *const u8,</span>
+        <span class="comment">//     envv: *const *const u8,</span>
+        <span class="comment">// }</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">stack</span>.<span class="ident">write</span>(<span class="number">0u64</span>);
+            <span class="ident">stack</span>.<span class="ident">write_slice</span>(<span class="ident">envp</span>.<span class="ident">as_slice</span>());
+            <span class="ident">stack</span>.<span class="ident">write</span>(<span class="number">0u64</span>);
+            <span class="ident">stack</span>.<span class="ident">write_slice</span>(<span class="ident">argp</span>.<span class="ident">as_slice</span>());
+            <span class="ident">stack</span>.<span class="ident">write</span>(<span class="ident">argp</span>.<span class="ident">len</span>());
+        }
+
+        <span class="ident">core::mem::drop</span>(<span class="ident">envp</span>);
+        <span class="ident">core::mem::drop</span>(<span class="ident">argp</span>);
+
+        <span class="macro">assert_eq!</span>(<span class="ident">stack</span>.<span class="ident">top</span>() <span class="op">%</span> <span class="number">16</span>, <span class="number">0</span>);
+
+        <span class="kw">unsafe</span> {
+            <span class="ident">jump_userland_exec</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">stack</span>.<span class="ident">top</span>()), <span class="ident">loaded_binary</span>.<span class="ident">entry_point</span>, <span class="number">0x200</span>);
         }
 
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_fs_base</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">VirtAddr</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_fs_base</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">VirtAddr</span> {
         <span class="self">self</span>.<span class="ident">fs_base</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_fs_base</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">base</span>: <span class="ident">VirtAddr</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_fs_base</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">base</span>: <span class="ident">VirtAddr</span>) {
         <span class="self">self</span>.<span class="ident">fs_base</span> <span class="op">=</span> <span class="ident">base</span>;
     }
 }
@@ -484,16 +630,16 @@
 <span class="doccomment">/// This function is responsible for performing the inner task switch. Firstly it sets the</span>
 <span class="doccomment">/// new RSP in the TSS and then performes the actual context switch (saving the previous tasks</span>
 <span class="doccomment">/// state in its context and then switching to the new task).</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arch_task_spinup</span>(<span class="ident">from</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ArchTask</span>, <span class="ident">to</span>: <span class="kw-2">&amp;</span><span class="ident">ArchTask</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">arch_task_spinup</span>(<span class="ident">from</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ArchTask</span>, <span class="ident">to</span>: <span class="kw-2">&amp;</span><span class="ident">ArchTask</span>) {
     <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-        <span class="kw">fn</span> <span class="ident">task_spinup</span>(<span class="ident">from</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Unique</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>, <span class="ident">to</span>: <span class="kw-2">&amp;</span><span class="ident">Context</span>);
+        <span class="kw">fn</span> <span class="ident">task_spinup</span>(<span class="ident">from</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Unique</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>, <span class="ident">to</span>: <span class="kw-2">&amp;</span><span class="ident">Context</span>);
     }
 
     <span class="kw">unsafe</span> {
         <span class="comment">// Set the stack pointer in the TSS.</span>
         <span class="ident">TASK_STATE_SEGMENT</span>.<span class="ident">rsp</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">to</span>.<span class="ident">context_switch_rsp</span>.<span class="ident">as_u64</span>();
 
-        <span class="ident">task_spinup</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">from</span>.<span class="ident">context</span>, <span class="ident">to</span>.<span class="ident">context</span>.<span class="ident">as_ref</span>());
+        <span class="ident">task_spinup</span>(<span class="kw-2">&amp;mut</span> <span class="ident">from</span>.<span class="ident">context</span>, <span class="ident">to</span>.<span class="ident">context</span>.<span class="ident">as_ref</span>());
     }
 }
 </code></pre></div>

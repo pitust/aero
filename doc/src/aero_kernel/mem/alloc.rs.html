@@ -268,7 +268,7 @@
                         <span class="ident">page</span>,
                         <span class="ident">frame</span>,
                         <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
                     )
                 }
                 .<span class="ident">expect</span>(<span class="string">&quot;Failed to map frame to extend the heap&quot;</span>)
@@ -291,7 +291,7 @@
 }
 
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">GlobalAlloc</span> <span class="kw">for</span> <span class="ident">LockedHeap</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">alloc::Layout</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">u8</span> {
         <span class="macro">debug_assert!</span>(<span class="ident">layout</span>.<span class="ident">align</span>().<span class="ident">is_power_of_two</span>());
 
         <span class="comment">// Rounded up size is:</span>
@@ -310,10 +310,10 @@
 
         <span class="self">self</span>.<span class="ident">allocate</span>(<span class="ident">layout</span>)
             .<span class="ident">ok</span>()
-            .<span class="ident">map_or</span>(<span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="op">|</span><span class="ident">alloc</span><span class="op">|</span> <span class="ident">alloc</span>.<span class="ident">as_ptr</span>())
+            .<span class="ident">map_or</span>(<span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="op">|</span><span class="ident">alloc</span><span class="op">|</span> <span class="ident">alloc</span>.<span class="ident">as_ptr</span>())
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
         <span class="comment">// SAFETY: We we need to be careful to not cause a deadlock as the interrupt</span>
         <span class="comment">// handlers utilize the heap and might interrupt an in-progress de-allocation. So, we</span>
         <span class="comment">// lock the interrupts during the de-allocation.</span>
@@ -333,7 +333,7 @@
 }
 
 <span class="doccomment">/// Initialize the heap at the [HEAP_START].</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OffsetPageTable</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_heap</span>(<span class="ident">offset_table</span>: <span class="kw-2">&amp;mut</span> <span class="ident">OffsetPageTable</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">frame</span>: <span class="ident">PhysFrame</span> <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="ident">FRAME_ALLOCATOR</span>
             .<span class="ident">allocate_frame</span>()
@@ -345,7 +345,7 @@
             <span class="ident">Page::containing_address</span>(<span class="ident">VirtAddr::new</span>(<span class="ident">HEAP_START</span> <span class="kw">as</span> <span class="kw">_</span>)),
             <span class="ident">frame</span>,
             <span class="ident">PageTableFlags::PRESENT</span> <span class="op">|</span> <span class="ident">PageTableFlags::WRITABLE</span>,
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
         )
     }<span class="question-mark">?</span>
     .<span class="ident">flush</span>();

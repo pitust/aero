@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["__inner_syscall",""],["init",""],["syscall_handler",""],["syscall_interrupt_handler",""]],"mod":[["fs",""],["process",""],["time",""]],"struct":[["RegistersFrame",""],["SyscallFrame",""]]});
+initSidebarItems({"fn":[["__inner_syscall",""],["exec_args_from_slice",""],["init",""],["syscall_handler",""],["syscall_interrupt_handler",""]],"mod":[["fs",""],["process",""],["time",""]],"struct":[["ExecArgs",""],["RegistersFrame",""],["SyscallFrame",""]]});

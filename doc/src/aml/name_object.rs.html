@@ -523,7 +523,7 @@
 
 <span class="comment">// A list of ASCII codes is pretty much never useful, so we always just show it as a string</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">NameSeg</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="ident">as_str</span>())
     }
 }
@@ -567,33 +567,33 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::test_utils::make_test_context</span>();
 
         <span class="macro">check_ok!</span>(
-            <span class="ident">name_seg</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;3&#39;</span>, <span class="string">b&#39;Z&#39;</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">name_seg</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;3&#39;</span>, <span class="string">b&#39;Z&#39;</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">NameSeg</span>([<span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;3&#39;</span>, <span class="string">b&#39;Z&#39;</span>]),
             <span class="kw-2">&amp;</span>[]
         );
         <span class="macro">check_ok!</span>(
-            <span class="ident">name_seg</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;3&#39;</span>, <span class="string">b&#39;Z&#39;</span>, <span class="number">0xff</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">name_seg</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;3&#39;</span>, <span class="string">b&#39;Z&#39;</span>, <span class="number">0xff</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">NameSeg</span>([<span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;3&#39;</span>, <span class="string">b&#39;Z&#39;</span>]),
             <span class="kw-2">&amp;</span>[<span class="number">0xff</span>]
         );
         <span class="macro">check_err!</span>(
-            <span class="ident">name_seg</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0xff</span>, <span class="string">b&#39;E&#39;</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;7&#39;</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">name_seg</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0xff</span>, <span class="string">b&#39;E&#39;</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;7&#39;</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlError::UnexpectedByte</span>(<span class="number">0xff</span>),
             <span class="kw-2">&amp;</span>[<span class="number">0xff</span>, <span class="string">b&#39;E&#39;</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;7&#39;</span>]
         );
-        <span class="macro">check_err!</span>(<span class="ident">name_seg</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>), <span class="ident">AmlError::UnexpectedEndOfStream</span>, <span class="kw-2">&amp;</span>[]);
+        <span class="macro">check_err!</span>(<span class="ident">name_seg</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>), <span class="ident">AmlError::UnexpectedEndOfStream</span>, <span class="kw-2">&amp;</span>[]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_name_path</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::test_utils::make_test_context</span>();
 
-        <span class="macro">check_err!</span>(<span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>), <span class="ident">AmlError::UnexpectedEndOfStream</span>, <span class="kw-2">&amp;</span>[]);
-        <span class="macro">check_ok!</span>(<span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>), <span class="macro">alloc::vec!</span>[], <span class="kw-2">&amp;</span>[]);
-        <span class="macro">check_ok!</span>(<span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x00</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>), <span class="macro">alloc::vec!</span>[], <span class="kw-2">&amp;</span>[<span class="number">0x00</span>]);
-        <span class="macro">check_err!</span>(<span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x2e</span>, <span class="string">b&#39;A&#39;</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>), <span class="ident">AmlError::UnexpectedEndOfStream</span>, <span class="kw-2">&amp;</span>[<span class="number">0x2e</span>, <span class="string">b&#39;A&#39;</span>]);
+        <span class="macro">check_err!</span>(<span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>), <span class="ident">AmlError::UnexpectedEndOfStream</span>, <span class="kw-2">&amp;</span>[]);
+        <span class="macro">check_ok!</span>(<span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>), <span class="macro">alloc::vec!</span>[], <span class="kw-2">&amp;</span>[]);
+        <span class="macro">check_ok!</span>(<span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x00</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>), <span class="macro">alloc::vec!</span>[], <span class="kw-2">&amp;</span>[<span class="number">0x00</span>]);
+        <span class="macro">check_err!</span>(<span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x2e</span>, <span class="string">b&#39;A&#39;</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>), <span class="ident">AmlError::UnexpectedEndOfStream</span>, <span class="kw-2">&amp;</span>[<span class="number">0x2e</span>, <span class="string">b&#39;A&#39;</span>]);
         <span class="macro">check_ok!</span>(
-            <span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x2e</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>, <span class="string">b&#39;E&#39;</span>, <span class="string">b&#39;_&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;G&#39;</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">name_path</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x2e</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>, <span class="string">b&#39;E&#39;</span>, <span class="string">b&#39;_&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;G&#39;</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="macro">alloc::vec!</span>[
                 <span class="ident">NameComponent::Segment</span>(<span class="ident">NameSeg</span>([<span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>])),
                 <span class="ident">NameComponent::Segment</span>(<span class="ident">NameSeg</span>([<span class="string">b&#39;E&#39;</span>, <span class="string">b&#39;_&#39;</span>, <span class="string">b&#39;F&#39;</span>, <span class="string">b&#39;G&#39;</span>]))
@@ -607,12 +607,12 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::test_utils::make_test_context</span>();
 
         <span class="macro">check_ok!</span>(
-            <span class="ident">name_string</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="string">b&#39;^&#39;</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">name_string</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="string">b&#39;^&#39;</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlName::from_str</span>(<span class="string">&quot;^ABCD&quot;</span>).<span class="ident">unwrap</span>(),
             <span class="kw-2">&amp;</span>[]
         );
         <span class="macro">check_ok!</span>(
-            <span class="ident">name_string</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="string">b&#39;^&#39;</span>, <span class="string">b&#39;^&#39;</span>, <span class="string">b&#39;^&#39;</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">name_string</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="string">b&#39;^&#39;</span>, <span class="string">b&#39;^&#39;</span>, <span class="string">b&#39;^&#39;</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlName::from_str</span>(<span class="string">&quot;^^^ABCD&quot;</span>).<span class="ident">unwrap</span>(),
             <span class="kw-2">&amp;</span>[]
         );

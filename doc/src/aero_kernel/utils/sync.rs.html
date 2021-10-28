@@ -222,7 +222,7 @@
 
     <span class="doccomment">/// Run a future to completion on the current task. This function will block</span>
     <span class="doccomment">/// the caller until the given future has completed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">block_on</span><span class="op">&lt;</span><span class="lifetime">&#39;future</span>, <span class="ident">T</span>, <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span><span class="op">&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">block_on</span><span class="op">&lt;</span><span class="lifetime">&#39;future</span>, <span class="ident">T</span>, <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">mutex</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;future</span> <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
         <span class="kw-2">mut</span> <span class="ident">future</span>: <span class="ident">F</span>,
@@ -230,7 +230,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">mutex</span>.<span class="ident">lock_irq</span>();
 
         <span class="comment">// Check if the future was already completed.</span>
-        <span class="kw">if</span> <span class="ident">future</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">lock</span>) {
+        <span class="kw">if</span> <span class="ident">future</span>(<span class="kw-2">&amp;mut</span> <span class="ident">lock</span>) {
             <span class="kw">return</span> <span class="ident">lock</span>;
         }
 
@@ -240,7 +240,7 @@
         <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">lock_irq</span>().<span class="ident">push</span>(<span class="ident">task</span>.<span class="ident">clone</span>());
 
         <span class="comment">// Wait until the future is completed.</span>
-        <span class="kw">while</span> <span class="op">!</span><span class="ident">future</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">lock</span>) {
+        <span class="kw">while</span> <span class="op">!</span><span class="ident">future</span>(<span class="kw-2">&amp;mut</span> <span class="ident">lock</span>) {
             <span class="ident">core::mem::drop</span>(<span class="ident">lock</span>); <span class="comment">// Drop the IRQ lock and await for IO to complete.</span>
             <span class="ident">scheduler</span>.<span class="ident">inner</span>.<span class="ident">await_io</span>();
 
@@ -304,7 +304,7 @@
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">IrqGuard</span> {
     <span class="doccomment">/// Drops the IRQ guard, enabling interrupts again. See the [`IrqGuard`]</span>
     <span class="doccomment">/// documentation for more.</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">locked</span> {
             <span class="kw">unsafe</span> { <span class="ident">interrupts::enable_interrupts</span>() }
         }
@@ -383,16 +383,16 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">core::ops::DerefMut</span> <span class="kw">for</span> <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">guard</span>.<span class="ident">deref_mut</span>()
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> {
-            <span class="ident">core::mem::ManuallyDrop::drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">guard</span>);
+            <span class="ident">core::mem::ManuallyDrop::drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">guard</span>);
         }
 
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">irq_lock</span> {

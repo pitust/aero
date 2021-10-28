@@ -188,7 +188,7 @@
     <span class="ident">kernel_end</span>: <span class="ident">PhysAddr</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">OffsetPageTable</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>, <span class="ident">MapToError</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">memory_regions</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> (<span class="ident">memory_regions</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">StivaleMemoryMapTag</span>) <span class="kw">as</span> <span class="ident">u64</span>;
+        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> (<span class="ident">memory_regions</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">StivaleMemoryMapTag</span>) <span class="kw">as</span> <span class="ident">u64</span>;
         <span class="kw">let</span> <span class="ident">new_addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">addr</span>;
 
         <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">new_addr</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">StivaleMemoryMapTag</span><span class="op">&gt;</span>()
@@ -210,9 +210,9 @@
 
     <span class="kw">let</span> <span class="ident">physical</span> <span class="op">=</span> <span class="ident">level_4_table_frame</span>.<span class="ident">start_address</span>();
     <span class="kw">let</span> <span class="ident">virtual_address</span> <span class="op">=</span> <span class="ident">PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">physical</span>.<span class="ident">as_u64</span>();
-    <span class="kw">let</span> <span class="ident">page_table_ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">PageTable</span> <span class="op">=</span> <span class="ident">virtual_address</span>.<span class="ident">as_mut_ptr</span>();
+    <span class="kw">let</span> <span class="ident">page_table_ptr</span>: <span class="kw-2">*mut</span> <span class="ident">PageTable</span> <span class="op">=</span> <span class="ident">virtual_address</span>.<span class="ident">as_mut_ptr</span>();
 
-    <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">page_table_ptr</span>
+    <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">page_table_ptr</span>
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aero_kernel" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>

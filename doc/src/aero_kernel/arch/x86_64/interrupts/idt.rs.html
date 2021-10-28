@@ -323,12 +323,12 @@
     };
 
     <span class="doccomment">/// Set the IDT entry flags.</span>
-    <span class="kw">fn</span> <span class="ident">set_flags</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">flags</span>: <span class="ident">IDTFlags</span>) {
+    <span class="kw">fn</span> <span class="ident">set_flags</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">flags</span>: <span class="ident">IDTFlags</span>) {
         <span class="self">self</span>.<span class="ident">type_attr</span> <span class="op">=</span> <span class="ident">flags</span>.<span class="ident">bits</span>;
     }
 
     <span class="doccomment">/// Set the IDT entry offset.</span>
-    <span class="kw">fn</span> <span class="ident">set_offset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">selector</span>: <span class="ident">u16</span>, <span class="ident">base</span>: <span class="ident">usize</span>) {
+    <span class="kw">fn</span> <span class="ident">set_offset</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">selector</span>: <span class="ident">u16</span>, <span class="ident">base</span>: <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="ident">selector</span> <span class="op">=</span> <span class="ident">selector</span>;
         <span class="self">self</span>.<span class="ident">offset_low</span> <span class="op">=</span> <span class="ident">base</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="self">self</span>.<span class="ident">offset_middle</span> <span class="op">=</span> (<span class="ident">base</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u16</span>;
@@ -336,7 +336,7 @@
     }
 
     <span class="doccomment">/// Set the handler function of the IDT entry.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">InterruptHandlerFn</span>) {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_function</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">InterruptHandlerFn</span>) {
         <span class="self">self</span>.<span class="ident">set_flags</span>(<span class="ident">IDTFlags::PRESENT</span> <span class="op">|</span> <span class="ident">IDTFlags::RING_0</span> <span class="op">|</span> <span class="ident">IDTFlags::INTERRUPT</span>);
         <span class="self">self</span>.<span class="ident">set_offset</span>(<span class="number">8</span>, <span class="ident">handler</span> <span class="kw">as</span> <span class="ident">usize</span>);
     }
@@ -447,7 +447,7 @@
 
         <span class="kw">let</span> <span class="ident">idt_descriptor</span> <span class="op">=</span> <span class="ident">IdtDescriptor::new</span>(
             ((<span class="ident">IDT</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">IdtEntry</span><span class="op">&gt;</span>()) <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span>,
-            (<span class="kw-2">&amp;</span><span class="ident">IDT</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>) <span class="kw">as</span> <span class="ident">u64</span>,
+            (<span class="kw-2">&amp;</span><span class="ident">IDT</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>) <span class="kw">as</span> <span class="ident">u64</span>,
         );
 
         <span class="ident">load_idt</span>(<span class="kw-2">&amp;</span><span class="ident">idt_descriptor</span>);

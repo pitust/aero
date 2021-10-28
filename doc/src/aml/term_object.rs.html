@@ -1939,48 +1939,48 @@
     <span class="kw">fn</span> <span class="ident">test_computational_data</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">make_test_context</span>();
         <span class="macro">check_ok_value!</span>(
-            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x34</span>, <span class="number">0x12</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>, <span class="number">0x34</span>, <span class="number">0x12</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::Integer</span>(<span class="number">0</span>),
             <span class="kw-2">&amp;</span>[<span class="number">0x34</span>, <span class="number">0x12</span>]
         );
         <span class="macro">check_ok_value!</span>(
-            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x01</span>, <span class="number">0x18</span>, <span class="number">0xf3</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x01</span>, <span class="number">0x18</span>, <span class="number">0xf3</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::Integer</span>(<span class="number">1</span>),
             <span class="kw-2">&amp;</span>[<span class="number">0x18</span>, <span class="number">0xf3</span>]
         );
         <span class="macro">check_ok_value!</span>(
-            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0xff</span>, <span class="number">0x98</span>, <span class="number">0xc3</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0xff</span>, <span class="number">0x98</span>, <span class="number">0xc3</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::Integer</span>(<span class="ident">u64::max_value</span>()),
             <span class="kw-2">&amp;</span>[<span class="number">0x98</span>, <span class="number">0xc3</span>]
         );
         <span class="macro">check_ok_value!</span>(
-            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x5b</span>, <span class="number">0x30</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x5b</span>, <span class="number">0x30</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::Integer</span>(<span class="ident"><span class="kw">crate</span>::AML_INTERPRETER_REVISION</span>),
             <span class="kw-2">&amp;</span>[]
         );
         <span class="macro">check_ok_value!</span>(
-            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0a</span>, <span class="number">0xf3</span>, <span class="number">0x35</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0a</span>, <span class="number">0xf3</span>, <span class="number">0x35</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::Integer</span>(<span class="number">0xf3</span>),
             <span class="kw-2">&amp;</span>[<span class="number">0x35</span>]
         );
         <span class="macro">check_ok_value!</span>(
-            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0b</span>, <span class="number">0xf3</span>, <span class="number">0x35</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0b</span>, <span class="number">0xf3</span>, <span class="number">0x35</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::Integer</span>(<span class="number">0x35f3</span>),
             <span class="kw-2">&amp;</span>[]
         );
         <span class="macro">check_ok_value!</span>(
-            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0c</span>, <span class="number">0xf3</span>, <span class="number">0x35</span>, <span class="number">0x12</span>, <span class="number">0x65</span>, <span class="number">0xff</span>, <span class="number">0x00</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0c</span>, <span class="number">0xf3</span>, <span class="number">0x35</span>, <span class="number">0x12</span>, <span class="number">0x65</span>, <span class="number">0xff</span>, <span class="number">0x00</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::Integer</span>(<span class="number">0x651235f3</span>),
             <span class="kw-2">&amp;</span>[<span class="number">0xff</span>, <span class="number">0x00</span>]
         );
         <span class="macro">check_ok_value!</span>(
             <span class="ident">computational_data</span>()
-                .<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0e</span>, <span class="number">0xf3</span>, <span class="number">0x35</span>, <span class="number">0x12</span>, <span class="number">0x65</span>, <span class="number">0xff</span>, <span class="number">0x00</span>, <span class="number">0x67</span>, <span class="number">0xde</span>, <span class="number">0x28</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+                .<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0e</span>, <span class="number">0xf3</span>, <span class="number">0x35</span>, <span class="number">0x12</span>, <span class="number">0x65</span>, <span class="number">0xff</span>, <span class="number">0x00</span>, <span class="number">0x67</span>, <span class="number">0xde</span>, <span class="number">0x28</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::Integer</span>(<span class="number">0xde6700ff651235f3</span>),
             <span class="kw-2">&amp;</span>[<span class="number">0x28</span>]
         );
         <span class="macro">check_ok_value!</span>(
-            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0d</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>, <span class="string">b&#39;\0&#39;</span>, <span class="number">0xff</span>, <span class="number">0xf5</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">context</span>),
+            <span class="ident">computational_data</span>().<span class="ident">parse</span>(<span class="kw-2">&amp;</span>[<span class="number">0x0d</span>, <span class="string">b&#39;A&#39;</span>, <span class="string">b&#39;B&#39;</span>, <span class="string">b&#39;C&#39;</span>, <span class="string">b&#39;D&#39;</span>, <span class="string">b&#39;\0&#39;</span>, <span class="number">0xff</span>, <span class="number">0xf5</span>], <span class="kw-2">&amp;mut</span> <span class="ident">context</span>),
             <span class="ident">AmlValue::String</span>(<span class="ident">String::from</span>(<span class="string">&quot;ABCD&quot;</span>)),
             <span class="kw-2">&amp;</span>[<span class="number">0xff</span>, <span class="number">0xf5</span>]
         );

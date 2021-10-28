@@ -439,13 +439,13 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_string</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
         <span class="kw">for</span> <span class="ident">char</span> <span class="kw">in</span> <span class="ident">string</span>.<span class="ident">chars</span>() {
             <span class="self">self</span>.<span class="ident">write_character</span>(<span class="ident">char</span>)
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_character</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">char</span>: <span class="ident">char</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_character</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">char</span>: <span class="ident">char</span>) {
         <span class="kw">match</span> <span class="ident">char</span> {
             <span class="string">&#39;\n&#39;</span> =&gt; <span class="self">self</span>.<span class="ident">new_line</span>(),
             <span class="string">&#39;\r&#39;</span> =&gt; <span class="self">self</span>.<span class="ident">carriage_return</span>(),
@@ -465,7 +465,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_bytes</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
         <span class="kw">for</span> (<span class="ident">y</span>, <span class="ident">byte</span>) <span class="kw">in</span> <span class="ident">bytes</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">for</span> (<span class="ident">x</span>, <span class="ident">bit</span>) <span class="kw">in</span> (<span class="number">0</span>..<span class="number">8</span>).<span class="ident">enumerate</span>() {
                 <span class="kw">let</span> <span class="ident">background</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bit</span>) <span class="op">==</span> <span class="number">0</span>;
@@ -481,37 +481,37 @@
         <span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">+</span><span class="op">=</span> <span class="number">8</span>;
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_pixel</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">usize</span>, <span class="ident">y</span>: <span class="ident">usize</span>, <span class="ident">color</span>: <span class="ident">Color</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put_pixel</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">usize</span>, <span class="ident">y</span>: <span class="ident">usize</span>, <span class="ident">color</span>: <span class="ident">Color</span>) {
         <span class="comment">// SAFTEY: Safe as we are 100% sure the x, y will be correct.</span>
         <span class="kw">unsafe</span> {
             <span class="kw-2">*</span>((<span class="self">self</span>.<span class="ident">buffer</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> (<span class="ident">x</span> <span class="op">*</span> (<span class="self">self</span>.<span class="ident">info</span>.<span class="ident">bytes_per_pixel</span> <span class="op">/</span> <span class="number">8</span>) <span class="op">+</span> <span class="ident">y</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">stride</span>))
-                <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>) <span class="op">=</span> <span class="ident">color</span>.<span class="ident">inner</span>();
+                <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u32</span>) <span class="op">=</span> <span class="ident">color</span>.<span class="ident">inner</span>();
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_screen</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_screen</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="self">self</span>.<span class="ident">y_pos</span> <span class="op">=</span> <span class="number">0</span>;
 
         <span class="kw">unsafe</span> {
-            <span class="ident">core::slice::from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">byte_len</span>).<span class="ident">fill</span>(<span class="number">0x00</span>);
+            <span class="ident">core::slice::from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">buffer</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">byte_len</span>).<span class="ident">fill</span>(<span class="number">0x00</span>);
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">new_line</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">new_line</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">y_pos</span> <span class="op">+</span><span class="op">=</span> <span class="number">16</span>;
 
         <span class="self">self</span>.<span class="ident">carriage_return</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">carriage_return</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">carriage_return</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">=</span> <span class="number">0</span>;
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_code</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">ColorCode</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_color_code</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">ColorCode</span>) {
         <span class="self">self</span>.<span class="ident">color</span> <span class="op">=</span> <span class="ident">color</span>;
     }
 
@@ -527,7 +527,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Write</span> <span class="kw">for</span> <span class="ident">DebugRendy</span> {
-    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">write_string</span>(<span class="ident">string</span>);
 
         <span class="prelude-val">Ok</span>(())

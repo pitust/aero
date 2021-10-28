@@ -59,13 +59,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If this function succeeds then the intrusive collection will have</span>
     <span class="doccomment">/// exclusive access to the link until `release_link` is called.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">acquire_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) -&gt; <span class="ident">bool</span>;
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">acquire_link</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) -&gt; <span class="ident">bool</span>;
 
     <span class="doccomment">/// Releases ownership of a link that was previously acquired with `acquire_link`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// An implementation of `release_link` must not panic.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">release_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>);
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">release_link</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>);
 }
 
 <span class="doccomment">/// The default implementation of `LinkOps` associated with a link type.</span>

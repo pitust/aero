@@ -2915,25 +2915,25 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// An implementation of `set_left` must not panic.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_left</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">left</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>);
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_left</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">left</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>);
 
     <span class="doccomment">/// Sets the right child of `ptr`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// An implementation of `set_right` must not panic.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_right</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">right</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>);
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_right</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">right</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>);
 
     <span class="doccomment">/// Sets the parent of `ptr`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// An implementation of `set_parent` must not panic.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_parent</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">parent</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>);
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_parent</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">parent</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>);
 
     <span class="doccomment">/// Sets the color of `ptr`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// An implementation of `set_color` must not panic.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_color</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">color</span>: <span class="ident">Color</span>);
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_color</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">color</span>: <span class="ident">Color</span>);
 }
 
 <span class="comment">// =============================================================================</span>
@@ -3014,7 +3014,7 @@
 <span class="comment">// still derive Debug.</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Link</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="comment">// There isn&#39;t anything sensible to print here except whether the link</span>
         <span class="comment">// is currently in a tree.</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_linked</span>() {
@@ -3055,7 +3055,7 @@
     <span class="kw">type</span> <span class="ident">LinkPtr</span> <span class="op">=</span> <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">Link</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">acquire_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">acquire_link</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">is_linked</span>() {
             <span class="bool-val">false</span>
         } <span class="kw">else</span> {
@@ -3065,7 +3065,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">release_link</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">release_link</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) {
         <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">parent_color</span>.<span class="ident">set</span>(<span class="ident">UNLINKED_MARKER</span>);
     }
 }
@@ -3084,7 +3084,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">parent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">parent_usize</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">parent_color</span>.<span class="ident">get</span>() <span class="op">&amp;</span> <span class="op">!</span><span class="number">1</span>;
-        <span class="ident">NonNull::new</span>(<span class="ident">parent_usize</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Link</span>)
+        <span class="ident">NonNull::new</span>(<span class="ident">parent_usize</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">Link</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3097,22 +3097,22 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_left</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">left</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_left</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">left</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
         <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">left</span>.<span class="ident">set</span>(<span class="ident">left</span>);
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_right</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">right</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_right</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">right</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
         <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">right</span>.<span class="ident">set</span>(<span class="ident">right</span>);
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_parent</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">parent</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_parent</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">parent</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">set_parent_color</span>(<span class="ident">ptr</span>, <span class="ident">parent</span>, <span class="self">self</span>.<span class="ident">color</span>(<span class="ident">ptr</span>));
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_color</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">color</span>: <span class="ident">Color</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_color</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">color</span>: <span class="ident">Color</span>) {
         <span class="self">self</span>.<span class="ident">set_parent_color</span>(<span class="ident">ptr</span>, <span class="self">self</span>.<span class="ident">parent</span>(<span class="ident">ptr</span>), <span class="ident">color</span>);
     }
 }
@@ -3124,7 +3124,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">set_right</span>(<span class="ident">ptr</span>, <span class="ident">next</span>);
     }
 }
@@ -3141,12 +3141,12 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">set_right</span>(<span class="ident">ptr</span>, <span class="ident">next</span>);
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_prev</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_prev</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>, <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">set_left</span>(<span class="ident">ptr</span>, <span class="ident">prev</span>);
     }
 }
@@ -3160,7 +3160,7 @@
     ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">packed</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">right</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">packed</span> <span class="op">^</span> <span class="ident">prev</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
-        <span class="ident">NonNull::new</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>)
+        <span class="ident">NonNull::new</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3171,12 +3171,12 @@
     ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">packed</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">right</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">packed</span> <span class="op">^</span> <span class="ident">next</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
-        <span class="ident">NonNull::new</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>)
+        <span class="ident">NonNull::new</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>,
         <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
         <span class="ident">next</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
@@ -3184,13 +3184,13 @@
         <span class="kw">let</span> <span class="ident">new_packed</span> <span class="op">=</span> <span class="ident">prev</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>)
             <span class="op">^</span> <span class="ident">next</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
 
-        <span class="kw">let</span> <span class="ident">new_next</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">new_packed</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
+        <span class="kw">let</span> <span class="ident">new_next</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">new_packed</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
         <span class="self">self</span>.<span class="ident">set_right</span>(<span class="ident">ptr</span>, <span class="ident">new_next</span>);
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">replace_next_or_prev</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">ptr</span>: <span class="ident"><span class="self">Self</span>::LinkPtr</span>,
         <span class="ident">old</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
         <span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::LinkPtr</span><span class="op">&gt;</span>,
@@ -3200,7 +3200,7 @@
             <span class="op">^</span> <span class="ident">old</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>)
             <span class="op">^</span> <span class="ident">new</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">unwrap_or</span>(<span class="number">0</span>);
 
-        <span class="kw">let</span> <span class="ident">new_next</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">new_packed</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
+        <span class="kw">let</span> <span class="ident">new_next</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">new_packed</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
         <span class="self">self</span>.<span class="ident">set_right</span>(<span class="ident">ptr</span>, <span class="ident">new_next</span>);
     }
 }
@@ -3270,10 +3270,10 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">replace_with</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RBTreeOps</span><span class="op">&gt;</span>(
-    <span class="ident">link_ops</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>,
+    <span class="ident">link_ops</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>,
     <span class="ident">ptr</span>: <span class="ident">T::LinkPtr</span>,
     <span class="ident">new</span>: <span class="ident">T::LinkPtr</span>,
-    <span class="ident">root</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
+    <span class="ident">root</span>: <span class="kw-2">&amp;mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
 ) {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parent</span>) <span class="op">=</span> <span class="ident">link_ops</span>.<span class="ident">parent</span>(<span class="ident">ptr</span>) {
         <span class="kw">if</span> <span class="ident">is_left_child</span>(<span class="ident">link_ops</span>, <span class="ident">ptr</span>, <span class="ident">parent</span>) {
@@ -3299,10 +3299,10 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">insert_left</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RBTreeOps</span><span class="op">&gt;</span>(
-    <span class="ident">link_ops</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>,
+    <span class="ident">link_ops</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>,
     <span class="ident">ptr</span>: <span class="ident">T::LinkPtr</span>,
     <span class="ident">new</span>: <span class="ident">T::LinkPtr</span>,
-    <span class="ident">root</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
+    <span class="ident">root</span>: <span class="kw-2">&amp;mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
 ) {
     <span class="ident">link_ops</span>.<span class="ident">set_parent</span>(<span class="ident">new</span>, <span class="prelude-val">Some</span>(<span class="ident">ptr</span>));
     <span class="ident">link_ops</span>.<span class="ident">set_color</span>(<span class="ident">new</span>, <span class="ident">Color::Red</span>);
@@ -3314,10 +3314,10 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">insert_right</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RBTreeOps</span><span class="op">&gt;</span>(
-    <span class="ident">link_ops</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>,
+    <span class="ident">link_ops</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>,
     <span class="ident">ptr</span>: <span class="ident">T::LinkPtr</span>,
     <span class="ident">new</span>: <span class="ident">T::LinkPtr</span>,
-    <span class="ident">root</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
+    <span class="ident">root</span>: <span class="kw-2">&amp;mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
 ) {
     <span class="ident">link_ops</span>.<span class="ident">set_parent</span>(<span class="ident">new</span>, <span class="prelude-val">Some</span>(<span class="ident">ptr</span>));
     <span class="ident">link_ops</span>.<span class="ident">set_color</span>(<span class="ident">new</span>, <span class="ident">Color::Red</span>);
@@ -3328,9 +3328,9 @@
 }
 
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">rotate_left</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RBTreeOps</span><span class="op">&gt;</span>(
-    <span class="ident">link_ops</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>,
+    <span class="ident">link_ops</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>,
     <span class="ident">ptr</span>: <span class="ident">T::LinkPtr</span>,
-    <span class="ident">root</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
+    <span class="ident">root</span>: <span class="kw-2">&amp;mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
 ) {
     <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">link_ops</span>.<span class="ident">right</span>(<span class="ident">ptr</span>).<span class="ident">unwrap_unchecked</span>();
     <span class="ident">link_ops</span>.<span class="ident">set_right</span>(<span class="ident">ptr</span>, <span class="ident">link_ops</span>.<span class="ident">left</span>(<span class="ident">y</span>));
@@ -3352,9 +3352,9 @@
 }
 
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">rotate_right</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RBTreeOps</span><span class="op">&gt;</span>(
-    <span class="ident">link_ops</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>,
+    <span class="ident">link_ops</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>,
     <span class="ident">ptr</span>: <span class="ident">T::LinkPtr</span>,
-    <span class="ident">root</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
+    <span class="ident">root</span>: <span class="kw-2">&amp;mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
 ) {
     <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">link_ops</span>.<span class="ident">left</span>(<span class="ident">ptr</span>).<span class="ident">unwrap_unchecked</span>();
     <span class="ident">link_ops</span>.<span class="ident">set_left</span>(<span class="ident">ptr</span>, <span class="ident">link_ops</span>.<span class="ident">right</span>(<span class="ident">y</span>));
@@ -3377,9 +3377,9 @@
 
 <span class="comment">// This code is based on the red-black tree implementation in libc++</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">post_insert</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RBTreeOps</span><span class="op">&gt;</span>(
-    <span class="ident">link_ops</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>,
+    <span class="ident">link_ops</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>,
     <span class="ident">ptr</span>: <span class="ident">T::LinkPtr</span>,
-    <span class="ident">root</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
+    <span class="ident">root</span>: <span class="kw-2">&amp;mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>,
 ) {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">ptr</span>;
     <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parent</span>) <span class="op">=</span> <span class="ident">link_ops</span>.<span class="ident">parent</span>(<span class="ident">x</span>) {
@@ -3447,7 +3447,7 @@
 }
 
 <span class="comment">// This code is based on the red-black tree implementation in libc++</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">remove</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RBTreeOps</span><span class="op">&gt;</span>(<span class="ident">link_ops</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">ptr</span>: <span class="ident">T::LinkPtr</span>, <span class="ident">root</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>) {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">remove</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">RBTreeOps</span><span class="op">&gt;</span>(<span class="ident">link_ops</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="ident">ptr</span>: <span class="ident">T::LinkPtr</span>, <span class="ident">root</span>: <span class="kw-2">&amp;mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::LinkPtr</span><span class="op">&gt;</span>) {
     <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">link_ops</span>.<span class="ident">left</span>(<span class="ident">ptr</span>).<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">link_ops</span>.<span class="ident">right</span>(<span class="ident">ptr</span>).<span class="ident">is_none</span>() {
         <span class="ident">ptr</span>
     } <span class="kw">else</span> {
@@ -3652,7 +3652,7 @@
     <span class="kw">where</span>
         <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>: <span class="ident">Clone</span>,
     {
-        <span class="kw">let</span> <span class="ident">raw_pointer</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get</span>()<span class="question-mark">?</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>;
+        <span class="kw">let</span> <span class="ident">raw_pointer</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get</span>()<span class="question-mark">?</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>;
         <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> {
             <span class="ident"><span class="kw">crate</span>::pointer_ops::clone_pointer_from_raw</span>(<span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">pointer_ops</span>(), <span class="ident">raw_pointer</span>)
         })
@@ -3664,7 +3664,7 @@
     <span class="doccomment">/// the first element of the `RBTree`. If it is pointing to the last</span>
     <span class="doccomment">/// element of the `RBTree` then this will move it to the null object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
             <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">next</span>(<span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops</span>(), <span class="ident">current</span>) };
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">root</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span> {
@@ -3680,7 +3680,7 @@
     <span class="doccomment">/// the last element of the `RBTree`. If it is pointing to the first</span>
     <span class="doccomment">/// element of the `RBTree` then this will move it to the null object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_prev</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_prev</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
             <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">prev</span>(<span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops</span>(), <span class="ident">current</span>) };
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">root</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span> {
@@ -3763,7 +3763,7 @@
     <span class="doccomment">/// the first element of the `RBTree`. If it is pointing to the last</span>
     <span class="doccomment">/// element of the `RBTree` then this will move it to the null object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
             <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">next</span>(<span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops</span>(), <span class="ident">current</span>) };
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">root</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span> {
@@ -3779,7 +3779,7 @@
     <span class="doccomment">/// the last element of the `RBTree`. If it is pointing to the first</span>
     <span class="doccomment">/// element of the `RBTree` then this will move it to the null object.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_prev</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">move_prev</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
             <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">prev</span>(<span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops</span>(), <span class="ident">current</span>) };
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">root</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span> {
@@ -3821,7 +3821,7 @@
     <span class="doccomment">/// If the cursor is currently pointing to the null object then no element</span>
     <span class="doccomment">/// is removed and `None` is returned.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
                 <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">next</span>(<span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops</span>(), <span class="ident">current</span>);
@@ -3829,7 +3829,7 @@
                 <span class="ident">remove</span>(
                     <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>(),
                     <span class="ident">current</span>,
-                    <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>,
+                    <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>,
                 );
                 <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="ident">next</span>;
                 <span class="prelude-val">Some</span>(
@@ -3864,7 +3864,7 @@
     <span class="doccomment">/// collection.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace_with</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">val</span>: <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>, <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span>
     {
@@ -3876,7 +3876,7 @@
                     <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>(),
                     <span class="ident">current</span>,
                     <span class="ident">new</span>,
-                    <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>,
+                    <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>,
                 );
                 <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">new</span>);
                 <span class="prelude-val">Ok</span>(<span class="self">self</span>
@@ -3905,7 +3905,7 @@
     <span class="doccomment">/// Panics if the new element is already linked to a different intrusive</span>
     <span class="doccomment">/// collection.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert_after</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert_after</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>) {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">new</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">node_from_value</span>(<span class="ident">val</span>);
             <span class="kw">let</span> <span class="ident">link_ops</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>();
@@ -3914,16 +3914,16 @@
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
                     <span class="kw">if</span> <span class="ident">link_ops</span>.<span class="ident">right</span>(<span class="ident">current</span>).<span class="ident">is_some</span>() {
                         <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">next</span>(<span class="ident">link_ops</span>, <span class="ident">current</span>).<span class="ident">unwrap_unchecked</span>();
-                        <span class="ident">insert_left</span>(<span class="ident">link_ops</span>, <span class="ident">next</span>, <span class="ident">new</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
+                        <span class="ident">insert_left</span>(<span class="ident">link_ops</span>, <span class="ident">next</span>, <span class="ident">new</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
                     } <span class="kw">else</span> {
-                        <span class="ident">insert_right</span>(<span class="ident">link_ops</span>, <span class="ident">current</span>, <span class="ident">new</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
+                        <span class="ident">insert_right</span>(<span class="ident">link_ops</span>, <span class="ident">current</span>, <span class="ident">new</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
                     }
                 } <span class="kw">else</span> {
                     <span class="ident">insert_left</span>(
                         <span class="ident">link_ops</span>,
                         <span class="ident">first_child</span>(<span class="ident">link_ops</span>, <span class="ident">root</span>),
                         <span class="ident">new</span>,
-                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>,
                     );
                 }
             } <span class="kw">else</span> {
@@ -3947,7 +3947,7 @@
     <span class="doccomment">/// Panics if the new element is already linked to a different intrusive</span>
     <span class="doccomment">/// collection.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert_before</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert_before</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>) {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">new</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">node_from_value</span>(<span class="ident">val</span>);
             <span class="kw">let</span> <span class="ident">link_ops</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>();
@@ -3956,16 +3956,16 @@
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span> {
                     <span class="kw">if</span> <span class="ident">link_ops</span>.<span class="ident">left</span>(<span class="ident">current</span>).<span class="ident">is_some</span>() {
                         <span class="kw">let</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">prev</span>(<span class="ident">link_ops</span>, <span class="ident">current</span>).<span class="ident">unwrap_unchecked</span>();
-                        <span class="ident">insert_right</span>(<span class="ident">link_ops</span>, <span class="ident">prev</span>, <span class="ident">new</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
+                        <span class="ident">insert_right</span>(<span class="ident">link_ops</span>, <span class="ident">prev</span>, <span class="ident">new</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
                     } <span class="kw">else</span> {
-                        <span class="ident">insert_left</span>(<span class="ident">link_ops</span>, <span class="ident">current</span>, <span class="ident">new</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
+                        <span class="ident">insert_left</span>(<span class="ident">link_ops</span>, <span class="ident">current</span>, <span class="ident">new</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
                     }
                 } <span class="kw">else</span> {
                     <span class="ident">insert_right</span>(
                         <span class="ident">link_ops</span>,
                         <span class="ident">last_child</span>(<span class="ident">link_ops</span>, <span class="ident">root</span>),
                         <span class="ident">new</span>,
-                        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>,
                     );
                 }
             } <span class="kw">else</span> {
@@ -4028,7 +4028,7 @@
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">node_from_value</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">val</span>: <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>,
     ) -&gt; <span class="op">&lt;</span><span class="ident">A::LinkOps</span> <span class="kw">as</span> <span class="ident">link_ops::LinkOps</span><span class="op">&gt;</span><span class="ident">::LinkPtr</span> {
         <span class="kw">use</span> <span class="ident">link_ops::LinkOps</span>;
@@ -4085,7 +4085,7 @@
 
     <span class="doccomment">/// Returns a null `CursorMut` for this tree.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cursor_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cursor_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">CursorMut</span> {
             <span class="ident">current</span>: <span class="prelude-val">None</span>,
             <span class="ident">tree</span>: <span class="self">self</span>,
@@ -4100,7 +4100,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cursor_from_ptr</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
+        <span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
     ) -&gt; <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">Cursor</span> {
             <span class="ident">current</span>: <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">ptr</span>)),
@@ -4115,8 +4115,8 @@
     <span class="doccomment">/// `ptr` must be a pointer to an object that is part of this tree.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cursor_mut_from_ptr</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>,
     ) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">CursorMut</span> {
             <span class="ident">current</span>: <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">get_link</span>(<span class="ident">ptr</span>)),
@@ -4136,7 +4136,7 @@
     <span class="doccomment">/// Returns a `CursorMut` pointing to the first element of the tree. If the</span>
     <span class="doccomment">/// the tree is empty then a null cursor is returned.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">front_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">front_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cursor_mut</span>();
         <span class="ident">cursor</span>.<span class="ident">move_next</span>();
         <span class="ident">cursor</span>
@@ -4154,14 +4154,14 @@
     <span class="doccomment">/// Returns a `CursorMut` pointing to the last element of the tree. If the</span>
     <span class="doccomment">/// tree is empty then a null cursor is returned.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">back_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">back_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">CursorMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cursor_mut</span>();
         <span class="ident">cursor</span>.<span class="ident">move_prev</span>();
         <span class="ident">cursor</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">insert_root</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="op">&lt;</span><span class="ident">A::LinkOps</span> <span class="kw">as</span> <span class="ident">link_ops::LinkOps</span><span class="op">&gt;</span><span class="ident">::LinkPtr</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">insert_root</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="op">&lt;</span><span class="ident">A::LinkOps</span> <span class="kw">as</span> <span class="ident">link_ops::LinkOps</span><span class="op">&gt;</span><span class="ident">::LinkPtr</span>) {
         <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>().<span class="ident">set_parent</span>(<span class="ident">node</span>, <span class="prelude-val">None</span>);
         <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>().<span class="ident">set_color</span>(<span class="ident">node</span>, <span class="ident">Color::Black</span>);
         <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>().<span class="ident">set_left</span>(<span class="ident">node</span>, <span class="prelude-val">None</span>);
@@ -4190,7 +4190,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">clear_recurse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">current</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::LinkOps</span> <span class="kw">as</span> <span class="ident">link_ops::LinkOps</span><span class="op">&gt;</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">clear_recurse</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">current</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::LinkOps</span> <span class="kw">as</span> <span class="ident">link_ops::LinkOps</span><span class="op">&gt;</span><span class="ident">::LinkPtr</span><span class="op">&gt;</span>) {
         <span class="kw">use</span> <span class="ident">link_ops::LinkOps</span>;
         <span class="comment">// If adapter.get_value or Pointer::from_raw panic here, it will leak</span>
         <span class="comment">// the nodes and keep them linked. However this is harmless since there</span>
@@ -4215,7 +4215,7 @@
     <span class="doccomment">/// iterating through all elements in the `RBTree`. Each element is</span>
     <span class="doccomment">/// converted back to an owned pointer and then dropped.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">let</span> <span class="ident">root</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">root</span>.<span class="ident">take</span>();
         <span class="self">self</span>.<span class="ident">clear_recurse</span>(<span class="ident">root</span>);
     }
@@ -4227,14 +4227,14 @@
     <span class="doccomment">/// memory unsafety. To unlink those objects manually, you must call the</span>
     <span class="doccomment">/// `force_unlink` function on them.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fast_clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fast_clear</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">root</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     }
 
     <span class="doccomment">/// Takes all the elements out of the `RBTree`, leaving it empty. The</span>
     <span class="doccomment">/// taken elements are returned as a new `RBTree`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">RBTree</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">RBTree</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">Clone</span>,
     {
@@ -4450,14 +4450,14 @@
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">left</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops</span>().<span class="ident">left</span>(<span class="ident">tree</span>) {
                             <span class="ident">tree</span> <span class="op">=</span> <span class="ident">left</span>;
                         } <span class="kw">else</span> {
-                            <span class="ident">insert_left</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>(), <span class="ident">tree</span>, <span class="ident">new</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">root</span>);
+                            <span class="ident">insert_left</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>(), <span class="ident">tree</span>, <span class="ident">new</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">root</span>);
                             <span class="kw">break</span>;
                         }
                     } <span class="kw">else</span> {
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">right</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops</span>().<span class="ident">right</span>(<span class="ident">tree</span>) {
                             <span class="ident">tree</span> <span class="op">=</span> <span class="ident">right</span>;
                         } <span class="kw">else</span> {
-                            <span class="ident">insert_right</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>(), <span class="ident">tree</span>, <span class="ident">new</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">root</span>);
+                            <span class="ident">insert_right</span>(<span class="self">self</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>(), <span class="ident">tree</span>, <span class="ident">new</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">root</span>);
                             <span class="kw">break</span>;
                         }
                     }
@@ -4593,7 +4593,7 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">RBTreeOps</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">clear</span>();
     }
 }
@@ -4652,7 +4652,7 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">RBTreeOps</span>,
     <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>: <span class="ident">fmt::Debug</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_set</span>().<span class="ident">entries</span>(<span class="self">self</span>.<span class="ident">iter</span>()).<span class="ident">finish</span>()
     }
 }
@@ -4689,9 +4689,9 @@
             <span class="kw">let</span> <span class="ident">link_ops</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">adapter</span>.<span class="ident">link_ops_mut</span>();
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parent</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">parent</span> {
                 <span class="kw">if</span> <span class="self">self</span>.<span class="ident">insert_left</span> {
-                    <span class="ident">insert_left</span>(<span class="ident">link_ops</span>, <span class="ident">parent</span>, <span class="ident">new</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
+                    <span class="ident">insert_left</span>(<span class="ident">link_ops</span>, <span class="ident">parent</span>, <span class="ident">new</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
                 } <span class="kw">else</span> {
-                    <span class="ident">insert_right</span>(<span class="ident">link_ops</span>, <span class="ident">parent</span>, <span class="ident">new</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
+                    <span class="ident">insert_right</span>(<span class="ident">link_ops</span>, <span class="ident">parent</span>, <span class="ident">new</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">root</span>);
                 }
             } <span class="kw">else</span> {
                 <span class="self">self</span>.<span class="ident">tree</span>.<span class="ident">insert_root</span>(<span class="ident">new</span>);
@@ -4777,7 +4777,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">head</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span><span class="question-mark">?</span>;
 
         <span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">head</span>) <span class="op">==</span> <span class="self">self</span>.<span class="ident">tail</span> {
@@ -4794,7 +4794,7 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">RBTreeOps</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Value</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">tail</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tail</span><span class="question-mark">?</span>;
 
         <span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">tail</span>) <span class="op">==</span> <span class="self">self</span>.<span class="ident">head</span> {
@@ -4840,7 +4840,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">link_ops::LinkOps</span>;
 
         <span class="kw">let</span> <span class="ident">head</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span><span class="question-mark">?</span>;
@@ -4879,7 +4879,7 @@
     <span class="ident">A::LinkOps</span>: <span class="ident">RBTreeOps</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">A::PointerOps</span> <span class="kw">as</span> <span class="ident">PointerOps</span><span class="op">&gt;</span><span class="ident">::Pointer</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">link_ops::LinkOps</span>;
 
         <span class="kw">let</span> <span class="ident">tail</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tail</span><span class="question-mark">?</span>;
@@ -4935,7 +4935,7 @@
         <span class="ident">value</span>: <span class="ident">i32</span>,
     }
     <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Obj</span> {
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
             <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
         }
     }
@@ -4976,8 +4976,8 @@
         }
 
         <span class="macro">assert_eq!</span>(
-            <span class="ident">b</span>.<span class="ident">front_mut</span>().<span class="ident">remove</span>().<span class="ident">unwrap</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>,
-            <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>
+            <span class="ident">b</span>.<span class="ident">front_mut</span>().<span class="ident">remove</span>().<span class="ident">unwrap</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
+            <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>
         );
         <span class="macro">assert!</span>(<span class="ident">b</span>.<span class="ident">is_empty</span>());
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">a</span>.<span class="ident">link</span>.<span class="ident">is_linked</span>());
@@ -5005,51 +5005,51 @@
         <span class="ident">cur</span>.<span class="ident">move_next</span>();
         <span class="macro">assert!</span>(<span class="ident">cur</span>.<span class="ident">peek_prev</span>().<span class="ident">is_null</span>());
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">cur</span>.<span class="ident">is_null</span>());
-        <span class="macro">assert_eq!</span>(<span class="ident">cur</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">cur</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
 
         {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cur2</span> <span class="op">=</span> <span class="ident">cur</span>.<span class="ident">as_cursor</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">peek_next</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>().<span class="ident">value</span>, <span class="number">2</span>);
             <span class="ident">cur2</span>.<span class="ident">move_next</span>();
             <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>().<span class="ident">value</span>, <span class="number">2</span>);
             <span class="ident">cur2</span>.<span class="ident">move_next</span>();
             <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">peek_prev</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>().<span class="ident">value</span>, <span class="number">2</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>, <span class="ident">c</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>, <span class="ident">c</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
             <span class="ident">cur2</span>.<span class="ident">move_prev</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>, <span class="ident">b</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>, <span class="ident">b</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
             <span class="ident">cur2</span>.<span class="ident">move_next</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>, <span class="ident">c</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">cur2</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>, <span class="ident">c</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
             <span class="ident">cur2</span>.<span class="ident">move_next</span>();
             <span class="macro">assert!</span>(<span class="ident">cur2</span>.<span class="ident">is_null</span>());
             <span class="macro">assert!</span>(<span class="ident">cur2</span>.<span class="ident">clone</span>().<span class="ident">get</span>().<span class="ident">is_none</span>());
         }
-        <span class="macro">assert_eq!</span>(<span class="ident">cur</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">cur</span>.<span class="ident">get</span>().<span class="ident">unwrap</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
 
         <span class="kw">let</span> <span class="ident">a2</span> <span class="op">=</span> <span class="ident">make_obj</span>(<span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">b2</span> <span class="op">=</span> <span class="ident">make_obj</span>(<span class="number">2</span>);
         <span class="kw">let</span> <span class="ident">c2</span> <span class="op">=</span> <span class="ident">make_obj</span>(<span class="number">3</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">cur</span>.<span class="ident">replace_with</span>(<span class="ident">a2</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>,
-            <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>
+            <span class="ident">cur</span>.<span class="ident">replace_with</span>(<span class="ident">a2</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
+            <span class="ident">a</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>
         );
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">a</span>.<span class="ident">link</span>.<span class="ident">is_linked</span>());
         <span class="ident">cur</span>.<span class="ident">move_next</span>();
         <span class="macro">assert_eq!</span>(
-            <span class="ident">cur</span>.<span class="ident">replace_with</span>(<span class="ident">b2</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>,
-            <span class="ident">b</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>
+            <span class="ident">cur</span>.<span class="ident">replace_with</span>(<span class="ident">b2</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
+            <span class="ident">b</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>
         );
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">b</span>.<span class="ident">link</span>.<span class="ident">is_linked</span>());
         <span class="ident">cur</span>.<span class="ident">move_next</span>();
         <span class="macro">assert_eq!</span>(
-            <span class="ident">cur</span>.<span class="ident">replace_with</span>(<span class="ident">c2</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>,
-            <span class="ident">c</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>
+            <span class="ident">cur</span>.<span class="ident">replace_with</span>(<span class="ident">c2</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
+            <span class="ident">c</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>
         );
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">c</span>.<span class="ident">link</span>.<span class="ident">is_linked</span>());
         <span class="ident">cur</span>.<span class="ident">move_next</span>();
         <span class="macro">assert_eq!</span>(
-            <span class="ident">cur</span>.<span class="ident">replace_with</span>(<span class="ident">c</span>.<span class="ident">clone</span>()).<span class="ident">unwrap_err</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>,
-            <span class="ident">c</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>
+            <span class="ident">cur</span>.<span class="ident">replace_with</span>(<span class="ident">c</span>.<span class="ident">clone</span>()).<span class="ident">unwrap_err</span>().<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
+            <span class="ident">c</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>
         );
     }
 
@@ -5096,7 +5096,7 @@
 
         {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">indices</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">v</span>.<span class="ident">len</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-            <span class="ident">indices</span>.<span class="ident">shuffle</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rng</span>);
+            <span class="ident">indices</span>.<span class="ident">shuffle</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">indices</span> {
                 <span class="ident">t</span>.<span class="ident">insert</span>(<span class="ident">v</span>[<span class="ident">i</span>].<span class="ident">clone</span>());
@@ -5121,7 +5121,7 @@
 
         {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">indices</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">v</span>.<span class="ident">len</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-            <span class="ident">indices</span>.<span class="ident">shuffle</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rng</span>);
+            <span class="ident">indices</span>.<span class="ident">shuffle</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">indices</span> {
                 {
@@ -5149,7 +5149,7 @@
 
         {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">indices</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">v</span>.<span class="ident">len</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-            <span class="ident">indices</span>.<span class="ident">shuffle</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rng</span>);
+            <span class="ident">indices</span>.<span class="ident">shuffle</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="ident">indices</span> {
                 {

@@ -5407,12 +5407,12 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">CpuIdResult</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;CpuIdResult&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;eax&quot;</span>, <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">eax</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>))
-            .<span class="ident">field</span>(<span class="string">&quot;ebx&quot;</span>, <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">ebx</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>))
-            .<span class="ident">field</span>(<span class="string">&quot;ecx&quot;</span>, <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">ecx</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>))
-            .<span class="ident">field</span>(<span class="string">&quot;edx&quot;</span>, <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">edx</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>))
+            .<span class="ident">field</span>(<span class="string">&quot;eax&quot;</span>, <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">eax</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u32</span>))
+            .<span class="ident">field</span>(<span class="string">&quot;ebx&quot;</span>, <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">ebx</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u32</span>))
+            .<span class="ident">field</span>(<span class="string">&quot;ecx&quot;</span>, <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">ecx</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u32</span>))
+            .<span class="ident">field</span>(<span class="string">&quot;edx&quot;</span>, <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="ident">edx</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u32</span>))
             .<span class="ident">finish</span>()
     }
 }
@@ -6000,7 +6000,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">CpuId</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;CpuId&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;vendor&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">vendor</span>)
             <span class="comment">// .field(&quot;supported_leafs&quot;, &amp;(self.supported_leafs as *const u32))</span>
@@ -6071,7 +6071,7 @@
 <span class="kw">impl</span> <span class="ident">VendorInfo</span> {
     <span class="doccomment">/// Return vendor identification as human readable string.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-        <span class="kw">let</span> <span class="ident">brand_string_start</span> <span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">VendorInfo</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
+        <span class="kw">let</span> <span class="ident">brand_string_start</span> <span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">VendorInfo</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>;
         <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="comment">// Safety: VendorInfo is laid out with repr(C) and exactly</span>
             <span class="comment">// 12 byte long without any padding.</span>
@@ -6091,7 +6091,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">VendorInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;VendorInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;brand_string&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_str</span>())
             .<span class="ident">finish</span>()
@@ -6099,7 +6099,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">VendorInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">as_str</span>())
     }
 }
@@ -6125,7 +6125,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">CacheInfo</span>;
 
     <span class="doccomment">/// Iterate over all cache information.</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CacheInfo</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CacheInfo</span><span class="op">&gt;</span> {
         <span class="comment">// Every byte of the 4 register values returned by cpuid</span>
         <span class="comment">// can contain information about a cache (except the</span>
         <span class="comment">// very first one).</span>
@@ -6168,7 +6168,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">CacheInfoIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">debug</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_list</span>();
         <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="kw-2">ref</span> <span class="ident">item</span><span class="op">|</span> {
             <span class="ident">debug</span>.<span class="ident">entry</span>(<span class="ident">item</span>);
@@ -6322,7 +6322,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">CacheInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;CacheInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;typ&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">typ</span>)
             .<span class="ident">field</span>(<span class="string">&quot;desc&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">desc</span>())
@@ -6331,7 +6331,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">CacheInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">typ</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">typ</span> {
             <span class="ident">CacheInfoType::General</span> =&gt; <span class="string">&quot;N/A&quot;</span>,
             <span class="ident">CacheInfoType::Cache</span> =&gt; <span class="string">&quot;Cache&quot;</span>,
@@ -6821,7 +6821,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ProcessorSerial</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ProcessorSerial&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;serial_lower&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">serial_lower</span>())
             .<span class="ident">field</span>(<span class="string">&quot;serial_middle&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">serial_middle</span>())
@@ -7414,7 +7414,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">FeatureInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;FeatureInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;extended_family_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">extended_family_id</span>())
             .<span class="ident">field</span>(<span class="string">&quot;extended_model_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">extended_model_id</span>())
@@ -7584,7 +7584,7 @@
     <span class="doccomment">/// # Note</span>
     <span class="doccomment">/// cpuid is called every-time we advance the iterator to get information</span>
     <span class="doccomment">/// about the next cache.</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CacheParameter</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CacheParameter</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>.<span class="ident">cpuid2</span>(<span class="ident">EAX_CACHE_PARAMETERS</span>, <span class="self">self</span>.<span class="ident">current</span>);
         <span class="kw">let</span> <span class="ident">cp</span> <span class="op">=</span> <span class="ident">CacheParameter</span> {
             <span class="ident">eax</span>: <span class="ident">res</span>.<span class="ident">eax</span>,
@@ -7605,7 +7605,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">CacheParametersIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">debug</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_list</span>();
         <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="kw-2">ref</span> <span class="ident">item</span><span class="op">|</span> {
             <span class="ident">debug</span>.<span class="ident">entry</span>(<span class="ident">item</span>);
@@ -7724,7 +7724,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">CacheParameter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;CacheParameter&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;cache_type&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cache_type</span>())
             .<span class="ident">field</span>(<span class="string">&quot;level&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">level</span>())
@@ -7855,7 +7855,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">MonitorMwaitInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MonitorMwaitInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;smallest_monitor_line&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">smallest_monitor_line</span>())
             .<span class="ident">field</span>(<span class="string">&quot;largest_monitor_line&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">largest_monitor_line</span>())
@@ -8079,7 +8079,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ThermalPowerInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ThermalPowerInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;dts_irq_threshold&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">dts_irq_threshold</span>())
             .<span class="ident">field</span>(<span class="string">&quot;has_dts&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">has_dts</span>())
@@ -8501,7 +8501,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExtendedFeatures</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ExtendedFeatures&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;ebx&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ebx</span>)
             .<span class="ident">field</span>(<span class="string">&quot;ecx&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ecx</span>)
@@ -8628,7 +8628,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">DirectCacheAccessInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;DirectCacheAccessInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;dca_cap_value&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get_dca_cap_value</span>())
             .<span class="ident">finish</span>()
@@ -8736,7 +8736,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">PerformanceMonitoringInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PerformanceMonitoringInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;version_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">version_id</span>())
             .<span class="ident">field</span>(<span class="string">&quot;number_of_counters&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">number_of_counters</span>())
@@ -8800,7 +8800,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ExtendedTopologyLevel</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ExtendedTopologyLevel&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;processors&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">processors</span>())
             .<span class="ident">field</span>(<span class="string">&quot;number&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">level_number</span>())
@@ -8858,7 +8858,7 @@
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ExtendedTopologyIter</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExtendedTopologyLevel</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExtendedTopologyLevel</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExtendedTopologyLevel</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>.<span class="ident">cpuid2</span>(<span class="ident">EAX_EXTENDED_TOPOLOGY_INFO</span>, <span class="self">self</span>.<span class="ident">level</span>);
         <span class="self">self</span>.<span class="ident">level</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
@@ -8877,7 +8877,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExtendedTopologyIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">debug</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_list</span>();
         <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="kw-2">ref</span> <span class="ident">item</span><span class="op">|</span> {
             <span class="ident">debug</span>.<span class="ident">entry</span>(<span class="ident">item</span>);
@@ -9079,7 +9079,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExtendedStateInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ExtendedStateInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;eax&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">eax</span>)
             .<span class="ident">field</span>(<span class="string">&quot;ecx1&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">ecx1</span>)
@@ -9121,7 +9121,7 @@
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ExtendedStateIter</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExtendedState</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExtendedState</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExtendedState</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">level</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">level</span> <span class="op">&gt;</span> <span class="number">31</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
@@ -9143,7 +9143,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExtendedStateIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">debug</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_list</span>();
         <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="kw-2">ref</span> <span class="ident">item</span><span class="op">|</span> {
             <span class="ident">debug</span>.<span class="ident">entry</span>(<span class="ident">item</span>);
@@ -9196,7 +9196,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExtendedState</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ExtendedState&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">size</span>())
             .<span class="ident">field</span>(<span class="string">&quot;offset&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">offset</span>())
@@ -9249,7 +9249,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">RdtMonitoringInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RdtMonitoringInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;rmid_range&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">rmid_range</span>())
             .<span class="ident">field</span>(<span class="string">&quot;l3_monitoring&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">l3_monitoring</span>())
@@ -9299,7 +9299,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">L3MonitoringInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;L3MonitoringInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;conversion_factor&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">conversion_factor</span>())
             .<span class="ident">field</span>(<span class="string">&quot;maximum_rmid_range&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">maximum_rmid_range</span>())
@@ -9375,7 +9375,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">RdtAllocationInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RdtAllocationInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;l3_cat&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">l3_cat</span>())
             .<span class="ident">field</span>(<span class="string">&quot;l2_cat&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">l2_cat</span>())
@@ -9421,7 +9421,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">L3CatInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;L3CatInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;capacity_mask_length&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">capacity_mask_length</span>())
             .<span class="ident">field</span>(<span class="string">&quot;isolation_bitmap&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">isolation_bitmap</span>())
@@ -9457,7 +9457,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">L2CatInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;L2CatInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;capacity_mask_length&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">capacity_mask_length</span>())
             .<span class="ident">field</span>(<span class="string">&quot;isolation_bitmap&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">isolation_bitmap</span>())
@@ -9495,7 +9495,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">MemBwAllocationInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MemBwAllocationInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;max_hba_throttling&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">max_hba_throttling</span>())
             .<span class="ident">field</span>(<span class="string">&quot;highest_cos&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">highest_cos</span>())
@@ -9576,7 +9576,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">SgxInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SgxInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;has_sgx1&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">has_sgx1</span>())
             .<span class="ident">field</span>(<span class="string">&quot;has_sgx2&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">has_sgx2</span>())
@@ -9611,7 +9611,7 @@
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">SgxSectionIter</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">SgxSectionInfo</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SgxSectionInfo</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SgxSectionInfo</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">read</span>.<span class="ident">cpuid2</span>(<span class="ident">EAX_SGX</span>, <span class="self">self</span>.<span class="ident">current</span>);
         <span class="self">self</span>.<span class="ident">current</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="kw">match</span> <span class="ident">get_bits</span>(<span class="ident">res</span>.<span class="ident">eax</span>, <span class="number">0</span>, <span class="number">3</span>) {
@@ -9627,7 +9627,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">SgxSectionIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">debug</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_list</span>();
         <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="kw-2">ref</span> <span class="ident">item</span><span class="op">|</span> {
             <span class="ident">debug</span>.<span class="ident">entry</span>(<span class="ident">item</span>);
@@ -9790,7 +9790,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ProcessorTraceInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ProcessorTraceInfo&quot;</span>)
             .<span class="ident">field</span>(
                 <span class="string">&quot;configurable_address_ranges&quot;</span>,
@@ -9824,7 +9824,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">TscInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TscInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;denominator&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">denominator</span>())
             .<span class="ident">field</span>(<span class="string">&quot;numerator&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">numerator</span>())
@@ -9895,7 +9895,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ProcessorFrequencyInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ProcessorFrequencyInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;processor_base_frequency&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">processor_base_frequency</span>())
             .<span class="ident">field</span>(<span class="string">&quot;processor_max_frequency&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">processor_max_frequency</span>())
@@ -9921,7 +9921,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">DatInfo</span>;
 
     <span class="doccomment">/// Iterate over each sub-leaf with an address translation structure.</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DatInfo</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DatInfo</span><span class="op">&gt;</span> {
         <span class="kw">loop</span> {
             <span class="comment">// Sub-leaf index n is invalid if n exceeds the value that sub-leaf 0 returns in EAX</span>
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">current</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">count</span> {
@@ -9952,7 +9952,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">DatIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">debug</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_list</span>();
         <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="kw-2">ref</span> <span class="ident">item</span><span class="op">|</span> {
             <span class="ident">debug</span>.<span class="ident">entry</span>(<span class="ident">item</span>);
@@ -10045,7 +10045,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">DatInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;DatInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;has_4k_entries&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">has_4k_entries</span>())
             .<span class="ident">field</span>(<span class="string">&quot;has_2mb_entries&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">has_2mb_entries</span>())
@@ -10127,7 +10127,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">SoCVendorInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SoCVendorInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;soc_vendor_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get_soc_vendor_id</span>())
             .<span class="ident">field</span>(<span class="string">&quot;project_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get_project_id</span>())
@@ -10152,7 +10152,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">CpuIdResult</span>;
 
     <span class="doccomment">/// Iterate over all SoC vendor specific attributes.</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CpuIdResult</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CpuIdResult</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">current</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">count</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -10172,7 +10172,7 @@
 <span class="kw">impl</span> <span class="ident">SoCVendorBrand</span> {
     <span class="doccomment">/// Return the SocVendorBrand as a string.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-        <span class="kw">let</span> <span class="ident">brand_string_start</span> <span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">SoCVendorBrand</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
+        <span class="kw">let</span> <span class="ident">brand_string_start</span> <span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">SoCVendorBrand</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>;
         <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="comment">// Safety: SoCVendorBrand is laid out with repr(C).</span>
             <span class="ident">slice::from_raw_parts</span>(<span class="ident">brand_string_start</span>, <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">SoCVendorBrand</span><span class="op">&gt;</span>())
@@ -10190,7 +10190,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">SoCVendorBrand</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">as_str</span>())
     }
 }
@@ -10207,7 +10207,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">HypervisorInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;HypervisorInfo&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;identify&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">identify</span>())
             .<span class="ident">field</span>(<span class="string">&quot;tsc_frequency&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">tsc_frequency</span>())
