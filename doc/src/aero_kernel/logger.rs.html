@@ -103,6 +103,15 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -125,6 +134,7 @@
 <span class="kw">use</span> <span class="ident">core::fmt::Write</span>;
 <span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
 
+<span class="kw">use</span> <span class="ident">alloc::string::String</span>;
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">Level</span>, <span class="ident">LevelFilter</span>, <span class="ident">Metadata</span>, <span class="ident">Record</span>};
 <span class="kw">use</span> <span class="ident">spin::Once</span>;
 
@@ -189,6 +199,14 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">force_unlock</span>() {
     <span class="ident">LOG_RING_BUFFER</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">force_unlock</span>());
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_log_buffer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>() -&gt; <span class="ident">String</span> {
+    <span class="ident">LOG_RING_BUFFER</span>
+        .<span class="ident">get</span>()
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">String::from</span>(<span class="ident">l</span>.<span class="ident">lock_irq</span>().<span class="ident">extract</span>()))
+        .<span class="ident">expect</span>(<span class="string">&quot;log: attempted to get the log ring buffer before it was initialized&quot;</span>)
+        .<span class="ident">clone</span>()
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
