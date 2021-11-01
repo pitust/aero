@@ -112,6 +112,8 @@
 <span id="112">112</span>
 <span id="113">113</span>
 <span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -185,7 +187,9 @@
             }
 
             <span class="macro">log!</span>(<span class="string">&quot;  {}{: &lt;2$} &quot;</span>, <span class="ident">level</span>, <span class="string">&quot;&quot;</span>, <span class="ident">spaces</span>);
-            <span class="macro">log_ln!</span>(<span class="string">&quot;\x1b[0;0m      {}&quot;</span>, <span class="ident">record</span>.<span class="ident">args</span>());
+            <span class="macro">crate::prelude::serial_print!</span>(<span class="string">&quot;\x1b[0;0m&quot;</span>);
+
+            <span class="macro">log_ln!</span>(<span class="string">&quot;      {}&quot;</span>, <span class="ident">record</span>.<span class="ident">args</span>());
         }
     }
 
