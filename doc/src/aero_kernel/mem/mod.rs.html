@@ -148,6 +148,22 @@
 <span id="148">148</span>
 <span id="149">149</span>
 <span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -170,6 +186,10 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">alloc</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">paging</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pti</span>;
+
+<span class="kw">use</span> <span class="ident">core::alloc::Layout</span>;
+
+<span class="kw">use</span> <span class="ident">::alloc::boxed::Box</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
 
@@ -265,6 +285,18 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset_page_table</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">OffsetPageTable</span> {
         <span class="kw">unsafe</span> { <span class="ident">OffsetPageTable::new</span>(<span class="self">self</span>.<span class="ident">page_table</span>(), <span class="ident">PHYSICAL_MEMORY_OFFSET</span>) }
     }
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alloc_boxed_buffer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">if</span> <span class="ident">size</span> <span class="op">==</span> <span class="number">0</span> {
+        <span class="kw">return</span> <span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::default</span>();
+    }
+
+    <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">size</span>, <span class="number">8</span>) };
+    <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">::alloc::alloc::alloc_zeroed</span>(<span class="ident">layout</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span> };
+    <span class="kw">let</span> <span class="ident">slice_ptr</span> <span class="op">=</span> <span class="ident">core::ptr::slice_from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="ident">size</span>);
+
+    <span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">slice_ptr</span>) }
 }
 
 <span class="doccomment">/// Creates a Rust string from the provided C string.</span>

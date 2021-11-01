@@ -458,6 +458,7 @@
 <span id="458">458</span>
 <span id="459">459</span>
 <span id="460">460</span>
+<span id="461">461</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -631,6 +632,7 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BuddyOrdering</span> {
     <span class="ident">Size4KiB</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="ident">Size8KiB</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="ident">Size2MiB</span> <span class="op">=</span> <span class="number">2</span>,
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pmm_alloc</span>(<span class="ident">ordering</span>: <span class="ident">BuddyOrdering</span>) -&gt; <span class="ident">PhysAddr</span> {
