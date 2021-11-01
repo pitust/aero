@@ -605,35 +605,6 @@
 <span id="605">605</span>
 <span id="606">606</span>
 <span id="607">607</span>
-<span id="608">608</span>
-<span id="609">609</span>
-<span id="610">610</span>
-<span id="611">611</span>
-<span id="612">612</span>
-<span id="613">613</span>
-<span id="614">614</span>
-<span id="615">615</span>
-<span id="616">616</span>
-<span id="617">617</span>
-<span id="618">618</span>
-<span id="619">619</span>
-<span id="620">620</span>
-<span id="621">621</span>
-<span id="622">622</span>
-<span id="623">623</span>
-<span id="624">624</span>
-<span id="625">625</span>
-<span id="626">626</span>
-<span id="627">627</span>
-<span id="628">628</span>
-<span id="629">629</span>
-<span id="630">630</span>
-<span id="631">631</span>
-<span id="632">632</span>
-<span id="633">633</span>
-<span id="634">634</span>
-<span id="635">635</span>
-<span id="636">636</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -785,7 +756,6 @@
     <span class="ident">queue</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">QueueCharacter</span>]<span class="op">&gt;</span>,
     <span class="ident">grid</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">Character</span>]<span class="op">&gt;</span>,
     <span class="ident">map</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">QueueCharacter</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
-    <span class="ident">canvas</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">u32</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
 
     <span class="ident">vga_font_bool</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">bool</span>]<span class="op">&gt;</span>,
 
@@ -893,7 +863,6 @@
             <span class="ident">offset_y</span>,
 
             <span class="ident">vga_font_bool</span>,
-            <span class="ident">canvas</span>: <span class="prelude-val">None</span>,
 
             <span class="ident">queue_cursor</span>: <span class="number">0</span>,
         };
@@ -910,23 +879,11 @@
         <span class="kw">let</span> <span class="ident">width</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">horizontal_resolution</span>;
         <span class="kw">let</span> <span class="ident">height</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">vertical_resolution</span>;
 
-        <span class="kw">let</span> <span class="ident">canvas_size</span> <span class="op">=</span> <span class="ident">width</span> <span class="op">*</span> <span class="ident">height</span> <span class="op">*</span> <span class="ident">DWORD_SIZE</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">canvas</span> <span class="op">=</span> <span class="ident">mem::alloc_boxed_buffer</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="ident">canvas_size</span>);
-
         <span class="kw">for</span> <span class="ident">y</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">height</span> {
             <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">width</span> {
-                <span class="ident">canvas</span>[<span class="ident">y</span> <span class="op">*</span> <span class="ident">width</span> <span class="op">+</span> <span class="ident">x</span>] <span class="op">=</span> <span class="ident">DEFAULT_BACKGROUND</span>;
                 <span class="self">self</span>.<span class="ident">plot_pixel</span>(<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">DEFAULT_BACKGROUND</span>);
             }
         }
-
-        <span class="self">self</span>.<span class="ident">canvas</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">canvas</span>);
-    }
-
-    <span class="kw">fn</span> <span class="ident">canvas</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">u32</span>]<span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">canvas</span>
-            .<span class="ident">as_mut</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;rendy: attempted to get the canvas before it was initialized&quot;</span>)
     }
 
     <span class="doccomment">/// Plots a pixel at the given coordinates with the provided colour.</span>
@@ -1040,26 +997,11 @@
                     .<span class="ident">add</span>(<span class="ident">x</span> <span class="op">+</span> (<span class="ident">y</span> <span class="op">+</span> <span class="ident">gy</span>) <span class="op">*</span> (<span class="self">self</span>.<span class="ident">info</span>.<span class="ident">stride</span> <span class="op">/</span> <span class="number">4</span>))
             };
 
-            <span class="kw">let</span> <span class="ident">canvas_line</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="self">self</span>.<span class="ident">canvas</span>()
-                    .<span class="ident">as_mut_ptr</span>()
-                    .<span class="ident">add</span>(<span class="ident">x</span> <span class="op">+</span> (<span class="ident">y</span> <span class="op">+</span> <span class="ident">gy</span>) <span class="op">*</span> <span class="self">self</span>.<span class="ident">info</span>.<span class="ident">horizontal_resolution</span>)
-            };
-
             <span class="kw">for</span> <span class="ident">fx</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">DEFAULT_FONT_WIDTH</span> {
                 <span class="kw">let</span> <span class="ident">draw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">glyph</span>.<span class="ident">add</span>(<span class="ident">gy</span> <span class="op">*</span> <span class="ident">DEFAULT_FONT_WIDTH</span> <span class="op">+</span> <span class="ident">fx</span>) };
 
-                <span class="kw">let</span> <span class="ident">bg</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">char</span>.<span class="ident">bg</span> <span class="op">==</span> <span class="number">0xffffffff</span> {
-                    <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">canvas_line</span>.<span class="ident">add</span>(<span class="ident">fx</span>) }
-                } <span class="kw">else</span> {
-                    <span class="ident">char</span>.<span class="ident">bg</span>
-                };
-
-                <span class="kw">let</span> <span class="ident">fg</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">char</span>.<span class="ident">fg</span> <span class="op">==</span> <span class="number">0xffffffff</span> {
-                    <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">canvas_line</span>.<span class="ident">add</span>(<span class="ident">fx</span>) }
-                } <span class="kw">else</span> {
-                    <span class="ident">char</span>.<span class="ident">fg</span>
-                };
+                <span class="kw">let</span> <span class="ident">bg</span> <span class="op">=</span> <span class="ident">char</span>.<span class="ident">bg</span>;
+                <span class="kw">let</span> <span class="ident">fg</span> <span class="op">=</span> <span class="ident">char</span>.<span class="ident">fg</span>;
 
                 <span class="kw">unsafe</span> {
                     <span class="kw">if</span> <span class="ident">draw</span> {
