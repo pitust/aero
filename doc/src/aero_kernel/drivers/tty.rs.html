@@ -557,7 +557,7 @@
                 <span class="self">self</span>.<span class="ident">block_queue</span>.<span class="ident">notify_complete</span>();
             }
 
-            <span class="ident">KeyCode::KEY_BACKSPACE</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; {}
+            <span class="ident">KeyCode::KEY_BACKSPACE</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; <span class="ident"><span class="kw">crate</span>::rendy::backspace</span>(),
 
             <span class="ident">KeyCode::KEY_LEFTSHIFT</span> =&gt; <span class="ident">state</span>.<span class="ident">lshift</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
             <span class="ident">KeyCode::KEY_RIGHTSHIFT</span> =&gt; <span class="ident">state</span>.<span class="ident">rshift</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
