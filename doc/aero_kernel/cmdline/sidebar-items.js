@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["parse",""]],"struct":[["CommandLine",""]]});
+initSidebarItems({"fn":[["parse",""],["resolve_module",""]],"struct":[["CommandLine",""]]});
