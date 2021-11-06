@@ -861,7 +861,7 @@
 <span class="kw">const</span> <span class="ident">X_PAD</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1</span>;
 
 <span class="kw">const</span> <span class="ident">MARGIN_GRADIENT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
-<span class="kw">const</span> <span class="ident">DEFAULT_BACKGROUND</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">u32::MAX</span>;
+<span class="kw">const</span> <span class="ident">DEFAULT_BACKGROUND</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">u32::MIN</span>;
 <span class="kw">const</span> <span class="ident">DWORD_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>();
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
@@ -1107,7 +1107,7 @@
             <span class="ident">rows</span>,
             <span class="ident">cols</span>,
 
-            <span class="ident">color</span>: <span class="ident">ColorCode::new</span>(<span class="ident">u32::MAX</span>, <span class="ident">u32::MIN</span>),
+            <span class="ident">color</span>: <span class="ident">ColorCode::new</span>(<span class="number">0xaaaaaa</span>, <span class="ident">u32::MIN</span>),
 
             <span class="ident">queue</span>,
             <span class="ident">grid</span>,
