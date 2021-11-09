@@ -267,6 +267,11 @@
 <span id="267">267</span>
 <span id="268">268</span>
 <span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -375,6 +380,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">sweep_dead</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">IrqGuard::new</span>();
         <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get_mut</span>();
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">task</span>) <span class="op">=</span> <span class="ident">queue</span>.<span class="ident">dead</span>.<span class="ident">pop_front</span>() {
@@ -384,6 +390,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">schedule_next_task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">IrqGuard::new</span>();
         <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">get_mut</span>();
 
         <span class="comment">// Switch to the next runnable task in the runnable queue, and put</span>
@@ -396,10 +403,12 @@
             }
 
             <span class="ident">queue</span>.<span class="ident">current_task</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">task</span>.<span class="ident">clone</span>());
+            <span class="ident">core::mem::drop</span>(<span class="ident">guard</span>);
             <span class="ident">arch::task::arch_task_spinup</span>(<span class="ident">queue</span>.<span class="ident">preempt_task</span>.<span class="ident">arch_task_mut</span>(), <span class="ident">task</span>.<span class="ident">arch_task</span>());
         } <span class="kw">else</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">current</span>) <span class="op">=</span> <span class="ident">queue</span>.<span class="ident">current_task</span>.<span class="ident">as_ref</span>() {
                 <span class="kw">if</span> <span class="ident">current</span>.<span class="ident">state</span>() <span class="op">==</span> <span class="ident">TaskState::Runnable</span> {
+                    <span class="ident">core::mem::drop</span>(<span class="ident">guard</span>);
                     <span class="ident">arch::task::arch_task_spinup</span>(
                         <span class="ident">queue</span>.<span class="ident">preempt_task</span>.<span class="ident">arch_task_mut</span>(),
                         <span class="ident">current</span>.<span class="ident">arch_task</span>(),
@@ -407,6 +416,7 @@
                 }
             } <span class="kw">else</span> {
                 <span class="ident">queue</span>.<span class="ident">current_task</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+                <span class="ident">core::mem::drop</span>(<span class="ident">guard</span>);
                 <span class="ident">arch::task::arch_task_spinup</span>(
                     <span class="ident">queue</span>.<span class="ident">preempt_task</span>.<span class="ident">arch_task_mut</span>(),
                     <span class="ident">queue</span>.<span class="ident">idle_task</span>.<span class="ident">arch_task</span>(),
