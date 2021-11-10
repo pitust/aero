@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;stivale-boot-0.2.3&#x2F;src&#x2F;v2&#x2F;tag.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tag.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../stivale_boot/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;stivale-boot-0.2.6&#x2F;src&#x2F;v2&#x2F;tag.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tag.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../stivale_boot/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -490,6 +490,74 @@
 <span id="490">490</span>
 <span id="491">491</span>
 <span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::header::StivaleSmpHeaderTagFlags</span>;
@@ -918,24 +986,54 @@
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StivaleSmpTag</span> {
-    <span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">StivaleTagHeader</span>,
+    <span class="ident">header</span>: <span class="ident">StivaleTagHeader</span>,
     <span class="kw">pub</span> <span class="ident">flags</span>: <span class="ident">StivaleSmpHeaderTagFlags</span>,
     <span class="doccomment">/// LAPIC ID of the BSP (bootstrap processor).</span>
     <span class="kw">pub</span> <span class="ident">bsp_lapic_id</span>: <span class="ident">u32</span>,
     <span class="doccomment">/// Stivale specification says that this field is reserved for future use.</span>
     <span class="kw">pub</span> <span class="ident">unused</span>: <span class="ident">u32</span>,
     <span class="doccomment">/// The total number of logical CPUs (including BSP).</span>
-    <span class="kw">pub</span> <span class="ident">cpu_count</span>: <span class="ident">u64</span>,
+    <span class="ident">cpu_count</span>: <span class="ident">u64</span>,
     <span class="doccomment">/// Pointer to the SMP info array (including BSP).</span>
     <span class="kw">pub</span> <span class="ident">smp_info_array</span>: [<span class="ident">StivaleSmpInfo</span>; <span class="number">0</span>],
 }
 
 <span class="kw">impl</span> <span class="ident">StivaleSmpTag</span> {
+    <span class="doccomment">/// Return&#39;s the tag header</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">StivaleTagHeader</span> {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">header</span>
+    }
+
+    <span class="doccomment">/// Return&#39;s the total number of logical CPUs (including BSP).</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cpu_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
+        <span class="self">self</span>.<span class="ident">cpu_count</span>
+    }
+
     <span class="doccomment">/// Return&#39;s the SMP info array pointer as a rust slice.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">StivaleSmpInfo</span>] {
         <span class="kw">unsafe</span> {
             <span class="ident">core::slice::from_raw_parts</span>(<span class="self">self</span>.<span class="ident">smp_info_array</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">cpu_count</span> <span class="kw">as</span> <span class="ident">usize</span>)
         }
+    }
+
+    <span class="doccomment">/// Return&#39;s the SMP info array pointer as a mutable rust slice.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If this tag was returned by a bootloader mutating the slice must conform to the following</span>
+    <span class="doccomment">/// rules in order to not trigger UB:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - Writing to [`StivaleSmpInfo::goto_address`] will cause it to start executing at the</span>
+    <span class="doccomment">/// provided address as such a proper stack must have been set at</span>
+    <span class="doccomment">/// [`StivaleSmpInfo::target_stack`] already if a stack is needed.</span>
+    <span class="doccomment">/// - The stack pointer written to [`StivaleSmpInfo::target_stack`] must not alias already</span>
+    <span class="doccomment">/// mapped memory, this means that the memory area dedicated to the stack must be exclusively</span>
+    <span class="doccomment">/// used for the AP stack and stack overflows can trigger UB (consider using a guard page).</span>
+    <span class="doccomment">/// - The address pointed by [`StivaleSmpInfo::goto_address`] must be that of a</span>
+    <span class="doccomment">/// `extern &quot;C&quot; fn(&amp;&#39;static StivaleSmpInfo) -&gt; !`, this also means that once written this</span>
+    <span class="doccomment">/// struct must not be mutated any further.</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_slice_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">StivaleSmpInfo</span>] {
+        <span class="ident">core::slice::from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">smp_info_array</span>.<span class="ident">as_mut_ptr</span>(), <span class="self">self</span>.<span class="ident">cpu_count</span> <span class="kw">as</span> <span class="ident">usize</span>)
     }
 }
 
@@ -981,6 +1079,44 @@
     <span class="kw">pub</span> <span class="ident">kernel_start</span>: <span class="ident">u64</span>,
     <span class="doccomment">/// Size of the raw kernel file.</span>
     <span class="kw">pub</span> <span class="ident">kernel_size</span>: <span class="ident">u64</span>,
+}
+
+<span class="macro">bitflags::bitflags!</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StivalePmrPermissionFlags</span>: <span class="ident">u64</span> {
+        <span class="kw">const</span> <span class="ident">EXECUTABLE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>;
+        <span class="kw">const</span> <span class="ident">WRITABLE</span>   <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>;
+        <span class="kw">const</span> <span class="ident">READABLE</span>   <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;
+    }
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StivalePmr</span> {
+    <span class="kw">pub</span> <span class="ident">base</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">size</span>: <span class="ident">u64</span>,
+    <span class="doccomment">/// The permissions field contains flgas to determine the range&#39;s permissions.</span>
+    <span class="kw">pub</span> <span class="ident">permissions</span>: <span class="ident">u64</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">StivalePmr</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">permissions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">StivalePmrPermissionFlags</span> {
+        <span class="ident">StivalePmrPermissionFlags::from_bits_truncate</span>(<span class="self">self</span>.<span class="ident">permissions</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StivalePmrsTag</span> {
+    <span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">StivaleTagHeader</span>,
+    <span class="doccomment">/// Count of PMRs in following array.</span>
+    <span class="kw">pub</span> <span class="ident">pmr_count</span>: <span class="ident">u64</span>,
+    <span class="doccomment">/// Array of PMR structs.</span>
+    <span class="kw">pub</span> <span class="ident">pmrs</span>: [<span class="ident">StivalePmr</span>; <span class="number">0</span>],
+}
+
+<span class="kw">impl</span> <span class="ident">StivalePmrsTag</span> {
+    <span class="doccomment">/// Return&#39;s the PMRs array pointer as a rust slice.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">StivalePmr</span>] {
+        <span class="kw">unsafe</span> { <span class="ident">core::slice::from_raw_parts</span>(<span class="self">self</span>.<span class="ident">pmrs</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">pmr_count</span> <span class="kw">as</span> <span class="ident">usize</span>) }
+    }
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="stivale_boot" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
