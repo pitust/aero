@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;raw-cpuid-10.0.0&#x2F;src&#x2F;extended.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>extended.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../raw_cpuid/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;raw-cpuid-10.2.0&#x2F;src&#x2F;extended.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>extended.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../raw_cpuid/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1382,8 +1382,181 @@
 <span id="1382">1382</span>
 <span id="1383">1383</span>
 <span id="1384">1384</span>
+<span id="1385">1385</span>
+<span id="1386">1386</span>
+<span id="1387">1387</span>
+<span id="1388">1388</span>
+<span id="1389">1389</span>
+<span id="1390">1390</span>
+<span id="1391">1391</span>
+<span id="1392">1392</span>
+<span id="1393">1393</span>
+<span id="1394">1394</span>
+<span id="1395">1395</span>
+<span id="1396">1396</span>
+<span id="1397">1397</span>
+<span id="1398">1398</span>
+<span id="1399">1399</span>
+<span id="1400">1400</span>
+<span id="1401">1401</span>
+<span id="1402">1402</span>
+<span id="1403">1403</span>
+<span id="1404">1404</span>
+<span id="1405">1405</span>
+<span id="1406">1406</span>
+<span id="1407">1407</span>
+<span id="1408">1408</span>
+<span id="1409">1409</span>
+<span id="1410">1410</span>
+<span id="1411">1411</span>
+<span id="1412">1412</span>
+<span id="1413">1413</span>
+<span id="1414">1414</span>
+<span id="1415">1415</span>
+<span id="1416">1416</span>
+<span id="1417">1417</span>
+<span id="1418">1418</span>
+<span id="1419">1419</span>
+<span id="1420">1420</span>
+<span id="1421">1421</span>
+<span id="1422">1422</span>
+<span id="1423">1423</span>
+<span id="1424">1424</span>
+<span id="1425">1425</span>
+<span id="1426">1426</span>
+<span id="1427">1427</span>
+<span id="1428">1428</span>
+<span id="1429">1429</span>
+<span id="1430">1430</span>
+<span id="1431">1431</span>
+<span id="1432">1432</span>
+<span id="1433">1433</span>
+<span id="1434">1434</span>
+<span id="1435">1435</span>
+<span id="1436">1436</span>
+<span id="1437">1437</span>
+<span id="1438">1438</span>
+<span id="1439">1439</span>
+<span id="1440">1440</span>
+<span id="1441">1441</span>
+<span id="1442">1442</span>
+<span id="1443">1443</span>
+<span id="1444">1444</span>
+<span id="1445">1445</span>
+<span id="1446">1446</span>
+<span id="1447">1447</span>
+<span id="1448">1448</span>
+<span id="1449">1449</span>
+<span id="1450">1450</span>
+<span id="1451">1451</span>
+<span id="1452">1452</span>
+<span id="1453">1453</span>
+<span id="1454">1454</span>
+<span id="1455">1455</span>
+<span id="1456">1456</span>
+<span id="1457">1457</span>
+<span id="1458">1458</span>
+<span id="1459">1459</span>
+<span id="1460">1460</span>
+<span id="1461">1461</span>
+<span id="1462">1462</span>
+<span id="1463">1463</span>
+<span id="1464">1464</span>
+<span id="1465">1465</span>
+<span id="1466">1466</span>
+<span id="1467">1467</span>
+<span id="1468">1468</span>
+<span id="1469">1469</span>
+<span id="1470">1470</span>
+<span id="1471">1471</span>
+<span id="1472">1472</span>
+<span id="1473">1473</span>
+<span id="1474">1474</span>
+<span id="1475">1475</span>
+<span id="1476">1476</span>
+<span id="1477">1477</span>
+<span id="1478">1478</span>
+<span id="1479">1479</span>
+<span id="1480">1480</span>
+<span id="1481">1481</span>
+<span id="1482">1482</span>
+<span id="1483">1483</span>
+<span id="1484">1484</span>
+<span id="1485">1485</span>
+<span id="1486">1486</span>
+<span id="1487">1487</span>
+<span id="1488">1488</span>
+<span id="1489">1489</span>
+<span id="1490">1490</span>
+<span id="1491">1491</span>
+<span id="1492">1492</span>
+<span id="1493">1493</span>
+<span id="1494">1494</span>
+<span id="1495">1495</span>
+<span id="1496">1496</span>
+<span id="1497">1497</span>
+<span id="1498">1498</span>
+<span id="1499">1499</span>
+<span id="1500">1500</span>
+<span id="1501">1501</span>
+<span id="1502">1502</span>
+<span id="1503">1503</span>
+<span id="1504">1504</span>
+<span id="1505">1505</span>
+<span id="1506">1506</span>
+<span id="1507">1507</span>
+<span id="1508">1508</span>
+<span id="1509">1509</span>
+<span id="1510">1510</span>
+<span id="1511">1511</span>
+<span id="1512">1512</span>
+<span id="1513">1513</span>
+<span id="1514">1514</span>
+<span id="1515">1515</span>
+<span id="1516">1516</span>
+<span id="1517">1517</span>
+<span id="1518">1518</span>
+<span id="1519">1519</span>
+<span id="1520">1520</span>
+<span id="1521">1521</span>
+<span id="1522">1522</span>
+<span id="1523">1523</span>
+<span id="1524">1524</span>
+<span id="1525">1525</span>
+<span id="1526">1526</span>
+<span id="1527">1527</span>
+<span id="1528">1528</span>
+<span id="1529">1529</span>
+<span id="1530">1530</span>
+<span id="1531">1531</span>
+<span id="1532">1532</span>
+<span id="1533">1533</span>
+<span id="1534">1534</span>
+<span id="1535">1535</span>
+<span id="1536">1536</span>
+<span id="1537">1537</span>
+<span id="1538">1538</span>
+<span id="1539">1539</span>
+<span id="1540">1540</span>
+<span id="1541">1541</span>
+<span id="1542">1542</span>
+<span id="1543">1543</span>
+<span id="1544">1544</span>
+<span id="1545">1545</span>
+<span id="1546">1546</span>
+<span id="1547">1547</span>
+<span id="1548">1548</span>
+<span id="1549">1549</span>
+<span id="1550">1550</span>
+<span id="1551">1551</span>
+<span id="1552">1552</span>
+<span id="1553">1553</span>
+<span id="1554">1554</span>
+<span id="1555">1555</span>
+<span id="1556">1556</span>
+<span id="1557">1557</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Data-structures / interpretation for extended leafs (&gt;= 0x8000_0000)</span>
-<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="ident">Debug</span>, <span class="ident">Formatter</span>};
+<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
 <span class="kw">use</span> <span class="ident">core::mem::size_of</span>;
 <span class="kw">use</span> <span class="ident">core::slice</span>;
 <span class="kw">use</span> <span class="ident">core::str</span>;
@@ -2157,6 +2330,21 @@
     <span class="ident">Unknown</span>,
 }
 
+<span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Associativity</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">Associativity::Disabled</span> =&gt; <span class="string">&quot;Disabled&quot;</span>,
+            <span class="ident">Associativity::DirectMapped</span> =&gt; <span class="string">&quot;Direct mapped&quot;</span>,
+            <span class="ident">Associativity::NWay</span>(<span class="ident">n</span>) =&gt; {
+                <span class="kw">return</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;NWay({})&quot;</span>, <span class="ident">n</span>);
+            }
+            <span class="ident">Associativity::FullyAssociative</span> =&gt; <span class="string">&quot;Fully associative&quot;</span>,
+            <span class="ident">Associativity::Unknown</span> =&gt; <span class="string">&quot;Unknown (check leaf 0x8000_001d)&quot;</span>,
+        };
+        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="ident">s</span>)
+    }
+}
+
 <span class="kw">impl</span> <span class="ident">Associativity</span> {
     <span class="doccomment">/// Constructor for L1 Cache and TLB Associativity Field Encodings</span>
     <span class="kw">fn</span> <span class="ident">for_l1</span>(<span class="ident">n</span>: <span class="ident">u8</span>) -&gt; <span class="ident">Associativity</span> {
@@ -2764,6 +2952,164 @@
         <span class="kw">const</span> <span class="ident">DBGSWP</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>;
         <span class="kw">const</span> <span class="ident">PREVHOSTIBS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">15</span>;
         <span class="kw">const</span> <span class="ident">VTE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>;
+    }
+}
+
+<span class="doccomment">/// Information about the SVM features that the processory supports (LEAF=0x8000_000A).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Note</span>
+<span class="doccomment">/// If SVM is not supported ([ExtendedProcessorFeatureIdentifiers::has_svm] is false),</span>
+<span class="doccomment">/// this leaf is reserved ([crate::CpuId] will return None in this case).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Platforms</span>
+<span class="doccomment">/// ✅ AMD ❌ Intel</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serialize&quot;</span>, <span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>))]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SvmFeatures</span> {
+    <span class="ident">eax</span>: <span class="ident">u32</span>,
+    <span class="ident">ebx</span>: <span class="ident">u32</span>,
+    <span class="doccomment">/// Reserved</span>
+    <span class="ident">_ecx</span>: <span class="ident">u32</span>,
+    <span class="ident">edx</span>: <span class="ident">SvmFeaturesEdx</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">SvmFeatures</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">CpuIdResult</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">eax</span>: <span class="ident">data</span>.<span class="ident">eax</span>,
+            <span class="ident">ebx</span>: <span class="ident">data</span>.<span class="ident">ebx</span>,
+            <span class="ident">_ecx</span>: <span class="ident">data</span>.<span class="ident">ecx</span>,
+            <span class="ident">edx</span>: <span class="ident">SvmFeaturesEdx::from_bits_truncate</span>(<span class="ident">data</span>.<span class="ident">edx</span>),
+        }
+    }
+
+    <span class="doccomment">/// SVM revision number.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revision</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
+        <span class="ident">get_bits</span>(<span class="self">self</span>.<span class="ident">eax</span>, <span class="number">0</span>, <span class="number">7</span>) <span class="kw">as</span> <span class="ident">u8</span>
+    }
+
+    <span class="doccomment">/// Number of available address space identifiers (ASID).</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">supported_asids</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
+        <span class="self">self</span>.<span class="ident">ebx</span>
+    }
+
+    <span class="doccomment">/// Nested paging supported if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_nested_paging</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::NP</span>)
+    }
+
+    <span class="doccomment">/// Indicates support for LBR Virtualization.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_lbr_virtualization</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::LBR_VIRT</span>)
+    }
+
+    <span class="doccomment">/// Indicates support for SVM-Lock if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_svm_lock</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::SVML</span>)
+    }
+
+    <span class="doccomment">/// Indicates support for NRIP save on #VMEXIT if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_nrip</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::NRIPS</span>)
+    }
+
+    <span class="doccomment">/// Indicates support for MSR TSC ratio (MSR `0xC000_0104`) if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_tsc_rate_msr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::TSC_RATE_MSR</span>)
+    }
+
+    <span class="doccomment">/// Indicates support for VMCB clean bits if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_vmcb_clean_bits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::VMCB_CLEAN</span>)
+    }
+
+    <span class="doccomment">/// Indicates that TLB flush events, including CR3 writes and CR4.PGE toggles, flush</span>
+    <span class="doccomment">/// only the current ASID&#39;s TLB entries.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Also indicates support for the extended VMCB TLB_Control.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_flush_by_asid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::FLUSH_BY_ASID</span>)
+    }
+
+    <span class="doccomment">/// Indicates support for the decode assists if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_decode_assists</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::DECODE_ASSISTS</span>)
+    }
+
+    <span class="doccomment">/// Indicates support for the pause intercept filter if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_pause_filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::PAUSE_FILTER</span>)
+    }
+
+    <span class="doccomment">/// Indicates support for the PAUSE filter cycle count threshold if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_pause_filter_threshold</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::PAUSE_FILTER_THRESHOLD</span>)
+    }
+
+    <span class="doccomment">/// Support for the AMD advanced virtual interrupt controller if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_avic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::AVIC</span>)
+    }
+
+    <span class="doccomment">/// VMSAVE and VMLOAD virtualization supported if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_vmsave_virtualization</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::VMSAVE_VIRT</span>)
+    }
+
+    <span class="doccomment">/// GIF -- virtualized global interrupt flag if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_gif</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::VGIF</span>)
+    }
+
+    <span class="doccomment">/// Guest Mode Execution Trap supported if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_gmet</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::GMET</span>)
+    }
+
+    <span class="doccomment">/// SVM supervisor shadow stack restrictions if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sss_check</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::SSS_CHECK</span>)
+    }
+
+    <span class="doccomment">/// SPEC_CTRL virtualization supported if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_spec_ctrl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::SPEC_CTRL</span>)
+    }
+
+    <span class="doccomment">/// When host `CR4.MCE=1` and guest `CR4.MCE=0`, machine check exceptions (`#MC`) in a</span>
+    <span class="doccomment">/// guest do not cause shutdown and are always intercepted if set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_host_mce_override</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::HOST_MCE_OVERRIDE</span>)
+    }
+
+    <span class="doccomment">/// Support for INVLPGB/TLBSYNC hypervisor enable in VMCB and TLBSYNC intercept if</span>
+    <span class="doccomment">/// set.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_tlb_ctrl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">edx</span>.<span class="ident">contains</span>(<span class="ident">SvmFeaturesEdx::TLB_CTL</span>)
+    }
+}
+
+<span class="macro">bitflags!</span> {
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serialize&quot;</span>, <span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>))]</span>
+    <span class="kw">struct</span> <span class="ident">SvmFeaturesEdx</span>: <span class="ident">u32</span> {
+        <span class="kw">const</span> <span class="ident">NP</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>;
+        <span class="kw">const</span> <span class="ident">LBR_VIRT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>;
+        <span class="kw">const</span> <span class="ident">SVML</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;
+        <span class="kw">const</span> <span class="ident">NRIPS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>;
+        <span class="kw">const</span> <span class="ident">TSC_RATE_MSR</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>;
+        <span class="kw">const</span> <span class="ident">VMCB_CLEAN</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>;
+        <span class="kw">const</span> <span class="ident">FLUSH_BY_ASID</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>;
+        <span class="kw">const</span> <span class="ident">DECODE_ASSISTS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
+        <span class="kw">const</span> <span class="ident">PAUSE_FILTER</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">10</span>;
+        <span class="kw">const</span> <span class="ident">PAUSE_FILTER_THRESHOLD</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>;
+        <span class="kw">const</span> <span class="ident">AVIC</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">13</span>;
+        <span class="kw">const</span> <span class="ident">VMSAVE_VIRT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">15</span>;
+        <span class="kw">const</span> <span class="ident">VGIF</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>;
+        <span class="kw">const</span> <span class="ident">GMET</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">17</span>;
+        <span class="kw">const</span> <span class="ident">SSS_CHECK</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">19</span>;
+        <span class="kw">const</span> <span class="ident">SPEC_CTRL</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">20</span>;
+        <span class="kw">const</span> <span class="ident">HOST_MCE_OVERRIDE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">23</span>;
+        <span class="kw">const</span> <span class="ident">TLB_CTL</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>;
     }
 }
 </code></pre></div>
