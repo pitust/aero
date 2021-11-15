@@ -847,6 +847,10 @@
 <span id="847">847</span>
 <span id="848">848</span>
 <span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -1181,7 +1185,7 @@
         <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">term_background</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">parse_bmp_image</span>(<span class="ident">a</span>));
         <span class="ident">this</span>.<span class="ident">generate_canvas</span>(<span class="ident">image</span>);
 
-        <span class="ident">this</span>.<span class="ident">clear</span>();
+        <span class="ident">this</span>.<span class="ident">clear</span>(<span class="bool-val">true</span>);
         <span class="ident">this</span>.<span class="ident">double_buffer_flush</span>();
 
         <span class="ident">this</span>
@@ -1339,7 +1343,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mv</span>: <span class="ident">bool</span>) {
         <span class="kw">let</span> <span class="ident">char</span> <span class="op">=</span> <span class="ident">Character</span> {
             <span class="ident">char</span>: <span class="string">&#39; &#39;</span>,
             <span class="ident">fg</span>: <span class="self">self</span>.<span class="ident">color</span>.<span class="ident">get_foreground</span>(),
@@ -1350,8 +1354,10 @@
             <span class="self">self</span>.<span class="ident">push_to_queue</span>(<span class="kw-2">&amp;</span><span class="ident">char</span>, <span class="ident">i</span> <span class="op">%</span> <span class="self">self</span>.<span class="ident">cols</span>, <span class="ident">i</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">cols</span>);
         }
 
-        <span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">=</span> <span class="ident">X_PAD</span>;
-        <span class="self">self</span>.<span class="ident">y_pos</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">if</span> <span class="ident">mv</span> {
+            <span class="self">self</span>.<span class="ident">x_pos</span> <span class="op">=</span> <span class="ident">X_PAD</span>;
+            <span class="self">self</span>.<span class="ident">y_pos</span> <span class="op">=</span> <span class="number">0</span>;
+        }
     }
 
     <span class="kw">fn</span> <span class="ident">write_string</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
@@ -1615,8 +1621,10 @@
     <span class="ident">DEBUG_RENDY</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">lock_irq</span>().<span class="ident">write_fmt</span>(<span class="ident">args</span>));
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_screen</span>() {
-    <span class="ident">DEBUG_RENDY</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">lock_irq</span>().<span class="ident">clear</span>());
+<span class="doccomment">/// Clears the screen and if `mv` is set to true, resets the</span>
+<span class="doccomment">/// cursor position to `0`.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear_screen</span>(<span class="ident">mv</span>: <span class="ident">bool</span>) {
+    <span class="ident">DEBUG_RENDY</span>.<span class="ident">get</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">lock_irq</span>().<span class="ident">clear</span>(<span class="ident">mv</span>));
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backspace</span>() {

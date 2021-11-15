@@ -343,7 +343,7 @@
     <span class="ident">fs::launch</span>().<span class="ident">unwrap</span>();
 
     <span class="kw">if</span> <span class="ident">logger::enabled_rendy_debug</span>() {
-        <span class="ident">rendy::clear_screen</span>();
+        <span class="ident">rendy::clear_screen</span>(<span class="bool-val">true</span>);
         <span class="ident">logger::set_rendy_debug</span>(<span class="bool-val">false</span>);
     }
 
