@@ -510,6 +510,48 @@
 <span id="510">510</span>
 <span id="511">511</span>
 <span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -649,7 +691,8 @@
 <span class="kw">struct</span> <span class="ident">StdinBuffer</span> {
     <span class="ident">back_buffer</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="ident">front_buffer</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-    <span class="ident">i</span>: <span class="ident">usize</span>,
+
+    <span class="ident">cursor</span>: <span class="ident">usize</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">StdinBuffer</span> {
@@ -657,20 +700,25 @@
         <span class="self">Self</span> {
             <span class="ident">back_buffer</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">front_buffer</span>: <span class="ident">Vec::new</span>(),
-            <span class="ident">i</span>: <span class="number">0</span>,
+
+            <span class="ident">cursor</span>: <span class="number">0</span>,
         }
     }
 
     <span class="kw">fn</span> <span class="ident">swap_buffer</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="self">self</span>.<span class="ident">front_buffer</span>.<span class="ident">resize</span>(<span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">len</span>(), <span class="number">0x00</span>);
         <span class="self">self</span>.<span class="ident">front_buffer</span>
-            .<span class="ident">resize</span>(<span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">i</span>, <span class="number">0x00</span>);
-        <span class="self">self</span>.<span class="ident">front_buffer</span>
-            .<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">back_buffer</span>[<span class="self">self</span>.<span class="ident">i</span>..]);
-        <span class="self">self</span>.<span class="ident">i</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">len</span>();
+            .<span class="ident">copy_from_slice</span>(<span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">as_slice</span>());
+
+        <span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">clear</span>();
     }
 
     <span class="kw">fn</span> <span class="ident">is_complete</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">i</span>
+        <span class="self">self</span>.<span class="ident">back_buffer</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">0</span>
+    }
+
+    <span class="kw">fn</span> <span class="ident">advance_cursor</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="self">self</span>.<span class="ident">cursor</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
     }
 }
 
@@ -765,7 +813,9 @@
             <span class="ident">KeyCode::KEY_CAPSLOCK</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; <span class="ident">state</span>.<span class="ident">caps</span> <span class="op">=</span> <span class="op">!</span><span class="ident">state</span>.<span class="ident">caps</span>,
             <span class="ident">KeyCode::KEY_ENTER</span> <span class="op">|</span> <span class="ident">KeyCode::KEY_KPENTER</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">stdin</span>.<span class="ident">lock_irq</span>();
+
                 <span class="ident">stdin</span>.<span class="ident">back_buffer</span>.<span class="ident">push</span>(<span class="string">&#39;\n&#39;</span> <span class="kw">as</span> <span class="ident">u8</span>);
+                <span class="ident">stdin</span>.<span class="ident">cursor</span> <span class="op">=</span> <span class="number">0</span>;
 
                 <span class="macro">crate::prelude::print!</span>(<span class="string">&quot;\n&quot;</span>);
                 <span class="self">self</span>.<span class="ident">block_queue</span>.<span class="ident">notify_complete</span>();
@@ -777,11 +827,10 @@
                 <span class="comment">// We cannot backspace if the backbuffer is empty</span>
                 <span class="comment">// and we do not want to remove any lines commited</span>
                 <span class="comment">// by &quot;\n&quot;.</span>
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">last</span>) <span class="op">=</span> <span class="ident">stdin</span>.<span class="ident">back_buffer</span>.<span class="ident">last</span>() {
-                    <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">last</span> <span class="kw">as</span> <span class="ident">char</span> <span class="op">!</span><span class="op">=</span> <span class="string">&#39;\n&#39;</span> {
-                        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">stdin</span>.<span class="ident">back_buffer</span>.<span class="ident">pop</span>();
-                        <span class="ident"><span class="kw">crate</span>::rendy::backspace</span>();
-                    }
+                <span class="kw">if</span> <span class="ident">stdin</span>.<span class="ident">back_buffer</span>.<span class="ident">pop</span>().<span class="ident">is_some</span>() {
+                    <span class="ident"><span class="kw">crate</span>::rendy::backspace</span>();
+
+                    <span class="ident">stdin</span>.<span class="ident">cursor</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
                 }
             }
 
@@ -793,6 +842,36 @@
 
             <span class="ident">KeyCode::KEY_LEFTALT</span> =&gt; <span class="ident">state</span>.<span class="ident">lalt</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
             <span class="ident">KeyCode::KEY_RIGHTALT</span> =&gt; <span class="ident">state</span>.<span class="ident">altgr</span> <span class="op">=</span> <span class="op">!</span><span class="ident">released</span>,
+
+            <span class="ident">KeyCode::KEY_LEFT</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">stdin</span>.<span class="ident">lock_irq</span>();
+
+                <span class="comment">// We are at the start of the input so, we cannot shift</span>
+                <span class="comment">// the cursor to the left anymore.</span>
+                <span class="kw">if</span> <span class="ident">stdin</span>.<span class="ident">cursor</span> <span class="op">==</span> <span class="number">0</span> {
+                    <span class="kw">return</span>;
+                }
+
+                <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendy::get_cursor_position</span>();
+                <span class="ident"><span class="kw">crate</span>::rendy::set_cursor_position</span>(<span class="ident">x</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">y</span>);
+
+                <span class="ident">stdin</span>.<span class="ident">cursor</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
+            }
+
+            <span class="ident">KeyCode::KEY_RIGHT</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">stdin</span>.<span class="ident">lock_irq</span>();
+
+                <span class="comment">// We are at the end of the input so, we cannot shift</span>
+                <span class="comment">// the cursor to the right anymore.</span>
+                <span class="kw">if</span> <span class="ident">stdin</span>.<span class="ident">cursor</span> <span class="op">==</span> <span class="ident">stdin</span>.<span class="ident">back_buffer</span>.<span class="ident">len</span>() {
+                    <span class="kw">return</span>;
+                }
+
+                <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendy::get_cursor_position</span>();
+                <span class="ident"><span class="kw">crate</span>::rendy::set_cursor_position</span>(<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">y</span>);
+
+                <span class="ident">stdin</span>.<span class="ident">advance_cursor</span>();
+            }
 
             <span class="kw">_</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">released</span> =&gt; {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shift</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">lshift</span> <span class="op">|</span><span class="op">|</span> <span class="ident">state</span>.<span class="ident">rshift</span>;
@@ -816,7 +895,12 @@
                 <span class="kw">let</span> <span class="ident">character</span> <span class="op">=</span>
                     <span class="kw">unsafe</span> { <span class="ident">core::char::from_u32_unchecked</span>((<span class="ident">map</span>[<span class="ident">key</span> <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">&amp;</span> <span class="number">0xff</span>) <span class="kw">as</span> <span class="kw">_</span>) };
 
-                <span class="self">self</span>.<span class="ident">stdin</span>.<span class="ident">lock_irq</span>().<span class="ident">back_buffer</span>.<span class="ident">push</span>(<span class="ident">character</span> <span class="kw">as</span> <span class="ident">u8</span>);
+                {
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">stdin</span>.<span class="ident">lock_irq</span>();
+
+                    <span class="ident">stdin</span>.<span class="ident">back_buffer</span>.<span class="ident">push</span>(<span class="ident">character</span> <span class="kw">as</span> <span class="ident">u8</span>);
+                    <span class="ident">stdin</span>.<span class="ident">advance_cursor</span>();
+                }
 
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">performer</span> <span class="op">=</span> <span class="ident">AnsiEscape</span>;
                 <span class="ident">state</span>.<span class="ident">parser</span>.<span class="ident">advance</span>(<span class="kw-2">&amp;mut</span> <span class="ident">performer</span>, <span class="ident">character</span> <span class="kw">as</span> <span class="ident">u8</span>);
