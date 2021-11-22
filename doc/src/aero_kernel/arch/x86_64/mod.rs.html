@@ -442,7 +442,6 @@
     });
 
     <span class="kw">let</span> <span class="ident">command_line</span> <span class="op">=</span> <span class="ident">cmdline::parse</span>(<span class="ident">command_line</span>, <span class="ident">modules</span>);
-    <span class="ident">logger::set_rendy_debug</span>(<span class="ident">command_line</span>.<span class="ident">rendy_debug</span>);
 
     <span class="ident">gdt::init_boot</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded bootstrap GDT&quot;</span>);
@@ -454,6 +453,7 @@
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded heap&quot;</span>);
 
     <span class="ident">rendy::init</span>(<span class="ident">framebuffer_tag</span>, <span class="kw-2">&amp;</span><span class="ident">command_line</span>);
+    <span class="ident">logger::set_rendy_debug</span>(<span class="ident">command_line</span>.<span class="ident">rendy_debug</span>);
 
     <span class="ident">interrupts::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded IDT&quot;</span>);
