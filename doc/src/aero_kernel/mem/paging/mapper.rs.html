@@ -1261,6 +1261,7 @@
 <span id="1260">1260</span>
 <span id="1261">1261</span>
 <span id="1262">1262</span>
+<span id="1263">1263</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -1302,6 +1303,7 @@
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">FrameAllocator</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">PageSize</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Allocate a frame of the appropriate size and return it if possible.</span>
     <span class="kw">fn</span> <span class="ident">allocate_frame</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">deallocate_frame</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">frame</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>);
 }
 
 <span class="doccomment">/// An empty convencience trait that requires the `Mapper` trait for all page sizes.</span>
