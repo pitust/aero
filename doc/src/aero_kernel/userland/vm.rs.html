@@ -927,7 +927,7 @@
                     <span class="kw-2">&amp;mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
                 )
             }
-            .<span class="ident">expect</span>(<span class="string">&quot;failed to map private mapping&quot;</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;Failed to identity map userspace private mapping&quot;</span>)
             .<span class="ident">flush</span>();
 
             <span class="bool-val">true</span>
@@ -986,7 +986,7 @@
                     <span class="kw">let</span> <span class="ident">virt</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">phys</span>;
                     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">virt</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>();
 
-                    <span class="ident">core::slice::from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="ident">size</span> <span class="kw">as</span> <span class="ident">usize</span>)
+                    <span class="ident">core::slice::from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="number">4096</span>)
                 };
 
                 <span class="ident">mmap_file</span>
@@ -1007,7 +1007,7 @@
 
                 <span class="kw">unsafe</span> {
                     <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
-                        <span class="ident">Page</span>::<span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span><span class="ident">::containing_address</span>(<span class="ident">address</span>),
+                        <span class="ident">Page::containing_address</span>(<span class="ident">address</span>),
                         <span class="ident">frame</span>,
                         <span class="ident">flags</span>,
                         <span class="kw-2">&amp;mut</span> <span class="ident">FRAME_ALLOCATOR</span>,
