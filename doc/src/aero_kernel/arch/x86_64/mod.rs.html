@@ -214,6 +214,8 @@
 <span id="213">213</span>
 <span id="214">214</span>
 <span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -390,6 +392,8 @@
 
     <span class="ident">tls::init</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded TLS&quot;</span>);
+
+    <span class="ident"><span class="kw">crate</span>::unwind::set_panic_hook_ready</span>(<span class="bool-val">true</span>);
 
     <span class="ident">gdt::init</span>(<span class="ident">stack_top_addr</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;loaded GDT&quot;</span>);

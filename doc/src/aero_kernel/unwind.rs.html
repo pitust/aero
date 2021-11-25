@@ -208,6 +208,21 @@
 <span id="207">207</span>
 <span id="208">208</span>
 <span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -229,6 +244,8 @@
 
 <span class="kw">use</span> <span class="ident">core::panic::PanicInfo</span>;
 
+<span class="kw">use</span> <span class="ident">core::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
+
 <span class="kw">use</span> <span class="ident">xmas_elf::sections</span>::{<span class="ident">SectionData</span>, <span class="ident">ShType</span>};
 <span class="kw">use</span> <span class="ident">xmas_elf::symbol_table::Entry</span>;
 <span class="kw">use</span> <span class="ident">xmas_elf::ElfFile</span>;
@@ -240,6 +257,12 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::rendy</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::interrupts</span>;
+
+<span class="kw">static</span> <span class="ident">PANIC_HOOK_READY</span>: <span class="ident">AtomicBool</span> <span class="op">=</span> <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>);
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_panic_hook_ready</span>(<span class="ident">yes</span>: <span class="ident">bool</span>) {
+    <span class="ident">PANIC_HOOK_READY</span>.<span class="ident">store</span>(<span class="ident">yes</span>, <span class="ident">Ordering::SeqCst</span>);
+}
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">prepare_panic</span>() {
     <span class="comment">// Disable interrupts as we do not want to be interrupted while</span>
@@ -365,7 +388,14 @@
     <span class="kw">let</span> <span class="ident">deafult_panic</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;&quot;</span>);
     <span class="kw">let</span> <span class="ident">panic_message</span> <span class="op">=</span> <span class="ident">info</span>.<span class="ident">message</span>().<span class="ident">unwrap_or</span>(<span class="ident">deafult_panic</span>);
 
-    <span class="kw">let</span> <span class="ident">cpu_id</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::CPU_ID</span> }; <span class="comment">// Get the CPU ID where this panic happened.</span>
+    <span class="comment">// Get the CPU ID where this panic happened and if PANIC_HOOK_READY is false</span>
+    <span class="comment">// then we cannot get the CPU where this panic happened.</span>
+    <span class="kw">let</span> <span class="ident">cpu_id</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">PANIC_HOOK_READY</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>) {
+        <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::CPU_ID</span> }
+    } <span class="kw">else</span> {
+        <span class="number">0x00</span>
+    };
+
     <span class="macro">log::error!</span>(<span class="string">&quot;cpu &#39;{}&#39; panicked at &#39;{}&#39;&quot;</span>, <span class="ident">cpu_id</span>, <span class="ident">panic_message</span>);
 
     <span class="comment">// Print the panic location if it is available.</span>
