@@ -176,18 +176,6 @@
 <span id="175">175</span>
 <span id="176">176</span>
 <span id="177">177</span>
-<span id="178">178</span>
-<span id="179">179</span>
-<span id="180">180</span>
-<span id="181">181</span>
-<span id="182">182</span>
-<span id="183">183</span>
-<span id="184">184</span>
-<span id="185">185</span>
-<span id="186">186</span>
-<span id="187">187</span>
-<span id="188">188</span>
-<span id="189">189</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -319,19 +307,7 @@
         <span class="comment">// necessary and sufficient.</span>
         <span class="macro">debug_assert!</span>(<span class="ident">layout</span>.<span class="ident">size</span>() <span class="op">&lt;</span> <span class="ident">usize::MAX</span> <span class="op">-</span> (<span class="ident">layout</span>.<span class="ident">align</span>() <span class="op">-</span> <span class="number">1</span>));
 
-        <span class="comment">// TODO: The linked list allocator is fucked up so make a slab allocato</span>
-        <span class="comment">// and dont use that crate brrrrrrrr.</span>
-        <span class="kw">if</span> <span class="ident">layout</span>.<span class="ident">size</span>() <span class="op">&lt;</span> <span class="ident">Size4KiB::SIZE</span> <span class="kw">as</span> <span class="ident">usize</span> {
-            <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">pmm_alloc</span>(<span class="ident">BuddyOrdering::Size4KiB</span>);
-            <span class="kw">let</span> <span class="ident">virt</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">frame</span>.<span class="ident">as_u64</span>();
-
-            <span class="ident">virt</span>.<span class="ident">as_mut_ptr</span>()
-        } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> <span class="ident">pmm_alloc</span>(<span class="ident">BuddyOrdering::Size2MiB</span>);
-            <span class="kw">let</span> <span class="ident">virt</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">frame</span>.<span class="ident">as_u64</span>();
-
-            <span class="ident">virt</span>.<span class="ident">as_mut_ptr</span>()
-        }
+        <span class="self">self</span>.<span class="ident">allocate</span>(<span class="ident">layout</span>).<span class="ident">unwrap</span>().<span class="ident">as_ptr</span>()
     }
 
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) {
