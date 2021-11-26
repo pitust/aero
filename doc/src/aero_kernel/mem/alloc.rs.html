@@ -515,9 +515,9 @@
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kmemleak&quot;</span>)]</span>
         <span class="ident">kmemleak::MEM_LEAK_CATCHER</span>.<span class="ident">unref</span>(<span class="ident">ptr</span>);
 
-        <span class="comment">// self.0</span>
-        <span class="comment">//     .lock_irq()</span>
-        <span class="comment">//     .deallocate(NonNull::new_unchecked(ptr), layout)</span>
+        <span class="self">self</span>.<span class="number">0</span>
+            .<span class="ident">lock_irq</span>()
+            .<span class="ident">deallocate</span>(<span class="ident">NonNull::new_unchecked</span>(<span class="ident">ptr</span>), <span class="ident">layout</span>)
     }
 }
 
