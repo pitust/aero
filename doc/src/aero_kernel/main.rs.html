@@ -191,6 +191,11 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -244,6 +249,7 @@
 <span class="attribute">#![<span class="ident">test_runner</span>(<span class="ident"><span class="kw">crate</span>::tests::test_runner</span>)]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">no_main</span>]</span>
+<span class="attribute">#![<span class="ident">reexport_test_harness_main</span> <span class="op">=</span> <span class="string">&quot;test_main&quot;</span>]</span>
 
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">alloc</span>;
 
@@ -258,6 +264,7 @@
 <span class="kw">mod</span> <span class="ident">modules</span>;
 <span class="kw">mod</span> <span class="ident">rendy</span>;
 <span class="kw">mod</span> <span class="ident">syscall</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
 <span class="kw">mod</span> <span class="ident">time</span>;
 <span class="kw">mod</span> <span class="ident">tls</span>;
@@ -313,6 +320,9 @@
     <span class="ident">apic::mark_bsp_ready</span>(<span class="bool-val">true</span>);
 
     <span class="macro">log::info!</span>(<span class="string">&quot;initialized kernel&quot;</span>);
+
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+    <span class="ident">test_main</span>();
 
     <span class="comment">// Now that all of the essential initialization is done we are going to schedule</span>
     <span class="comment">// the kernel main thread.</span>

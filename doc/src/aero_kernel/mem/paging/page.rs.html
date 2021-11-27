@@ -438,15 +438,6 @@
 <span id="437">437</span>
 <span id="438">438</span>
 <span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
-<span id="446">446</span>
-<span id="447">447</span>
-<span id="448">448</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -867,7 +858,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="attribute">#[<span class="ident">aero_test::test</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_page_ranges</span>() {
         <span class="kw">let</span> <span class="ident">page_size</span> <span class="op">=</span> <span class="ident">Size4KiB::SIZE</span>;
         <span class="kw">let</span> <span class="ident">number</span> <span class="op">=</span> <span class="number">1000</span>;
@@ -875,15 +866,6 @@
         <span class="kw">let</span> <span class="ident">start_addr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0xdead_beaf</span>);
         <span class="kw">let</span> <span class="ident">start</span>: <span class="ident">Page</span> <span class="op">=</span> <span class="ident">Page::containing_address</span>(<span class="ident">start_addr</span>);
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="ident">number</span>;
-
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">Page::range</span>(<span class="ident">start</span>, <span class="ident">end</span>);
-        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">number</span> {
-            <span class="macro">assert_eq!</span>(
-                <span class="ident">range</span>.<span class="ident">next</span>(),
-                <span class="prelude-val">Some</span>(<span class="ident">Page::containing_address</span>(<span class="ident">start_addr</span> <span class="op">+</span> <span class="ident">page_size</span> <span class="op">*</span> <span class="ident">i</span>))
-            );
-        }
-        <span class="macro">assert_eq!</span>(<span class="ident">range</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range_inclusive</span> <span class="op">=</span> <span class="ident">Page::range_inclusive</span>(<span class="ident">start</span>, <span class="ident">end</span>);
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="op">=</span><span class="ident">number</span> {
