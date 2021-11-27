@@ -321,9 +321,6 @@
 
     <span class="macro">log::info!</span>(<span class="string">&quot;initialized kernel&quot;</span>);
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="ident">test_main</span>();
-
     <span class="comment">// Now that all of the essential initialization is done we are going to schedule</span>
     <span class="comment">// the kernel main thread.</span>
     <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="ident">Task::new_kernel</span>(<span class="ident">kernel_main_thread</span>, <span class="bool-val">true</span>);
@@ -352,6 +349,9 @@
 
     <span class="ident">fs::block::launch</span>().<span class="ident">unwrap</span>();
     <span class="ident">fs::launch</span>().<span class="ident">unwrap</span>();
+
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+    <span class="ident">test_main</span>();
 
     <span class="kw">if</span> <span class="ident">logger::enabled_rendy_debug</span>() {
         <span class="ident">rendy::clear_screen</span>(<span class="bool-val">true</span>);
