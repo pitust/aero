@@ -475,6 +475,30 @@
 <span id="474">474</span>
 <span id="475">475</span>
 <span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -949,6 +973,30 @@
         <span class="ident">addr</span> <span class="comment">// already aligned</span>
     } <span class="kw">else</span> {
         (<span class="ident">addr</span> <span class="op">|</span> <span class="ident">align_mask</span>) <span class="op">+</span> <span class="number">1</span>
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+
+    <span class="attribute">#[<span class="ident">aero_test::test</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_align_up</span>() {
+        <span class="comment">// align 1</span>
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">0</span>, <span class="number">1</span>), <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">1234</span>, <span class="number">1</span>), <span class="number">1234</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">0xffff_ffff_ffff_ffff</span>, <span class="number">1</span>), <span class="number">0xffff_ffff_ffff_ffff</span>);
+
+        <span class="comment">// align 2</span>
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">0</span>, <span class="number">2</span>), <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">1233</span>, <span class="number">2</span>), <span class="number">1234</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">0xffff_ffff_ffff_fffe</span>, <span class="number">2</span>), <span class="number">0xffff_ffff_ffff_fffe</span>);
+
+        <span class="comment">// address 0</span>
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">0</span>, <span class="number">128</span>), <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">0</span>, <span class="number">1</span>), <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">0</span>, <span class="number">2</span>), <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">align_up</span>(<span class="number">0</span>, <span class="number">0x8000_0000_0000_0000</span>), <span class="number">0</span>);
     }
 }
 </code></pre></div>
