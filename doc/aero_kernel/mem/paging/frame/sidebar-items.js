@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["BUDDY_BITS",""],["CONVENTIONAL_MEM_END",""],["CONVENTIONAL_MEM_START",""]],"enum":[["BuddyOrdering",""],["MemoryRangeType",""]],"fn":[["pmm_alloc",""]],"static":[["BUDDY_SIZE",""]],"struct":[["BootAllocator",""],["GlobalFrameAllocator",""],["LockedFrameAllocator",""],["MemoryRange",""],["RangeMemoryIter",""]]});
