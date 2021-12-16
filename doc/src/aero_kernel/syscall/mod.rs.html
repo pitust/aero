@@ -221,6 +221,9 @@
 <span id="220">220</span>
 <span id="221">221</span>
 <span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -263,6 +266,8 @@
 <span class="doccomment">//! | 16     | rmdir                   |</span>
 <span class="doccomment">//! | 17     | exec                    |</span>
 <span class="doccomment">//! | 18     | log                     |</span>
+<span class="doccomment">//! | 19     | uname                   |</span>
+<span class="doccomment">//! | 20     | waitpid                 |</span>
 
 <span class="kw">use</span> <span class="ident">core::mem::MaybeUninit</span>;
 
@@ -385,6 +390,7 @@
         <span class="ident">SYS_EXEC</span> =&gt; <span class="ident">process::exec</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>, <span class="ident">g</span>),
         <span class="ident">SYS_LOG</span> =&gt; <span class="ident">process::log</span>(<span class="ident">b</span>, <span class="ident">c</span>),
         <span class="ident">SYS_UNAME</span> =&gt; <span class="ident">process::uname</span>(<span class="ident">b</span>),
+        <span class="ident">SYS_WAITPID</span> =&gt; <span class="ident">process::waitpid</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
 
         <span class="number">0x13A</span> =&gt; {
             <span class="macro">panic!</span>(<span class="string">&quot;RIP={}&quot;</span>, <span class="ident">sys</span>.<span class="ident">rip</span>);

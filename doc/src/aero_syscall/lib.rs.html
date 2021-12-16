@@ -362,6 +362,17 @@
 <span id="361">361</span>
 <span id="362">362</span>
 <span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">decl_macro</span>)]</span>
 
@@ -703,6 +714,17 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_shutdown</span>() -&gt; <span class="op">!</span> {
     <span class="ident">syscall0</span>(<span class="ident">prelude::SYS_SHUTDOWN</span>);
     <span class="macro">unreachable!</span>()
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_waitpid</span>(<span class="ident">pid</span>: <span class="ident">usize</span>, <span class="ident">status</span>: <span class="kw-2">&amp;mut</span> <span class="ident">u32</span>, <span class="ident">flags</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall3</span>(
+        <span class="ident">prelude::SYS_WAITPID</span>,
+        <span class="ident">pid</span> <span class="kw">as</span> <span class="ident">usize</span>,
+        <span class="ident">status</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="ident">usize</span>,
+        <span class="ident">flags</span>,
+    );
+
+    <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_mmap</span>(

@@ -189,6 +189,21 @@
 <span id="188">188</span>
 <span id="189">189</span>
 <span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -218,7 +233,15 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::validate_str</span>;
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
-    <span class="macro">log::trace!</span>(<span class="string">&quot;exiting the current process with status: {}&quot;</span>, <span class="ident">status</span>);
+    <span class="macro">log::trace!</span>(
+        <span class="string">&quot;exiting the process (pid={pid}) with status: {status}&quot;</span>,
+        <span class="ident">pid</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>()
+            .<span class="ident">current_task</span>()
+            .<span class="ident">task_id</span>()
+            .<span class="ident">as_usize</span>(),
+        <span class="ident">status</span> <span class="op">=</span> <span class="ident">status</span>
+    );
+
     <span class="ident">scheduler::get_scheduler</span>().<span class="ident">inner</span>.<span class="ident">exit</span>(<span class="ident">status</span> <span class="kw">as</span> <span class="ident">isize</span>);
 }
 
@@ -326,6 +349,13 @@
     <span class="macro">log::debug!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">message</span>);
 
     <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">waitpid</span>(<span class="ident">pid</span>: <span class="ident">usize</span>, <span class="ident">status</span>: <span class="ident">usize</span>, <span class="ident">_flags</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">current_task</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>();
+    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">status</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u32</span>) };
+
+    <span class="prelude-val">Ok</span>(<span class="ident">current_task</span>.<span class="ident">waitpid</span>(<span class="ident">pid</span>, <span class="ident">status</span>)<span class="question-mark">?</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap</span>(

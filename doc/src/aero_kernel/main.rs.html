@@ -202,13 +202,6 @@
 <span id="201">201</span>
 <span id="202">202</span>
 <span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
-<span id="207">207</span>
-<span id="208">208</span>
-<span id="209">209</span>
-<span id="210">210</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -245,7 +238,6 @@
     <span class="ident">panic_info_message</span>,
     <span class="ident">thread_local</span>,
     <span class="ident">decl_macro</span>,
-    <span class="ident">global_asm</span>,
     <span class="ident">ptr_internals</span>,
     <span class="ident">const_fn_trait_bound</span>,
     <span class="ident">linked_list_cursors</span>,
@@ -299,12 +291,6 @@
 <span class="kw">mod</span> <span class="ident">unwind</span>;
 <span class="kw">mod</span> <span class="ident">userland</span>;
 <span class="kw">mod</span> <span class="ident">utils</span>;
-<span class="kw">mod</span> <span class="ident">prelude_old</span> {
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils</span>::{
-        <span class="ident">const_unsafe</span>, <span class="ident">intel_asm</span>, <span class="ident">intel_fn</span>, <span class="ident">pop_fs</span>, <span class="ident">pop_preserved</span>, <span class="ident">pop_scratch</span>, <span class="ident">push_fs</span>,
-        <span class="ident">push_preserved</span>, <span class="ident">push_scratch</span>,
-    };
-}
 
 <span class="kw">use</span> <span class="ident">stivale_boot::v2</span>::<span class="kw-2">*</span>;
 
