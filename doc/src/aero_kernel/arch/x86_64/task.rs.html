@@ -321,6 +321,35 @@
 <span id="320">320</span>
 <span id="321">321</span>
 <span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -387,6 +416,35 @@
     <span class="ident">AtPhEnt</span> <span class="op">=</span> <span class="number">4</span>,
     <span class="ident">AtPhNum</span> <span class="op">=</span> <span class="number">5</span>,
     <span class="ident">AtEntry</span> <span class="op">=</span> <span class="number">9</span>,
+}
+
+<span class="doccomment">/// Returns the first address outside the user range.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Notes</span>
+<span class="doccomment">/// * On Intel CPUs, if a SYSCALL instruction is at the highest canonical address, then</span>
+<span class="doccomment">/// that syscall will enter the kernel with a non-canonical return address, and SYSRET will</span>
+<span class="doccomment">/// explode dangerously. We avoid this particular problem by preventing anything from</span>
+<span class="doccomment">/// being mapped at the maximum canonical address.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * On AMD CPUs in the Ryzen family, there&#39;s a nasty bug in which the CPUs malfunction if they</span>
+<span class="doccomment">/// execute code from the highest canonical page. They&#39;ll speculate right off the end of the canonical</span>
+<span class="doccomment">/// space and bad things happen. This is worked around in the same way as the Intel problem.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">userland_last_address</span>() -&gt; <span class="ident">VirtAddr</span> {
+    <span class="comment">// Reference: https://elixir.bootlin.com/linux/latest/source/arch/x86/include/asm/page_64.h#L61</span>
+    <span class="kw">static</span> <span class="ident">CACHED</span>: <span class="ident">spin::Once</span><span class="op">&lt;</span><span class="ident">VirtAddr</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">spin::Once::new</span>();
+
+    <span class="kw-2">*</span><span class="ident">CACHED</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="ident">virtual_mask_shift</span>: <span class="ident">u64</span>;
+        <span class="kw">let</span> <span class="ident">la57</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::mem::paging::level_5_paging_enabled</span>();
+
+        <span class="kw">if</span> <span class="ident">la57</span> {
+            <span class="ident">virtual_mask_shift</span> <span class="op">=</span> <span class="number">56</span>;
+        } <span class="kw">else</span> {
+            <span class="ident">virtual_mask_shift</span> <span class="op">=</span> <span class="number">47</span>;
+        }
+
+        <span class="ident">VirtAddr::new</span>((<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">virtual_mask_shift</span>) <span class="op">-</span> <span class="ident">Size4KiB::SIZE</span>)
+    })
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ArchTask</span> {
