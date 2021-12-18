@@ -320,6 +320,15 @@
 <span id="318">318</span>
 <span id="319">319</span>
 <span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -605,16 +614,25 @@
     <span class="comment">// This is temporary and will be removed when we have support for</span>
     <span class="comment">// ext2 filesystem and fat32 filesystem to make it functional for both</span>
     <span class="comment">// UEFI and BIOS.</span>
-    <span class="kw">static</span> <span class="ident">SHELL</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span>
-        <span class="macro">include_bytes!</span>(<span class="string">&quot;../../../../userland/target/x86_64-unknown-none/debug/aero_shell&quot;</span>);
 
-    <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;bin&quot;</span>)<span class="question-mark">?</span>;
-    <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;lib&quot;</span>)<span class="question-mark">?</span>;
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">doc</span>))]</span>
+    {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
+        <span class="kw">static</span> <span class="ident">SHELL</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span>
+            <span class="macro">include_bytes!</span>(<span class="string">&quot;../../../../userland/target/x86_64-unknown-none/debug/aero_shell&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">bin</span> <span class="op">=</span> <span class="ident">lookup_path</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/bin&quot;</span>))<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">shell</span> <span class="op">=</span> <span class="ident">bin</span>.<span class="ident">inode</span>().<span class="ident">touch</span>(<span class="ident">bin</span>.<span class="ident">clone</span>(), <span class="string">&quot;sh&quot;</span>)<span class="question-mark">?</span>;
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>))]</span>
+        <span class="kw">static</span> <span class="ident">SHELL</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span>
+            <span class="macro">include_bytes!</span>(<span class="string">&quot;../../../../userland/target/x86_64-unknown-none/release/aero_shell&quot;</span>);
 
-    <span class="ident">shell</span>.<span class="ident">inode</span>().<span class="ident">write_at</span>(<span class="number">0x00</span>, <span class="ident">SHELL</span>)<span class="question-mark">?</span>;
+        <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;bin&quot;</span>)<span class="question-mark">?</span>;
+        <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;lib&quot;</span>)<span class="question-mark">?</span>;
+
+        <span class="kw">let</span> <span class="ident">bin</span> <span class="op">=</span> <span class="ident">lookup_path</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/bin&quot;</span>))<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">shell</span> <span class="op">=</span> <span class="ident">bin</span>.<span class="ident">inode</span>().<span class="ident">touch</span>(<span class="ident">bin</span>.<span class="ident">clone</span>(), <span class="string">&quot;sh&quot;</span>)<span class="question-mark">?</span>;
+
+        <span class="ident">shell</span>.<span class="ident">inode</span>().<span class="ident">write_at</span>(<span class="number">0x00</span>, <span class="ident">SHELL</span>)<span class="question-mark">?</span>;
+    }
 
     <span class="comment">// Add some more files if the sysroot feature is enabled.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sysroot&quot;</span>)]</span>
