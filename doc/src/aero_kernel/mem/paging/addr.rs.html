@@ -518,6 +518,10 @@
 <span id="516">516</span>
 <span id="517">517</span>
 <span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -670,6 +674,10 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">p5_index</span>(<span class="self">self</span>) -&gt; <span class="ident">PageTableIndex</span> {
         <span class="ident">PageTableIndex::new_truncate</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">9</span>) <span class="kw">as</span> <span class="ident">u16</span>)
+    }
+
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">const_sub_u64</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">u64</span>) -&gt; <span class="ident">VirtAddr</span> {
+        <span class="ident">VirtAddr</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">-</span> <span class="ident">other</span>)
     }
 }
 
@@ -1037,5 +1045,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (5531927e8 2021-12-16)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (7abab1efb 2021-12-17)" ></div>
 </body></html>

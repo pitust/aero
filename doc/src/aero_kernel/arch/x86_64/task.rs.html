@@ -351,6 +351,12 @@
 <span id="349">349</span>
 <span id="350">350</span>
 <span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -447,6 +453,12 @@
         <span class="ident">VirtAddr::new</span>((<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">virtual_mask_shift</span>) <span class="op">-</span> <span class="ident">Size4KiB::SIZE</span>)
     })
 }
+
+<span class="kw">const</span> <span class="ident">USERLAND_STACK_SIZE</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x64000</span>;
+
+<span class="comment">//(1 &lt;&lt; 47) - (Size4KiB::SIZE * 2)</span>
+<span class="kw">const</span> <span class="ident">USERLAND_STACK_TOP</span>: <span class="ident">VirtAddr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0x7fffffffe000</span>);
+<span class="kw">const</span> <span class="ident">USERLAND_STACK_BOTTOM</span>: <span class="ident">VirtAddr</span> <span class="op">=</span> <span class="ident">USERLAND_STACK_TOP</span>.<span class="ident">const_sub_u64</span>(<span class="ident">USERLAND_STACK_SIZE</span>);
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ArchTask</span> {
     <span class="ident">context</span>: <span class="ident">Unique</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>,
@@ -595,8 +607,8 @@
 
         <span class="comment">// mmap the userland stack...</span>
         <span class="ident">vm</span>.<span class="ident">mmap</span>(
-            <span class="ident">VirtAddr::new</span>(<span class="number">0x8000_0000_0000</span> <span class="op">-</span> <span class="number">0x64000</span>),
-            <span class="number">0x64000</span>,
+            <span class="ident">USERLAND_STACK_BOTTOM</span>,
+            <span class="ident">USERLAND_STACK_SIZE</span> <span class="kw">as</span> <span class="ident">usize</span>,
             <span class="ident">MMapProt::PROT_WRITE</span> <span class="op">|</span> <span class="ident">MMapProt::PROT_READ</span>,
             <span class="ident">MMapFlags::MAP_FIXED</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_PRIVATE</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_ANONYOMUS</span>,
         );
@@ -614,7 +626,7 @@
             <span class="kw">fn</span> <span class="ident">jump_userland_exec</span>(<span class="ident">stack</span>: <span class="ident">VirtAddr</span>, <span class="ident">rip</span>: <span class="ident">VirtAddr</span>, <span class="ident">rflags</span>: <span class="ident">u64</span>);
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack_addr</span> <span class="op">=</span> <span class="number">0x8000_0000_0000</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack_addr</span> <span class="op">=</span> <span class="ident">USERLAND_STACK_TOP</span>.<span class="ident">as_u64</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">StackHelper::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">stack_addr</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">envp</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
@@ -703,5 +715,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (5531927e8 2021-12-16)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (7abab1efb 2021-12-17)" ></div>
 </body></html>
