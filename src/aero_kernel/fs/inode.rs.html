@@ -295,6 +295,10 @@
 <span id="293">293</span>
 <span id="294">294</span>
 <span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -406,6 +410,10 @@
     <span class="doccomment">/// Returns a weak reference to the filesystem that this inode belongs to.</span>
     <span class="kw">fn</span> <span class="ident">weak_filesystem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Weak</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FileSystem</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">None</span>
+    }
+
+    <span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_command</span>: <span class="ident">usize</span>, <span class="ident">_arg</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Err</span>(<span class="ident">FileSystemError::NotSupported</span>)
     }
 }
 

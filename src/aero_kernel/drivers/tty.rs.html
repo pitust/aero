@@ -602,6 +602,30 @@
 <span id="600">600</span>
 <span id="601">601</span>
 <span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -630,6 +654,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::inode</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::inode::INodeInterface</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging::VirtAddr</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::utils::sync</span>::{<span class="ident">BlockQueue</span>, <span class="ident">Mutex</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::keyboard::KeyCode</span>;
@@ -839,6 +864,29 @@
         }
 
         <span class="prelude-val">Ok</span>(<span class="ident">buffer</span>.<span class="ident">len</span>())
+    }
+
+    <span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">command</span>: <span class="ident">usize</span>, <span class="ident">arg</span>: <span class="ident">usize</span>) -&gt; <span class="ident">fs::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">command</span> {
+            <span class="ident">aero_syscall::TIOCGWINSZ</span> =&gt; {
+                <span class="kw">let</span> <span class="ident">winsize</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">arg</span> <span class="kw">as</span> <span class="ident">u64</span>);
+                <span class="kw">let</span> <span class="ident">winsize</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">winsize</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">aero_syscall::WinSize</span>) };
+
+                <span class="kw">let</span> (<span class="ident">rows</span>, <span class="ident">cols</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendy::get_rows_cols</span>();
+
+                <span class="ident">winsize</span>.<span class="ident">ws_row</span> <span class="op">=</span> <span class="ident">rows</span> <span class="kw">as</span> <span class="ident">u16</span>;
+                <span class="ident">winsize</span>.<span class="ident">ws_col</span> <span class="op">=</span> <span class="ident">cols</span> <span class="kw">as</span> <span class="ident">u16</span>;
+
+                <span class="kw">let</span> (<span class="ident">xpixel</span>, <span class="ident">ypixel</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendy::get_resolution</span>();
+
+                <span class="ident">winsize</span>.<span class="ident">ws_xpixel</span> <span class="op">=</span> <span class="ident">xpixel</span> <span class="kw">as</span> <span class="ident">u16</span>;
+                <span class="ident">winsize</span>.<span class="ident">ws_ypixel</span> <span class="op">=</span> <span class="ident">ypixel</span> <span class="kw">as</span> <span class="ident">u16</span>;
+
+                <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
+            }
+
+            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">fs::FileSystemError::NotSupported</span>),
+        }
     }
 }
 
