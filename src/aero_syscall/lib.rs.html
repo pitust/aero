@@ -417,6 +417,7 @@
 <span id="415">415</span>
 <span id="416">416</span>
 <span id="417">417</span>
+<span id="418">418</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">decl_macro</span>)]</span>
 
@@ -637,10 +638,11 @@
         <span class="kw">const</span> <span class="ident">ECHONL</span> <span class="op">=</span> <span class="number">0000100</span>; <span class="comment">// Echo NL</span>
         <span class="kw">const</span> <span class="ident">NOFLSH</span> <span class="op">=</span> <span class="number">0000200</span>; <span class="comment">// Disable flush after interrupt or quit</span>
         <span class="kw">const</span> <span class="ident">TOSTOP</span> <span class="op">=</span> <span class="number">0000400</span>; <span class="comment">// Send SIGTTOU for background output</span>
+        <span class="kw">const</span> <span class="ident">ICANON</span> <span class="op">=</span> <span class="number">0000002</span>; <span class="comment">// Canonical input (erase and kill processing)</span>
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Termios</span> {
     <span class="kw">pub</span> <span class="ident">c_iflag</span>: <span class="ident">u32</span>,
@@ -835,5 +837,5 @@
     <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_syscall" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (91a0600a5 2021-12-18)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_syscall" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (e95e084a1 2021-12-19)" ></div>
 </body></html>
