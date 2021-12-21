@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["PIT_FREQUENCY_HZ",""],["SCHED_TIMESLICE_MS",""]],"fn":[["init","This function is responsible for initializing the PIT chip and setting up the IRQ."],["tick",""]],"static":[["SCHED_TICKS",""],["UNIX_EPOCH",""],["UPTIME_RAW",""],["UPTIME_SEC",""]]});
