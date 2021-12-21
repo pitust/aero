@@ -1,1 +1,0 @@
-window.ALL_CRATES = ["aero_kernel","aero_syscall","ahash","aml","arrayvec","bit_field","bitflags","byteorder","cfg_if","cpio_reader","hashbrown","intrusive_collections","lazy_static","linked_list_allocator","lock_api","log","lru","memoffset","once_cell","raw_cpuid","rustc_demangle","scopeguard","spin","stivale_boot","utf8parse","vte","xmas_elf","zero"];
