@@ -217,6 +217,16 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -433,6 +443,16 @@
         .<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EBADFD</span>)<span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(<span class="ident">handle</span>.<span class="ident">inode</span>().<span class="ident">ioctl</span>(<span class="ident">command</span>, <span class="ident">argument</span>)<span class="question-mark">?</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">seek</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">whence</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>()
+        .<span class="ident">current_task</span>()
+        .<span class="ident">file_table</span>
+        .<span class="ident">get_handle</span>(<span class="ident">fd</span>)
+        .<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EBADFD</span>)<span class="question-mark">?</span>;
+
+    <span class="prelude-val">Ok</span>(<span class="ident">handle</span>.<span class="ident">seek</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">isize</span>, <span class="ident">aero_syscall::SeekWhence::from</span>(<span class="ident">whence</span>))<span class="question-mark">?</span>)
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (23f69235a 2021-12-20)" ></div>
