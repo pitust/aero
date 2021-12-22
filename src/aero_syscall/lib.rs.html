@@ -707,17 +707,17 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">usize</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SeekWhence</span> {
-    <span class="ident">SeekSet</span> <span class="op">=</span> <span class="number">1</span>,
-    <span class="ident">SeekCur</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="ident">SeekEnd</span> <span class="op">=</span> <span class="number">3</span>,
+    <span class="ident">SeekCur</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="ident">SeekEnd</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="ident">SeekSet</span> <span class="op">=</span> <span class="number">3</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SeekWhence</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">x</span> {
-            <span class="number">1</span> =&gt; <span class="ident">SeekWhence::SeekSet</span>,
-            <span class="number">2</span> =&gt; <span class="ident">SeekWhence::SeekCur</span>,
-            <span class="number">3</span> =&gt; <span class="ident">SeekWhence::SeekEnd</span>,
+            <span class="number">1</span> =&gt; <span class="ident">SeekWhence::SeekCur</span>,
+            <span class="number">2</span> =&gt; <span class="ident">SeekWhence::SeekEnd</span>,
+            <span class="number">3</span> =&gt; <span class="ident">SeekWhence::SeekSet</span>,
             <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;invalid seek_whence: {}&quot;</span>, <span class="ident">x</span>),
         }
     }
@@ -1013,5 +1013,5 @@
     <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_syscall" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (23f69235a 2021-12-20)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_syscall" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (e100ec5bc 2021-12-21)" ></div>
 </body></html>
