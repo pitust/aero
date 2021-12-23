@@ -767,6 +767,27 @@
 <span id="765">765</span>
 <span id="766">766</span>
 <span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -1307,6 +1328,10 @@
     <span class="number">0x00ffffff</span>, <span class="comment">// grey</span>
 ];
 
+<span class="kw">fn</span> <span class="ident">fixed_to_rgb</span>(<span class="ident">fixed</span>: <span class="ident">u16</span>) -&gt; <span class="ident">u32</span> {
+    <span class="ident">fixed</span> <span class="kw">as</span> <span class="ident">u32</span>
+}
+
 <span class="kw">struct</span> <span class="ident">AnsiEscape</span>;
 
 <span class="kw">impl</span> <span class="ident">vte::Perform</span> <span class="kw">for</span> <span class="ident">AnsiEscape</span> {
@@ -1386,7 +1411,7 @@
                         <span class="kw">let</span> <span class="ident">cols_diff</span> <span class="op">=</span> <span class="ident">term_cols</span> <span class="op">-</span> (<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>);
                         <span class="kw">let</span> <span class="ident">to_clear</span> <span class="op">=</span> <span class="ident">rows_remaining</span> <span class="op">*</span> <span class="ident">term_cols</span> <span class="op">+</span> <span class="ident">cols_diff</span>;
 
-                        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">to_clear</span> {
+                        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">to_clear</span> {
                             <span class="macro">crate::rendy::print!</span>(<span class="string">&quot; &quot;</span>);
                         }
 
@@ -1445,7 +1470,7 @@
                                 } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">code</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">90</span> <span class="op">&amp;&amp;</span> <span class="ident">code</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">97</span> {
                                     <span class="ident">ParsedColor::Foreground</span>(<span class="ident">code</span> <span class="op">-</span> <span class="ident">SGR_FOREGROUND_OFFSET_2</span>)
                                 } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">code</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">100</span> <span class="op">&amp;&amp;</span> <span class="ident">code</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">107</span> {
-                                    <span class="ident">ParsedColor::Foreground</span>(<span class="ident">code</span> <span class="op">-</span> <span class="ident">SGR_BACKGROUND_OFFSET_2</span>)
+                                    <span class="ident">ParsedColor::Background</span>(<span class="ident">code</span> <span class="op">-</span> <span class="ident">SGR_BACKGROUND_OFFSET_2</span>)
                                 } <span class="kw">else</span> {
                                     <span class="ident">ParsedColor::Unknown</span>
                                 };
@@ -1484,13 +1509,30 @@
                                                 <span class="ident">setter</span>(<span class="ident">color</span>);
                                             };
 
+                                        <span class="kw">let</span> <span class="ident">parse_fixed</span> <span class="op">=</span>
+                                            <span class="op">|</span><span class="ident">setter</span>: <span class="kw">fn</span>(<span class="ident">u32</span>), <span class="ident">piter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">vte::ParamsIter</span><span class="op">|</span> {
+                                                <span class="kw">let</span> <span class="ident">fixed</span> <span class="op">=</span> <span class="ident">piter</span>.<span class="ident">next</span>().<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span>[<span class="number">0</span>])[<span class="number">0</span>];
+                                                <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">fixed_to_rgb</span>(<span class="ident">fixed</span>);
+
+                                                <span class="ident">setter</span>(<span class="ident">color</span>);
+                                            };
+
                                         <span class="kw">let</span> <span class="ident">run_special_parser</span> <span class="op">=</span>
                                             <span class="op">|</span><span class="ident">setter</span>: <span class="kw">fn</span>(<span class="ident">u32</span>), <span class="ident">piter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">vte::ParamsIter</span><span class="op">|</span> {
                                                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">arg_typee</span>) <span class="op">=</span> <span class="ident">piter</span>.<span class="ident">next</span>() {
                                                     <span class="kw">let</span> <span class="ident">p1</span> <span class="op">=</span> <span class="ident">arg_typee</span>[<span class="number">0</span>];
 
                                                     <span class="kw">match</span> <span class="ident">p1</span> {
-                                                        <span class="number">5</span> =&gt; <span class="macro">todo!</span>(),
+                                                        <span class="comment">// A colour number from 0 to 255, for use in 256-colour terminal</span>
+                                                        <span class="comment">// environments.</span>
+                                                        <span class="comment">//</span>
+                                                        <span class="comment">// - Colours 0 to 7 are the `Black` to `White` variants respectively.</span>
+                                                        <span class="comment">// - Colours 8 to 15 are brighter versions of the eight colours above.</span>
+                                                        <span class="comment">// - Colours 16 to 231 contain several palettes of bright colours,</span>
+                                                        <span class="comment">// - Colours 232 to 255 are shades of grey from black to white.</span>
+                                                        <span class="comment">//</span>
+                                                        <span class="comment">// [cc]: https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg</span>
+                                                        <span class="number">5</span> =&gt; <span class="ident">parse_fixed</span>(<span class="ident">setter</span>, <span class="ident">piter</span>),
 
                                                         <span class="comment">// A 24-bit RGB color, as specified by ISO-8613-3.</span>
                                                         <span class="number">2</span> =&gt; <span class="ident">parse_rgb</span>(<span class="ident">setter</span>, <span class="ident">piter</span>),
