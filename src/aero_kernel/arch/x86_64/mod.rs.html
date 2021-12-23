@@ -226,6 +226,17 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -327,6 +338,10 @@
         .<span class="ident">modules</span>()
         .<span class="ident">expect</span>(<span class="string">&quot;stivale2: aero requires the bootloader to provode a non-null kernel modules tag&quot;</span>);
 
+    <span class="kw">let</span> <span class="ident">epoch</span> <span class="op">=</span> <span class="ident">boot_info</span>
+        .<span class="ident">epoch</span>()
+        .<span class="ident">expect</span>(<span class="string">&quot;stivale2: aero expects the bootloader to provide a non-null epoch tag&quot;</span>);
+
     <span class="kw">let</span> <span class="ident">rsdp_address</span> <span class="op">=</span> <span class="ident">PhysAddr::new</span>(<span class="ident">rsdp_tag</span>.<span class="ident">rsdp</span>);
 
     <span class="comment">// NOTE: STACK_SIZE - 1 points to the last u8 in the array, i.e. it is</span>
@@ -354,6 +369,13 @@
         <span class="kw">let</span> <span class="ident">new_addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">addr</span>;
 
         <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">new_addr</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">StivaleKernelFileV2Tag</span><span class="op">&gt;</span>()
+    });
+
+    <span class="ident"><span class="kw">crate</span>::time::EPOCH_TAG</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
+        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> (<span class="ident">epoch</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">StivaleEpochTag</span>) <span class="kw">as</span> <span class="ident">u64</span>;
+        <span class="kw">let</span> <span class="ident">new_addr</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::PHYSICAL_MEMORY_OFFSET</span> <span class="op">+</span> <span class="ident">addr</span>;
+
+        <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">new_addr</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">StivaleEpochTag</span><span class="op">&gt;</span>()
     });
 
     <span class="ident"><span class="kw">crate</span>::INITRD_MODULE</span>.<span class="ident">call_once</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {

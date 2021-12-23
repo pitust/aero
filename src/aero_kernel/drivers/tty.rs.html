@@ -744,6 +744,15 @@
 <span id="742">742</span>
 <span id="743">743</span>
 <span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -1336,6 +1345,15 @@
                 <span class="comment">// Move the cursor to the position.</span>
                 <span class="ident"><span class="kw">crate</span>::rendy::set_cursor_position</span>(<span class="ident">x</span>, <span class="ident">y</span>);
             }
+
+            <span class="string">&#39;l&#39;</span> <span class="op">|</span> <span class="string">&#39;h&#39;</span> =&gt; <span class="kw">match</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">next</span>() {
+                <span class="prelude-val">Some</span>([<span class="number">25</span>]) =&gt; {
+                    <span class="comment">// Disable the cursor if action == &#39;l` and enable it if action</span>
+                    <span class="comment">// == &#39;h&#39;.</span>
+                }
+
+                <span class="kw">_</span> =&gt; {}
+            },
 
             <span class="comment">// Clears parts of the screen.</span>
             <span class="string">&#39;J&#39;</span> =&gt; {
