@@ -48,6 +48,13 @@
 <span id="46">46</span>
 <span id="47">47</span>
 <span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -73,6 +80,13 @@
 
 <span class="kw">const</span> <span class="ident">CLOCK_TYPE_REALTIME</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
 <span class="kw">const</span> <span class="ident">CLOCK_TYPE_MONOTONIC</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1</span>;
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sleep</span>(<span class="ident">timespec</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">timespec</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">timespec</span> <span class="kw">as</span> <span class="ident">u64</span>);
+    <span class="kw">let</span> <span class="ident">timespec</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">timespec</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">aero_syscall::TimeSpec</span><span class="op">&gt;</span>()) };
+
+    <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
+}
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gettime</span>(<span class="ident">clock</span>: <span class="ident">usize</span>, <span class="ident">timespec</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">timespec</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">timespec</span> <span class="kw">as</span> <span class="ident">u64</span>);
