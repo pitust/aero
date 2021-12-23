@@ -83,7 +83,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sleep</span>(<span class="ident">timespec</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">timespec</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="ident">timespec</span> <span class="kw">as</span> <span class="ident">u64</span>);
-    <span class="kw">let</span> <span class="ident">timespec</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">timespec</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">aero_syscall::TimeSpec</span><span class="op">&gt;</span>()) };
+    <span class="kw">let</span> <span class="ident">_timespec</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">timespec</span>.<span class="ident">as_mut_ptr</span>::<span class="op">&lt;</span><span class="ident">aero_syscall::TimeSpec</span><span class="op">&gt;</span>()) };
 
     <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
 }
