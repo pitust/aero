@@ -957,6 +957,17 @@
 <span id="955">955</span>
 <span id="956">956</span>
 <span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -1185,6 +1196,8 @@
 
     <span class="ident">offset_x</span>: <span class="ident">usize</span>,
     <span class="ident">offset_y</span>: <span class="ident">usize</span>,
+
+    <span class="ident">cursor_visibility</span>: <span class="ident">bool</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;this</span><span class="op">&gt;</span> <span class="ident">DebugRendy</span><span class="op">&lt;</span><span class="lifetime">&#39;this</span><span class="op">&gt;</span> {
@@ -1292,6 +1305,7 @@
             <span class="ident">vga_font_bool</span>,
 
             <span class="ident">queue_cursor</span>: <span class="number">0</span>,
+            <span class="ident">cursor_visibility</span>: <span class="bool-val">true</span>,
         };
 
         <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="ident">cmdline</span>.<span class="ident">term_background</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">parse_bmp_image</span>(<span class="ident">a</span>));
@@ -1599,7 +1613,9 @@
     }
 
     <span class="kw">fn</span> <span class="ident">double_buffer_flush</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">draw_cursor</span>();
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">cursor_visibility</span> {
+            <span class="self">self</span>.<span class="ident">draw_cursor</span>();
+        }
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">queue_cursor</span> {
             <span class="kw">let</span> <span class="ident">queue</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>[<span class="ident">i</span>].<span class="ident">clone</span>();
@@ -1869,6 +1885,12 @@
     <span class="ident">DEBUG_RENDY</span>
         .<span class="ident">get</span>()
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">lock_irq</span>().<span class="ident">set_cursor_position</span>(<span class="ident">x</span>, <span class="ident">y</span>));
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_cursor_visibility</span>(<span class="ident">yes</span>: <span class="ident">bool</span>) {
+    <span class="ident">DEBUG_RENDY</span>
+        .<span class="ident">get</span>()
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="ident">l</span>.<span class="ident">lock_irq</span>().<span class="ident">cursor_visibility</span> <span class="op">=</span> <span class="ident">yes</span>);
 }
 
 <span class="doccomment">/// Returns a tuple of the amount of `(rows, columns)` in the terminal.</span>
