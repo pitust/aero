@@ -1059,7 +1059,7 @@
                 <span class="kw">let</span> (<span class="ident">rows</span>, <span class="ident">cols</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendy::get_rows_cols</span>();
 
                 <span class="ident">winsize</span>.<span class="ident">ws_row</span> <span class="op">=</span> <span class="ident">rows</span> <span class="kw">as</span> <span class="ident">u16</span>;
-                <span class="ident">winsize</span>.<span class="ident">ws_col</span> <span class="op">=</span> (<span class="ident">cols</span> <span class="kw">as</span> <span class="ident">u16</span>) <span class="op">-</span> (<span class="ident"><span class="kw">crate</span>::rendy::X_PAD</span> <span class="op">*</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">u16</span>;
+                <span class="ident">winsize</span>.<span class="ident">ws_col</span> <span class="op">=</span> (<span class="ident">cols</span> <span class="kw">as</span> <span class="ident">u16</span>) <span class="op">-</span> (<span class="ident"><span class="kw">crate</span>::rendy::X_PAD</span> <span class="op">*</span> <span class="number">3</span>) <span class="kw">as</span> <span class="ident">u16</span>;
 
                 <span class="kw">let</span> (<span class="ident">xpixel</span>, <span class="ident">ypixel</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendy::get_resolution</span>();
 
