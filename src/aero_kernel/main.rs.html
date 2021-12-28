@@ -198,11 +198,6 @@
 <span id="196">196</span>
 <span id="197">197</span>
 <span id="198">198</span>
-<span id="199">199</span>
-<span id="200">200</span>
-<span id="201">201</span>
-<span id="202">202</span>
-<span id="203">203</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -312,9 +307,6 @@
 
 <span class="kw">const</span> <span class="ident">IO_VIRTUAL_BASE</span>: <span class="ident">VirtAddr</span> <span class="op">=</span> <span class="ident">VirtAddr::new</span>(<span class="number">0xffffff0000000000</span>);
 
-<span class="attribute">#[<span class="ident">thread_local</span>]</span>
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">CPU_ID</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x00</span>;
-
 <span class="kw">fn</span> <span class="ident">aero_main</span>() -&gt; <span class="op">!</span> {
     <span class="comment">// NOTE: In this function we only want to initialize essential serivces, including</span>
     <span class="comment">// the task scheduler. Rest of the initializing (including kernel modules) should go</span>
@@ -389,9 +381,7 @@
     <span class="ident">arch::gdt::init</span>(<span class="ident">stack_top_addr</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: loaded GDT&quot;</span>, <span class="ident">ap_id</span>);
 
-    <span class="kw">unsafe</span> {
-        <span class="ident">CPU_ID</span> <span class="op">=</span> <span class="ident">ap_id</span>; <span class="comment">// Set the local cpu id global to the AP id provided in the AP bootinfo</span>
-    }
+    <span class="ident">tls::get_percpu</span>().<span class="ident">cpuid</span> <span class="op">=</span> <span class="ident">ap_id</span> <span class="kw">as</span> <span class="ident">usize</span>; <span class="comment">// Set the local cpu id global to the AP id provided in the AP bootinfo</span>
 
     <span class="ident">apic::mark_ap_ready</span>(<span class="bool-val">true</span>);
 

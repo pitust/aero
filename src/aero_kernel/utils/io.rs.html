@@ -234,8 +234,6 @@
 <span id="232">232</span>
 <span id="233">233</span>
 <span id="234">234</span>
-<span id="235">235</span>
-<span id="236">236</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -260,6 +258,7 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_EFER</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000080</span>;
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_FS_BASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xC0000100</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_GS_BASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000101</span>;
 
 <span class="doccomment">/// System Call Target Address (R/W).</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_STAR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000081</span>;
@@ -272,9 +271,6 @@
 
 <span class="doccomment">/// APIC Location and Status (R/W).</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_APIC_BASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x1b</span>;
-
-<span class="doccomment">/// Swap Target of BASE Address of GS (R/W).</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_KERNEL_GSBASE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xc0000102</span>;
 
 <span class="doccomment">/// x2APIC Spurious Interrupt Vector register (R/W)</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IA32_X2APIC_SIVR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80f</span>;

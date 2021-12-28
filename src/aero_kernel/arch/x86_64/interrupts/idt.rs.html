@@ -231,7 +231,6 @@
 <span id="229">229</span>
 <span id="230">230</span>
 <span id="231">231</span>
-<span id="232">232</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -385,7 +384,6 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>, <span class="ident">packed</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InterruptStack</span> {
-    <span class="kw">pub</span> <span class="ident">fs</span>: <span class="ident">u64</span>,
     <span class="kw">pub</span> <span class="ident">preserved</span>: <span class="ident">PreservedRegisters</span>,
     <span class="kw">pub</span> <span class="ident">scratch</span>: <span class="ident">ScratchRegisters</span>,
     <span class="kw">pub</span> <span class="ident">iret</span>: <span class="ident">IretRegisters</span>,

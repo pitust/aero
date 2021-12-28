@@ -347,9 +347,6 @@
 <span id="345">345</span>
 <span id="346">346</span>
 <span id="347">347</span>
-<span id="348">348</span>
-<span id="349">349</span>
-<span id="350">350</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -402,6 +399,26 @@
         <span class="prelude-val">Ok</span>(<span class="ident">string</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">string</span>),
         <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
     }
+}
+
+<span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">swapgs_iff_ring3_fast</span>() {
+    <span class="string">&quot;
+    // Check whether the last two bits RSP+8 (code segment) are equal to zero.
+    test QWORD PTR [rsp + 8], 0x3
+    // Skip the SWAPGS instruction if CS &amp; 0b11 == 0b00.
+    jz 1f
+    swapgs
+    1:
+    &quot;</span>
+}
+
+<span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">swapgs_iff_ring3_fast_errorcode</span>() {
+    <span class="string">&quot;
+    test QWORD PTR [rsp + 16], 0x3
+    jz 1f
+    swapgs
+    1:
+    &quot;</span>
 }
 
 <span class="doccomment">/// Push scratch registers.</span>
@@ -469,29 +486,6 @@
     pop rdx
     pop rcx
     pop rax
-    &quot;</span>
-}
-
-<span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">push_fs</span>() {
-    <span class="string">&quot;
-    /* 
-    * Push FS segment.
-    */
-    
-    push fs
-
-    mov rcx, 0x18
-    mov fs, cx
-    &quot;</span>
-}
-
-<span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">pop_fs</span>() {
-    <span class="string">&quot;
-    /* 
-    * Pop FS segment.
-    */
-
-    pop fs
     &quot;</span>
 }
 
@@ -614,12 +608,12 @@
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">T</span> {
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">offset</span>(<span class="ident"><span class="kw">crate</span>::CPU_ID</span> <span class="kw">as</span> <span class="kw">_</span>) }
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">offset</span>(<span class="ident"><span class="kw">crate</span>::tls::get_cpuid</span>() <span class="kw">as</span> <span class="kw">_</span>) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">T</span> {
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">offset</span>(<span class="ident"><span class="kw">crate</span>::CPU_ID</span> <span class="kw">as</span> <span class="kw">_</span>) }
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">offset</span>(<span class="ident"><span class="kw">crate</span>::tls::get_cpuid</span>() <span class="kw">as</span> <span class="kw">_</span>) }
     }
 }
 

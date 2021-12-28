@@ -383,6 +383,8 @@
 <span id="381">381</span>
 <span id="382">382</span>
 <span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -620,18 +622,18 @@
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::utils::intel_fn!</span>(
             <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;asm&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>() {
+                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::swapgs_iff_ring3_fast_errorcode!</span>(),
+
                 <span class="comment">// Move rax into code&#39;s place and put code in last instead to be</span>
                 <span class="comment">// compatible with interrupt stack.</span>
                 <span class="string">&quot;xchg [rsp], rax\n&quot;</span>,
 
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::push_scratch!</span>(),
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::push_preserved!</span>(),
-                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::push_fs!</span>(),
 
                 <span class="comment">// Push the error code.</span>
                 <span class="string">&quot;push rax\n&quot;</span>,
 
-                <span class="string">&quot;call restore_kernel_fs_base\n&quot;</span>,
                 <span class="string">&quot;call map_pti\n&quot;</span>,
 
                 <span class="comment">// Call the inner interrupt handler implementation.</span>
@@ -643,10 +645,10 @@
                 <span class="comment">// Pop the error code.</span>
                 <span class="string">&quot;add rsp, 8\n&quot;</span>,
 
-                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::pop_fs!</span>(),
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::pop_preserved!</span>(),
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::pop_scratch!</span>(),
 
+                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::swapgs_iff_ring3_fast!</span>(),
                 <span class="string">&quot;iretq\n&quot;</span>,
             }
         );
@@ -671,13 +673,13 @@
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::utils::intel_fn!</span>(
             <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;asm&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>() {
+                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::swapgs_iff_ring3_fast!</span>(),
+
                 <span class="string">&quot;push rax\n&quot;</span>,
 
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::push_scratch!</span>(),
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::push_preserved!</span>(),
-                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::push_fs!</span>(),
 
-                <span class="string">&quot;call restore_kernel_fs_base\n&quot;</span>,
                 <span class="string">&quot;call map_pti\n&quot;</span>,
 
                 <span class="string">&quot;mov rdi, rsp\n&quot;</span>,
@@ -685,10 +687,10 @@
 
                 <span class="string">&quot;call unmap_pti\n&quot;</span>,
 
-                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::pop_fs!</span>(),
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::pop_preserved!</span>(),
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::pop_scratch!</span>(),
 
+                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::swapgs_iff_ring3_fast!</span>(),
                 <span class="string">&quot;iretq\n&quot;</span>,
             }
         );
@@ -707,11 +709,12 @@
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::utils::intel_fn!</span>(
             <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;asm&quot;</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>() {
+                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::swapgs_iff_ring3_fast!</span>(),
+
                 <span class="string">&quot;push rax\n&quot;</span>,
 
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::push_scratch!</span>(),
 
-                <span class="string">&quot;call restore_kernel_fs_base\n&quot;</span>,
                 <span class="string">&quot;call map_pti\n&quot;</span>,
 
                 <span class="string">&quot;mov rdi, rsp\n&quot;</span>,
@@ -721,6 +724,7 @@
 
                 <span class="macro-nonterminal">$</span><span class="macro">crate::utils::pop_scratch!</span>(),
 
+                <span class="macro-nonterminal">$</span><span class="macro">crate::utils::swapgs_iff_ring3_fast!</span>(),
                 <span class="string">&quot;iretq\n&quot;</span>,
             }
         );

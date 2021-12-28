@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["init","Initialize support for the `#[thread_local]` attribute."],["restore_user_tls",""]],"struct":[["Tls",""]]});
+initSidebarItems({"fn":[["get_cpuid","SAFETY: The GS base should point to the kernel PCR."],["get_percpu","SAFETY: The GS base should point to the kernel PCR."],["init",""],["restore_user_tls",""]],"struct":[["PerCpuData",""]]});
