@@ -695,7 +695,7 @@
             <span class="ident">zombies</span>: <span class="ident">Zombies::new</span>(),
 
             <span class="ident">arch_task</span>,
-            <span class="ident">file_table</span>: <span class="self">self</span>.<span class="ident">file_table</span>.<span class="ident">clone</span>(),
+            <span class="ident">file_table</span>: <span class="ident">Arc::new</span>(<span class="self">self</span>.<span class="ident">file_table</span>.<span class="ident">deep_clone</span>()),
             <span class="ident">vm</span>: <span class="ident">Arc::new</span>(<span class="ident">Vm::new</span>()),
             <span class="ident">state</span>: <span class="ident">AtomicU8::new</span>(<span class="ident">TaskState::Runnable</span> <span class="kw">as</span> <span class="kw">_</span>),
 
