@@ -542,6 +542,7 @@
 <span id="540">540</span>
 <span id="541">541</span>
 <span id="542">542</span>
+<span id="543">543</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -701,6 +702,7 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">usize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SysFileType</span> {
     <span class="ident">File</span>,
     <span class="ident">Directory</span>,
@@ -712,7 +714,7 @@
     <span class="kw">pub</span> <span class="ident">inode</span>: <span class="ident">usize</span>,
     <span class="kw">pub</span> <span class="ident">offset</span>: <span class="ident">usize</span>,
     <span class="kw">pub</span> <span class="ident">reclen</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span> <span class="ident">file_type</span>: <span class="ident">SysFileType</span>,
+    <span class="kw">pub</span> <span class="ident">file_type</span>: <span class="ident">usize</span>,
     <span class="kw">pub</span> <span class="ident">name</span>: [<span class="ident">u8</span>; <span class="number">0</span>],
 }
 

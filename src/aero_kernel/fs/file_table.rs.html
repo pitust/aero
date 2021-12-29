@@ -228,6 +228,9 @@
 <span id="226">226</span>
 <span id="227">227</span>
 <span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -348,11 +351,14 @@
                 <span class="kw">let</span> <span class="ident">reclen</span> <span class="op">=</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">SysDirEntry</span><span class="op">&gt;</span>() <span class="op">+</span> <span class="ident">entry</span>.<span class="ident">name</span>().<span class="ident">len</span>();
                 <span class="kw">let</span> <span class="ident">dir_offset</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">+</span> <span class="ident">reclen</span>;
 
+                <span class="kw">let</span> <span class="ident">file_type</span> <span class="op">=</span> <span class="ident">entry</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>.<span class="ident">file_type</span>();
+                <span class="kw">let</span> <span class="ident">file_type</span>: <span class="ident">aero_syscall::SysFileType</span> <span class="op">=</span> <span class="ident">file_type</span>.<span class="ident">into</span>();
+
                 <span class="kw">let</span> <span class="ident">sysd</span> <span class="op">=</span> <span class="ident">SysDirEntry</span> {
                     <span class="ident">inode</span>: <span class="ident">entry</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>.<span class="ident">id</span>(),
                     <span class="ident">offset</span>: <span class="ident">dir_offset</span>,
                     <span class="ident">reclen</span>,
-                    <span class="ident">file_type</span>: <span class="ident">entry</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>.<span class="ident">file_type</span>().<span class="ident">into</span>(),
+                    <span class="ident">file_type</span>: <span class="ident">file_type</span> <span class="kw">as</span> <span class="ident">usize</span>,
                     <span class="ident">name</span>: [], <span class="comment">// will be filled in later</span>
                 };
 
