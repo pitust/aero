@@ -246,6 +246,12 @@
 <span id="244">244</span>
 <span id="245">245</span>
 <span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -267,7 +273,7 @@
 
 <span class="kw">use</span> <span class="ident">aero_syscall</span>::{<span class="ident">AeroSyscallError</span>, <span class="ident">OpenFlags</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>::{<span class="self">self</span>, <span class="ident">lookup_path</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>::{<span class="self">self</span>, <span class="ident">lookup_path</span>, <span class="ident">LookupMode</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::Path</span>;
@@ -317,9 +323,15 @@
     }
 
     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">len</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
-
     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path</span>);
-    <span class="kw">let</span> <span class="ident">inode</span> <span class="op">=</span> <span class="ident">fs::lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lookup_mode</span> <span class="op">=</span> <span class="ident">LookupMode::None</span>;
+
+    <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">OpenFlags::O_CREAT</span>) {
+        <span class="ident">lookup_mode</span> <span class="op">=</span> <span class="ident">LookupMode::Create</span>;
+    }
+
+    <span class="kw">let</span> <span class="ident">inode</span> <span class="op">=</span> <span class="ident">fs::lookup_path_with_mode</span>(<span class="ident">path</span>, <span class="ident">lookup_mode</span>)<span class="question-mark">?</span>;
 
     <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">OpenFlags::O_DIRECTORY</span>) <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">inode</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>.<span class="ident">is_directory</span>() {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::ENOTDIR</span>);

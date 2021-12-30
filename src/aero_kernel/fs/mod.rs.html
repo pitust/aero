@@ -286,6 +286,16 @@
 <span id="284">284</span>
 <span id="285">285</span>
 <span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -536,6 +546,16 @@
     }
 
     <span class="prelude-val">Ok</span>(<span class="ident">cwd</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_path_with_mode</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">mode</span>: <span class="ident">LookupMode</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">path</span>.<span class="ident">is_absolute</span>() {
+        <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>().<span class="ident">get_cwd_dirent</span>()
+    } <span class="kw">else</span> {
+        <span class="ident">root_dir</span>().<span class="ident">clone</span>()
+    };
+
+    <span class="ident">lookup_path_with</span>(<span class="ident">cwd</span>, <span class="ident">path</span>, <span class="ident">mode</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_path</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DirCacheItem</span><span class="op">&gt;</span> {
