@@ -227,6 +227,25 @@
 <span id="225">225</span>
 <span id="226">226</span>
 <span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -248,7 +267,7 @@
 
 <span class="kw">use</span> <span class="ident">aero_syscall</span>::{<span class="ident">AeroSyscallError</span>, <span class="ident">OpenFlags</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>::{<span class="self">self</span>, <span class="ident">lookup_path</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::userland::scheduler</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::Path</span>;
@@ -453,6 +472,25 @@
         .<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EBADFD</span>)<span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(<span class="ident">handle</span>.<span class="ident">seek</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">isize</span>, <span class="ident">aero_syscall::SeekWhence::from</span>(<span class="ident">whence</span>))<span class="question-mark">?</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">access</span>(
+    <span class="ident">fd</span>: <span class="ident">usize</span>,
+    <span class="ident">path</span>: <span class="ident">usize</span>,
+    <span class="ident">path_size</span>: <span class="ident">usize</span>,
+    <span class="ident">_mode</span>: <span class="ident">usize</span>,
+    <span class="ident">_flags</span>: <span class="ident">usize</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">if</span> <span class="ident">fd</span> <span class="kw">as</span> <span class="ident">isize</span> <span class="op">==</span> <span class="ident">aero_syscall::AT_FDCWD</span> {
+        <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">path_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path_str</span>);
+
+        <span class="ident">lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
+    } <span class="kw">else</span> {
+        <span class="comment">// TODO: Implement atfd access</span>
+        <span class="macro">unimplemented!</span>()
+    }
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (e95e084a1 2021-12-19)" ></div>

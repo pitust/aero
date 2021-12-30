@@ -543,6 +543,19 @@
 <span id="541">541</span>
 <span id="542">542</span>
 <span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -969,6 +982,19 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_shutdown</span>() -&gt; <span class="op">!</span> {
     <span class="ident">syscall0</span>(<span class="ident">prelude::SYS_SHUTDOWN</span>);
     <span class="macro">unreachable!</span>()
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_access</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall5</span>(
+        <span class="ident">prelude::SYS_ACCESS</span>,
+        <span class="ident">fd</span>,
+        <span class="ident">path</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>,
+        <span class="ident">path</span>.<span class="ident">len</span>(),
+        <span class="number">0</span>,
+        <span class="number">0</span>,
+    );
+
+    <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_waitpid</span>(<span class="ident">pid</span>: <span class="ident">usize</span>, <span class="ident">status</span>: <span class="kw-2">&amp;mut</span> <span class="ident">u32</span>, <span class="ident">flags</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
