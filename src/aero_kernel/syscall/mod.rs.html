@@ -250,6 +250,9 @@
 <span id="248">248</span>
 <span id="249">249</span>
 <span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -306,6 +309,7 @@
 <span class="doccomment">//! | 30     | gettime                 |</span>
 <span class="doccomment">//! | 31     | sleep                   |</span>
 <span class="doccomment">//! | 32     | access                  |</span>
+<span class="doccomment">//! | 33     | pipe                    |</span>
 
 <span class="kw">use</span> <span class="ident">core::mem::MaybeUninit</span>;
 
@@ -463,6 +467,8 @@
             <span class="prelude-val">Err</span>(<span class="ident">AeroSyscallError::ENOSYS</span>)
         }
     };
+
+    <span class="macro">log::debug!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">result</span>);
 
     <span class="ident">stack</span>.<span class="ident">rax</span> <span class="op">=</span> <span class="ident">aero_syscall::syscall_result_as_usize</span>(<span class="ident">result</span>) <span class="kw">as</span> <span class="kw">_</span>;
 }

@@ -344,6 +344,15 @@
 <span id="342">342</span>
 <span id="343">343</span>
 <span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -554,18 +563,27 @@
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>();
 
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">this</span>.<span class="ident">contents</span> {
+            <span class="comment">// NOTE: We cannot just straight way copy the buffer using the `copy_from_slice` method</span>
+            <span class="comment">// since the buffer can be larger than the static buffer causing it to panic since</span>
+            <span class="comment">// it expects the buffers to be the same size.</span>
             <span class="ident">FileContents::Content</span>(<span class="ident">vec</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">vec</span> <span class="op">=</span> <span class="ident">vec</span>.<span class="ident">lock</span>();
 
                 <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">buffer</span>.<span class="ident">len</span>(), <span class="ident">vec</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">offset</span>);
-                <span class="ident">buffer</span>.<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>.<span class="ident">as_slice</span>()[<span class="ident">offset</span>..<span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span>]);
+
+                <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">b</span>) <span class="kw">in</span> (<span class="kw-2">&amp;</span><span class="ident">vec</span>.<span class="ident">as_slice</span>()[<span class="ident">offset</span>..<span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span>]).<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
+                    <span class="ident">buffer</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="kw-2">*</span><span class="ident">b</span>;
+                }
 
                 <span class="prelude-val">Ok</span>(<span class="ident">size</span>)
             }
 
             <span class="ident">FileContents::StaticContent</span>(<span class="ident">static_buffer</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">buffer</span>.<span class="ident">len</span>(), <span class="ident">static_buffer</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">offset</span>);
-                <span class="ident">buffer</span>.<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">static_buffer</span>[<span class="ident">offset</span>..<span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span>]);
+
+                <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">b</span>) <span class="kw">in</span> (<span class="kw-2">&amp;</span><span class="ident">static_buffer</span>[<span class="ident">offset</span>..<span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span>]).<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
+                    <span class="ident">buffer</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="kw-2">*</span><span class="ident">b</span>;
+                }
 
                 <span class="prelude-val">Ok</span>(<span class="ident">size</span>)
             }
