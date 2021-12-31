@@ -127,6 +127,17 @@
 <span id="125">125</span>
 <span id="126">126</span>
 <span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021 The Aero Project Developers.
  *
@@ -238,12 +249,23 @@
 
         <span class="ident">unwind::prepare_panic</span>();
 
-        <span class="macro">log::error!</span>(
-            <span class="string">&quot;EXCEPTION: Page Fault\n\nAccessed Address: {:?}\nError: {:?}\nStack: {:#x?}&quot;</span>,
-            <span class="ident">accessed_address</span>,
-            <span class="ident">reason</span>,
-            <span class="ident">stack</span>.<span class="ident">stack</span>,
-        );
+        <span class="macro">log::error!</span>(<span class="string">&quot;EXCEPTION: Page Fault&quot;</span>);
+        <span class="macro">log::error!</span>(<span class="string">&quot;&quot;</span>);
+        <span class="macro">log::error!</span>(<span class="string">&quot;Accessed Address: {:#x}&quot;</span>, <span class="ident">accessed_address</span>);
+        <span class="macro">log::error!</span>(<span class="string">&quot;Error: {:?}&quot;</span>, <span class="ident">reason</span>);
+        <span class="macro">log::error!</span>(<span class="string">&quot;&quot;</span>);
+
+        <span class="kw">if</span> <span class="ident">stack</span>.<span class="ident">stack</span>.<span class="ident">iret</span>.<span class="ident">is_user</span>() {
+            <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>();
+
+            <span class="macro">log::error!</span>(
+                <span class="string">&quot;Task Info: TID={}, PID={}&quot;</span>,
+                <span class="ident">task</span>.<span class="ident">tid</span>().<span class="ident">as_usize</span>(),
+                <span class="ident">task</span>.<span class="ident">pid</span>().<span class="ident">as_usize</span>()
+            );
+        }
+
+        <span class="macro">log::error!</span>(<span class="string">&quot;Stack: {:#x?}&quot;</span>, <span class="ident">stack</span>);
 
         <span class="ident">unwind::unwind_stack_trace</span>();
 
