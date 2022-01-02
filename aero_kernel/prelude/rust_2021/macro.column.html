@@ -15,5 +15,14 @@ of the <code>column!</code> macro.</p>
 <h2 id="examples" class="section-header"><a href="#examples">Examples</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">current_col</span> <span class="op">=</span> <span class="macro">column!</span>();
 <span class="macro">println!</span>(<span class="string">&quot;defined on column: {}&quot;</span>, <span class="ident">current_col</span>);</code></pre></div>
-</div></details></section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (e95e084a1 2021-12-19)" ></div>
+<p><code>column!</code> counts Unicode code points, not bytes or graphemes. As a result, the first two
+invocations return the same value, but the third does not.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> (<span class="string">&quot;foobar&quot;</span>, <span class="macro">column!</span>()).<span class="number">1</span>;
+<span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> (<span class="string">&quot;人之初性本善&quot;</span>, <span class="macro">column!</span>()).<span class="number">1</span>;
+<span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> (<span class="string">&quot;f̅o̅o̅b̅a̅r̅&quot;</span>, <span class="macro">column!</span>()).<span class="number">1</span>; <span class="comment">// Uses combining overline (U+0305)</span>
+
+<span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">b</span>);
+<span class="macro">assert_ne!</span>(<span class="ident">b</span>, <span class="ident">c</span>);</code></pre></div>
+</div></details></section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (c14569225 2022-01-01)" ></div>
 </body></html>
