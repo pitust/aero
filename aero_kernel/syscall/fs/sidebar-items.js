@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["access",""],["chdir",""],["close",""],["getcwd",""],["getdents",""],["ioctl",""],["mkdir",""],["mkdirat",""],["open",""],["pipe",""],["read",""],["rmdir",""],["seek",""],["write",""]]});
+initSidebarItems({"fn":[["access",""],["chdir",""],["close",""],["getcwd",""],["getdents",""],["ioctl",""],["mkdir",""],["mkdirat",""],["open",""],["pipe",""],["read",""],["rmdir",""],["seek",""],["unlink",""],["write",""]]});

@@ -287,6 +287,35 @@
 <span id="285">285</span>
 <span id="286">286</span>
 <span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -375,8 +404,7 @@
     }
 
     <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">OpenFlags::O_TRUNC</span>) {
-        <span class="comment">// FIXME(Andy-Python-Programmer): Implement file truncation.</span>
-        <span class="macro">unimplemented!</span>()
+        <span class="ident">inode</span>.<span class="ident">inode</span>().<span class="ident">truncate</span>(<span class="number">0</span>)<span class="question-mark">?</span>;
     }
 
     <span class="prelude-val">Ok</span>(<span class="ident">scheduler::get_scheduler</span>()
@@ -556,6 +584,36 @@
     <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
 }
 
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unlink</span>(
+    <span class="ident">fd</span>: <span class="ident">usize</span>,
+    <span class="ident">path</span>: <span class="ident">usize</span>,
+    <span class="ident">path_size</span>: <span class="ident">usize</span>,
+    <span class="ident">flags</span>: <span class="ident">usize</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">path_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path_str</span>);
+
+    <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">OpenFlags::from_bits</span>(<span class="ident">flags</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">container</span>();
+
+    <span class="kw">if</span> <span class="ident">fd</span> <span class="kw">as</span> <span class="ident">isize</span> <span class="op">==</span> <span class="ident">aero_syscall::AT_FDCWD</span> {
+        <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">fs::lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">dir</span>) <span class="op">=</span> <span class="ident">file</span>.<span class="ident">parent</span>() {
+            <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">file</span>.<span class="ident">inode</span>().<span class="ident">metadata</span>()<span class="question-mark">?</span>;
+
+            <span class="kw">if</span> <span class="ident">metadata</span>.<span class="ident">is_file</span>() {
+                <span class="ident">dir</span>.<span class="ident">inode</span>().<span class="ident">unlink</span>(<span class="ident">name</span>.<span class="ident">as_str</span>())<span class="question-mark">?</span>;
+                <span class="ident">file</span>.<span class="ident">drop_from_cache</span>();
+            }
+        }
+    } <span class="kw">else</span> {
+        <span class="macro">unimplemented!</span>()
+    }
+
+    <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
+}
+
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">access</span>(
     <span class="ident">fd</span>: <span class="ident">usize</span>,
     <span class="ident">path</span>: <span class="ident">usize</span>,
@@ -563,10 +621,10 @@
     <span class="ident">_mode</span>: <span class="ident">usize</span>,
     <span class="ident">_flags</span>: <span class="ident">usize</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="ident">fd</span> <span class="kw">as</span> <span class="ident">isize</span> <span class="op">==</span> <span class="ident">aero_syscall::AT_FDCWD</span> {
-        <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">path_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path_str</span>);
+    <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">path_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path_str</span>);
 
+    <span class="kw">if</span> <span class="ident">fd</span> <span class="kw">as</span> <span class="ident">isize</span> <span class="op">==</span> <span class="ident">aero_syscall::AT_FDCWD</span> {
         <span class="ident">lookup_path</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
     } <span class="kw">else</span> {
