@@ -256,6 +256,8 @@
 <span id="254">254</span>
 <span id="255">255</span>
 <span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -440,6 +442,8 @@
         <span class="ident">SYS_WAITPID</span> =&gt; <span class="ident">process::waitpid</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
         <span class="ident">SYS_GETPID</span> =&gt; <span class="ident">process::getpid</span>(),
         <span class="ident">SYS_GETTID</span> =&gt; <span class="ident">process::gettid</span>(),
+        <span class="ident">SYS_GETHOSTNAME</span> =&gt; <span class="ident">process::gethostname</span>(<span class="ident">b</span>, <span class="ident">c</span>),
+        <span class="ident">SYS_SETHOSTNAME</span> =&gt; <span class="ident">process::sethostname</span>(<span class="ident">b</span>, <span class="ident">c</span>),
 
         <span class="number">0x13A</span> =&gt; {
             <span class="kw">let</span> <span class="ident">syscall_name</span> <span class="op">=</span> <span class="kw">unsafe</span> {
