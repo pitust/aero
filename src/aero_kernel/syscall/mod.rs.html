@@ -253,6 +253,9 @@
 <span id="251">251</span>
 <span id="252">252</span>
 <span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -317,6 +320,7 @@
 <span class="kw">use</span> <span class="ident">aero_syscall::prelude</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fs</span>;
+<span class="kw">mod</span> <span class="ident">net</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">process</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">time</span>;
 
@@ -460,6 +464,8 @@
         <span class="ident">SYS_ACCESS</span> =&gt; <span class="ident">fs::access</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>),
         <span class="ident">SYS_PIPE</span> =&gt; <span class="ident">fs::pipe</span>(<span class="ident">b</span>, <span class="ident">c</span>),
         <span class="ident">SYS_UNLINK</span> =&gt; <span class="ident">fs::unlink</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>),
+
+        <span class="ident">SYS_SOCKET</span> =&gt; <span class="ident">net::socket</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
 
         <span class="ident">SYS_GETTIME</span> =&gt; <span class="ident">time::gettime</span>(<span class="ident">b</span>, <span class="ident">c</span>),
         <span class="ident">SYS_SLEEP</span> =&gt; <span class="ident">time::sleep</span>(<span class="ident">b</span>),
