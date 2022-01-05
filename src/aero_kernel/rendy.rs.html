@@ -968,6 +968,10 @@
 <span id="966">966</span>
 <span id="967">967</span>
 <span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1164,7 +1168,7 @@
     }
 }
 
-<span class="kw">struct</span> <span class="ident">DebugRendy</span><span class="op">&lt;</span><span class="lifetime">&#39;this</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DebugRendy</span><span class="op">&lt;</span><span class="lifetime">&#39;this</span><span class="op">&gt;</span> {
     <span class="doccomment">/// The raw framebuffer pointer queried from the BIOS or UEFI firmware represented</span>
     <span class="doccomment">/// as a [u8] slice.</span>
     <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;this</span> <span class="kw-2">mut</span> [<span class="ident">u32</span>],
@@ -1393,6 +1397,10 @@
                 <span class="ident">img_x</span> <span class="op">+</span><span class="op">=</span> <span class="ident">ratio</span>;
             }
         }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_framebuffer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u32</span>] {
+        <span class="self">self</span>.<span class="ident">buffer</span>
     }
 
     <span class="kw">fn</span> <span class="ident">loop_external</span>(
@@ -1758,7 +1766,7 @@
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;this</span><span class="op">&gt;</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">DebugRendy</span><span class="op">&lt;</span><span class="lifetime">&#39;this</span><span class="op">&gt;</span> {}
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;this</span><span class="op">&gt;</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">DebugRendy</span><span class="op">&lt;</span><span class="lifetime">&#39;this</span><span class="op">&gt;</span> {}
 
-<span class="kw">static</span> <span class="ident">DEBUG_RENDY</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">DebugRendy</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">DEBUG_RENDY</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">DebugRendy</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
 
 <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">print</span> {
     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::rendy::_print</span>(<span class="macro">format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>))),
