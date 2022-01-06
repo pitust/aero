@@ -621,6 +621,37 @@
 <span id="619">619</span>
 <span id="620">620</span>
 <span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -906,6 +937,32 @@
 }
 
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AT_FDCWD</span>: <span class="ident">isize</span> <span class="op">=</span> <span class="op">-</span><span class="number">100</span>;
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SysInfo</span> {
+    <span class="doccomment">/// Seconds since boot</span>
+    <span class="kw">pub</span> <span class="ident">uptime</span>: <span class="ident">i64</span>,
+    <span class="doccomment">/// 1, 5, and 15 minute load averages</span>
+    <span class="kw">pub</span> <span class="ident">loads</span>: [<span class="ident">u64</span>; <span class="number">3</span>],
+    <span class="doccomment">/// Total usable main memory size.</span>
+    <span class="kw">pub</span> <span class="ident">totalram</span>: <span class="ident">u64</span>,
+    <span class="doccomment">/// Available memory size.</span>
+    <span class="kw">pub</span> <span class="ident">freeram</span>: <span class="ident">u64</span>,
+    <span class="doccomment">/// Amount of shared memory.</span>
+    <span class="kw">pub</span> <span class="ident">sharedram</span>: <span class="ident">u64</span>,
+    <span class="doccomment">/// Memory used by buffers.</span>
+    <span class="kw">pub</span> <span class="ident">bufferram</span>: <span class="ident">u64</span>,
+    <span class="doccomment">/// Total swap space size.</span>
+    <span class="kw">pub</span> <span class="ident">totalswap</span>: <span class="ident">u64</span>,
+    <span class="doccomment">/// Swap space still available.</span>
+    <span class="kw">pub</span> <span class="ident">freeswap</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">procs</span>: <span class="ident">u16</span>,
+    <span class="kw">pub</span> <span class="ident">pad</span>: <span class="ident">u16</span>,
+    <span class="kw">pub</span> <span class="ident">totalhigh</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">freehigh</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">mem_unit</span>: <span class="ident">u32</span>,
+    <span class="kw">pub</span> <span class="ident">_f</span>: [<span class="ident">i8</span>; <span class="number">0</span>],
+}
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">syscall_result_as_usize</span>(<span class="ident">result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">match</span> <span class="ident">result</span> {
@@ -1240,6 +1297,11 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_pipe</span>(<span class="ident">fds</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">usize</span>; <span class="number">2</span>], <span class="ident">flags</span>: <span class="ident">OpenFlags</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall2</span>(<span class="ident">prelude::SYS_PIPE</span>, <span class="ident">fds</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">flags</span>.<span class="ident">bits</span>());
+    <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_info</span>(<span class="ident">struc</span>: <span class="kw-2">&amp;mut</span> <span class="ident">SysInfo</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall1</span>(<span class="ident">prelude::SYS_INFO</span>, <span class="ident">struc</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="ident">usize</span>);
     <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 </code></pre></div>

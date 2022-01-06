@@ -316,6 +316,7 @@
 <span id="314">314</span>
 <span id="315">315</span>
 <span id="316">316</span>
+<span id="317">317</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -593,7 +594,8 @@
     <span class="kw">let</span> <span class="ident">path_str</span> <span class="op">=</span> <span class="ident">validate_str</span>(<span class="ident">path</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">path_size</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path_str</span>);
 
-    <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">OpenFlags::from_bits</span>(<span class="ident">flags</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+    <span class="comment">// TODO: Make use of the open flags.</span>
+    <span class="kw">let</span> <span class="ident">_flags</span> <span class="op">=</span> <span class="ident">OpenFlags::from_bits</span>(<span class="ident">flags</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">container</span>();
 
     <span class="kw">if</span> <span class="ident">fd</span> <span class="kw">as</span> <span class="ident">isize</span> <span class="op">==</span> <span class="ident">aero_syscall::AT_FDCWD</span> {

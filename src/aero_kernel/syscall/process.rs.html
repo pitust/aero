@@ -252,6 +252,15 @@
 <span id="250">250</span>
 <span id="251">251</span>
 <span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -481,6 +490,15 @@
 
         <span class="prelude-val">Ok</span>(<span class="ident">bytes</span>.<span class="ident">len</span>())
     }
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">info</span>(<span class="ident">struc</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">struc</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">struc</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">aero_syscall::SysInfo</span>) };
+
+    <span class="comment">// TODO: Fill in the rest of the struct.</span>
+    <span class="ident">struc</span>.<span class="ident">uptime</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::time::get_uptime_ticks</span>() <span class="kw">as</span> <span class="ident">i64</span>;
+
+    <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sethostname</span>(<span class="ident">ptr</span>: <span class="ident">usize</span>, <span class="ident">length</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
