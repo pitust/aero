@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["socket",""]]});
+initSidebarItems({"fn":[["bind",""],["socket",""]]});
