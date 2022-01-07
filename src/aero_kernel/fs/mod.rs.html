@@ -303,6 +303,11 @@
 <span id="301">301</span>
 <span id="302">302</span>
 <span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -345,6 +350,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">initramfs</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">inode</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pipe</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">procfs</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ramfs</span>;
 
 <span class="kw">static</span> <span class="ident">ROOT_FS</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RamFs</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
@@ -597,6 +603,7 @@
     <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;dev&quot;</span>)<span class="question-mark">?</span>;
     <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;home&quot;</span>)<span class="question-mark">?</span>;
     <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;temp&quot;</span>)<span class="question-mark">?</span>;
+    <span class="ident">root_dir</span>().<span class="ident">inode</span>().<span class="ident">mkdir</span>(<span class="string">&quot;proc&quot;</span>)<span class="question-mark">?</span>;
 
     <span class="ident">initramfs::init</span>()<span class="question-mark">?</span>;
     <span class="macro">log::info!</span>(<span class="string">&quot;Installed initramfs&quot;</span>);
@@ -604,8 +611,11 @@
     <span class="ident">devfs::init</span>()<span class="question-mark">?</span>;
     <span class="macro">log::info!</span>(<span class="string">&quot;Installed devfs&quot;</span>);
 
+    <span class="ident">procfs::init</span>()<span class="question-mark">?</span>;
+    <span class="macro">log::info!</span>(<span class="string">&quot;Installed procfs&quot;</span>);
+
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (f1ce0e6a0 2022-01-05)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (cfa4ac66c 2022-01-06)" ></div>
 </body></html>

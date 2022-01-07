@@ -197,8 +197,6 @@
 <span id="195">195</span>
 <span id="196">196</span>
 <span id="197">197</span>
-<span id="198">198</span>
-<span id="199">199</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -279,8 +277,8 @@
 <span class="kw">mod</span> <span class="ident">logger</span>;
 <span class="kw">mod</span> <span class="ident">mem</span>;
 <span class="kw">mod</span> <span class="ident">modules</span>;
-<span class="kw">mod</span> <span class="ident">socket</span>;
 <span class="kw">mod</span> <span class="ident">rendy</span>;
+<span class="kw">mod</span> <span class="ident">socket</span>;
 <span class="kw">mod</span> <span class="ident">syscall</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
@@ -377,13 +375,11 @@
     <span class="ident">arch::gdt::init_boot</span>();
     <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: loaded boot GDT&quot;</span>, <span class="ident">ap_id</span>);
 
-    <span class="ident">tls::init</span>();
+    <span class="ident">tls::init</span>(<span class="ident">ap_id</span> <span class="kw">as</span> <span class="ident">usize</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: loaded TLS&quot;</span>, <span class="ident">ap_id</span>);
 
     <span class="ident">arch::gdt::init</span>(<span class="ident">stack_top_addr</span>);
     <span class="macro">log::info!</span>(<span class="string">&quot;AP{}: loaded GDT&quot;</span>, <span class="ident">ap_id</span>);
-
-    <span class="ident">tls::get_percpu</span>().<span class="ident">cpuid</span> <span class="op">=</span> <span class="ident">ap_id</span> <span class="kw">as</span> <span class="ident">usize</span>; <span class="comment">// Set the local cpu id global to the AP id provided in the AP bootinfo</span>
 
     <span class="ident">apic::mark_ap_ready</span>(<span class="bool-val">true</span>);
 
@@ -399,5 +395,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (f1ce0e6a0 2022-01-05)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0-nightly (cfa4ac66c 2022-01-06)" ></div>
 </body></html>
