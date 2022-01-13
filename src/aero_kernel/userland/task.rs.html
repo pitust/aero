@@ -425,6 +425,20 @@
 <span id="422">422</span>
 <span id="423">423</span>
 <span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -682,13 +696,7 @@
         })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fork</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">arch_task</span> <span class="op">=</span> <span class="ident">UnsafeCell::new</span>(
-            <span class="self">self</span>.<span class="ident">arch_task_mut</span>()
-                .<span class="ident">fork</span>()
-                .<span class="ident">expect</span>(<span class="string">&quot;failed to fork arch task&quot;</span>),
-        );
-
+    <span class="kw">fn</span> <span class="ident">make_child</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">arch_task</span>: <span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">ArchTask</span><span class="op">&gt;</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span> <span class="ident">TaskId::allocate</span>();
 
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">Arc::new_cyclic</span>(<span class="op">|</span><span class="ident">sref</span><span class="op">|</span> <span class="self">Self</span> {
@@ -720,6 +728,26 @@
         <span class="ident">this</span>.<span class="ident">vm</span>.<span class="ident">fork_from</span>(<span class="self">self</span>.<span class="ident">vm</span>());
         <span class="ident">this</span>.<span class="ident">vm</span>.<span class="ident">log</span>();
         <span class="ident">this</span>
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_process</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">entry</span>: <span class="ident">usize</span>, <span class="ident">stack</span>: <span class="ident">usize</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">arch_task</span> <span class="op">=</span> <span class="ident">UnsafeCell::new</span>(
+            <span class="self">self</span>.<span class="ident">arch_task_mut</span>()
+                .<span class="ident">clone_process</span>(<span class="ident">entry</span>, <span class="ident">stack</span>)
+                .<span class="ident">expect</span>(<span class="string">&quot;failed to fork arch task&quot;</span>),
+        );
+
+        <span class="self">self</span>.<span class="ident">make_child</span>(<span class="ident">arch_task</span>)
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fork</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">arch_task</span> <span class="op">=</span> <span class="ident">UnsafeCell::new</span>(
+            <span class="self">self</span>.<span class="ident">arch_task_mut</span>()
+                .<span class="ident">fork</span>()
+                .<span class="ident">expect</span>(<span class="string">&quot;failed to fork arch task&quot;</span>),
+        );
+
+        <span class="self">self</span>.<span class="ident">make_child</span>(<span class="ident">arch_task</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">this</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
@@ -850,5 +878,5 @@
 <span class="macro">intrusive_collections::intrusive_adapter!</span>(<span class="kw">pub</span> <span class="ident">SchedTaskAdapter</span> <span class="op">=</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> : <span class="ident">Task</span> { <span class="ident">link</span>: <span class="ident">LinkedListLink</span> });
 <span class="macro">intrusive_collections::intrusive_adapter!</span>(<span class="kw">pub</span> <span class="ident">TaskAdapter</span> <span class="op">=</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> : <span class="ident">Task</span> { <span class="ident">clink</span>: <span class="ident">LinkedListLink</span> });
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (1409c015b 2022-01-11)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (1bd4fdc94 2022-01-12)" ></div>
 </body></html>
