@@ -839,6 +839,10 @@
 <span id="836">836</span>
 <span id="837">837</span>
 <span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1470,11 +1474,15 @@
                         <span class="kw">let</span> <span class="ident">cols_diff</span> <span class="op">=</span> <span class="ident">term_cols</span> <span class="op">-</span> (<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>);
                         <span class="kw">let</span> <span class="ident">to_clear</span> <span class="op">=</span> <span class="ident">rows_remaining</span> <span class="op">*</span> <span class="ident">term_cols</span> <span class="op">+</span> <span class="ident">cols_diff</span>;
 
+                        <span class="ident"><span class="kw">crate</span>::rendy::set_auto_flush</span>(<span class="bool-val">false</span>);
+
                         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">to_clear</span> {
                             <span class="macro">crate::rendy::print!</span>(<span class="string">&quot; &quot;</span>);
                         }
 
                         <span class="ident"><span class="kw">crate</span>::rendy::set_cursor_position</span>(<span class="ident">x</span>, <span class="ident">y</span>);
+                        <span class="ident"><span class="kw">crate</span>::rendy::double_buffer_flush</span>();
+                        <span class="ident"><span class="kw">crate</span>::rendy::set_auto_flush</span>(<span class="bool-val">true</span>);
                     }
 
                     <span class="number">1</span> =&gt; <span class="macro">unimplemented!</span>(),
