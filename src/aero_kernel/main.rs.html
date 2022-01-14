@@ -198,6 +198,8 @@
 <span id="195">195</span>
 <span id="196">196</span>
 <span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -359,11 +361,13 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
     <span class="ident">test_main</span>();
 
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
     <span class="kw">if</span> <span class="ident">logger::enabled_rendy_debug</span>() {
         <span class="ident">rendy::clear_screen</span>(<span class="bool-val">true</span>);
         <span class="ident">logger::set_rendy_debug</span>(<span class="bool-val">false</span>);
     }
 
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
     <span class="ident">userland::run</span>().<span class="ident">unwrap</span>();
 
     <span class="macro">unreachable!</span>()
