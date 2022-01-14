@@ -316,7 +316,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ci&quot;</span>))]</span>
     <span class="ident"><span class="kw">crate</span>::emu::exit_qemu</span>(<span class="ident"><span class="kw">crate</span>::emu::ExitStatus::Success</span>);
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ci&quot;</span>)))]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ci&quot;</span>))]</span>
     {
         <span class="macro">log::trace!</span>(
             <span class="string">&quot;exiting the process (pid={pid}) with status: {status}&quot;</span>,
