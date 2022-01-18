@@ -822,6 +822,12 @@
 <span id="819">819</span>
 <span id="820">820</span>
 <span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1027,6 +1033,7 @@
         <span class="ident">prelude::SYS_SIGPROCMASK</span> =&gt; <span class="string">&quot;sigprocmask&quot;</span>,
         <span class="ident">prelude::SYS_DUP</span> =&gt; <span class="string">&quot;dup&quot;</span>,
         <span class="ident">prelude::SYS_FCNTL</span> =&gt; <span class="string">&quot;fcntl&quot;</span>,
+        <span class="ident">prelude::SYS_DUP2</span> =&gt; <span class="string">&quot;dup2&quot;</span>,
 
         <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;unknown syscall&quot;</span>),
     }
@@ -1641,6 +1648,11 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_fcntl</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">command</span>: <span class="ident">usize</span>, <span class="ident">argument</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall3</span>(<span class="ident">prelude::SYS_FCNTL</span>, <span class="ident">fd</span>, <span class="ident">command</span>, <span class="ident">argument</span>);
+    <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_dup2</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">new_fd</span>: <span class="ident">usize</span>, <span class="ident">flags</span>: <span class="ident">OpenFlags</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall3</span>(<span class="ident">prelude::SYS_DUP2</span>, <span class="ident">fd</span>, <span class="ident">new_fd</span>, <span class="ident">flags</span>.<span class="ident">bits</span>());
     <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 </code></pre></div>

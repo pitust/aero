@@ -326,6 +326,8 @@
 <span id="323">323</span>
 <span id="324">324</span>
 <span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -365,6 +367,8 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
+    <span class="ident"><span class="kw">crate</span>::unwind::unwind_stack_trace</span>();
+
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ci&quot;</span>))]</span>
     <span class="ident"><span class="kw">crate</span>::emu::exit_qemu</span>(<span class="ident"><span class="kw">crate</span>::emu::ExitStatus::Success</span>);
 
