@@ -273,6 +273,42 @@
 <span id="270">270</span>
 <span id="271">271</span>
 <span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -506,10 +542,46 @@
         }
     };
 
-    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">aero_syscall::syscall_result_as_usize</span>(<span class="ident">result</span>) <span class="kw">as</span> <span class="kw">_</span>;
+    <span class="kw">let</span> <span class="ident">result_usize</span> <span class="op">=</span> <span class="ident">aero_syscall::syscall_result_as_usize</span>(<span class="ident">result</span>) <span class="kw">as</span> <span class="kw">_</span>;
 
-    <span class="ident"><span class="kw">crate</span>::arch::signals::syscall_check_signals</span>(<span class="ident">result</span> <span class="kw">as</span> <span class="ident">isize</span>, <span class="ident">sys</span>, <span class="ident">stack</span>);
-    <span class="ident">stack</span>.<span class="ident">rax</span> <span class="op">=</span> <span class="ident">result</span>;
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;syslog&quot;</span>)]</span>
+    {
+        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::drivers::uart_16550</span>;
+        <span class="kw">use</span> <span class="ident">alloc::string::String</span>;
+
+        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">aero_syscall::syscall_as_str</span>(<span class="ident">a</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result_v</span> <span class="op">=</span> <span class="ident">String::new</span>();
+
+        <span class="kw">if</span> <span class="ident">result</span>.<span class="ident">is_ok</span>() {
+            <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="string">&quot;\x1b[1;32m&quot;</span>);
+        } <span class="kw">else</span> {
+            <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="string">&quot;\x1b[1;31m&quot;</span>);
+        }
+
+        <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="ident">name</span>);
+        <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="string">&quot;\x1b[0m&quot;</span>);
+
+        <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="string">&quot;(&quot;</span>);
+
+        <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">arg</span>) <span class="kw">in</span> [<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>, <span class="ident">g</span>].<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
+            <span class="kw">if</span> <span class="ident">i</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+                <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="string">&quot;, &quot;</span>);
+            }
+
+            <span class="kw">let</span> <span class="ident">hex_arg</span> <span class="op">=</span> <span class="macro">alloc::format!</span>(<span class="string">&quot;{:#x}&quot;</span>, <span class="kw-2">*</span><span class="ident">arg</span>);
+            <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">hex_arg</span>);
+        }
+
+        <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="string">&quot;) = &quot;</span>);
+
+        <span class="kw">let</span> <span class="ident">result_str</span> <span class="op">=</span> <span class="macro">alloc::format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">result</span>);
+        <span class="ident">result_v</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">result_str</span>);
+
+        <span class="macro">uart_16550::serial_println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">result_v</span>);
+    }
+
+    <span class="ident"><span class="kw">crate</span>::arch::signals::syscall_check_signals</span>(<span class="ident">result_usize</span> <span class="kw">as</span> <span class="ident">isize</span>, <span class="ident">sys</span>, <span class="ident">stack</span>);
+    <span class="ident">stack</span>.<span class="ident">rax</span> <span class="op">=</span> <span class="ident">result_usize</span>;
 }
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {

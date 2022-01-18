@@ -761,6 +761,55 @@
 <span id="758">758</span>
 <span id="759">759</span>
 <span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -918,6 +967,55 @@
     <span class="ident">ENOTBLK</span> <span class="op">=</span> <span class="number">1083</span>,
 
     <span class="ident">Unknown</span> <span class="op">=</span> <span class="ident">isize::MAX</span>,
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">syscall_as_str</span>(<span class="ident">syscall</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">match</span> <span class="ident">syscall</span> {
+        <span class="ident">prelude::SYS_READ</span> =&gt; <span class="string">&quot;read&quot;</span>,
+        <span class="ident">prelude::SYS_WRITE</span> =&gt; <span class="string">&quot;write&quot;</span>,
+        <span class="ident">prelude::SYS_OPEN</span> =&gt; <span class="string">&quot;open&quot;</span>,
+        <span class="ident">prelude::SYS_CLOSE</span> =&gt; <span class="string">&quot;close&quot;</span>,
+        <span class="ident">prelude::SYS_SHUTDOWN</span> =&gt; <span class="string">&quot;shutdown&quot;</span>,
+        <span class="ident">prelude::SYS_EXIT</span> =&gt; <span class="string">&quot;exit&quot;</span>,
+        <span class="ident">prelude::SYS_FORK</span> =&gt; <span class="string">&quot;fork&quot;</span>,
+        <span class="ident">prelude::SYS_REBOOT</span> =&gt; <span class="string">&quot;reboot&quot;</span>,
+        <span class="ident">prelude::SYS_MMAP</span> =&gt; <span class="string">&quot;mmap&quot;</span>,
+        <span class="ident">prelude::SYS_MUNMAP</span> =&gt; <span class="string">&quot;munmap&quot;</span>,
+        <span class="ident">prelude::SYS_ARCH_PRCTL</span> =&gt; <span class="string">&quot;arch_prctl&quot;</span>,
+        <span class="ident">prelude::SYS_GETDENTS</span> =&gt; <span class="string">&quot;getdents&quot;</span>,
+        <span class="ident">prelude::SYS_GETCWD</span> =&gt; <span class="string">&quot;getcwd&quot;</span>,
+        <span class="ident">prelude::SYS_CHDIR</span> =&gt; <span class="string">&quot;chdir&quot;</span>,
+        <span class="ident">prelude::SYS_MKDIR</span> =&gt; <span class="string">&quot;mkdir&quot;</span>,
+        <span class="ident">prelude::SYS_MKDIR_AT</span> =&gt; <span class="string">&quot;mkdir_at&quot;</span>,
+        <span class="ident">prelude::SYS_RMDIR</span> =&gt; <span class="string">&quot;rmdir&quot;</span>,
+        <span class="ident">prelude::SYS_EXEC</span> =&gt; <span class="string">&quot;exec&quot;</span>,
+        <span class="ident">prelude::SYS_LOG</span> =&gt; <span class="string">&quot;log&quot;</span>,
+        <span class="ident">prelude::SYS_UNAME</span> =&gt; <span class="string">&quot;uname&quot;</span>,
+        <span class="ident">prelude::SYS_WAITPID</span> =&gt; <span class="string">&quot;waitpid&quot;</span>,
+        <span class="ident">prelude::SYS_IOCTL</span> =&gt; <span class="string">&quot;ioctl&quot;</span>,
+        <span class="ident">prelude::SYS_GETPID</span> =&gt; <span class="string">&quot;getpid&quot;</span>,
+        <span class="ident">prelude::SYS_SOCKET</span> =&gt; <span class="string">&quot;socket&quot;</span>,
+        <span class="ident">prelude::SYS_CONNECT</span> =&gt; <span class="string">&quot;connect&quot;</span>,
+        <span class="ident">prelude::SYS_BIND</span> =&gt; <span class="string">&quot;bind&quot;</span>,
+        <span class="ident">prelude::SYS_LISTEN</span> =&gt; <span class="string">&quot;listen&quot;</span>,
+        <span class="ident">prelude::SYS_ACCEPT</span> =&gt; <span class="string">&quot;accept&quot;</span>,
+        <span class="ident">prelude::SYS_SEEK</span> =&gt; <span class="string">&quot;seek&quot;</span>,
+        <span class="ident">prelude::SYS_GETTID</span> =&gt; <span class="string">&quot;gettid&quot;</span>,
+        <span class="ident">prelude::SYS_GETTIME</span> =&gt; <span class="string">&quot;gettime&quot;</span>,
+        <span class="ident">prelude::SYS_SLEEP</span> =&gt; <span class="string">&quot;sleep&quot;</span>,
+        <span class="ident">prelude::SYS_ACCESS</span> =&gt; <span class="string">&quot;access&quot;</span>,
+        <span class="ident">prelude::SYS_PIPE</span> =&gt; <span class="string">&quot;pipe&quot;</span>,
+        <span class="ident">prelude::SYS_UNLINK</span> =&gt; <span class="string">&quot;unlink&quot;</span>,
+        <span class="ident">prelude::SYS_GETHOSTNAME</span> =&gt; <span class="string">&quot;gethostname&quot;</span>,
+        <span class="ident">prelude::SYS_SETHOSTNAME</span> =&gt; <span class="string">&quot;sethostname&quot;</span>,
+        <span class="ident">prelude::SYS_INFO</span> =&gt; <span class="string">&quot;info&quot;</span>,
+        <span class="ident">prelude::SYS_CLONE</span> =&gt; <span class="string">&quot;clone&quot;</span>,
+        <span class="ident">prelude::SYS_SIGRETURN</span> =&gt; <span class="string">&quot;sigreturn&quot;</span>,
+        <span class="ident">prelude::SYS_SIGACTION</span> =&gt; <span class="string">&quot;sigaction&quot;</span>,
+        <span class="ident">prelude::SYS_SIGPROCMASK</span> =&gt; <span class="string">&quot;sigprocmask&quot;</span>,
+
+        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;unknown syscall&quot;</span>),
+    }
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
