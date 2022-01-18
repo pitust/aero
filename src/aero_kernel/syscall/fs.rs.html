@@ -343,6 +343,22 @@
 <span id="340">340</span>
 <span id="341">341</span>
 <span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -362,6 +378,7 @@
  * along with Aero. If not, see &lt;https://www.gnu.org/licenses/&gt;.
  */</span>
 
+<span class="kw">use</span> <span class="ident">aero_syscall::prelude::FdFlags</span>;
 <span class="kw">use</span> <span class="ident">aero_syscall</span>::{<span class="ident">AeroSyscallError</span>, <span class="ident">OpenFlags</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::inode::DirEntry</span>;
@@ -682,8 +699,23 @@
         .<span class="ident">get_handle</span>(<span class="ident">fd</span>)
         .<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EBADFD</span>)<span class="question-mark">?</span>;
 
-    <span class="macro">log::debug!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">command</span>);
-    <span class="macro">panic!</span>();
+    <span class="kw">match</span> <span class="ident">command</span> {
+        <span class="comment">// Get the fd flags:</span>
+        <span class="ident">aero_syscall::prelude::F_GETFD</span> =&gt; {
+            <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">handle</span>.<span class="ident">fd_flags</span>.<span class="ident">lock</span>().<span class="ident">bits</span>();
+            <span class="prelude-val">Ok</span>(<span class="ident">flags</span>)
+        }
+
+        <span class="comment">// Set the FD flags:</span>
+        <span class="ident">aero_syscall::prelude::F_SETFD</span> =&gt; {
+            <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">FdFlags::from_bits</span>(<span class="ident">arg</span>).<span class="ident">ok_or</span>(<span class="ident">AeroSyscallError::EINVAL</span>)<span class="question-mark">?</span>;
+            <span class="ident">handle</span>.<span class="ident">fd_flags</span>.<span class="ident">lock</span>().<span class="ident">insert</span>(<span class="ident">flags</span>);
+
+            <span class="prelude-val">Ok</span>(<span class="number">0x00</span>)
+        }
+
+        <span class="kw">_</span> =&gt; <span class="macro">unimplemented!</span>(),
+    }
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (ee5d8d37b 2022-01-17)" ></div>
