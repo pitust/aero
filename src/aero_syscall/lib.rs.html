@@ -816,6 +816,12 @@
 <span id="813">813</span>
 <span id="814">814</span>
 <span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1020,6 +1026,7 @@
         <span class="ident">prelude::SYS_SIGACTION</span> =&gt; <span class="string">&quot;sigaction&quot;</span>,
         <span class="ident">prelude::SYS_SIGPROCMASK</span> =&gt; <span class="string">&quot;sigprocmask&quot;</span>,
         <span class="ident">prelude::SYS_DUP</span> =&gt; <span class="string">&quot;dup&quot;</span>,
+        <span class="ident">prelude::SYS_FCNTL</span> =&gt; <span class="string">&quot;fcntl&quot;</span>,
 
         <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;unknown syscall&quot;</span>),
     }
@@ -1617,19 +1624,24 @@
         <span class="prelude-val">None</span> =&gt; <span class="number">0</span>,
     };
 
-    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">syscall3</span>(
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall3</span>(
         <span class="ident">prelude::SYS_SIGPROCMASK</span>,
         <span class="ident">how</span> <span class="kw">as</span> <span class="ident">usize</span>,
         <span class="ident">set</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u64</span> <span class="kw">as</span> <span class="ident">usize</span>,
         <span class="ident">old_set</span>,
     );
 
-    <span class="ident">isize_as_syscall_result</span>(<span class="ident">result</span> <span class="kw">as</span> <span class="kw">_</span>)
+    <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_dup</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">flags</span>: <span class="ident">OpenFlags</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">syscall2</span>(<span class="ident">prelude::SYS_DUP</span>, <span class="ident">fd</span>, <span class="ident">flags</span>.<span class="ident">bits</span>());
-    <span class="ident">isize_as_syscall_result</span>(<span class="ident">result</span> <span class="kw">as</span> <span class="kw">_</span>)
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall2</span>(<span class="ident">prelude::SYS_DUP</span>, <span class="ident">fd</span>, <span class="ident">flags</span>.<span class="ident">bits</span>());
+    <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_fcntl</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">command</span>: <span class="ident">usize</span>, <span class="ident">argument</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">syscall3</span>(<span class="ident">prelude::SYS_FCNTL</span>, <span class="ident">fd</span>, <span class="ident">command</span>, <span class="ident">argument</span>);
+    <span class="ident">isize_as_syscall_result</span>(<span class="ident">value</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aero_syscall" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (ee5d8d37b 2022-01-17)" ></div>
