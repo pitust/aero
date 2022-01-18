@@ -309,6 +309,7 @@
 <span id="306">306</span>
 <span id="307">307</span>
 <span id="308">308</span>
+<span id="309">309</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -529,6 +530,7 @@
         <span class="ident">SYS_ACCESS</span> =&gt; <span class="ident">fs::access</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>, <span class="ident">f</span>),
         <span class="ident">SYS_PIPE</span> =&gt; <span class="ident">fs::pipe</span>(<span class="ident">b</span>, <span class="ident">c</span>),
         <span class="ident">SYS_UNLINK</span> =&gt; <span class="ident">fs::unlink</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, <span class="ident">e</span>),
+        <span class="ident">SYS_DUP</span> =&gt; <span class="ident">fs::dup</span>(<span class="ident">b</span>, <span class="ident">c</span>),
 
         <span class="ident">SYS_SOCKET</span> =&gt; <span class="ident">net::socket</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),
         <span class="ident">SYS_BIND</span> =&gt; <span class="ident">net::bind</span>(<span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>),

@@ -810,6 +810,12 @@
 <span id="807">807</span>
 <span id="808">808</span>
 <span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1013,6 +1019,7 @@
         <span class="ident">prelude::SYS_SIGRETURN</span> =&gt; <span class="string">&quot;sigreturn&quot;</span>,
         <span class="ident">prelude::SYS_SIGACTION</span> =&gt; <span class="string">&quot;sigaction&quot;</span>,
         <span class="ident">prelude::SYS_SIGPROCMASK</span> =&gt; <span class="string">&quot;sigprocmask&quot;</span>,
+        <span class="ident">prelude::SYS_DUP</span> =&gt; <span class="string">&quot;dup&quot;</span>,
 
         <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;unknown syscall&quot;</span>),
     }
@@ -1617,6 +1624,11 @@
         <span class="ident">old_set</span>,
     );
 
+    <span class="ident">isize_as_syscall_result</span>(<span class="ident">result</span> <span class="kw">as</span> <span class="kw">_</span>)
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_dup</span>(<span class="ident">fd</span>: <span class="ident">usize</span>, <span class="ident">flags</span>: <span class="ident">OpenFlags</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">AeroSyscallError</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">syscall2</span>(<span class="ident">prelude::SYS_DUP</span>, <span class="ident">fd</span>, <span class="ident">flags</span>.<span class="ident">bits</span>());
     <span class="ident">isize_as_syscall_result</span>(<span class="ident">result</span> <span class="kw">as</span> <span class="kw">_</span>)
 }
 </code></pre></div>
