@@ -819,7 +819,7 @@
     ) {
         <span class="macro">log::debug!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">signal</span>);
 
-        <span class="macro">assert!</span>(<span class="ident">signal</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">SIGNAL_COUNT</span>);
+        <span class="macro">assert!</span>(<span class="ident">signal</span> <span class="op">&lt;</span> <span class="ident">SIGNAL_COUNT</span>);
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">can_override</span>(<span class="ident">signal</span>) {
             <span class="kw">return</span>;
