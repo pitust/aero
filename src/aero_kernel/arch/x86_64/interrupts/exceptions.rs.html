@@ -155,6 +155,8 @@
 <span id="149">149</span>
 <span id="150">150</span>
 <span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -275,6 +277,8 @@
 
                 <span class="macro">log::error!</span>(<span class="string">&quot;stack: {:#x?}&quot;</span>, <span class="ident">stack</span>);
 
+                <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>().<span class="ident">vm</span>.<span class="ident">log</span>();
+
                 <span class="ident">unwind::unwind_stack_trace</span>();
 
                 <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>().<span class="ident">current_task</span>();
@@ -307,5 +311,5 @@
     }
 );
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (777bb86bc 2022-01-20)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (bfe156467 2022-01-22)" ></div>
 </body></html>

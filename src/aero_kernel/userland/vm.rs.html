@@ -864,6 +864,34 @@
 <span id="858">858</span>
 <span id="859">859</span>
 <span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1594,6 +1622,34 @@
                     <span class="ident">prot</span>.<span class="ident">insert</span>(<span class="ident">MMapProt::PROT_EXEC</span>);
                 }
 
+                <span class="comment">/*
+                 * The last non-bss frame of the segment consists partly of data and partly of bss
+                 * memory, which must be zeroed. Unfortunately, the file representation might have
+                 * reused the part of the frame that should be zeroed to store the next segment. This
+                 * means that we can&#39;t simply overwrite that part with zeroes, as we might overwrite
+                 * other data this way.
+                 *
+                 * Example:
+                 *
+                 *   XXXXXXXXXXXXXXX000000YYYYYYY000ZZZZZZZZZZZ     virtual memory (XYZ are data)
+                 *   |·············|     /·····/   /·········/
+                 *   |·············| ___/·····/   /·········/
+                 *   |·············|/·····/‾‾‾   /·········/
+                 *   |·············||·····|/·̅·̅·̅·̅·̅·····/‾‾‾‾
+                 *   XXXXXXXXXXXXXXXYYYYYYYZZZZZZZZZZZ              file memory (zeros are not saved)
+                 *   &#39;       &#39;       &#39;       &#39;        &#39;
+                 *   The areas filled with dots (`·`) indicate a mapping between virtual and file
+                 *   memory. We see that the data regions `X`, `Y`, `Z` have a valid mapping, while
+                 *   the regions that are initialized with 0 have not.
+                 *
+                 *   The ticks (`&#39;`) below the file memory line indicate the start of a new frame. We
+                 *   see that the last frames of the `X` and `Y` regions in the file are followed
+                 *   by the bytes of the next region. So we can&#39;t zero these parts of the frame
+                 *   because they are needed by other memory regions.
+                 *
+                 * To solve this issue while still keeping the offset page aligned, we align down the
+                 * file offset and the virtual start offset aswell.
+                 */</span>
                 <span class="kw">let</span> <span class="ident">virtual_fend</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">mmap</span>(
                         <span class="ident">virtual_start</span>,
@@ -1725,5 +1781,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (777bb86bc 2022-01-20)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (bfe156467 2022-01-22)" ></div>
 </body></html>
