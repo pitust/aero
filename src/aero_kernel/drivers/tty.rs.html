@@ -820,6 +820,17 @@
 <span id="815">815</span>
 <span id="816">816</span>
 <span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -863,7 +874,7 @@
         <span class="ident">c_cflag</span>: <span class="ident">aero_syscall::TermiosCFlag::empty</span>(),
         <span class="ident">c_lflag</span>: <span class="ident">aero_syscall::TermiosLFlag::ECHO</span> <span class="op">|</span> <span class="ident">aero_syscall::TermiosLFlag::ICANON</span>,
         <span class="ident">c_line</span>: <span class="number">0</span>,
-        <span class="ident">c_cc</span>: [<span class="number">0</span>; <span class="number">32</span>],
+        <span class="ident">c_cc</span>: [<span class="number">0</span>; <span class="number">11</span>],
         <span class="ident">c_ispeed</span>: <span class="number">0</span>,
         <span class="ident">c_ospeed</span>: <span class="number">0</span>,
     });
@@ -1146,6 +1157,17 @@
 
 <span class="kw">impl</span> <span class="ident">KeyboardListener</span> <span class="kw">for</span> <span class="ident">Tty</span> {
     <span class="kw">fn</span> <span class="ident">on_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">KeyCode</span>, <span class="ident">released</span>: <span class="ident">bool</span>) {
+        <span class="comment">// requirements bash termios: Termios {</span>
+        <span class="comment">//    c_iflag: 0,</span>
+        <span class="comment">//    c_oflag: NL0 | CR0 | TAB0 | BS0 | VT0 | FF0,</span>
+        <span class="comment">//    c_cflag: CS5,</span>
+        <span class="comment">//    c_lflag: ISIG,</span>
+        <span class="comment">//    c_line: 0,</span>
+        <span class="comment">//    c_cc: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],</span>
+        <span class="comment">//    c_ispeed: 0,</span>
+        <span class="comment">//    c_ospeed: 0</span>
+        <span class="comment">// }</span>
+
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">lock</span>();
         <span class="kw">let</span> <span class="ident">termios</span> <span class="op">=</span> <span class="ident">TERMIOS</span>.<span class="ident">lock_irq</span>();
 
