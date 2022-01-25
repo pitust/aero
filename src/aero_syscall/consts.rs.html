@@ -128,6 +128,13 @@
 <span id="123">123</span>
 <span id="124">124</span>
 <span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -197,6 +204,13 @@
 <span class="comment">// fcntl constants:</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_GETFD</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">3</span>;
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_SETFD</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_GETFL</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">5</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_SETFL</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">6</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_GETLK</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">7</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_SETLK</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">8</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_SETLKW</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">9</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_GETOWN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">10</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">F_SETOWN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">11</span>;
 
 <span class="comment">// constants for fcntl()&#39;s additional argument of F_GETFD and F_SETFD:</span>
 <span class="macro">bitflags::bitflags!</span> {
