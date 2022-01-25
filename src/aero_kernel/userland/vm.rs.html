@@ -3,7 +3,7 @@
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../../../aero_kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../aero_kernel/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../aero_kernel/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -891,6 +891,12 @@
 <span id="886">886</span>
 <span id="887">887</span>
 <span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1083,7 +1089,7 @@
                     .<span class="ident">read_at</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">buffer</span>)
                     .<span class="ident">unwrap</span>();
 
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags::PRESENT</span>
+                <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">PageTableFlags::PRESENT</span>
                     <span class="op">|</span> <span class="ident">PageTableFlags::USER_ACCESSIBLE</span>
                     <span class="op">|</span> <span class="self">self</span>.<span class="ident">protection</span>.<span class="ident">into</span>();
 
@@ -1091,7 +1097,11 @@
                 <span class="comment">// entry with other processes or threads until it tries to write to the same page</span>
                 <span class="comment">// and the mapping is marked as writable, in that case we will copy the page table</span>
                 <span class="comment">// entry.</span>
-                <span class="ident">flags</span>.<span class="ident">remove</span>(<span class="ident">PageTableFlags::WRITABLE</span>);
+                <span class="comment">//</span>
+                <span class="comment">// TODO: We have to remove the writable flag here, fix this after we seperate the last</span>
+                <span class="comment">// BSS frame which also intersects with the last frame of the actual file.</span>
+                <span class="comment">//</span>
+                <span class="comment">// flags.remove(PageTableFlags::WRITABLE);</span>
 
                 <span class="kw">unsafe</span> {
                     <span class="ident">offset_table</span>.<span class="ident">map_to</span>(
@@ -1103,6 +1113,8 @@
                 }
                 .<span class="ident">expect</span>(<span class="string">&quot;failed to map allocated frame for private file read&quot;</span>)
                 .<span class="ident">flush</span>();
+
+            <span class="comment">// TODO: Remove this when the above TODO has been fixed.</span>
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::CAUSED_BY_WRITE</span>)
                 <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">reason</span>.<span class="ident">contains</span>(<span class="ident">PageFaultErrorCode::PROTECTION_VIOLATION</span>)
             {
@@ -1780,5 +1792,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (84322efad 2022-01-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (51126be1b 2022-01-24)" ></div>
 </body></html>
