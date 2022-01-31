@@ -320,10 +320,6 @@
 <span id="315">315</span>
 <span id="316">316</span>
 <span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -522,10 +518,6 @@
     <span class="kw">if</span> <span class="op">!</span><span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">MMapFlags::MAP_ANONYOMUS</span>) {
         <span class="macro">unimplemented!</span>()
     }
-
-    <span class="comment">// HACK: This is currently a hack since mlibc tries to do somethin</span>
-    <span class="comment">// fancy. Oh well andy plz fix this in the future.</span>
-    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">size</span> <span class="op">+</span> <span class="number">4096</span>;
 
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">scheduler::get_scheduler</span>()
         .<span class="ident">current_task</span>()
