@@ -1608,8 +1608,8 @@
                         <span class="ident">size</span>,
                         <span class="ident">prot</span>,
                         <span class="ident">MMapFlags::MAP_PRIVATE</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_FIXED</span> <span class="op">|</span> <span class="ident">MMapFlags::MAP_ANONYOMUS</span>,
-                        <span class="ident">file_offset</span> <span class="kw">as</span> <span class="ident">usize</span>,
-                        <span class="prelude-val">Some</span>(<span class="ident">bin</span>.<span class="ident">clone</span>()),
+                        <span class="number">0</span>,
+                        <span class="prelude-val">None</span>,
                     )
                     .<span class="ident">expect</span>(<span class="string">&quot;load_bin: failed to memory map ELF header&quot;</span>);
 
