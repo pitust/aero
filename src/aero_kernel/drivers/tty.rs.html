@@ -827,8 +827,6 @@
 <span id="822">822</span>
 <span id="823">823</span>
 <span id="824">824</span>
-<span id="825">825</span>
-<span id="826">826</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1439,8 +1437,6 @@
                     <span class="number">0</span> =&gt; {
                         <span class="kw">let</span> (<span class="ident">x</span>, <span class="ident">y</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendy::get_cursor_position</span>();
                         <span class="kw">let</span> (<span class="ident">term_rows</span>, <span class="ident">term_cols</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendy::get_rows_cols</span>();
-
-                        <span class="kw">let</span> <span class="ident">term_cols</span> <span class="op">=</span> <span class="ident">term_cols</span>;
 
                         <span class="kw">let</span> <span class="ident">rows_remaining</span> <span class="op">=</span> <span class="ident">term_rows</span> <span class="op">-</span> (<span class="ident">y</span> <span class="op">+</span> <span class="number">1</span>);
                         <span class="kw">let</span> <span class="ident">cols_diff</span> <span class="op">=</span> <span class="ident">term_cols</span> <span class="op">-</span> (<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>);
