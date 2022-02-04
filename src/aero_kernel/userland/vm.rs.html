@@ -826,6 +826,18 @@
 <span id="821">821</span>
 <span id="822">822</span>
 <span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -856,6 +868,7 @@
 <span class="kw">use</span> <span class="ident">xmas_elf::header</span>;
 <span class="kw">use</span> <span class="ident">xmas_elf::ElfFile</span>;
 
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::task::userland_last_address</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fs::cache::DirCacheItem</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::paging</span>::<span class="kw-2">*</span>;
@@ -1332,6 +1345,17 @@
             <span class="self">self</span>.<span class="ident">find_any_above</span>(<span class="ident">VirtAddr::new</span>(<span class="number">0x7000_0000_0000</span>), <span class="ident">size_aligned</span> <span class="kw">as</span> <span class="kw">_</span>)
         } <span class="kw">else</span> {
             <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">MMapFlags::MAP_FIXED</span>) {
+                <span class="comment">// SAFTEY: The provided address should be page aligned.</span>
+                <span class="kw">if</span> <span class="op">!</span><span class="ident">address</span>.<span class="ident">is_aligned</span>(<span class="ident">Size4KiB::SIZE</span>) {
+                    <span class="kw">return</span> <span class="prelude-val">None</span>;
+                }
+
+                <span class="comment">// SAFTEY: The provided (address + size) should be less then</span>
+                <span class="comment">// the userland max address.</span>
+                <span class="kw">if</span> (<span class="ident">address</span> <span class="op">+</span> <span class="ident">size_aligned</span>) <span class="op">&gt;</span> <span class="ident">userland_last_address</span>() {
+                    <span class="kw">return</span> <span class="prelude-val">None</span>;
+                }
+
                 <span class="self">self</span>.<span class="ident">munmap</span>(<span class="ident">address</span>, <span class="ident">size_aligned</span> <span class="kw">as</span> <span class="ident">usize</span>); <span class="comment">// Unmap any existing mappings.</span>
                 <span class="self">self</span>.<span class="ident">find_fixed_mapping</span>(<span class="ident">address</span>, <span class="ident">size_aligned</span> <span class="kw">as</span> <span class="kw">_</span>)
             } <span class="kw">else</span> {
