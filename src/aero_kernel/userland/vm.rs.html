@@ -838,6 +838,23 @@
 <span id="833">833</span>
 <span id="834">834</span>
 <span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -1336,6 +1353,23 @@
         <span class="comment">// The provided size should be non-zero.</span>
         <span class="kw">if</span> <span class="ident">size</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
+        }
+
+        <span class="kw">if</span> <span class="ident">file</span>.<span class="ident">is_some</span>() {
+            <span class="comment">// SAFTEY: We cannot mmap a file with the anonymous flag.</span>
+            <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">MMapFlags::MAP_ANONYOMUS</span>) {
+                <span class="kw">return</span> <span class="prelude-val">None</span>;
+            }
+        } <span class="kw">else</span> {
+            <span class="comment">// SAFTEY: Mappings not backed by a file must be anonymous.</span>
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">MMapFlags::MAP_ANONYOMUS</span>) {
+                <span class="kw">return</span> <span class="prelude-val">None</span>;
+            }
+
+            <span class="comment">// SAFTEY: We cannot have a shared and an anonymous mapping.</span>
+            <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">MMapFlags::MAP_SHARED</span>) {
+                <span class="kw">return</span> <span class="prelude-val">None</span>;
+            }
         }
 
         <span class="kw">let</span> <span class="ident">size_aligned</span> <span class="op">=</span> <span class="ident">align_up</span>(<span class="ident">size</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Size4KiB::SIZE</span>);
