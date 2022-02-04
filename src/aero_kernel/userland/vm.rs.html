@@ -826,7 +826,6 @@
 <span id="821">821</span>
 <span id="822">822</span>
 <span id="823">823</span>
-<span id="824">824</span>
 </pre><pre class="rust"><code><span class="comment">/*
  * Copyright (C) 2021-2022 The Aero Project Developers.
  *
@@ -972,7 +971,7 @@
     <span class="doccomment">/// Handler routine for pages backed by a file. This function will allocate a frame and</span>
     <span class="doccomment">/// read a page-sized amount from the disk into the allocated frame. Then it maps</span>
     <span class="doccomment">/// the allocated frame at the faulted address.</span>
-    <span class="kw">fn</span> <span class="ident">handle_pf_private_file</span>(
+    <span class="kw">fn</span> <span class="ident">handle_pf_file</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">offset_table</span>: <span class="kw-2">&amp;mut</span> <span class="ident">OffsetPageTable</span>,
         <span class="ident">reason</span>: <span class="ident">PageFaultErrorCode</span>,
@@ -1003,7 +1002,7 @@
                     .<span class="ident">file</span>
                     .<span class="ident">inode</span>()
                     .<span class="ident">mmap</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="self">self</span>.<span class="ident">flags</span>)
-                    .<span class="ident">expect</span>(<span class="string">&quot;handle_pf_private_file: file does not support mmap&quot;</span>);
+                    .<span class="ident">expect</span>(<span class="string">&quot;handle_pf_file: file does not support mmap&quot;</span>);
 
                 <span class="kw">let</span> <span class="ident">frame</span>: <span class="ident">PhysFrame</span><span class="op">&lt;</span><span class="ident">Size4KiB</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">PhysFrame::containing_address</span>(<span class="ident">phys</span>);
 
@@ -1220,12 +1219,11 @@
                     <span class="ident">map</span>.<span class="ident">handle_pf_private_anon</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offset_table</span>, <span class="ident">reason</span>, <span class="ident">accessed_address</span>)
                 }
 
-                (<span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; {
-                    <span class="ident">map</span>.<span class="ident">handle_pf_private_file</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offset_table</span>, <span class="ident">reason</span>, <span class="ident">accessed_address</span>)
+                (<span class="bool-val">true</span>, <span class="bool-val">false</span>) <span class="op">|</span> (<span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; {
+                    <span class="ident">map</span>.<span class="ident">handle_pf_file</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offset_table</span>, <span class="ident">reason</span>, <span class="ident">accessed_address</span>)
                 }
 
                 (<span class="bool-val">false</span>, <span class="bool-val">true</span>) =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;shared and anonymous mapping&quot;</span>),
-                (<span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; <span class="macro">unimplemented!</span>(),
             };
 
             <span class="ident">result</span>
@@ -1652,5 +1650,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (27f5d830e 2022-02-02)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aero_kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0-nightly (4e8fb743c 2022-02-03)" ></div>
 </body></html>
