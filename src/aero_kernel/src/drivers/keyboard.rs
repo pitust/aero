@@ -23,7 +23,7 @@ use alloc::vec::Vec;
 use spin::RwLock;
 
 use crate::arch::interrupts::{self, InterruptStack};
-use crate::{apic, fs};
+use crate::{arch, fs};
 
 use crate::fs::devfs::{self, Device};
 use crate::fs::inode::INodeInterface;
@@ -275,7 +275,7 @@ pub fn ps2_keyboard_init() {
     let keyboard_vector = interrupts::allocate_vector();
     interrupts::register_handler(keyboard_vector, keyboard_irq_handler);
 
-    apic::io_apic_setup_legacy_irq(1, keyboard_vector, 1);
+    arch::apic::io_apic_setup_legacy_irq(1, keyboard_vector, 0);
 
     // TODO: Move this into /dev/input instead
     // TODO: Add support for multiple keyboards

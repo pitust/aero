@@ -41,7 +41,7 @@ pub fn gettime(clock: usize, timespec: usize) -> Result<usize, AeroSyscallError>
 
     match clock {
         CLOCK_TYPE_REALTIME => {
-            let clock = crate::time::get_realtime_clock();
+            let clock = crate::arch::pit::get_realtime_clock();
 
             timespec.tv_sec = clock.tv_sec;
             timespec.tv_nsec = clock.tv_nsec;

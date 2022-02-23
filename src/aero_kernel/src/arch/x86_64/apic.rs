@@ -30,7 +30,7 @@ use crate::utils::sync::{Mutex, MutexGuard};
 
 use crate::acpi::madt;
 use crate::utils::io;
-use crate::{time, PHYSICAL_MEMORY_OFFSET};
+use crate::{arch, PHYSICAL_MEMORY_OFFSET};
 
 const APIC_SPURIOUS_VECTOR: u32 = 0xFF;
 
@@ -244,16 +244,16 @@ impl LocalApic {
             self.write(XAPIC_LVT_TIMER, (1 << 16) | 0xff); // vector 0xff, masked
             self.write(XAPIC_TIMER_DIV_CONF, 1);
 
-            time::set_reload_value(0xffff);
+            arch::pit::set_reload_value(0xffff);
 
-            let initial_pit_tick = time::get_current_count();
+            let initial_pit_tick = arch::pit::get_current_count();
             self.write(XAPIC_TIMER_INIT_COUNT, SAMPLES);
 
             while self.read(XAPIC_TIMER_CURRENT_COUNT) != 0 {}
 
-            let final_pit_tick = time::get_current_count();
+            let final_pit_tick = arch::pit::get_current_count();
             let pit_ticks = initial_pit_tick - final_pit_tick;
-            let timer_frequency = (SAMPLES / pit_ticks as u32) * time::PIT_DIVIDEND as u32;
+            let timer_frequency = (SAMPLES / pit_ticks as u32) * arch::pit::PIT_DIVIDEND as u32;
 
             tls::get_percpu().lapic_timer_frequency = timer_frequency;
         }
@@ -477,32 +477,32 @@ pub fn io_apic_from_redirect(gsi: u32) -> Option<usize> {
 
 pub fn io_apic_set_redirect(vec: u8, gsi: u32, flags: u16, status: i32) {
     if let Some(io_apic) = io_apic_from_redirect(gsi) {
-        let mut redirect = 0x00;
+        let mut redirect: u64 = 0x00;
 
         // Active high(0) or low(1)
         if flags & 2 == 1 {
-            redirect |= (1 << 13) as u8;
+            redirect |= 1 << 13;
         }
 
         // Edge(0) or level(1) triggered
         if flags & 8 == 1 {
-            redirect |= (1 << 15) as u8;
+            redirect |= 1 << 15;
         }
 
         if status == 1 {
             // Set the mask bit
-            redirect |= (1 << 16) as u8;
+            redirect |= 1 << 16;
         }
 
-        redirect |= vec;
-        redirect |= (crate::arch::tls::get_cpuid() << 56) as u8; // Set the target APIC ID.
+        redirect |= vec as u64;
+        redirect |= (crate::arch::tls::get_cpuid() as u64) << 56; // Set the target APIC ID.
 
         let entry = madt::IO_APICS.read()[io_apic];
         let ioredtbl = (gsi - entry.global_system_interrupt_base) * 2 + 16;
 
         unsafe {
             io_apic_write(io_apic, ioredtbl + 0, redirect as _);
-            io_apic_write(io_apic, ioredtbl + 1, (redirect as u64 >> 32) as _);
+            io_apic_write(io_apic, ioredtbl + 1, (redirect >> 32) as _);
         }
 
         log::info!("registered redirect (vec={}, gsi={})", vec, gsi);

@@ -20,9 +20,10 @@
 use alloc::{alloc::alloc_zeroed, sync::Arc};
 use core::{alloc::Layout, any::Any, cell::UnsafeCell, mem, ptr::Unique};
 
-use crate::{apic::get_cpu_count, mem::paging::align_down};
+use crate::{arch::apic::get_cpu_count, mem::paging::align_down};
 
 pub mod buffer;
+#[cfg(target_arch = "x86_64")]
 pub mod io;
 pub mod linker;
 pub mod sync;

@@ -28,7 +28,7 @@ use core::sync::atomic::{AtomicUsize, Ordering};
 use aero_syscall::TimeSpec;
 use stivale_boot::v2::StivaleEpochTag;
 
-use crate::apic;
+use crate::arch::apic;
 
 use crate::arch::interrupts;
 use crate::arch::interrupts::InterruptStack;
@@ -130,5 +130,5 @@ pub fn init() {
     let pit_vector = interrupts::allocate_vector();
     interrupts::register_handler(pit_vector, pit_irq_handler);
 
-    apic::io_apic_setup_legacy_irq(0, pit_vector, 1); // Set up the IRQ.
+    apic::io_apic_setup_legacy_irq(0, pit_vector, 0); // Set up the IRQ.
 }

@@ -23,9 +23,10 @@ pub mod interrupts;
 pub mod signals;
 pub mod task;
 pub mod tls;
+pub mod apic;
+pub mod pit;
 
 use crate::acpi;
-use crate::apic;
 use crate::cmdline;
 use crate::mem;
 use crate::mem::alloc;
@@ -133,7 +134,7 @@ extern "C" fn x86_64_aero_main(boot_info: &'static StivaleStruct) -> ! {
         &*new_addr.as_mut_ptr::<StivaleKernelFileV2Tag>()
     });
 
-    crate::time::EPOCH_TAG.call_once(move || unsafe {
+    crate::arch::pit::EPOCH_TAG.call_once(move || unsafe {
         let addr = (epoch as *const StivaleEpochTag) as u64;
         let new_addr = crate::PHYSICAL_MEMORY_OFFSET + addr;
 

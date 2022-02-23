@@ -22,7 +22,7 @@ pub mod round_robin;
 
 use alloc::sync::Arc;
 
-use crate::apic;
+use crate::arch::apic;
 use crate::arch::interrupts::{self, InterruptStack, INTERRUPT_CONTROLLER};
 use crate::utils::sync::Mutex;
 use crate::{fs::cache::DirCacheItem, syscall::ExecArgs};

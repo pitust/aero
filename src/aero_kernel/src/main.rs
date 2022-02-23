@@ -68,7 +68,6 @@ pub use prelude::rust_2021::*;
 extern crate alloc;
 
 mod acpi;
-mod apic;
 mod arch;
 mod cmdline;
 mod drivers;
@@ -83,7 +82,6 @@ mod socket;
 mod syscall;
 #[cfg(test)]
 mod tests;
-mod time;
 mod unwind;
 mod userland;
 mod utils;
@@ -114,13 +112,13 @@ fn aero_main() -> ! {
     fs::init().unwrap();
     log::info!("loaded filesystem");
 
-    time::init();
+    arch::pit::init();
     log::info!("loaded timer");
 
     userland::init();
     log::info!("loaded userland");
 
-    apic::mark_bsp_ready(true);
+    arch::apic::mark_bsp_ready(true);
 
     log::info!("initialized kernel");
 

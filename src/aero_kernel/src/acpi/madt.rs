@@ -28,13 +28,13 @@ use alloc::vec::Vec;
 use bit_field::BitField;
 use spin::RwLock;
 
-use crate::apic;
-use crate::apic::ApicType;
+use crate::arch::apic;
+use crate::arch::apic::ApicType;
 use crate::arch::controlregs;
 use crate::arch::interrupts;
 
-use crate::apic::IoApicHeader;
-use crate::apic::CPU_COUNT;
+use crate::arch::apic::IoApicHeader;
+use crate::arch::apic::CPU_COUNT;
 use crate::mem::paging;
 use crate::utils::io;
 

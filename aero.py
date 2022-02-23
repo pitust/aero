@@ -109,6 +109,11 @@ def parse_args():
                         action='store_true',
                         help='builds the kernel and userland in debug mode')
 
+    parser.add_argument('--unbased',
+                        default=False,
+                        action='store_true',
+                        help='uses unbased aarch64 intead of based x86')
+
     parser.add_argument('--no-run',
                         default=False,
                         action='store_true',
@@ -126,7 +131,7 @@ def parse_args():
                         help='additional features to build the kernel with')
 
     parser.add_argument('--target',
-                        default='x86_64-aero_os',
+                        default='ARCH-aero_os',
                         help='override the target triple the kernel will be built for')
 
     parser.add_argument('--la57',
@@ -152,6 +157,7 @@ def parse_args():
 
 
 def run_command(args, **kwargs):
+    print(args, kwargs)
     output = subprocess.run(args, **kwargs)
 
     return output.returncode, output.stdout, output.stderr
@@ -213,6 +219,9 @@ def build_kernel(args):
     command = 'build'
     cmd_args = ['--package', 'aero_kernel',
                 '--target', f'.cargo/{args.target}.json']
+
+    if not args.unbased:
+        cmd_args += ['--features', 'use-cpuid']
 
     if not args.debug:
         cmd_args += ['--release']
@@ -293,7 +302,7 @@ def build_userland_sysroot(args):
 
 def build_userland(args):
     command = 'build'
-    cmd_args = []
+    cmd_args = ['--target', f'.cargo/{args.target}.json']
 
     if not args.debug:
         cmd_args += ['--release']
@@ -568,6 +577,10 @@ def is_kvm_supported() -> bool:
 
 def main():
     args = parse_args()
+    arch = "x86_64"
+    if args.unbased:
+        arch = "aarch64"
+    args.target = args.target.replace("ARCH", arch)
 
     download_bundled()
 

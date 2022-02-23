@@ -24,7 +24,7 @@ use core::sync::atomic::{AtomicUsize, Ordering};
 
 pub use idt::*;
 
-use crate::apic;
+use crate::arch;
 use crate::utils::io;
 use crate::utils::sync::Mutex;
 
@@ -101,7 +101,7 @@ impl ApicController {
     /// Send EOI to the local APIC, indicating the completion of an interrupt.
     #[inline(always)]
     fn eoi(&self) {
-        apic::get_local_apic().eoi();
+        arch::apic::get_local_apic().eoi();
     }
 }
 

@@ -76,11 +76,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     // files.
     visit_dirs(Path::new("src"), &|entry: &DirEntry| {
         let path = entry.path();
+        let object_os = path.file_name().expect("Failed to get file name");
+        let object_file = object_os.to_str().expect("Invalid UTF-8 for file name");
+
+        if object_file.contains("x86_64") {
+            return;
+        }
 
         match path.extension() {
             Some(ext) if ext.eq(&OsString::from("asm")) => {
-                let object_os = path.file_name().expect("Failed to get file name");
-                let object_file = object_os.to_str().expect("Invalid UTF-8 for file name");
 
                 nasm_rs::Build::new()
                     .file(&path)
