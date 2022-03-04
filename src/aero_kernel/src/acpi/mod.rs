@@ -25,9 +25,7 @@
 use aml::AmlContext;
 use spin::Once;
 
-use crate::mem::paging::{PhysAddr, VirtAddr};
-
-use crate::utils::sync::{Mutex, MutexGuard};
+use crate::{utils::sync::{Mutex, MutexGuard}, mem::VirtAddr};
 
 use self::{hpet::Hpet, madt::Madt, mcfg::Mcfg, sdt::Sdt};
 
@@ -220,8 +218,8 @@ impl aml::Handler for AmlHandler {
 }
 
 /// Initialize the ACPI tables.
-pub fn init(rsdp_address: PhysAddr) -> Result<(), aml::AmlError> {
-    let rsdp_address = unsafe { crate::PHYSICAL_MEMORY_OFFSET + rsdp_address.as_u64() };
+pub fn init(rsdp_address: usize) -> Result<(), aml::AmlError> {
+    let rsdp_address = unsafe { crate::PHYSICAL_MEMORY_OFFSET + rsdp_address };
     let acpi_table = AcpiTable::new(rsdp_address);
 
     macro init_table($sig:path => $ty:ty) {

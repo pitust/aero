@@ -17,8 +17,5 @@
  * along with Aero. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pub mod interrupts;
-pub mod paging;
-pub mod task;
-pub mod tls;
-pub mod timer;
+
+

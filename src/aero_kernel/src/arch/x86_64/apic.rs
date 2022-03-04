@@ -22,7 +22,7 @@ use core::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
 
 use crate::arch::interrupts::InterruptStack;
 use crate::arch::{interrupts, tls};
-use crate::mem::paging::{PhysAddr, VirtAddr};
+use crate::mem::VirtAddr;
 use raw_cpuid::{CpuId, FeatureInfo};
 use spin::Once;
 
@@ -244,16 +244,16 @@ impl LocalApic {
             self.write(XAPIC_LVT_TIMER, (1 << 16) | 0xff); // vector 0xff, masked
             self.write(XAPIC_TIMER_DIV_CONF, 1);
 
-            arch::pit::set_reload_value(0xffff);
+            arch::timer::set_reload_value(0xffff);
 
-            let initial_pit_tick = arch::pit::get_current_count();
+            let initial_pit_tick = arch::timer::get_current_count();
             self.write(XAPIC_TIMER_INIT_COUNT, SAMPLES);
 
             while self.read(XAPIC_TIMER_CURRENT_COUNT) != 0 {}
 
-            let final_pit_tick = arch::pit::get_current_count();
+            let final_pit_tick = arch::timer::get_current_count();
             let pit_ticks = initial_pit_tick - final_pit_tick;
-            let timer_frequency = (SAMPLES / pit_ticks as u32) * arch::pit::PIT_DIVIDEND as u32;
+            let timer_frequency = (SAMPLES / pit_ticks as u32) * arch::timer::PIT_DIVIDEND as u32;
 
             tls::get_percpu().lapic_timer_frequency = timer_frequency;
         }
@@ -540,11 +540,11 @@ pub fn init() -> ApicType {
     }
 
     let apic_base = unsafe { io::rdmsr(io::IA32_APIC_BASE) };
-    let address_phys = PhysAddr::new(apic_base & 0xFFFF0000);
+    let address_phys = apic_base & 0xFFFF0000;
 
     log::debug!("apic: detected APIC (addr={address_phys:?}, type={apic_type:?})");
 
-    let address_virt = unsafe { PHYSICAL_MEMORY_OFFSET } + address_phys.as_u64();
+    let address_virt = unsafe { PHYSICAL_MEMORY_OFFSET } + address_phys;
     let mut local_apic = LocalApic::new(address_virt, apic_type);
 
     local_apic.init();

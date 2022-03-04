@@ -31,9 +31,8 @@ use core::mem;
 
 use alloc::alloc::alloc_zeroed;
 
-use crate::mem::paging::VirtAddr;
-
 use crate::arch::tls::PerCpuData;
+use crate::mem::VirtAddr;
 
 use super::tls;
 use crate::utils::io;
@@ -359,7 +358,7 @@ pub fn init(stack_top: VirtAddr) {
         gdt[GdtEntryType::TSS as usize].set_limit(mem::size_of::<Tss>() as u32);
         gdt[GdtEntryType::TSS_HI as usize].set_raw((tss_ptr as u64) >> 32);
 
-        tss_ref.rsp[0] = stack_top.as_u64();
+        tss_ref.rsp[0] = stack_top.as_usize() as u64;
 
         let gdt_descriptor = GdtDescriptor::new(
             (mem::size_of::<[GdtEntry; GDT_ENTRY_COUNT]>() - 1) as u16,

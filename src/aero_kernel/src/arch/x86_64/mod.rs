@@ -17,22 +17,21 @@
  * along with Aero. If not, see <https://www.gnu.org/licenses/>.
  */
 
+pub mod apic;
 pub mod controlregs;
 pub mod gdt;
 pub mod interrupts;
+pub mod paging;
 pub mod signals;
 pub mod task;
+pub mod timer;
 pub mod tls;
-pub mod apic;
-pub mod pit;
 
 use crate::acpi;
 use crate::cmdline;
 use crate::mem;
 use crate::mem::alloc;
-use crate::mem::paging;
-
-use crate::mem::paging::{PhysAddr, VirtAddr};
+use crate::mem::VirtAddr;
 
 use crate::drivers;
 use crate::logger;
@@ -105,7 +104,7 @@ extern "C" fn x86_64_aero_main(boot_info: &'static StivaleStruct) -> ! {
         .epoch()
         .expect("stivale2: aero expects the bootloader to provide a non-null epoch tag");
 
-    let rsdp_address = PhysAddr::new(rsdp_tag.rsdp);
+    let rsdp_address = rsdp_tag.rsdp as usize;
 
     // NOTE: STACK_SIZE - 1 points to the last u8 in the array, i.e. it is
     // guaranteed to be at an address with its least significant bit being a 1
@@ -134,7 +133,7 @@ extern "C" fn x86_64_aero_main(boot_info: &'static StivaleStruct) -> ! {
         &*new_addr.as_mut_ptr::<StivaleKernelFileV2Tag>()
     });
 
-    crate::arch::pit::EPOCH_TAG.call_once(move || unsafe {
+    crate::arch::timer::EPOCH_TAG.call_once(move || unsafe {
         let addr = (epoch as *const StivaleEpochTag) as u64;
         let new_addr = crate::PHYSICAL_MEMORY_OFFSET + addr;
 
@@ -171,13 +170,20 @@ extern "C" fn x86_64_aero_main(boot_info: &'static StivaleStruct) -> ! {
     gdt::init_boot();
     log::info!("loaded bootstrap GDT");
 
-    paging::init(mmap_tag).unwrap();
+    let mut max_addr = 0;
+    for ent in mmap_tag.as_slice() {
+        if ent.entry_type() == StivaleMemoryMapEntryType::Usable {
+            mem::pmm_add_region(ent.base.try_into().unwrap(), ent.length.try_into().unwrap());
+            max_addr = ent.base + ent.length;
+        }
+    }
+    paging::init();
     log::info!("loaded paging");
 
     alloc::init_heap();
     log::info!("loaded heap");
 
-    paging::init_vm_frames();
+    mem::vmframe_init(max_addr as usize);
 
     rendy::init(framebuffer_tag, &command_line);
     logger::set_rendy_debug(command_line.rendy_debug);

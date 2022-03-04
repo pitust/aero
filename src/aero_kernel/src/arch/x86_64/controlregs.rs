@@ -17,7 +17,7 @@
  * along with Aero. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use crate::mem::paging::{PhysAddr, PhysFrame, VirtAddr};
+use crate::mem::VirtAddr;
 
 bitflags::bitflags! {
     /// Controls cache settings for the level 4 page table.
@@ -209,8 +209,8 @@ pub fn read_cr4() -> Cr4Flags {
 }
 
 #[inline]
-pub fn read_cr3_raw() -> u64 {
-    let value: u64;
+pub fn read_cr3_raw() -> usize {
+    let value: usize;
 
     unsafe {
         asm!("mov {}, cr3", out(reg) value, options(nomem, nostack, preserves_flags));
@@ -252,20 +252,19 @@ pub unsafe fn write_cr0(value: Cr0Flags) {
 
 /// Read the current P4 table address from the CR3 register.
 #[inline]
-pub fn read_cr3() -> (PhysFrame, Cr3Flags) {
+pub fn read_cr3() -> (usize, Cr3Flags) {
     let value = read_cr3_raw();
-    let addr = PhysAddr::new(value & 0x_000f_ffff_ffff_f000); // Grab the frame address
-    let frame = PhysFrame::containing_address(addr); // Get the frame containing the address
+    let addr = value & 0x_000f_ffff_ffff_f000; // Grab the frame address
 
-    let flags = Cr3Flags::from_bits_truncate(value & 0xFFF); // Get the flags
+    let flags = Cr3Flags::from_bits_truncate(value as u64 & 0xFFF); // Get the flags
 
-    (frame, flags)
+    (addr, flags)
 }
 
 /// Read the current page fault linear address from the CR2 register.
 #[inline]
 pub fn read_cr2() -> VirtAddr {
-    let value: u64;
+    let value: usize;
 
     unsafe {
         asm!("mov {}, cr2", out(reg) value, options(nomem, nostack, preserves_flags));

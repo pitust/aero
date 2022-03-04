@@ -18,7 +18,11 @@
  */
 
 pub mod block;
+#[cfg(target_arch = "x86_64")]
 pub mod keyboard;
 pub mod pci;
 pub mod tty;
+#[cfg(target_arch = "x86_64")]
 pub mod uart_16550;
+#[cfg(target_arch = "aarch64")]
+pub mod uart_mmio32;

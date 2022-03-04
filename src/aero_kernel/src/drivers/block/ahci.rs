@@ -23,7 +23,7 @@ use alloc::vec::Vec;
 use bit_field::BitField;
 use spin::Once;
 
-use crate::mem::{paging::*, AddressSpace};
+use crate::mem::{self, AddressSpace, MapFlags, VirtAddr};
 
 use crate::utils::sync::Mutex;
 use crate::utils::{CeilDiv, VolatileCell};
@@ -195,7 +195,7 @@ enum DmaCommand {
 
 pub struct DmaBuffer {
     /// The start address of the DMA buffer.
-    start: PhysAddr,
+    start: usize,
     /// The data size of the DMA buffer.
     data_size: usize,
 }
@@ -205,7 +205,7 @@ impl DmaBuffer {
         self.data_size.ceil_div(512)
     }
 
-    pub fn start(&self) -> PhysAddr {
+    pub fn start(&self) -> usize {
         self.start
     }
 
@@ -229,13 +229,9 @@ impl DmaRequest {
 
         while size > 0 {
             let data_size = core::cmp::min(size, 0x2000);
-            let ordering = if size > 0x1000 {
-                BuddyOrdering::Size8KiB
-            } else {
-                BuddyOrdering::Size4KiB
-            };
+            let alloc_size = if size > 0x1000 { 0x2000 } else { 0x1000 };
 
-            let start = pmm_alloc(ordering);
+            let start = crate::mem::pmm_alloc_fixed(alloc_size);
 
             buffer.push(DmaBuffer { start, data_size });
             size -= data_size; // Subtract the data size from the total size.
@@ -261,7 +257,7 @@ impl DmaRequest {
         for buffer in self.buffer.iter() {
             let count = core::cmp::min(remaning, 0x2000);
 
-            let buffer_address = unsafe { crate::PHYSICAL_MEMORY_OFFSET + buffer.start.as_u64() };
+            let buffer_address = unsafe { crate::PHYSICAL_MEMORY_OFFSET + buffer.start };
             let buffer_pointer = buffer_address.as_ptr();
             let buffer = unsafe { core::slice::from_raw_parts::<u8>(buffer_pointer, count) };
 
@@ -441,7 +437,7 @@ impl HbaCmdTbl {
 
 #[repr(C)]
 struct HbaPrdtEntry {
-    dba: VolatileCell<PhysAddr>,
+    dba: VolatileCell<u64>,
     _reserved: u32,
     flags: VolatileCell<u32>,
 }
@@ -519,8 +515,8 @@ impl HbaSataStatus {
 
 #[repr(C)]
 struct HbaPort {
-    clb: VolatileCell<PhysAddr>,
-    fb: VolatileCell<PhysAddr>,
+    clb: VolatileCell<u64>,
+    fb: VolatileCell<u64>,
     is: VolatileCell<HbaPortIS>,
     ie: VolatileCell<HbaPortIE>,
     cmd: VolatileCell<HbaPortCmd>,
@@ -544,7 +540,7 @@ struct HbaCmdHeader {
     flags: VolatileCell<HbaCmdHeaderFlags>,
     prdtl: VolatileCell<u16>,
     prdbc: VolatileCell<u32>,
-    ctb: VolatileCell<PhysAddr>,
+    ctb: VolatileCell<u64>,
     _reserved: [u32; 4],
 }
 
@@ -552,7 +548,7 @@ impl HbaPort {
     fn cmd_header_at(&mut self, index: usize) -> &mut HbaCmdHeader {
         // Since the CLB holds the physical address, we make the address mapped
         // before reading it.
-        let clb_mapped = unsafe { crate::PHYSICAL_MEMORY_OFFSET + self.clb.get().as_u64() };
+        let clb_mapped = unsafe { crate::PHYSICAL_MEMORY_OFFSET + self.clb.get() };
         // Get the address of the command header at `index`.
         let clb_addr = clb_mapped + core::mem::size_of::<HbaCmdHeader>() * index;
 
@@ -562,31 +558,19 @@ impl HbaPort {
 
     /// This function is responsible for allocating space for command lists,
     /// tables, etc.. for a given this instance of HBA port.
-    fn start(&mut self, offset_table: &mut OffsetPageTable) -> Result<(), MapToError<Size4KiB>> {
+    fn start(&mut self) -> Result<(), &'static str> {
         self.stop_cmd(); // Stop the command engine before starting the port
 
-        /*
-         * size = sizeof(CTB) * 32 == 4KiB * 2 (so we need to allocate
-         * two 4KiB size frames).
-         */
-        let frame_addr = pmm_alloc(BuddyOrdering::Size8KiB);
-        let page_addr = crate::IO_VIRTUAL_BASE + frame_addr.as_u64();
+        // size = sizeof(CTB) * 32 == 4KiB * 2
+        let frame_addr = crate::mem::pmm_alloc_fixed(0x2000);
+        let page_addr = crate::IO_VIRTUAL_BASE + frame_addr;
 
-        for size in (0..0x2000u64).step_by(0x1000) {
-            unsafe {
-                offset_table
-                    .map_to(
-                        Page::<Size4KiB>::containing_address(page_addr + size),
-                        PhysFrame::<Size4KiB>::containing_address(frame_addr + size),
-                        PageTableFlags::PRESENT
-                            | PageTableFlags::WRITABLE
-                            | PageTableFlags::WRITE_THROUGH
-                            | PageTableFlags::NO_CACHE,
-                        &mut FRAME_ALLOCATOR,
-                    )?
-                    .flush();
-            }
-        }
+        crate::mem::kernel_address_space().map(
+            frame_addr,
+            page_addr,
+            0x2000,
+            MapFlags::READ | MapFlags::WRITE | MapFlags::KERNEL | MapFlags::NO_CACHE,
+        )?;
 
         for i in 0..32 {
             let command_header = self.cmd_header_at(i);
@@ -595,9 +579,9 @@ impl HbaPort {
             // 256 bytes per command table, 64 + 16 + 48 + 16 * 8
             command_header.prdtl.set(8);
             command_header.prdbc.set(0);
-            command_header.ctb.set(PhysAddr::new(
-                (frame_addr.as_u64() as usize + 256 * i) as u64,
-            ));
+            command_header
+                .ctb
+                .set((frame_addr + 256 * i) as u64);
         }
 
         self.ie.set(HbaPortIE::all());
@@ -626,11 +610,7 @@ impl HbaPort {
         }
     }
 
-    fn probe(
-        &mut self,
-        offset_table: &mut OffsetPageTable,
-        port: usize,
-    ) -> Result<bool, MapToError<Size4KiB>> {
+    fn probe(&mut self, port: usize) -> Result<bool, &'static str> {
         let status = self.ssts.get();
 
         let ipm = status.interface_power_management();
@@ -641,7 +621,7 @@ impl HbaPort {
         if let (HbaPortDd::PresentAndE, HbaPortIpm::Active) = (dd, ipm) {
             log::trace!("ahci: enabling port {}", port);
 
-            self.start(offset_table)?;
+            self.start()?;
             Ok(true)
         } else {
             // Else we can't enable the port.
@@ -675,13 +655,13 @@ impl HbaPort {
         let length = ((count - 1) >> 4) + 1;
         header.prdtl.set(length as _); // Update the number of PRD entries.
 
-        let command_table_addr = crate::IO_VIRTUAL_BASE + header.ctb.get().as_u64();
+        let command_table_addr = crate::IO_VIRTUAL_BASE + header.ctb.get();
         let command_table = unsafe { &mut *(command_table_addr).as_mut_ptr::<HbaCmdTbl>() };
 
         for pri in 0..length {
             let prdt = command_table.prdt_entry_mut(pri);
 
-            prdt.dba.set(buffer[pri].start);
+            prdt.dba.set(buffer[pri].start as u64);
             prdt.set_data_byte_count(buffer[pri].data_size - 1);
             prdt.set_interrupt_on_completion(pri == length - 1);
         }
@@ -843,13 +823,10 @@ struct AhciProtected {
 impl AhciProtected {
     #[inline]
     fn hba_mem(&self) -> &mut HbaMemory {
-        unsafe { &mut *(self.hba.as_u64() as *mut HbaMemory) }
+        unsafe { &mut *(self.hba.as_usize() as *mut HbaMemory) }
     }
 
-    fn start_hba(
-        &mut self,
-        offset_table: &mut OffsetPageTable,
-    ) -> Result<(), MapToError<Size4KiB>> {
+    fn start_hba(&mut self) -> Result<(), &'static str> {
         let mut hba = self.hba_mem();
         let current_flags = hba.global_host_control.get();
 
@@ -871,7 +848,7 @@ impl AhciProtected {
             if pi.get_bit(i) {
                 let port = hba.port_mut(i);
 
-                if port.probe(offset_table, i)? {
+                if port.probe(i)? {
                     // Get the address of the HBA port.
                     let address = VirtAddr::new(port as *const _ as _);
 
@@ -901,10 +878,7 @@ impl AhciProtected {
     }
 
     /// This function is responsible for initializing and starting the AHCI driver.
-    fn start_driver(&mut self, header: &PciHeader) -> Result<(), MapToError<Size4KiB>> {
-        let mut address_space = AddressSpace::this();
-        let mut offset_table = address_space.offset_page_table();
-
+    fn start_driver(&mut self, header: &PciHeader) -> Result<(), &'static str> {
         let abar = header.get_bar(5).expect("Failed to get ABAR");
 
         let (abar_address, _) = match abar {
@@ -916,19 +890,15 @@ impl AhciProtected {
         self.hba = crate::IO_VIRTUAL_BASE + abar_address; // Update the HBA address.
 
         unsafe {
-            offset_table.map_to(
-                Page::containing_address(self.hba),
-                PhysFrame::containing_address(PhysAddr::new(abar_address)),
-                PageTableFlags::PRESENT
-                    | PageTableFlags::NO_CACHE
-                    | PageTableFlags::WRITABLE
-                    | PageTableFlags::WRITE_THROUGH,
-                &mut FRAME_ALLOCATOR,
+            mem::kernel_address_space().map(
+                abar_address as usize,
+                self.hba,
+                mem::page_size(),
+                MapFlags::NO_CACHE | MapFlags::WRITE | MapFlags::READ,
             )
-        }?
-        .flush();
+        }?;
 
-        self.start_hba(&mut offset_table)?;
+        self.start_hba()?;
         self.enable_interrupts(header);
 
         Ok(())
@@ -949,7 +919,7 @@ impl PciDeviceHandle for AhciDriver {
         }
     }
 
-    fn start(&self, header: &PciHeader, _offset_table: &mut OffsetPageTable) {
+    fn start(&self, header: &PciHeader) {
         log::info!("ahci: starting driver...");
 
         get_ahci().inner.lock_irq().start_driver(header).unwrap(); // Start and initialize the AHCI controller.

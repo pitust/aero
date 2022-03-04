@@ -20,15 +20,14 @@
 use core::alloc;
 use core::alloc::{GlobalAlloc, Layout};
 use core::ptr::NonNull;
+use core::sync::atomic::{AtomicBool, Ordering};
 
 use linked_list_allocator::Heap;
 
 use crate::utils::sync::Mutex;
 use crate::AERO_SYSTEM_ALLOCATOR;
 
-use super::paging::FRAME_ALLOCATOR;
-use super::AddressSpace;
-use crate::mem::paging::*;
+use super::{align_up, MapFlags, VirtAddr};
 
 const HEAP_MAX_SIZE: usize = 128 * 1024 * 1024; // 128 GiB
 const HEAP_START: usize = 0xfffff80000000000;
@@ -55,18 +54,14 @@ impl Slab {
 
     fn init(&mut self) {
         unsafe {
-            let frame: PhysFrame<Size4KiB> = FRAME_ALLOCATOR
-                .allocate_frame()
-                .expect("slab_init: failed to allocate frame");
-
-            self.first_free = frame.start_address().as_u64() as usize;
-            self.first_free += crate::PHYSICAL_MEMORY_OFFSET.as_u64() as usize;
+            self.first_free = super::pmm_alloc_page();
+            self.first_free += crate::PHYSICAL_MEMORY_OFFSET.as_usize();
         }
 
-        let hdr_size = core::mem::size_of::<SlabHeader>() as u64;
-        let aligned_hdr_size = align_up(hdr_size, self.size as u64) as usize;
+        let hdr_size = core::mem::size_of::<SlabHeader>();
+        let aligned_hdr_size = align_up(hdr_size, self.size);
 
-        let avl_size = Size4KiB::SIZE as usize - aligned_hdr_size;
+        let avl_size = super::page_size() - aligned_hdr_size;
 
         let slab_ptr = unsafe { &mut *(self.first_free as *mut SlabHeader) };
         slab_ptr.ptr = self as *mut Slab;
@@ -106,6 +101,8 @@ impl Slab {
             self.first_free = *old_free;
         }
 
+        unsafe { core::ptr::write_bytes(old_free as *mut u8, 0xcc, self.size); }
+
         old_free as *mut u8
     }
 
@@ -133,6 +130,10 @@ struct Allocator {
     inner: Mutex<ProtectedAllocator>,
 }
 
+static mut EARLY_HEAP_DATA: [u64; 0x1000] = [0; 0x1000];
+static mut EARLY_HEAP_OFFSET: usize = 0;
+pub static USE_EARLY_HEAP: AtomicBool = AtomicBool::new(true);
+
 impl Allocator {
     const fn new() -> Self {
         Self {
@@ -156,6 +157,17 @@ impl Allocator {
     }
 
     fn alloc(&self, layout: Layout) -> *mut u8 {
+        // SAFETY: this happens only on the BSP
+        if USE_EARLY_HEAP.load(Ordering::SeqCst) {
+            assert!(layout.align() <= 8);
+
+            let heap = unsafe { &EARLY_HEAP_DATA[0] as *const u64 as *const _ as *mut u8 };
+            assert!(unsafe { EARLY_HEAP_OFFSET } + layout.size() < 0x8000);
+            let result = unsafe { heap.offset(EARLY_HEAP_OFFSET as isize) };
+            unsafe { EARLY_HEAP_OFFSET += (layout.size() | 0x7) + 1; }
+            return result
+        }
+
         let mut inner = self.inner.lock_irq();
 
         let slab = inner
@@ -171,48 +183,31 @@ impl Allocator {
                 .allocate_first_fit(layout)
                 .or_else(|_| {
                     let heap_top = inner.linked_list_heap.top();
-                    let size = align_up(layout.size() as u64, 0x1000);
+                    let size = align_up(layout.size(), 0x1000);
 
                     // Check if our heap has not increased beyond the maximum allowed size.
-                    if heap_top + size as usize > HEAP_END {
+                    if heap_top + size > HEAP_END {
                         panic!("the heap size has increased more then {:#x}", HEAP_END)
                     }
 
                     // Else we just have to extend the heap.
-                    let mut address_space = AddressSpace::this();
-                    let mut offset_table = address_space.offset_page_table();
 
-                    let page_range = {
-                        let heap_start = VirtAddr::new(heap_top as _);
-                        let heap_end = heap_start + size - 1u64;
+                    let heap_start = VirtAddr::new(heap_top);
 
-                        let heap_start_page: Page = Page::containing_address(heap_start);
-                        let heap_end_page = Page::containing_address(heap_end);
-
-                        Page::range_inclusive(heap_start_page, heap_end_page)
-                    };
-
-                    for page in page_range {
-                        let frame = unsafe {
-                            FRAME_ALLOCATOR
-                                .allocate_frame()
-                                .expect("Failed to allocate frame to extend heap")
-                        };
-
-                        unsafe {
-                            offset_table.map_to(
-                                page,
-                                frame,
-                                PageTableFlags::PRESENT | PageTableFlags::WRITABLE,
-                                &mut FRAME_ALLOCATOR,
+                    for page in 0usize..size >> super::page_bits() {
+                        let phys = super::pmm_alloc_page();
+                        super::kernel_address_space()
+                            .map(
+                                phys,
+                                heap_start + (page << super::page_bits()),
+                                super::page_size(),
+                                MapFlags::KERNEL | MapFlags::READ | MapFlags::WRITE,
                             )
-                        }
-                        .expect("Failed to map frame to extend the heap")
-                        .flush();
+                            .expect("Failed to map frame to extend the heap");
                     }
 
                     unsafe {
-                        inner.linked_list_heap.extend(size as usize); // Now extend the heap.
+                        inner.linked_list_heap.extend(size); // Now extend the heap.
                         inner.linked_list_heap.allocate_first_fit(layout) // And try again.
                     }
                 })
@@ -397,31 +392,27 @@ fn alloc_error_handler(layout: alloc::Layout) -> ! {
 
 /// Initialize the heap at the [HEAP_START].
 pub fn init_heap() {
+    let page = super::pmm_alloc_page();
+
     unsafe {
-        let mut address_space = AddressSpace::this();
-        let mut offset_table = address_space.offset_page_table();
-
-        let frame: PhysFrame = FRAME_ALLOCATOR
-            .allocate_frame()
-            .expect("init_heap: failed to allocate frame for the linked list allocator");
-
-        offset_table
-            .map_to(
-                Page::containing_address(VirtAddr::new(HEAP_START as _)),
-                frame,
-                PageTableFlags::PRESENT | PageTableFlags::WRITABLE,
-                &mut FRAME_ALLOCATOR,
+        super::kernel_address_space()
+            .map(
+                page,
+                VirtAddr::new(HEAP_START),
+                super::page_size(),
+                MapFlags::KERNEL | MapFlags::READ | MapFlags::WRITE,
             )
-            .expect("init_heap: failed to initialize the heap")
-            .flush();
+            .expect("init_heap: failed to initialize the heap");
 
         AERO_SYSTEM_ALLOCATOR
             .0
             .inner
             .lock_irq()
             .linked_list_heap
-            .init(HEAP_START, Size4KiB::SIZE as usize);
+            .init(HEAP_START, super::page_size());
     }
+
+    USE_EARLY_HEAP.store(false, Ordering::SeqCst);
 
     #[cfg(feature = "kmemleak")]
     kmemleak::MEM_LEAK_CATCHER.init();

@@ -17,8 +17,22 @@
  * along with Aero. If not, see <https://www.gnu.org/licenses/>.
  */
 
-pub mod interrupts;
-pub mod paging;
-pub mod task;
-pub mod tls;
-pub mod timer;
+
+
+pub struct Kpcr {
+    pub cpuid: usize,
+}
+
+/// SAFETY: TIPDR_EL1 should point to the kernel PCR.
+pub fn get_cpuid() -> usize {
+    get_kpcr().cpuid
+}
+
+/// SAFETY: TIPDR_EL1 should point to the kernel PCR.
+pub fn get_kpcr() -> &'static mut Kpcr {
+    let kpcr: usize;
+    asm!(
+        "mrs {}, TPIDR_EL1", out(reg) kpcr
+    );
+    unsafe { (&mut *(kpcr as *mut Kpcr)) as &'static mut Kpcr }
+}

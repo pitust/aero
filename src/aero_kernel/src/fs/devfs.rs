@@ -31,7 +31,6 @@ use spin::{Once, RwLock};
 use crate::fs::lookup_path;
 use crate::fs::Path;
 use crate::logger;
-use crate::mem::paging::*;
 use crate::rendy::RendyInfo;
 
 use super::cache::DirCacheItem;
@@ -121,7 +120,7 @@ impl INodeInterface for DevINode {
         self.0.inode().read_at(offset, buffer)
     }
 
-    fn mmap(&self, offset: usize, flags: MMapFlags) -> Result<PhysAddr> {
+    fn mmap(&self, offset: usize, flags: MMapFlags) -> Result<usize> {
         self.0.inode().mmap(offset, flags)
     }
 
@@ -278,12 +277,12 @@ impl INodeInterface for DevFb {
             .expect("/dev/fb: terminal not initialized")
     }
 
-    fn mmap(&self, offset: usize, flags: MMapFlags) -> Result<PhysAddr> {
+    fn mmap(&self, offset: usize, flags: MMapFlags) -> Result<usize> {
         let rinfo = crate::rendy::get_rendy_info();
 
         // Make sure we are in bounds.
-        if offset > rinfo.byte_len || offset + Size4KiB::SIZE as usize > rinfo.byte_len {
-            return Ok(PhysAddr::zero());
+        if offset > rinfo.byte_len || offset + crate::mem::page_size() > rinfo.byte_len {
+            return Ok(0);
         }
 
         crate::rendy::DEBUG_RENDY
@@ -298,23 +297,19 @@ impl INodeInterface for DevFb {
                     let fb_ptr = fb.as_ptr() as *const u8;
                     let fb_ptr = fb_ptr.add(offset);
 
-                    let fb_phys_ptr = fb_ptr.sub(crate::PHYSICAL_MEMORY_OFFSET.as_u64() as usize);
+                    let fb_phys_ptr = fb_ptr.sub(crate::PHYSICAL_MEMORY_OFFSET.as_usize());
 
-                    Ok(PhysAddr::new_unchecked(fb_phys_ptr as u64))
+                    Ok(fb_phys_ptr as usize)
                 } else {
                     let fb = lock.get_framebuffer();
 
                     // This is a private file mapping.
-                    let private_cp: PhysFrame = FRAME_ALLOCATOR
-                        .allocate_frame()
-                        .expect("/dev/fb: failed to allocate frame for private file mapping");
-
-                    let private_phys = private_cp.start_address();
-                    let private_virt = crate::PHYSICAL_MEMORY_OFFSET + private_phys.as_u64();
+                    let private_phys = crate::mem::pmm_alloc_page();
+                    let private_virt = crate::PHYSICAL_MEMORY_OFFSET + private_phys;
                     let private_ptr = private_virt.as_mut_ptr();
 
-                    core::slice::from_raw_parts_mut(private_ptr, Size4KiB::SIZE as usize)
-                        .copy_from_slice(&fb[offset..offset + Size4KiB::SIZE as usize]);
+                    core::slice::from_raw_parts_mut(private_ptr, crate::mem::page_size())
+                        .copy_from_slice(&fb[offset..offset + crate::mem::page_size()]);
 
                     Ok(private_phys)
                 }

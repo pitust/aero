@@ -35,7 +35,6 @@ use crate::arch::interrupts;
 
 use crate::arch::apic::IoApicHeader;
 use crate::arch::apic::CPU_COUNT;
-use crate::mem::paging;
 use crate::utils::io;
 
 use super::sdt::Sdt;
@@ -44,7 +43,7 @@ pub(super) const SIGNATURE: &str = "APIC";
 
 extern "C" {
     fn smp_prepare_trampoline() -> u16;
-    fn smp_prepare_launch(page_table: u64, stack_top: u64, ap_id: u64, mode: u32);
+    fn smp_prepare_launch(page_table: usize, stack_top: usize, ap_id: usize, mode: usize);
     fn smp_check_ap_flag() -> bool;
 }
 
@@ -66,96 +65,7 @@ impl Madt {
 
         for entry in self.iter() {
             match entry {
-                MadtEntry::LocalApic(local_apic) => {
-                    // Make sure that we can actually start the application processor.
-                    if (!((local_apic.flags & 1) ^ ((local_apic.flags >> 1) & 1))) == 1 {
-                        log::warn!("Unable to start AP{}", local_apic.apic_id);
-                        continue;
-                    }
-
-                    // Increase the CPU count.
-                    CPU_COUNT.fetch_add(1, Ordering::SeqCst);
-
-                    // Do not restart the BSP.
-                    if local_apic.apic_id == apic::get_bsp_id() as u8 {
-                        continue;
-                    }
-
-                    let page_table = controlregs::read_cr3_raw();
-                    let stack_top = unsafe {
-                        let layout = Layout::from_size_align_unchecked(4096 * 16, 4096);
-                        let raw = alloc_zeroed(layout);
-
-                        raw.add(layout.size())
-                    };
-
-                    let mode = if paging::level_5_paging_enabled() {
-                        1 << 1
-                    } else {
-                        0 << 1
-                    };
-
-                    unsafe {
-                        smp_prepare_launch(
-                            page_table,
-                            stack_top as u64,
-                            local_apic.apic_id as u64,
-                            mode,
-                        );
-                    }
-
-                    apic::mark_ap_ready(false);
-
-                    let mut bsp = apic::get_local_apic();
-
-                    // Send the init IPI.
-                    unsafe {
-                        if bsp.apic_type() == ApicType::X2apic {
-                            bsp.set_icr(((local_apic.apic_id as u64) << 32) | 0x4500);
-                        } else {
-                            let mut value = 0u64;
-
-                            value.set_bits(..32, (local_apic.apic_id as u64) << 24);
-                            value.set_bits(32.., 0x4500);
-
-                            bsp.set_icr(value);
-                        }
-                    }
-
-                    io::delay(5000);
-
-                    // Send the startup IPI.
-                    unsafe {
-                        if bsp.apic_type() == ApicType::X2apic {
-                            bsp.set_icr(
-                                ((local_apic.apic_id as u64) << 32) | (page_index | 0x4600) as u64,
-                            );
-                        } else {
-                            let mut value = 0u64;
-
-                            value.set_bits(..32, (local_apic.apic_id as u64) << 24);
-                            value.set_bits(32.., (page_index | 0x4600) as u64);
-
-                            bsp.set_icr(value);
-                        }
-                    }
-
-                    unsafe {
-                        // Wait for the AP to be ready.
-                        for _ in 0..100 {
-                            if smp_check_ap_flag() {
-                                break;
-                            }
-
-                            io::delay(10000)
-                        }
-                    }
-
-                    // Wait for the trampoline to be ready.
-                    while !apic::ap_ready() {
-                        interrupts::pause();
-                    }
-                }
+                MadtEntry::LocalApic(_) => {}
 
                 MadtEntry::IoApic(e) => IO_APICS.write().push(e),
                 MadtEntry::IntSrcOverride(e) => ISOS.write().push(e),

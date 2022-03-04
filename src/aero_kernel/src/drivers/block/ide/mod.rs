@@ -30,7 +30,6 @@ use crate::drivers::pci::*;
 use crate::fs::block;
 use crate::fs::block::{BlockDevice, BlockDeviceInterface};
 
-use crate::mem::paging::OffsetPageTable;
 use crate::utils::sync::Mutex;
 use crate::utils::CeilDiv;
 
@@ -192,7 +191,7 @@ impl PciDeviceHandle for Ide {
         }
     }
 
-    fn start(&self, header: &PciHeader, _offset_table: &mut OffsetPageTable) {
+    fn start(&self, header: &PciHeader) {
         self.device.lock_irq().launch(header);
     }
 }

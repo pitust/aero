@@ -27,7 +27,6 @@ use aml::pci_routing::{PciRoutingTable, Pin};
 use crate::utils::sync::Mutex;
 
 use crate::acpi::{self, mcfg};
-use crate::mem::paging::OffsetPageTable;
 use crate::utils::io;
 
 use bit_field::BitField;
@@ -627,7 +626,7 @@ pub trait PciDeviceHandle: Sync + Send {
 
     /// This function is responsible for initializing the device driver
     /// and starting it.
-    fn start(&self, header: &PciHeader, offset_table: &mut OffsetPageTable);
+    fn start(&self, header: &PciHeader);
 }
 
 struct PciDevice {
@@ -653,7 +652,7 @@ pub fn init_pci_router(pci_router: PciRoutingTable) {
 }
 
 /// Lookup and initialize all PCI devices.
-pub fn init(offset_table: &mut OffsetPageTable) {
+pub fn init() {
     // Check if the MCFG table is avaliable.
     if mcfg::is_avaliable() {
         let mcfg_table = mcfg::get_mcfg_table();
@@ -693,7 +692,7 @@ pub fn init(offset_table: &mut OffsetPageTable) {
                             .handle
                             .handles(device.get_vendor(), device.get_device())
                         {
-                            driver.handle.start(&device, offset_table)
+                            driver.handle.start(&device)
                         }
                     }
                 }

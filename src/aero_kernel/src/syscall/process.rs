@@ -25,7 +25,7 @@ use spin::{Mutex, Once};
 use crate::fs;
 use crate::fs::Path;
 
-use crate::mem::paging::VirtAddr;
+use crate::mem::VirtAddr;
 use crate::userland::scheduler;
 use crate::userland::signals::SignalEntry;
 use crate::utils::validate_str;
@@ -63,7 +63,7 @@ pub fn arch_prctl(command: usize, address: usize) -> Result<usize, AeroSyscallEr
             scheduler::get_scheduler()
                 .current_task()
                 .arch_task_mut()
-                .set_fs_base(VirtAddr::new(address as u64));
+                .set_fs_base(VirtAddr::new(address));
 
             Ok(0x00)
         }
@@ -72,7 +72,7 @@ pub fn arch_prctl(command: usize, address: usize) -> Result<usize, AeroSyscallEr
             .current_task()
             .arch_task_mut()
             .get_fs_base()
-            .as_u64() as usize),
+            .as_usize()),
 
         ARCH_SET_GS => unimplemented!(),
         ARCH_GET_GS => unimplemented!(),
@@ -185,7 +185,7 @@ pub fn mmap(
     fd: usize,
     offset: usize,
 ) -> Result<usize, AeroSyscallError> {
-    let address = VirtAddr::new(address as u64);
+    let address = VirtAddr::new(address);
 
     let protection = MMapProt::from_bits(protection).ok_or(AeroSyscallError::EINVAL)?;
     let flags = MMapFlags::from_bits(flags).ok_or(AeroSyscallError::EINVAL)?;
@@ -208,14 +208,14 @@ pub fn mmap(
         .vm()
         .mmap(address, size, protection, flags, offset, file)
     {
-        Ok(alloc.as_u64() as usize)
+        Ok(alloc.as_usize())
     } else {
         Err(AeroSyscallError::EFAULT)
     }
 }
 
 pub fn munmap(address: usize, size: usize) -> Result<usize, AeroSyscallError> {
-    let address = VirtAddr::new(address as u64);
+    let address = VirtAddr::new(address);
 
     if scheduler::get_scheduler()
         .current_task()
@@ -254,7 +254,7 @@ pub fn info(struc: usize) -> Result<usize, AeroSyscallError> {
     let struc = unsafe { &mut *(struc as *mut aero_syscall::SysInfo) };
 
     // TODO: Fill in the rest of the struct.
-    struc.uptime = crate::arch::pit::get_uptime_ticks() as i64;
+    struc.uptime = crate::arch::timer::get_uptime_ticks() as i64;
 
     Ok(0x00)
 }
@@ -280,7 +280,7 @@ pub fn sigaction(
     let new = if sigact == 0 {
         None
     } else {
-        let address = VirtAddr::new(sigact as u64);
+        let address = VirtAddr::new(sigact);
         let raw = address.as_mut_ptr::<SigAction>();
         let sigact = unsafe { &mut *raw };
 
@@ -296,7 +296,7 @@ pub fn sigaction(
     let old = if old == 0 {
         None
     } else {
-        let address = VirtAddr::new(old as u64);
+        let address = VirtAddr::new(old);
         let raw = address.as_mut_ptr::<SigAction>();
         let sigact = unsafe { &mut *raw };
 

@@ -20,7 +20,7 @@
 use alloc::{alloc::alloc_zeroed, sync::Arc};
 use core::{alloc::Layout, any::Any, cell::UnsafeCell, mem, ptr::Unique};
 
-use crate::{arch::apic::get_cpu_count, mem::paging::align_down};
+use crate::{arch::apic::get_cpu_count, mem::align_down};
 
 pub mod buffer;
 #[cfg(target_arch = "x86_64")]
@@ -189,25 +189,25 @@ pub fn slice_into_bytes<T: Sized>(slice: &[T]) -> &[u8] {
 }
 
 pub struct StackHelper<'a> {
-    ptr: &'a mut u64,
+    ptr: &'a mut usize,
 }
 
 impl<'a> StackHelper<'a> {
-    pub fn new(ptr: &'a mut u64) -> StackHelper<'a> {
+    pub fn new(ptr: &'a mut usize) -> StackHelper<'a> {
         StackHelper::<'a> { ptr }
     }
 
-    pub fn skip_by(&mut self, by: u64) {
+    pub fn skip_by(&mut self, by: usize) {
         *self.ptr -= by;
     }
 
     pub unsafe fn offset<T: Sized>(&mut self) -> &mut T {
-        self.skip_by(core::mem::size_of::<T>() as u64);
+        self.skip_by(core::mem::size_of::<T>());
 
         &mut *(*self.ptr as *mut T)
     }
 
-    pub fn top(&self) -> u64 {
+    pub fn top(&self) -> usize {
         *self.ptr
     }
 
@@ -220,25 +220,25 @@ impl<'a> StackHelper<'a> {
     }
 
     pub unsafe fn write<T: Sized>(&mut self, value: T) {
-        self.skip_by(core::mem::size_of::<T>() as u64);
+        self.skip_by(core::mem::size_of::<T>());
 
         (*self.ptr as *mut T).write(value);
     }
 
     pub unsafe fn write_bytes(&mut self, bytes: &[u8]) {
-        self.skip_by(bytes.len() as u64);
+        self.skip_by(bytes.len());
 
         (*self.ptr as *mut u8).copy_from(bytes.as_ptr(), bytes.len());
     }
 
-    pub fn get_by(&mut self, by: u64) {
+    pub fn get_by(&mut self, by: usize) {
         *self.ptr += by;
     }
 
     pub unsafe fn get<'b, T: Sized>(&mut self) -> &'b mut T {
         let x = &mut *(*self.ptr as *mut T);
 
-        self.get_by(core::mem::size_of::<T>() as u64);
+        self.get_by(core::mem::size_of::<T>());
         x
     }
 }

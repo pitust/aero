@@ -62,6 +62,7 @@ mod prelude {
     }
 }
 
+use mem::VirtAddr;
 #[prelude_import]
 pub use prelude::rust_2021::*;
 
@@ -89,7 +90,6 @@ mod utils;
 use stivale_boot::v2::*;
 
 use self::mem::alloc::LockedHeap;
-use self::mem::paging::VirtAddr;
 
 use self::arch::interrupts;
 use self::userland::scheduler;
@@ -112,12 +112,13 @@ fn aero_main() -> ! {
     fs::init().unwrap();
     log::info!("loaded filesystem");
 
-    arch::pit::init();
+    arch::timer::init();
     log::info!("loaded timer");
 
     userland::init();
     log::info!("loaded userland");
 
+    #[cfg(target_arch = "x86_64")]
     arch::apic::mark_bsp_ready(true);
 
     log::info!("initialized kernel");
@@ -139,13 +140,10 @@ fn aero_main() -> ! {
 }
 
 fn kernel_main_thread() {
-    let mut address_space = mem::AddressSpace::this();
-    let mut offset_table = address_space.offset_page_table();
-
     modules::init();
     log::info!("loaded kernel modules");
 
-    drivers::pci::init(&mut offset_table);
+    drivers::pci::init();
     log::info!("loaded PCI driver");
 
     fs::block::launch().unwrap();

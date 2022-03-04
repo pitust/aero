@@ -200,6 +200,6 @@ extern "C" fn restore_user_tls() {
             .arch_task_mut()
             .get_fs_base();
 
-        io::wrmsr(io::IA32_FS_BASE, base.as_u64());
+        io::wrmsr(io::IA32_FS_BASE, base.as_usize() as u64);
     }
 }

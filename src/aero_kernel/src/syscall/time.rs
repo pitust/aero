@@ -19,14 +19,15 @@
 
 use aero_syscall::AeroSyscallError;
 
+use crate::mem::VirtAddr;
+use crate::userland::scheduler;
 use crate::utils::CeilDiv;
-use crate::{mem::paging::VirtAddr, userland::scheduler};
 
 const CLOCK_TYPE_REALTIME: usize = 0;
 const CLOCK_TYPE_MONOTONIC: usize = 1;
 
 pub fn sleep(timespec: usize) -> Result<usize, AeroSyscallError> {
-    let timespec = VirtAddr::new(timespec as u64);
+    let timespec = VirtAddr::new(timespec);
     let timespec = unsafe { &*(timespec.as_mut_ptr::<aero_syscall::TimeSpec>()) };
     let duration = (timespec.tv_nsec as usize).ceil_div(1000000000) + timespec.tv_sec as usize;
 
@@ -36,12 +37,12 @@ pub fn sleep(timespec: usize) -> Result<usize, AeroSyscallError> {
 }
 
 pub fn gettime(clock: usize, timespec: usize) -> Result<usize, AeroSyscallError> {
-    let timespec = VirtAddr::new(timespec as u64);
+    let timespec = VirtAddr::new(timespec);
     let timespec = unsafe { &mut *(timespec.as_mut_ptr::<aero_syscall::TimeSpec>()) };
 
     match clock {
         CLOCK_TYPE_REALTIME => {
-            let clock = crate::arch::pit::get_realtime_clock();
+            let clock = crate::arch::timer::get_realtime_clock();
 
             timespec.tv_sec = clock.tv_sec;
             timespec.tv_nsec = clock.tv_nsec;

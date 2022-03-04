@@ -24,13 +24,13 @@ use crate::utils::StackHelper;
 
 use super::interrupts::InterruptStack;
 
-const REDZONE_SIZE: u64 = 128;
-const SYSCALL_INSTRUCTION_SIZE: u64 = 2;
+const REDZONE_SIZE: usize = 128;
+const SYSCALL_INSTRUCTION_SIZE: usize = 2;
 
 #[repr(C)]
 #[derive(Debug)]
 pub struct SignalFrame {
-    restart_syscall: u64,
+    restart_syscall: usize,
     frame: InterruptStack,
     sigmask: u64,
 }
@@ -38,7 +38,7 @@ pub struct SignalFrame {
 impl SignalFrame {
     fn from_interrupt(frame: &mut InterruptStack, sigmask: u64) -> SignalFrame {
         SignalFrame {
-            restart_syscall: u64::MAX,
+            restart_syscall: usize::MAX,
             frame: *frame,
             sigmask,
         }
@@ -87,8 +87,8 @@ pub fn interrupt_check_signals(stack: &mut InterruptStack) {
             }
 
             stack.iret.rsp = ptr;
-            stack.iret.rip = func as u64;
-            stack.scratch.rdi = signal as u64;
+            stack.iret.rip = func as usize;
+            stack.scratch.rdi = signal;
         }
     }
 }
@@ -144,10 +144,10 @@ pub fn sigreturn(sys: &mut SyscallFrame, regs: &mut RegistersFrame) -> usize {
     sys.rflags = signal_frame.frame.iret.rflags;
     sys.rip = signal_frame.frame.iret.rip;
 
-    if signal_frame.restart_syscall != u64::MAX {
+    if signal_frame.restart_syscall != usize::MAX {
         sys.rip -= SYSCALL_INSTRUCTION_SIZE;
     }
 
     *regs = ret_regs;
-    result as usize
+    result
 }

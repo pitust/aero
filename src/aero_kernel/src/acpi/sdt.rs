@@ -19,7 +19,7 @@
 
 use core::mem;
 
-use crate::mem::paging::VirtAddr;
+use crate::mem::VirtAddr;
 
 #[repr(C, packed)]
 pub(super) struct Sdt {

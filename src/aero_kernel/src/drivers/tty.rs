@@ -26,11 +26,11 @@ use crate::fs::devfs;
 use crate::fs::inode;
 
 use crate::fs::inode::INodeInterface;
-use crate::mem::paging::VirtAddr;
+use crate::mem::VirtAddr;
 use crate::utils::sync::{BlockQueue, Mutex};
 
-use super::keyboard::KeyCode;
-use super::keyboard::KeyboardListener;
+#[cfg(target_arch = "x86_64")]
+use super::keyboard::{KeyCode, KeyboardListener};
 
 lazy_static::lazy_static! {
     static ref TTY: Arc<Tty> = Tty::new();
@@ -259,7 +259,7 @@ impl INodeInterface for Tty {
     fn ioctl(&self, command: usize, arg: usize) -> fs::Result<usize> {
         match command {
             aero_syscall::TIOCGWINSZ => {
-                let winsize = VirtAddr::new(arg as u64);
+                let winsize = VirtAddr::new(arg);
                 let winsize = unsafe { &mut *(winsize.as_mut_ptr::<aero_syscall::WinSize>()) };
 
                 let (rows, cols) = crate::rendy::get_rows_cols();
@@ -276,7 +276,7 @@ impl INodeInterface for Tty {
             }
 
             aero_syscall::TCGETS => {
-                let termios = VirtAddr::new(arg as u64);
+                let termios = VirtAddr::new(arg);
                 let termios = unsafe { &mut *(termios.as_mut_ptr::<aero_syscall::Termios>()) };
 
                 let lock = TERMIOS.lock_irq();
@@ -293,7 +293,7 @@ impl INodeInterface for Tty {
                 stdin.cursor = 0;
                 core::mem::drop(stdin);
 
-                let termios = VirtAddr::new(arg as u64);
+                let termios = VirtAddr::new(arg);
                 let termios = unsafe { &*(termios.as_mut_ptr::<aero_syscall::Termios>()) };
 
                 let mut lock = TERMIOS.lock_irq();
@@ -322,6 +322,7 @@ impl devfs::Device for Tty {
     }
 }
 
+#[cfg(target_arch = "x86_64")]
 impl KeyboardListener for Tty {
     fn on_key(&self, key: KeyCode, released: bool) {
         let mut state = self.state.lock();
@@ -813,6 +814,7 @@ impl vte::Perform for AnsiEscape {
 }
 
 fn init_tty() {
+    #[cfg(target_arch = "x86_64")]
     super::keyboard::register_keyboard_listener(TTY.as_ref().clone());
 
     devfs::install_device(TTY.clone()).expect("failed to register tty as a device");

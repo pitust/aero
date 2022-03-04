@@ -28,7 +28,7 @@ use spin::Once;
 
 use crate::cmdline::CommandLine;
 use crate::mem;
-use crate::mem::paging::align_up;
+use crate::mem::align_up;
 
 use stivale_boot::v2::StivaleFramebufferTag;
 
@@ -188,7 +188,7 @@ fn parse_bmp_image(data: &[u8]) -> Image {
         img_width: header.bi_width as usize,
         img_height: header.bi_height as usize,
         bpp: header.bi_bpp as usize,
-        pitch: align_up((header.bi_width * header.bi_bpp as u32) as u64, 32) as usize / 8,
+        pitch: align_up((header.bi_width * header.bi_bpp as u32) as usize, 32) / 8,
     }
 }
 

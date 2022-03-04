@@ -9,7 +9,7 @@ use alloc::vec::Vec;
 use crate::fs::devfs::install_device;
 use crate::fs::Result;
 
-use crate::mem::paging::VirtAddr;
+use crate::mem::VirtAddr;
 use crate::utils::sync::Mutex;
 
 use super::devfs::{alloc_device_marker, Device};
@@ -108,7 +108,7 @@ impl Mbr {
         let memory = unsafe { alloc_zeroed(layout) };
 
         Self {
-            data: VirtAddr::new(memory as u64),
+            data: VirtAddr::new(memory as usize),
         }
     }
 

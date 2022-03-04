@@ -32,8 +32,10 @@ use crate::fs;
 use crate::fs::cache::DirCacheItem;
 use crate::fs::FileSystemError;
 use crate::mem;
-use crate::mem::paging::*;
+use crate::mem::align_up;
 use crate::mem::AddressSpace;
+use crate::mem::AddressSpaceHandle;
+use crate::mem::VirtAddr;
 
 use crate::utils::sync::Mutex;
 
@@ -199,22 +201,6 @@ impl<'this> Iterator for ProgramHeaderIter<'this> {
     }
 }
 
-impl From<MMapProt> for PageTableFlags {
-    fn from(e: MMapProt) -> Self {
-        let mut res = PageTableFlags::empty();
-
-        if !e.contains(MMapProt::PROT_EXEC) {
-            res.insert(PageTableFlags::NO_EXECUTE);
-        }
-
-        if e.contains(MMapProt::PROT_WRITE) {
-            res.insert(PageTableFlags::WRITABLE);
-        }
-
-        res
-    }
-}
-
 enum UnmapResult {
     None,
     Parital(Mapping),
@@ -260,47 +246,41 @@ impl Mapping {
     /// backed by a file, we have to alloctate a frame and map it at the faulted address.
     fn handle_pf_private_anon(
         &mut self,
-        offset_table: &mut OffsetPageTable,
-        reason: PageFaultErrorCode,
+        address_space: AddressSpaceHandle,
+        cause: mem::PFCause,
         address: VirtAddr,
     ) -> bool {
-        let addr_aligned = address.align_down(Size4KiB::SIZE);
+        let addr_aligned = address.align_down(mem::page_size());
 
-        if !reason.contains(PageFaultErrorCode::PROTECTION_VIOLATION) {
+        if cause == mem::PFCause::NotPresent {
             log::trace!(
                 "    - private R: {:#x}..{:#x}",
                 addr_aligned,
-                addr_aligned + Size4KiB::SIZE
+                addr_aligned + mem::page_size()
             );
 
-            let frame: PhysFrame =
-                PhysFrame::containing_address(pmm_alloc(BuddyOrdering::Size4KiB));
+            let phys = mem::pmm_alloc_page();
 
-            unsafe {
-                offset_table.map_to(
-                    Page::containing_address(addr_aligned),
-                    frame,
-                    // NOTE: We dont need to remove the writeable flag from this mapping, since
-                    // the writeable flag will be removed from the parent and child on fork so,
-                    // the mapping gets copied on write.
-                    PageTableFlags::USER_ACCESSIBLE
-                        | PageTableFlags::PRESENT
-                        | self.protection.into(),
-                    &mut FRAME_ALLOCATOR,
-                )
-            }
-            .expect("Failed to identity map userspace private mapping")
-            .flush();
+            address_space.map(
+                phys,
+                addr_aligned,
+                // NOTE: We dont need to remove the writeable flag from this mapping, since
+                // the writeable flag will be removed from the parent and child on fork so,
+                // the mapping gets copied on write.
+                mem::page_size(),
+                mem::MapFlags::USER
+                    | self.protection.into(),
+            ).expect("Failed to map userspace private mapping");
 
             true
-        } else if reason.contains(PageFaultErrorCode::CAUSED_BY_WRITE) {
+        } else if cause == mem::PFCause::Write {
             log::trace!(
                 "    - private COW: {:#x}..{:#x}",
                 addr_aligned,
-                addr_aligned + Size4KiB::SIZE
+                addr_aligned + mem::page_size()
             );
 
-            self.handle_cow(offset_table, addr_aligned, false)
+            self.handle_cow(address_space, addr_aligned, false)
         } else {
             log::error!("    - present page read failed");
             false
@@ -312,23 +292,23 @@ impl Mapping {
     /// the allocated frame at the faulted address.
     fn handle_pf_file(
         &mut self,
-        offset_table: &mut OffsetPageTable,
-        reason: PageFaultErrorCode,
+        address_space: AddressSpaceHandle,
+        cause: mem::PFCause,
         address: VirtAddr,
     ) -> bool {
         if let Some(mmap_file) = self.file.as_mut() {
-            let offset = align_down(
-                (address - self.start_addr) + mmap_file.offset as u64,
-                Size4KiB::SIZE,
+            let offset = mem::align_down(
+                (address - self.start_addr) + mmap_file.offset,
+                mem::page_size(),
             );
 
-            let address = address.align_down(Size4KiB::SIZE);
+            let address = address.align_down(mem::page_size());
             let size = core::cmp::min(
-                Size4KiB::SIZE,
-                mmap_file.size as u64 - (address - self.start_addr),
+                mem::page_size(),
+                mmap_file.size - (address - self.start_addr),
             );
 
-            if !reason.contains(PageFaultErrorCode::PROTECTION_VIOLATION) {
+            if cause == mem::PFCause::Write {
                 // We are writing to private file mapping so copy the content of the page.
                 log::trace!(
                     "    - private file R: {:?}..{:?} (offset={:#x})",
@@ -340,23 +320,16 @@ impl Mapping {
                 let phys = mmap_file
                     .file
                     .inode()
-                    .mmap(offset as usize, self.flags)
+                    .mmap(offset, self.flags)
                     .expect("handle_pf_file: file does not support mmap");
 
-                let frame: PhysFrame<Size4KiB> = PhysFrame::containing_address(phys);
-
-                unsafe {
-                    offset_table.map_to(
-                        Page::containing_address(address),
-                        frame,
-                        PageTableFlags::PRESENT
-                            | PageTableFlags::USER_ACCESSIBLE
-                            | self.protection.into(),
-                        &mut FRAME_ALLOCATOR,
-                    )
-                }
-                .expect("failed to map allocated frame for private file read")
-                .flush();
+                address_space.map(
+                    phys,
+                    address,
+                    mem::page_size(),
+                    mem::MapFlags::USER
+                        | self.protection.into(),
+                ).expect("failed to map allocated frame for private file read");
 
                 true
             } else {
@@ -374,57 +347,51 @@ impl Mapping {
     /// table entry is not.
     fn handle_cow(
         &mut self,
-        offset_table: &mut OffsetPageTable,
+        address_space: AddressSpaceHandle,
         address: VirtAddr,
         copy: bool,
     ) -> bool {
-        if let TranslateResult::Mapped { frame, .. } = offset_table.translate(address) {
-            let addr = frame.start_address();
-            let page: Page<Size4KiB> = Page::containing_address(address);
-
-            if let Some(vm_frame) = addr.as_vm_frame() {
+        if let Some((phys, flags)) = address_space.lookup(address) {
+            if let Some(vm_frame) = mem::vm_frame(phys) { 
                 if vm_frame.ref_count() > 1 || copy {
                     // This page is used by more then one process, so make it a private copy.
-                    log::trace!("    - making {:?} into a private copy", page);
+                    log::trace!("    - making {:?} into a private copy", phys);
 
-                    let frame = pmm_alloc(BuddyOrdering::Size4KiB);
+                    let frame = mem::pmm_alloc_page();
 
                     unsafe {
                         address.as_ptr::<u8>().copy_to(
-                            (crate::PHYSICAL_MEMORY_OFFSET + frame.as_u64()).as_mut_ptr(),
-                            Size4KiB::SIZE as _,
+                            (crate::PHYSICAL_MEMORY_OFFSET + frame).as_mut_ptr(),
+                            mem::page_size(),
                         );
                     }
 
-                    offset_table.unmap(page).expect("unmap faild").1.flush();
-                    let frame = PhysFrame::containing_address(frame);
-
+                    address_space.unmap(address, mem::page_size()).expect("unmap failed");
                     unsafe {
-                        offset_table.map_to(
-                            page,
+                        address_space.map(
                             frame,
-                            PageTableFlags::PRESENT
-                                | PageTableFlags::USER_ACCESSIBLE
+                            address,
+                            mem::page_size(),
+                            mem::MapFlags::READ
+                                | mem::MapFlags::USER
                                 | self.protection.into(),
-                            &mut FRAME_ALLOCATOR,
                         )
                     }
-                    .expect("page mapping failed")
-                    .flush();
+                    .expect("page mapping failed");
                 } else {
                     // This page is used by only one process, so make it writable.
-                    log::trace!("    - making {:?} writable", page);
+                    log::trace!("    - making {:?} writable", address);
 
                     unsafe {
-                        offset_table.update_flags(
-                            page,
-                            PageTableFlags::PRESENT
-                                | PageTableFlags::USER_ACCESSIBLE
+                        address_space.set_flags(
+                            address,
+                            mem::page_size(),
+                            mem::MapFlags::READ
+                                | mem::MapFlags::USER
                                 | self.protection.into(),
                         )
                     }
-                    .expect("failed to update page table flags")
-                    .flush();
+                    .expect("failed to update page table flags");
                 }
 
                 true
@@ -438,20 +405,13 @@ impl Mapping {
 
     fn unmap(
         &mut self,
-        offset_table: &mut OffsetPageTable,
+        address_space: AddressSpaceHandle,
         start: VirtAddr,
         end: VirtAddr,
-    ) -> Result<UnmapResult, UnmapError> {
-        let mut unmap_range_inner = |range| -> Result<(), UnmapError> {
-            match offset_table.unmap_range(range, Size4KiB::SIZE) {
-                Ok(_) => Ok(()),
-
-                // its fine since technically we are not actually allocating the range
-                // and they are just allocated on faults. So there might be a chance where we
-                // try to unmap a region that is mapped but not actually allocated.
-                Err(UnmapError::PageNotMapped) => Ok(()),
-                Err(err) => return Err(err),
-            }
+    ) -> Result<UnmapResult, &'static str> {
+        // note: the end param should be inferred...
+        let unmap_range_inner = |start, end: VirtAddr| -> Result<(), &'static str> {
+            address_space.unmap(start, end.as_usize() - start.as_usize())
         };
 
         if end <= self.start_addr || start >= self.end_addr {
@@ -459,10 +419,10 @@ impl Mapping {
         } else if start > self.start_addr && end < self.end_addr {
             // The address we want to unmap is in the middle of the region. So we
             // will need to split the mapping and update the end address accordingly.
-            unmap_range_inner(start..end)?;
+            unmap_range_inner(start, end)?;
 
             let new_file = self.file.as_ref().map(|file| {
-                let offset = file.offset + (end - self.start_addr) as usize;
+                let offset = file.offset + (end - self.start_addr);
                 let size = file.size - (offset - file.offset);
 
                 MMapFile::new(file.file.clone(), offset, size)
@@ -481,24 +441,24 @@ impl Mapping {
             Ok(UnmapResult::Parital(new_mapping))
         } else if start <= self.start_addr && end >= self.end_addr {
             // We are unmapping the whole region.
-            unmap_range_inner(self.start_addr..self.end_addr)?;
+            unmap_range_inner(self.start_addr, self.end_addr)?;
             Ok(UnmapResult::Full)
         } else if start <= self.start_addr && end < self.end_addr {
-            unmap_range_inner(self.start_addr..end)?;
+            unmap_range_inner(self.start_addr, end)?;
 
             // Update the start address of the mapping since we have unmapped the
             // first chunk of the mapping.
             let offset = end - self.start_addr;
 
             if let Some(file) = self.file.as_mut() {
-                file.offset += offset as usize;
+                file.offset += offset;
             }
 
             self.start_addr = end;
 
             Ok(UnmapResult::Start)
         } else {
-            unmap_range_inner(start..self.end_addr)?;
+            unmap_range_inner(start, self.end_addr)?;
 
             // Update the end address of the mapping since we have unmapped the
             // last chunk of the mapping.
@@ -510,18 +470,21 @@ impl Mapping {
 
 struct VmProtected {
     mappings: LinkedList<Mapping>,
+    address_space: AddressSpaceHandle,
 }
 
 impl VmProtected {
     fn new() -> Self {
         Self {
             mappings: LinkedList::new(),
+            address_space: mem::new_address_space(),
         }
     }
 
     fn handle_page_fault(
         &mut self,
-        reason: PageFaultErrorCode,
+        vmspace: &mut dyn mem::AddressSpace,
+        cause: mem::PFCause,
         accessed_address: VirtAddr,
     ) -> bool {
         if let Some(map) = self
@@ -535,31 +498,24 @@ impl VmProtected {
                 return false;
             }
 
-            if reason.contains(PageFaultErrorCode::CAUSED_BY_WRITE)
-                && !map.protection.contains(MMapProt::PROT_WRITE)
-            {
+            if cause == mem::PFCause::Write && !map.protection.contains(MMapProt::PROT_WRITE) {
                 return false;
             }
 
-            if reason.contains(PageFaultErrorCode::INSTRUCTION_FETCH)
-                && !map.protection.contains(MMapProt::PROT_EXEC)
-            {
+            if cause == mem::PFCause::Execute && !map.protection.contains(MMapProt::PROT_EXEC) {
                 return false;
             }
 
             let is_private = map.flags.contains(MMapFlags::MAP_PRIVATE);
             let is_annon = map.flags.contains(MMapFlags::MAP_ANONYOMUS);
 
-            let mut address_space = AddressSpace::this();
-            let mut offset_table = address_space.offset_page_table();
-
             let result = match (is_private, is_annon) {
                 (true, true) => {
-                    map.handle_pf_private_anon(&mut offset_table, reason, accessed_address)
+                    map.handle_pf_private_anon(self.address_space.clone(), cause, accessed_address)
                 }
 
                 (true, false) | (false, false) => {
-                    map.handle_pf_file(&mut offset_table, reason, accessed_address)
+                    map.handle_pf_file(self.address_space.clone(), cause, accessed_address)
                 }
 
                 (false, true) => unreachable!("shared and anonymous mapping"),
@@ -621,18 +577,18 @@ impl VmProtected {
             } else {
                 if let Some(pmap) = cursor.peek_prev() {
                     let start = core::cmp::max(address, pmap.end_addr);
-                    let hole = map_start.as_u64() - start.as_u64();
+                    let hole = map_start.as_usize() - start.as_usize();
 
-                    if hole as usize >= size {
+                    if hole >= size {
                         return Some((start, cursor));
                     } else {
                         // The hole is too small
                         cursor.move_next();
                     }
                 } else {
-                    let hole = map_start.as_u64() - address.as_u64();
+                    let hole = map_start.as_usize() - address.as_usize();
 
-                    return if hole as usize >= size {
+                    return if hole >= size {
                         Some((address, cursor))
                     } else {
                         // The hole is too small
@@ -655,7 +611,7 @@ impl VmProtected {
         file: Option<DirCacheItem>,
     ) -> Option<VirtAddr> {
         // Offset is required to be a multiple of page size.
-        if (offset as u64 & Size4KiB::SIZE - 1) != 0 {
+        if !mem::is_aligned(offset, mem::page_size()) {
             return None;
         }
 
@@ -681,15 +637,15 @@ impl VmProtected {
             }
         }
 
-        let size_aligned = align_up(size as _, Size4KiB::SIZE);
+        let size_aligned = align_up(size, mem::page_size());
 
         if address == VirtAddr::zero() {
             // We need to find a free mapping above 0x7000_0000_0000.
-            self.find_any_above(VirtAddr::new(0x7000_0000_0000), size_aligned as _)
+            self.find_any_above(VirtAddr::new(0x7000_0000_0000), size_aligned)
         } else {
             if flags.contains(MMapFlags::MAP_FIXED) {
                 // SAFTEY: The provided address should be page aligned.
-                if !address.is_aligned(Size4KiB::SIZE) {
+                if !address.is_aligned(mem::page_size()) {
                     return None;
                 }
 
@@ -699,8 +655,8 @@ impl VmProtected {
                     return None;
                 }
 
-                self.munmap(address, size_aligned as usize); // Unmap any existing mappings.
-                self.find_fixed_mapping(address, size_aligned as _)
+                self.munmap(address, size_aligned); // Unmap any existing mappings.
+                self.find_fixed_mapping(address, size_aligned)
             } else {
                 self.find_any_above(address, size)
             }
@@ -736,13 +692,10 @@ impl VmProtected {
     fn clear(&mut self) {
         let mut cursor = self.mappings.cursor_front_mut();
 
-        let mut address_space = AddressSpace::this();
-        let mut offset_table = address_space.offset_page_table();
-
         while let Some(map) = cursor.current() {
             // now this should automatically free the physical page backed by this mapping
             // if the reference count of that frame is 0 since we have now unmapped it.
-            map.unmap(&mut offset_table, map.start_addr, map.end_addr)
+            map.unmap(self.address_space.clone(), map.start_addr, map.end_addr)
                 .expect("vm_clear: unexpected error while unmapping");
 
             cursor.remove_current();
@@ -750,14 +703,14 @@ impl VmProtected {
     }
 
     fn munmap(&mut self, address: VirtAddr, size: usize) -> bool {
-        let start = address.align_up(Size4KiB::SIZE);
-        let end = (address + size).align_up(Size4KiB::SIZE);
+        // NOTE: did andy read posix?
+        // I (pitust) would honestly think that start should align down not up (or vice versa)
+        // TODO: this should be the same as whatever posix does
+        let start = address.align_up(mem::page_size());
+        let end = (address + size).align_up(mem::page_size());
 
         let mut cursor = self.mappings.cursor_front_mut();
         let mut success = false;
-
-        let mut address_space = AddressSpace::this();
-        let mut offset_table = address_space.offset_page_table();
 
         log::debug!("unmapping {:?}..{:?}", start, end);
 
@@ -765,7 +718,7 @@ impl VmProtected {
             if map.end_addr <= start {
                 cursor.move_next();
             } else {
-                match map.unmap(&mut offset_table, start, end) {
+                match map.unmap(self.address_space.clone(), start, end) {
                     Ok(result) => match result {
                         UnmapResult::None => return success,
                         UnmapResult::Start => return true,
@@ -843,9 +796,9 @@ impl Vm {
 
         let load_offset = VirtAddr::new(
             if header.pt2.type_().as_type() == header::Type::SharedObject {
-                0x40000000u64
+                0x40000000usize
             } else {
-                0u64
+                0usize
             },
         );
 
@@ -864,23 +817,23 @@ impl Vm {
             let header_flags = header.flags();
 
             if header_type == xmas_elf::program::Type::Load {
-                let virtual_start = VirtAddr::new(header.virtual_addr()).align_down(Size4KiB::SIZE)
-                    + load_offset.as_u64();
+                let virtual_start = VirtAddr::new_u64(header.virtual_addr()).align_down(mem::page_size())
+                    + load_offset.as_usize();
 
                 if base_addr == VirtAddr::zero() {
                     base_addr = virtual_start;
                 }
 
-                let virtual_end = VirtAddr::new(header.virtual_addr() + header.mem_size())
-                    .align_up(Size4KiB::SIZE)
-                    + load_offset.as_u64();
+                let virtual_end = VirtAddr::new_u64(header.virtual_addr() + header.mem_size())
+                    .align_up(mem::page_size())
+                    + load_offset.as_usize();
 
-                let virtual_fend = VirtAddr::new(header.virtual_addr() + header.file_size())
-                    + load_offset.as_u64();
+                let virtual_fend = VirtAddr::new_u64(header.virtual_addr() + header.file_size())
+                    + load_offset.as_usize();
 
                 let data_size = virtual_fend - virtual_start;
-                let file_offset = align_down(header.offset(), Size4KiB::SIZE);
-                let size = (virtual_end - virtual_start) as usize;
+                let file_offset = mem::align_down(header.offset() as usize, mem::page_size());
+                let size = virtual_end - virtual_start;
 
                 let mut prot = MMapProt::empty();
 
@@ -933,11 +886,11 @@ impl Vm {
                     .ok_or(ElfLoadError::MemoryMapError)?;
 
                 let buffer = unsafe {
-                    core::slice::from_raw_parts_mut::<u8>(address.as_mut_ptr(), data_size as usize)
+                    core::slice::from_raw_parts_mut::<u8>(address.as_mut_ptr(), data_size)
                 };
 
                 bin.inode()
-                    .read_at(file_offset as usize, buffer)
+                    .read_at(file_offset, buffer)
                     .map_err(|err| ElfLoadError::ReadError(err))?;
 
                 if !header.flags().is_write() {
@@ -970,12 +923,13 @@ impl Vm {
     /// and then passes it off to one of the appropriate page fault handlers.
     pub(crate) fn handle_page_fault(
         &self,
-        reason: PageFaultErrorCode,
+        vmspace: &mut dyn AddressSpace,
+        cause: mem::PFCause,
         accessed_address: VirtAddr,
     ) -> bool {
         self.inner
             .lock()
-            .handle_page_fault(reason, accessed_address)
+            .handle_page_fault(vmspace, cause, accessed_address)
     }
 
     pub(crate) fn log(&self) {

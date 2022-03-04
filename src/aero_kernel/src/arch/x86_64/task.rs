@@ -26,7 +26,7 @@ use core::alloc::Layout;
 use core::ptr::Unique;
 
 use crate::fs::cache::DirCacheItem;
-use crate::mem::paging::*;
+use crate::mem::{self, VirtAddr, AddressSpaceHandle};
 use crate::syscall::{ExecArgs, RegistersFrame, SyscallFrame};
 use crate::userland::vm::Vm;
 use crate::utils::StackHelper;
@@ -46,15 +46,15 @@ struct KernelTaskFrame {
 #[derive(Default)]
 #[repr(C, packed)]
 struct Context {
-    cr3: u64,
-    rbp: u64,
-    r12: u64,
-    r13: u64,
-    r14: u64,
-    r15: u64,
-    rbx: u64,
-    rflags: u64,
-    rip: u64,
+    cr3: usize,
+    rbp: usize,
+    r12: usize,
+    r13: usize,
+    r14: usize,
+    r15: usize,
+    rbx: usize,
+    rflags: usize,
+    rip: usize,
 }
 
 #[repr(u64)]
@@ -84,7 +84,7 @@ pub fn userland_last_address() -> VirtAddr {
 
     *CACHED.call_once(|| {
         let virtual_mask_shift: u64;
-        let la57 = crate::mem::paging::level_5_paging_enabled();
+        let la57 = crate::arch::paging::level_5_paging_enabled();
 
         if la57 {
             virtual_mask_shift = 56;
@@ -92,7 +92,8 @@ pub fn userland_last_address() -> VirtAddr {
             virtual_mask_shift = 47;
         }
 
-        VirtAddr::new((1u64 << virtual_mask_shift) - Size4KiB::SIZE)
+        // FIXME: uhhhhhhhh
+        VirtAddr::new((1usize << virtual_mask_shift) - crate::mem::page_size())
     })
 }
 
@@ -104,7 +105,7 @@ const USERLAND_STACK_BOTTOM: VirtAddr = USERLAND_STACK_TOP.const_sub_u64(USERLAN
 
 pub struct ArchTask {
     context: Unique<Context>,
-    address_space: AddressSpace,
+    address_space: AddressSpaceHandle,
     context_switch_rsp: VirtAddr,
 
     rpl: Ring,
@@ -119,7 +120,8 @@ impl ArchTask {
 
             // Since the IDLE task is a special kernel task, we use the kernel's
             // address space here and we also use the kernel privilage level here.
-            address_space: AddressSpace::this(),
+            // TODO: the idle task should not need an address space
+            address_space: mem::new_address_space(),
             rpl: Ring::Ring0,
             fs_base: VirtAddr::zero(),
         }
@@ -133,21 +135,20 @@ impl ArchTask {
             alloc_zeroed(layout).add(layout.size())
         };
 
-        // Get the current active address space as we are making the task for
-        // the kernel itself.
-        let address_space = AddressSpace::this();
+        // Create an empty address space for the userland to see.
+        let address_space = mem::new_address_space();
 
         // Now at this stage, we have mapped the kernel task stack. Now we have to set up the
         // context for the kernel task required for the context switch.
-        let mut stack_ptr = task_stack as u64;
+        let mut stack_ptr = task_stack as usize;
         let mut stack = StackHelper::new(&mut stack_ptr);
 
         let kernel_task_frame = unsafe { stack.offset::<KernelTaskFrame>() };
 
         kernel_task_frame.iret.ss = 0x10; // kernel stack segment
         kernel_task_frame.iret.cs = 0x08; // kernel code segment
-        kernel_task_frame.iret.rip = entry_point.as_u64();
-        kernel_task_frame.iret.rsp = unsafe { task_stack.sub(8) as u64 };
+        kernel_task_frame.iret.rip = entry_point.as_usize();
+        kernel_task_frame.iret.rsp = unsafe { task_stack } as usize - 8;
         kernel_task_frame.iret.rflags = if enable_interrupts { 0x200 } else { 0x00 };
 
         extern "C" {
@@ -157,13 +158,13 @@ impl ArchTask {
         let context = unsafe { stack.offset::<Context>() };
 
         *context = Context::default();
-        context.rip = iretq_init as u64;
+        context.rip = iretq_init as usize;
         context.cr3 = controlregs::read_cr3_raw();
 
         Self {
             context: unsafe { Unique::new_unchecked(context) },
             address_space,
-            context_switch_rsp: VirtAddr::new(task_stack as u64),
+            context_switch_rsp: VirtAddr::new(task_stack as usize),
 
             // Since we are creating a kernel task, we set the ring privilage
             // level to ring 0.
@@ -172,8 +173,8 @@ impl ArchTask {
         }
     }
 
-    pub fn clone_process(&self, entry: usize, stack: usize) -> Result<Self, MapToError<Size4KiB>> {
-        let new_address_space = AddressSpace::this().offset_page_table().fork()?;
+    pub fn clone_process(&self, entry: usize, stack: usize) -> Result<Self, &'static str> {
+        let new_address_space = self.address_space.fork()?;
 
         // Since the fork function marks all of the userspace entries in both the forked
         // and the parent address spaces as read only, we will flush the page table of the
@@ -187,10 +188,10 @@ impl ArchTask {
             alloc_zeroed(layout).add(layout.size())
         };
 
-        let mut old_stack_ptr = self.context_switch_rsp.as_u64();
+        let mut old_stack_ptr = self.context_switch_rsp.as_usize();
         let mut old_stack = StackHelper::new(&mut old_stack_ptr);
 
-        let mut new_stack_ptr = switch_stack as u64;
+        let mut new_stack_ptr = switch_stack as usize;
         let mut new_stack = StackHelper::new(&mut new_stack_ptr);
 
         unsafe {
@@ -201,9 +202,9 @@ impl ArchTask {
 
             *sys_frame = *old_sys_frame;
 
-            sys_frame.rip = entry as u64;
+            sys_frame.rip = entry;
             sys_frame.rflags = 0x200;
-            sys_frame.rsp = stack as u64;
+            sys_frame.rsp = stack;
 
             let registers_frame = new_stack.offset::<RegistersFrame>();
             *registers_frame = RegistersFrame::default();
@@ -217,20 +218,20 @@ impl ArchTask {
         }
 
         *context = Context::default();
-        context.rip = sysret_fork_init as u64;
-        context.cr3 = new_address_space.cr3().start_address().as_u64();
+        context.rip = sysret_fork_init as usize;
+        context.cr3 = new_address_space.arch_get_handle();
 
         Ok(Self {
             context: unsafe { Unique::new_unchecked(context) },
-            context_switch_rsp: VirtAddr::new(switch_stack as u64),
+            context_switch_rsp: VirtAddr::new(switch_stack as usize),
             address_space: new_address_space,
             rpl: Ring::Ring3,
             fs_base: VirtAddr::zero(),
         })
     }
 
-    pub fn fork(&self) -> Result<Self, MapToError<Size4KiB>> {
-        let new_address_space = AddressSpace::this().offset_page_table().fork()?;
+    pub fn fork(&self) -> Result<Self, &'static str> {
+        let new_address_space = self.address_space.fork()?;
 
         // Since the fork function marks all of the userspace entries in both the forked
         // and the parent address spaces as read only, we will flush the page table of the
@@ -240,17 +241,16 @@ impl ArchTask {
         }
 
         let switch_stack = unsafe {
-            let frame: PhysFrame = FRAME_ALLOCATOR.allocate_frame().unwrap();
-            let phys = frame.start_address();
-            let virt = crate::PHYSICAL_MEMORY_OFFSET + phys.as_u64();
+            let phys = mem::pmm_alloc_page();
+            let virt = crate::PHYSICAL_MEMORY_OFFSET + phys;
 
-            virt.as_mut_ptr::<u8>().add(Size4KiB::SIZE as usize)
+            virt.as_mut_ptr::<u8>().add(mem::page_size())
         };
 
-        let mut old_stack_ptr = self.context_switch_rsp.as_u64();
+        let mut old_stack_ptr = self.context_switch_rsp.as_usize();
         let mut old_stack = StackHelper::new(&mut old_stack_ptr);
 
-        let mut new_stack_ptr = switch_stack as u64;
+        let mut new_stack_ptr = switch_stack as usize;
         let mut new_stack = StackHelper::new(&mut new_stack_ptr);
 
         unsafe {
@@ -273,12 +273,12 @@ impl ArchTask {
         }
 
         *context = Context::default();
-        context.rip = sysret_fork_init as u64;
-        context.cr3 = new_address_space.cr3().start_address().as_u64();
+        context.rip = sysret_fork_init as usize;
+        context.cr3 = new_address_space.arch_get_handle(); // on x86, the arch handle is the cr3 value
 
         Ok(Self {
             context: unsafe { Unique::new_unchecked(context) },
-            context_switch_rsp: VirtAddr::new(switch_stack as u64),
+            context_switch_rsp: VirtAddr::new(switch_stack as usize),
             address_space: new_address_space,
             rpl: Ring::Ring3,
 
@@ -294,19 +294,19 @@ impl ArchTask {
 
         argv: Option<ExecArgs>,
         envv: Option<ExecArgs>,
-    ) -> Result<(), MapToError<Size4KiB>> {
+    ) -> Result<(), &'static str> {
         let address_space = if self.rpl == Ring::Ring0 {
             // If the kernel task wants to execute an executable, then we have to
             // create a new address space for it as we cannot use the kernel's address space
             // here.
-            AddressSpace::new()?
+            mem::new_address_space()
         } else {
             // If we are the user who wants to execute an executable, we can just use the
             // current address space allocated for the user and deallocate all of the user
             // page entries.
             //
             // TODO: deallocate the user address space's page entries.
-            AddressSpace::new()?
+            mem::new_address_space()
         };
 
         // mmap the userland stack...
@@ -321,7 +321,7 @@ impl ArchTask {
 
         vm.log();
 
-        address_space.switch(); // Perform the address space switch
+        address_space.select(); // Perform the address space switch
 
         let loaded_binary = vm.load_bin(executable).expect("exec: failed to load ELF");
 
@@ -334,7 +334,7 @@ impl ArchTask {
             fn jump_userland_exec(stack: VirtAddr, rip: VirtAddr, rflags: u64);
         }
 
-        let mut stack_addr = USERLAND_STACK_TOP.as_u64();
+        let mut stack_addr = USERLAND_STACK_TOP.as_usize();
         let mut stack = StackHelper::new(&mut stack_addr);
 
         let mut envp = Vec::new();
@@ -359,7 +359,7 @@ impl ArchTask {
             let hdr: [(AuxvType, usize); 4] = [
                 (
                     AuxvType::AtPhdr,
-                    (p2_header.ph_offset() + loaded_binary.base_addr.as_u64()) as usize,
+                    p2_header.ph_offset() as usize + loaded_binary.base_addr.as_usize(),
                 ),
                 (AuxvType::AtPhEnt, p2_header.ph_entry_size() as usize),
                 (AuxvType::AtPhNum, p2_header.ph_count() as usize),
@@ -417,7 +417,7 @@ pub fn arch_task_spinup(from: &mut ArchTask, to: &ArchTask) {
 
     unsafe {
         // Set the stack pointer in the TSS.
-        super::gdt::get_task_state_segement().rsp[0] = to.context_switch_rsp.as_u64();
+        super::gdt::get_task_state_segement().rsp[0] = to.context_switch_rsp.as_usize() as u64;
 
         task_spinup(&mut from.context, to.context.as_ref());
     }

@@ -31,7 +31,6 @@ use alloc::sync::{Arc, Weak};
 use alloc::vec::Vec;
 use spin::RwLock;
 
-use crate::mem::paging::PhysAddr;
 use crate::utils::downcast;
 use crate::utils::sync::Mutex;
 
@@ -311,7 +310,7 @@ impl INodeInterface for LockedRamINode {
         }
     }
 
-    fn mmap(&self, offset: usize, flags: MMapFlags) -> Result<PhysAddr> {
+    fn mmap(&self, offset: usize, flags: MMapFlags) -> Result<usize> {
         let this = self.0.read();
 
         match &this.contents {

@@ -20,7 +20,6 @@
 use bit_field::BitField;
 
 use crate::drivers::block::ahci::AtaCommand;
-use crate::mem::paging::PhysAddr;
 
 use crate::utils::io;
 use crate::utils::io::BasedPort;
@@ -264,9 +263,9 @@ impl BusMasterReg {
         self.base.write_offset(BMIDE_COMMAND, c.bits());
     }
 
-    pub fn load_prdt(&mut self, prdt_base: PhysAddr) {
+    pub fn load_prdt(&mut self, prdt_base: usize) {
         self.base
-            .write_offset(BMIDE_PRDT, prdt_base.as_u64() as u32);
+            .write_offset(BMIDE_PRDT, prdt_base as u32);
     }
 
     pub fn status(&self) -> BMIdeStatus {

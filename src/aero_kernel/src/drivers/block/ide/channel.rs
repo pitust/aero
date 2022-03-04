@@ -23,7 +23,6 @@ use bit_field::BitField;
 use super::registers::*;
 
 use crate::drivers::block::ahci::{AtaCommand, DmaBuffer, DmaRequest};
-use crate::mem::paging::*;
 
 use crate::utils::io::delay;
 use crate::utils::sync::Mutex;
@@ -33,8 +32,8 @@ struct PrdTable<'a> {
 }
 
 impl<'a> PrdTable<'a> {
-    pub fn new(addr: PhysAddr, entries: usize) -> PrdTable<'a> {
-        let mapped_addr = unsafe { crate::PHYSICAL_MEMORY_OFFSET + addr.as_u64() };
+    pub fn new(addr: usize, entries: usize) -> PrdTable<'a> {
+        let mapped_addr = unsafe { crate::PHYSICAL_MEMORY_OFFSET + addr };
         let ptr = mapped_addr.as_mut_ptr::<PrdEntry>();
         let entries = unsafe { core::slice::from_raw_parts_mut(ptr, entries) };
 
@@ -77,8 +76,8 @@ struct PrdEntry {
 }
 
 impl PrdEntry {
-    pub fn set_addr(&mut self, addr: PhysAddr) {
-        self.addr = addr.as_u64() as u32;
+    pub fn set_addr(&mut self, addr: usize) {
+        self.addr = addr as u32;
     }
 
     pub fn set_byte_count(&mut self, bytes: usize) {
@@ -95,7 +94,7 @@ struct IdeChannelData {
     ctrl: DevCtrlReg,
     bmide: BusMasterReg,
     interrupt_nr: usize,
-    prdt_addr: PhysAddr,
+    prdt_addr: usize,
     active_cmd: Option<Arc<DmaRequest>>,
 }
 
@@ -106,7 +105,7 @@ impl IdeChannelData {
             ctrl: DevCtrlReg::new(ctrl),
             bmide: BusMasterReg::new(bmide),
             interrupt_nr,
-            prdt_addr: PhysAddr::new(0),
+            prdt_addr: 0,
             active_cmd: None,
         }
     }
@@ -161,7 +160,7 @@ impl IdeChannelData {
     }
 
     pub fn setup_prdt(&mut self) {
-        let prdt = pmm_alloc(BuddyOrdering::Size4KiB);
+        let prdt = crate::mem::pmm_alloc_page();
 
         self.bmide.load_prdt(prdt);
         self.prdt_addr = prdt;

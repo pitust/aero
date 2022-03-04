@@ -20,7 +20,7 @@
 use core::marker::PhantomData;
 
 use super::sdt::Sdt;
-use crate::mem::paging::VirtAddr;
+use crate::mem::VirtAddr;
 
 pub(super) fn validate_rsdt_checksum<T: RsdtHeader>(header: &'static T) -> bool {
     if header.signature() == b"RSD PTR " {

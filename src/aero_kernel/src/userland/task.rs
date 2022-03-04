@@ -27,7 +27,7 @@ use core::sync::atomic::{AtomicIsize, AtomicU8, AtomicUsize, Ordering};
 
 use crate::fs::cache::{DirCacheImpl, DirCacheItem};
 use crate::fs::{self, FileSystem};
-use crate::mem::paging::*;
+use crate::mem::VirtAddr;
 
 use crate::arch::task::ArchTask;
 use crate::fs::file_table::FileTable;
@@ -241,7 +241,7 @@ impl Task {
             zombies: Zombies::new(),
 
             arch_task: UnsafeCell::new(ArchTask::new_kernel(
-                VirtAddr::new(entry_point as u64),
+                VirtAddr::new(entry_point as usize),
                 enable_interrupts,
             )),
             file_table: Arc::new(FileTable::new()),
@@ -375,7 +375,7 @@ impl Task {
 
         argv: Option<ExecArgs>,
         envv: Option<ExecArgs>,
-    ) -> Result<(), MapToError<Size4KiB>> {
+    ) -> Result<(), &'static str> {
         let vm = self.vm();
         vm.clear();
 

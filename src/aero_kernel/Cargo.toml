@@ -23,7 +23,7 @@ syslog = []
 # enable the use of the `raw-cpuid` crate, which is only possible on x86
 use-cpuid = ["raw-cpuid"]
 
-default = ["round-robin"]
+default = ["round-robin", "use-cpuid"]
 
 [dependencies]
 spin = "0.9.2"
